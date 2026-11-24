@@ -1,0 +1,1433 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AURA EDU | Scaffolding Evidence Analysis</title>
+
+<style>
+:root {
+  --navy: #19395f;
+  --teal: #208e86;
+  --bg: #f6f9fc;
+  --text: #26374d;
+  --muted: #65768d;
+  --border: #dce5ed;
+  --green: #18754f;
+  --amber: #986018;
+  --red: #ad4242;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial, "PingFang SC",
+    "Microsoft YaHei", sans-serif;
+  line-height: 1.65;
+}
+
+header {
+  background: white;
+  border-bottom: 1px solid var(--border);
+}
+
+nav {
+  max-width: 1150px;
+  margin: auto;
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+
+.logo {
+  color: var(--navy);
+  font-size: 23px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+
+.nav-links a {
+  color: var(--navy);
+  text-decoration: none;
+  font-size: 14px;
+}
+
+main {
+  max-width: 1100px;
+  margin: auto;
+  padding: 38px 22px 70px;
+}
+
+h1, h2, h3 {
+  color: var(--navy);
+}
+
+h1 {
+  font-size: clamp(30px, 5vw, 43px);
+  line-height: 1.2;
+}
+
+p {
+  color: var(--muted);
+}
+
+.eyebrow {
+  color: var(--teal);
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 26px;
+  margin: 22px 0;
+}
+
+.notice {
+  background: #e8f4f2;
+  border-left: 4px solid var(--teal);
+  border-radius: 9px;
+  padding: 17px 20px;
+  margin: 20px 0;
+}
+
+.warning {
+  background: #fff5e8;
+  border-left: 4px solid #c38a35;
+  border-radius: 9px;
+  padding: 17px 20px;
+  margin: 20px 0;
+}
+
+.error {
+  background: #fff0f0;
+  border-left: 4px solid var(--red);
+  border-radius: 9px;
+  padding: 17px 20px;
+  margin: 20px 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+  gap: 15px;
+}
+
+.grid.two {
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+}
+
+.metric {
+  background: #eff5f7;
+  border-radius: 12px;
+  padding: 20px;
+  min-width: 0;
+}
+
+.metric strong {
+  display: block;
+  font-size: 29px;
+  color: var(--navy);
+}
+
+.metric span {
+  display: block;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+button, select {
+  font: inherit;
+  border-radius: 9px;
+  padding: 11px 15px;
+}
+
+button {
+  background: var(--navy);
+  border: 1px solid var(--navy);
+  color: white;
+  cursor: pointer;
+}
+
+button.secondary {
+  background: white;
+  color: var(--navy);
+}
+
+button:focus-visible,
+select:focus-visible,
+a:focus-visible {
+  outline: 3px solid #8ac6e8;
+  outline-offset: 3px;
+}
+
+select {
+  width: 100%;
+  background: white;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 14px;
+}
+
+.controls label {
+  flex: 1;
+  min-width: 220px;
+}
+
+.controls label span {
+  display: block;
+  margin-bottom: 7px;
+  font-weight: bold;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 680px;
+}
+
+th, td {
+  padding: 13px 12px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  color: var(--navy);
+  background: #eff5f7;
+}
+
+.tag {
+  display: inline-block;
+  border-radius: 20px;
+  padding: 3px 10px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.tag.green {
+  background: #dff3e9;
+  color: var(--green);
+}
+
+.tag.amber {
+  background: #fff0d9;
+  color: var(--amber);
+}
+
+.tag.gray {
+  background: #e9eef4;
+  color: #52647b;
+}
+
+.evidence {
+  background: #f0f7f8;
+  border: 1px solid #cfe3e8;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 16px 0;
+}
+
+.evidence h3 {
+  margin-top: 0;
+}
+
+.small {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.mono {
+  font-family: monospace;
+  overflow-wrap: anywhere;
+}
+
+.hidden {
+  display: none !important;
+}
+
+footer {
+  padding: 30px 20px;
+  text-align: center;
+  background: var(--navy);
+  color: white;
+}
+
+footer p {
+  color: #dce8f3;
+}
+
+@media(max-width: 800px) {
+  .grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media(max-width: 540px) {
+  .grid,
+  .grid.two {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    padding: 19px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <nav>
+    <a class="logo" href="research.html">
+      AURA EDU
+    </a>
+
+    <div class="nav-links">
+      <a href="research.html">Research Lab</a>
+      <a href="research-documentation-hub.html">
+        Documentation Hub
+      </a>
+      <a href="prototype-evaluation.html">
+        Evaluation Protocol
+      </a>
+      <a href="index.html">AURA Learn</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+
+  <div class="eyebrow">
+    RESEARCH LAB / STEP 20.9.1
+  </div>
+
+  <h1>Scaffolding Evidence Analysis</h1>
+
+  <p>
+    教学支架证据分析：
+    研究提示使用、练习尝试及独立复测表现。
+  </p>
+
+  <div class="notice">
+    <strong>Read-only Research Analysis</strong>
+    <p>
+      本页面仅读取现有 G1/G2/G3 学习记录，
+      不修改原始数据，也不会重新计算或覆盖
+      原有 Mastery Decision。
+    </p>
+  </div>
+
+  <section class="card">
+
+    <h2>1. Data Integrity Inventory</h2>
+
+    <p>
+      当前浏览器中的学习记录数量。
+      历史基线为 G1=4、G2=3、G3=6，
+      总计 13 条。新增测试记录会使数量增加。
+    </p>
+
+    <div class="grid">
+      <div class="metric">
+        <strong id="g1-count">—</strong>
+        <span>G1 Records</span>
+      </div>
+
+      <div class="metric">
+        <strong id="g2-count">—</strong>
+        <span>G2 Records</span>
+      </div>
+
+      <div class="metric">
+        <strong id="g3-count">—</strong>
+        <span>G3 Records</span>
+      </div>
+
+      <div class="metric">
+        <strong id="total-count">—</strong>
+        <span>Total Records</span>
+      </div>
+    </div>
+
+    <div id="inventory-status"
+         class="notice" role="status"></div>
+
+    <div class="controls">
+      <button id="refresh-btn">
+        Refresh Analysis
+      </button>
+    </div>
+
+    <p id="refresh-status"
+       class="small" role="status"></p>
+
+  </section>
+
+  <section class="card">
+
+    <h2>2. Select G1 Learning Session</h2>
+
+    <p>
+      请选择一条已保存的 G1 学习记录。
+      本页面不会修改该记录。
+    </p>
+
+    <div class="controls">
+
+      <label>
+        <span>Learning Session</span>
+        <select id="session-select">
+          <option value="">
+            Loading...
+          </option>
+        </select>
+      </label>
+
+    </div>
+
+    <div id="session-warning"
+         class="warning hidden"
+         role="status"></div>
+
+    <div id="session-overview"
+         class="hidden">
+
+      <h3>Session Overview</h3>
+
+      <div class="grid">
+        <div class="metric">
+          <strong id="diagnostic-score">—</strong>
+          <span>Diagnostic</span>
+        </div>
+
+        <div class="metric">
+          <strong id="practice-score">—</strong>
+          <span>Adaptive Practice</span>
+        </div>
+
+        <div class="metric">
+          <strong id="retest-score">—</strong>
+          <span>Independent Reassessment</span>
+        </div>
+
+        <div class="metric">
+          <strong id="hint-level">—</strong>
+          <span>Highest Hint Exposure</span>
+        </div>
+      </div>
+
+      <p class="small mono"
+         id="session-identifier"></p>
+
+      <p class="small" id="session-rule"></p>
+
+    </div>
+
+  </section>
+
+  <section id="analysis-section"
+           class="card hidden">
+
+    <h2>3. Scaffolding Evidence Profile</h2>
+
+    <div class="grid">
+      <div class="metric">
+        <strong id="hinted-questions">—</strong>
+        <span>Questions With Hints</span>
+      </div>
+
+      <div class="metric">
+        <strong id="total-attempts">—</strong>
+        <span>Practice Attempts</span>
+      </div>
+
+      <div class="metric">
+        <strong id="wrong-attempts">—</strong>
+        <span>Incorrect Practice Attempts</span>
+      </div>
+
+      <div class="metric">
+        <strong id="h2h3-count">—</strong>
+        <span>Questions With H2/H3</span>
+      </div>
+    </div>
+
+    <h3>Question-Level Evidence</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Question</th>
+            <th>Attempts</th>
+            <th>First Attempt</th>
+            <th>Highest Hint</th>
+            <th>Correct After Hint</th>
+            <th>Evidence Status</th>
+          </tr>
+        </thead>
+
+        <tbody id="question-table"></tbody>
+      </table>
+    </div>
+
+    <p class="small">
+      “Correct After Hint” 表示题目记录中出现了
+      提示等级大于零的正确作答。
+      它不证明提示导致了正确答案。
+    </p>
+
+  </section>
+
+  <section id="interpretation-section"
+           class="card hidden">
+
+    <h2>4. Evidence Interpretation</h2>
+
+    <div class="evidence">
+      <h3>Observed Hint Exposure</h3>
+      <p id="hint-interpretation"></p>
+    </div>
+
+    <div class="evidence">
+      <h3>Observed Practice Errors</h3>
+      <p id="error-interpretation"></p>
+    </div>
+
+    <div class="evidence">
+      <h3>Immediate Independent Performance</h3>
+      <p id="independent-interpretation"></p>
+    </div>
+
+    <div class="warning">
+      <strong>
+        Dependency Interpretation Limitation
+      </strong>
+      <p id="dependency-interpretation"></p>
+    </div>
+
+    <h3>Evidence Availability</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Research Indicator</th>
+            <th>Availability</th>
+            <th>Explanation</th>
+          </tr>
+        </thead>
+        <tbody id="availability-table"></tbody>
+      </table>
+    </div>
+
+  </section>
+
+  <section class="card">
+
+    <h2>5. Research Interpretation Guidelines</h2>
+
+    <div class="grid two">
+
+      <div class="evidence">
+        <h3>What We Can Observe</h3>
+        <p>
+          提示最高等级、已记录的作答尝试、
+          正误情况，以及即时独立复测表现。
+        </p>
+      </div>
+
+      <div class="evidence">
+        <h3>What We Cannot Confirm</h3>
+        <p>
+          学生为什么查看提示、
+          是否真正需要提示、
+          提示是否导致学习提升，
+          以及是否已经形成长期掌握。
+        </p>
+      </div>
+
+    </div>
+
+    <div class="notice">
+      <strong>Research Integrity</strong>
+      <p>
+        这些记录属于原型开发与学习交互证据。
+        不能直接作为真实学生学习效果的因果证据。
+        未来需要经过伦理审查的实证研究、
+        更完整的事件记录及延迟独立复测。
+      </p>
+    </div>
+
+  </section>
+
+</main>
+
+<footer>
+  <strong>AURA EDU Research Lab</strong>
+  <p>
+    Step 20.9.1 · Scaffolding Evidence Analysis
+  </p>
+  <p>
+    Read-only · Browser-local · Research Prototype
+  </p>
+</footer>
+
+<script>
+"use strict";
+
+/*
+  AURA EDU
+  STEP 20.9.1
+
+  READ-ONLY SCAFFOLDING EVIDENCE ANALYSIS
+
+  This page must not:
+  - overwrite historical records
+  - remove records
+  - modify G1/G2/G3
+  - change learner identity
+  - rewrite mastery decisions
+
+  Historical records may have different
+  schemas. Missing evidence is reported
+  rather than invented.
+*/
+
+const KEYS = {
+  G1: "aura_g1_learning_records_v1",
+  G2: "aura_g2_learning_records_v1",
+  G3: "aura_g3_learning_records_v1"
+};
+
+const BASELINE = {
+  G1: 4,
+  G2: 3,
+  G3: 6
+};
+
+const $ = id => document.getElementById(id);
+
+let g1Records = [];
+let manualRefreshes = 0;
+
+function text(id, value) {
+  $(id).textContent = String(value);
+}
+
+function show(id) {
+  $(id).classList.remove("hidden");
+}
+
+function hide(id) {
+  $(id).classList.add("hidden");
+}
+
+function readRecords(key) {
+  try {
+    const raw = localStorage.getItem(key);
+
+    if (raw === null) {
+      return {
+        ok: false,
+        records: [],
+        issue: "Storage key not found"
+      };
+    }
+
+    const parsed = JSON.parse(raw);
+
+    if (!Array.isArray(parsed)) {
+      return {
+        ok: false,
+        records: [],
+        issue: "Storage value is not an array"
+      };
+    }
+
+    return {
+      ok: true,
+      records: parsed,
+      issue: null
+    };
+
+  } catch (error) {
+    return {
+      ok: false,
+      records: [],
+      issue: error.message
+    };
+  }
+}
+
+function getSessionId(record, index) {
+  if (
+    record &&
+    typeof record === "object" &&
+    !Array.isArray(record)
+  ) {
+    return String(
+      record.sessionId ||
+      record.id ||
+      "Historical Record " + (index + 1)
+    );
+  }
+
+  return "Historical Record " + (index + 1);
+}
+
+function validRecord(record) {
+  return record !== null &&
+    typeof record === "object" &&
+    !Array.isArray(record);
+}
+
+function getQuestionRecords(record) {
+  if (!validRecord(record)) return null;
+
+  if (Array.isArray(record.records)) {
+    return record.records;
+  }
+
+  return null;
+}
+
+function getStageRecords(record, stage) {
+  const all = getQuestionRecords(record);
+
+  if (!all) return null;
+
+  return all.filter(
+    item => validRecord(item) &&
+      item.stage === stage
+  );
+}
+
+function calculateStage(record, stage) {
+  const items = getStageRecords(record, stage);
+
+  if (!items || items.length === 0) {
+    return null;
+  }
+
+  let valid = 0;
+  let correct = 0;
+
+  items.forEach(item => {
+    if (typeof item.firstAttemptCorrect === "boolean") {
+      valid++;
+
+      if (item.firstAttemptCorrect) {
+        correct++;
+      }
+    }
+  });
+
+  if (valid !== items.length) {
+    return null;
+  }
+
+  return {
+    correct,
+    total: valid,
+    percent: Math.round(correct / valid * 100)
+  };
+}
+
+function formatScore(score) {
+  if (!score) return "N/A";
+
+  return score.percent + "%";
+}
+
+function hintValue(item) {
+  if (!validRecord(item)) return null;
+
+  const value = item.highestHintUsed;
+
+  if (
+    typeof value === "number" &&
+    Number.isInteger(value) &&
+    value >= 0 &&
+    value <= 3
+  ) {
+    return value;
+  }
+
+  return null;
+}
+
+function getAttemptArray(item) {
+  if (!validRecord(item)) return null;
+
+  if (!Array.isArray(item.attempts)) {
+    return null;
+  }
+
+  if (!item.attempts.every(
+    attempt => validRecord(attempt) &&
+      typeof attempt.correct === "boolean"
+  )) {
+    return null;
+  }
+
+  return item.attempts;
+}
+
+function highestSessionHint(items) {
+  if (!items || items.length === 0) return null;
+
+  const levels = items.map(hintValue);
+
+  if (levels.some(value => value === null)) {
+    return null;
+  }
+
+  return Math.max(...levels);
+}
+
+function hintLabel(level) {
+  if (level === null) return "N/A";
+  return level === 0 ? "None" : "H" + level;
+}
+
+function addCell(row, value) {
+  const cell = document.createElement("td");
+  cell.textContent = String(value);
+  row.appendChild(cell);
+  return cell;
+}
+
+function addAvailability(
+  indicator,
+  available,
+  explanation
+) {
+  const row = document.createElement("tr");
+
+  addCell(row, indicator);
+
+  const status = document.createElement("td");
+  const badge = document.createElement("span");
+
+  badge.className = "tag " +
+    (available ? "green" : "amber");
+
+  badge.textContent =
+    available ? "AVAILABLE" : "LIMITED";
+
+  status.appendChild(badge);
+  row.appendChild(status);
+
+  addCell(row, explanation);
+
+  $("availability-table").appendChild(row);
+}
+
+function renderInventory() {
+  const results = {};
+
+  Object.keys(KEYS).forEach(module => {
+    results[module] = readRecords(KEYS[module]);
+  });
+
+  const counts = {
+    G1: results.G1.records.length,
+    G2: results.G2.records.length,
+    G3: results.G3.records.length
+  };
+
+  text("g1-count",
+    results.G1.ok ? counts.G1 : "N/A"
+  );
+
+  text("g2-count",
+    results.G2.ok ? counts.G2 : "N/A"
+  );
+
+  text("g3-count",
+    results.G3.ok ? counts.G3 : "N/A"
+  );
+
+  const allValid = Object.values(results)
+    .every(result => result.ok);
+
+  text(
+    "total-count",
+    allValid
+      ? counts.G1 + counts.G2 + counts.G3
+      : "N/A"
+  );
+
+  const issues = [];
+
+  Object.keys(results).forEach(module => {
+    if (!results[module].ok) {
+      issues.push(
+        module + ": " + results[module].issue
+      );
+    } else if (counts[module] < BASELINE[module]) {
+      issues.push(
+        module + ": below historical baseline " +
+        BASELINE[module]
+      );
+    }
+  });
+
+  if (issues.length) {
+    text(
+      "inventory-status",
+      "Data Integrity Warning: " +
+      issues.join(" | ") +
+      ". This page will not modify the data."
+    );
+  } else {
+    text(
+      "inventory-status",
+      "Storage arrays are readable. " +
+      "Record counts are at or above the " +
+      "historical baseline. This does not " +
+      "independently verify record contents."
+    );
+  }
+
+  g1Records = results.G1.records;
+
+  return results;
+}
+
+function populateSessionSelect(previousIndex) {
+  const select = $("session-select");
+
+  select.replaceChildren();
+
+  if (g1Records.length === 0) {
+    const option = document.createElement("option");
+    option.value = "";
+    option.textContent = "No G1 records available";
+    select.appendChild(option);
+
+    hide("session-overview");
+    hide("analysis-section");
+    hide("interpretation-section");
+    showSessionWarning(
+      "当前没有可分析的 G1 学习记录。"
+    );
+    return;
+  }
+
+  const placeholder = document.createElement("option");
+  placeholder.value = "";
+  placeholder.textContent =
+    "Select a saved G1 learning session";
+  select.appendChild(placeholder);
+
+  g1Records.forEach((record, index) => {
+    const option = document.createElement("option");
+
+    option.value = String(index);
+
+    option.textContent =
+      (index + 1) + ". " +
+      getSessionId(record, index);
+
+    select.appendChild(option);
+  });
+
+  if (
+    previousIndex !== "" &&
+    Number.isInteger(Number(previousIndex)) &&
+    Number(previousIndex) >= 0 &&
+    Number(previousIndex) < g1Records.length
+  ) {
+    select.value = String(previousIndex);
+  } else {
+    select.value = "";
+  }
+
+  if (select.value !== "") {
+    renderSelectedSession();
+  } else {
+    hide("session-overview");
+    hide("analysis-section");
+    hide("interpretation-section");
+    hide("session-warning");
+  }
+}
+
+function showSessionWarning(message) {
+  text("session-warning", message);
+  show("session-warning");
+}
+
+function renderSelectedSession() {
+  const value = $("session-select").value;
+
+  hide("session-overview");
+  hide("analysis-section");
+  hide("interpretation-section");
+  hide("session-warning");
+
+  if (value === "") return;
+
+  const index = Number(value);
+
+  if (
+    !Number.isInteger(index) ||
+    index < 0 ||
+    index >= g1Records.length
+  ) {
+    showSessionWarning(
+      "Selected record index is invalid."
+    );
+    return;
+  }
+
+  const record = g1Records[index];
+
+  if (!validRecord(record)) {
+    showSessionWarning(
+      "此历史记录不是可分析的对象结构。"
+    );
+    return;
+  }
+
+  const allQuestions = getQuestionRecords(record);
+
+  if (!allQuestions) {
+    showSessionWarning(
+      "此记录缺少 Step 20.6 所使用的 " +
+      "records 问题数组。不能推断提示与尝试行为。" +
+      "原始记录未被修改。"
+    );
+    return;
+  }
+
+  const diagnostic =
+    calculateStage(record, "diagnostic");
+
+  const practice =
+    calculateStage(record, "practice");
+
+  const retest =
+    calculateStage(record, "reassessment");
+
+  const practiceItems =
+    getStageRecords(record, "practice");
+
+  const highestHint =
+    highestSessionHint(practiceItems);
+
+  text(
+    "diagnostic-score",
+    formatScore(diagnostic)
+  );
+
+  text(
+    "practice-score",
+    formatScore(practice)
+  );
+
+  text(
+    "retest-score",
+    formatScore(retest)
+  );
+
+  text(
+    "hint-level",
+    hintLabel(highestHint)
+  );
+
+  text(
+    "session-identifier",
+    "Session: " + getSessionId(record, index)
+  );
+
+  const ruleVersion =
+    record.result &&
+    record.result.decisionExplanation &&
+    record.result.decisionExplanation.ruleVersion;
+
+  text(
+    "session-rule",
+    "Decision Rule: " +
+    (ruleVersion || "Not recorded")
+  );
+
+  show("session-overview");
+
+  renderPracticeEvidence(
+    practiceItems,
+    retest,
+    highestHint
+  );
+}
+
+function renderPracticeEvidence(
+  items,
+  retest,
+  highestHint
+) {
+  const tbody = $("question-table");
+  tbody.replaceChildren();
+
+  const availability = $("availability-table");
+  availability.replaceChildren();
+
+  if (!items || items.length === 0) {
+    showSessionWarning(
+      "此记录没有可分析的 practice 问题。"
+    );
+    return;
+  }
+
+  let hinted = 0;
+  let h2h3 = 0;
+  let totalAttempts = 0;
+  let wrongAttempts = 0;
+
+  let completeHintData = true;
+  let completeAttemptData = true;
+  let correctWithHint = 0;
+
+  let timestampedHintSequence = false;
+
+  items.forEach((item, index) => {
+    const level = hintValue(item);
+    const attempts = getAttemptArray(item);
+
+    if (level === null) {
+      completeHintData = false;
+    } else {
+      if (level > 0) hinted++;
+      if (level >= 2) h2h3++;
+    }
+
+    if (!attempts) {
+      completeAttemptData = false;
+    } else {
+      totalAttempts += attempts.length;
+
+      wrongAttempts += attempts.filter(
+        attempt => !attempt.correct
+      ).length;
+
+      if (
+        attempts.some(
+          attempt =>
+            attempt.correct &&
+            typeof attempt.hintLevelAtAttempt ===
+              "number" &&
+            attempt.hintLevelAtAttempt > 0
+        )
+      ) {
+        correctWithHint++;
+      }
+    }
+
+    const row = document.createElement("tr");
+
+    addCell(
+      row,
+      item.questionId || "Question " + (index + 1)
+    );
+
+    addCell(
+      row,
+      attempts ? attempts.length : "N/A"
+    );
+
+    addCell(
+      row,
+      typeof item.firstAttemptCorrect === "boolean"
+        ? item.firstAttemptCorrect
+          ? "Correct"
+          : "Incorrect"
+        : "N/A"
+    );
+
+    addCell(row, hintLabel(level));
+
+    const afterHint = attempts
+      ? attempts.some(
+          attempt =>
+            attempt.correct &&
+            typeof attempt.hintLevelAtAttempt ===
+              "number" &&
+            attempt.hintLevelAtAttempt > 0
+        )
+      : null;
+
+    addCell(
+      row,
+      afterHint === null
+        ? "Unknown"
+        : afterHint
+          ? "Observed"
+          : "Not observed"
+    );
+
+    addCell(
+      row,
+      level !== null && attempts !== null
+        ? "Partial evidence"
+        : "Limited"
+    );
+
+    tbody.appendChild(row);
+  });
+
+  text(
+    "hinted-questions",
+    completeHintData
+      ? hinted + "/" + items.length
+      : "N/A"
+  );
+
+  text(
+    "total-attempts",
+    completeAttemptData ? totalAttempts : "N/A"
+  );
+
+  text(
+    "wrong-attempts",
+    completeAttemptData ? wrongAttempts : "N/A"
+  );
+
+  text(
+    "h2h3-count",
+    completeHintData ? h2h3 : "N/A"
+  );
+
+  show("analysis-section");
+
+  renderInterpretation({
+    items,
+    hinted,
+    h2h3,
+    highestHint,
+    totalAttempts,
+    wrongAttempts,
+    correctWithHint,
+    completeHintData,
+    completeAttemptData,
+    retest,
+    timestampedHintSequence
+  });
+}
+
+function renderInterpretation(data) {
+  if (data.completeHintData) {
+    text(
+      "hint-interpretation",
+      data.hinted + " / " + data.items.length +
+      " 道练习题记录了提示使用。" +
+      "最高提示等级：" +
+      hintLabel(data.highestHint) + "。" +
+      data.h2h3 +
+      " 道题查看过 H2 或 H3。"
+    );
+  } else {
+    text(
+      "hint-interpretation",
+      "部分题目缺少最高提示等级记录。" +
+      "无法计算完整的提示暴露情况。"
+    );
+  }
+
+  if (data.completeAttemptData) {
+    text(
+      "error-interpretation",
+      "练习阶段记录了 " +
+      data.totalAttempts +
+      " 次作答尝试，其中 " +
+      data.wrongAttempts +
+      " 次答案不正确。" +
+      "有 " + data.correctWithHint +
+      " 道题记录了提示使用状态下的正确作答。" +
+      "这不能证明提示导致了正确作答。"
+    );
+  } else {
+    text(
+      "error-interpretation",
+      "部分历史题目缺少完整的尝试记录。" +
+      "因此无法准确计算练习错误次数。"
+    );
+  }
+
+  if (data.retest) {
+    text(
+      "independent-interpretation",
+      "即时独立复测首次答对 " +
+      data.retest.correct +
+      " / " + data.retest.total +
+      "（" + data.retest.percent + "%）。" +
+      "这一结果描述当前题组的独立表现，" +
+      "不能证明长期稳定掌握。"
+    );
+  } else {
+    text(
+      "independent-interpretation",
+      "没有足够的结构化记录来计算" +
+      "即时独立复测首次正确率。"
+    );
+  }
+
+  let interpretation;
+
+  if (!data.completeHintData || !data.retest) {
+    interpretation =
+      "Evidence insufficient：部分提示使用或" +
+      "独立复测信息缺失，无法判断提示暴露与" +
+      "独立表现之间的关系。";
+  } else if (
+    data.highestHint >= 2 &&
+    data.retest.percent >= 75
+  ) {
+    interpretation =
+      "High Hint Exposure + Strong Immediate " +
+      "Independent Performance：学生曾查看较高" +
+      "等级提示，但独立复测表现较强。" +
+      "不能仅凭提示等级认定真实提示依赖。";
+  } else if (
+    data.highestHint >= 2 &&
+    data.retest.percent < 50
+  ) {
+    interpretation =
+      "High Hint Exposure + Low Immediate " +
+      "Independent Performance：提示使用较多，" +
+      "且即时独立复测表现较弱。" +
+      "这提示需要进一步教学评估，" +
+      "但不能单独证明提示依赖。";
+  } else if (data.highestHint === 0) {
+    interpretation =
+      "No Recorded Hint Exposure：" +
+      "本次练习没有记录到提示使用。" +
+      "不能据此推断学生从不需要帮助。";
+  } else {
+    interpretation =
+      "Mixed Evidence：目前可以观察到" +
+      "提示使用与独立复测表现，" +
+      "但不足以判断真实的提示依赖程度。";
+  }
+
+  text("dependency-interpretation", interpretation);
+
+  addAvailability(
+    "Highest Hint Exposure",
+    data.completeHintData,
+    "由 practice.highestHintUsed 读取。"
+  );
+
+  addAvailability(
+    "Practice Attempt Outcomes",
+    data.completeAttemptData,
+    "由 practice.attempts 读取正误情况。"
+  );
+
+  addAvailability(
+    "Correct Answer With Hint",
+    data.completeAttemptData,
+    "部分记录包含 hintLevelAtAttempt。" +
+    "不能确定提示的因果作用。"
+  );
+
+  addAvailability(
+    "Error Before Hint",
+    data.timestampedHintSequence,
+    "没有独立的提示点击事件时间线。" +
+    "不能可靠还原错误与提示的先后顺序。"
+  );
+
+  addAvailability(
+    "Independent Reassessment",
+    Boolean(data.retest),
+    "由 reassessment.firstAttemptCorrect 计算。"
+  );
+
+  addAvailability(
+    "Durable Mastery",
+    false,
+    "尚无延迟独立复测证据。"
+  );
+
+  show("interpretation-section");
+}
+
+function refreshAnalysis(manual) {
+  const selected = $("session-select").value;
+
+  renderInventory();
+  populateSessionSelect(selected);
+
+  if (manual) {
+    manualRefreshes++;
+
+    text(
+      "refresh-status",
+      "Manual refresh #" + manualRefreshes +
+      " · " + new Date().toLocaleString() +
+      " · Analysis refreshed without writing data."
+    );
+  } else {
+    text(
+      "refresh-status",
+      "Initial read completed. No data was modified."
+    );
+  }
+}
+
+$("session-select").addEventListener(
+  "change",
+  renderSelectedSession
+);
+
+$("refresh-btn").addEventListener(
+  "click",
+  () => refreshAnalysis(true)
+);
+
+refreshAnalysis(false);
+
+console.info(
+  "[AURA EDU] Step 20.9.1 read-only analysis ready."
+);
+</script>
+
+</body>
+</html>

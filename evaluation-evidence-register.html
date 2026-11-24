@@ -1,0 +1,807 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AURA EDU | Evaluation Evidence Register</title>
+<style>
+:root{
+  --navy:#17365d;--teal:#218b83;
+  --bg:#f7fafc;--text:#26354a;
+  --muted:#63748a;--line:#e2e8f0
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:Arial,sans-serif;line-height:1.65
+}
+.container{max-width:1150px;margin:auto;padding:0 22px}
+header{background:white;border-bottom:1px solid var(--line)}
+.nav{
+  display:flex;justify-content:space-between;
+  align-items:center;gap:15px;flex-wrap:wrap;padding:18px 0
+}
+.logo{
+  font-size:22px;font-weight:bold;color:var(--navy);
+  text-decoration:none
+}
+nav{display:flex;flex-wrap:wrap;gap:16px}
+nav a{color:var(--navy);text-decoration:none;font-size:14px}
+.hero{
+  background:linear-gradient(135deg,#17365d,#245e78);
+  color:white;padding:65px 0
+}
+.hero h1{font-size:clamp(32px,5vw,48px);line-height:1.2}
+.hero p{color:#e0eaf3}
+.eyebrow{
+  font-size:12px;letter-spacing:2px;
+  text-transform:uppercase;color:var(--teal);font-weight:bold
+}
+.hero .eyebrow{color:#8de0d3}
+section{padding:48px 0}
+h2,h3{color:var(--navy)}
+p{color:var(--muted)}
+.card{
+  background:white;border:1px solid var(--line);
+  border-radius:14px;padding:24px;margin:15px 0
+}
+.grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:18px
+}
+.metrics{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:12px
+}
+.metric{
+  background:white;border:1px solid var(--line);
+  border-radius:12px;padding:20px;text-align:center
+}
+.metric strong{
+  display:block;font-size:28px;color:var(--navy)
+}
+.metric span{font-size:13px;color:var(--muted)}
+.soft{background:#edf4f7}
+.tag{
+  display:inline-block;border-radius:20px;
+  padding:4px 11px;font-size:12px;font-weight:bold;
+  background:#e7f5f0;color:#17645e
+}
+.tag.fail{background:#fce8e6;color:#a12622}
+.tag.review{background:#fff3dc;color:#946100}
+.tag.info{background:#e8f0fc;color:#234e86}
+label{
+  display:block;font-size:13px;font-weight:bold;
+  color:var(--navy);margin:13px 0 5px
+}
+input,select,textarea{
+  width:100%;padding:11px;border:1px solid #cad5e2;
+  border-radius:8px;background:white;color:var(--text);
+  font:inherit
+}
+textarea{min-height:90px;resize:vertical}
+button,.btn{
+  display:inline-block;background:var(--navy);color:white;
+  border:0;border-radius:9px;padding:11px 18px;
+  text-decoration:none;font:inherit;cursor:pointer
+}
+button.teal,.btn.teal{background:var(--teal)}
+button:disabled{opacity:.5;cursor:not-allowed}
+button:focus-visible,a:focus-visible,
+input:focus-visible,select:focus-visible,
+textarea:focus-visible{
+  outline:3px solid #79b7eb;outline-offset:2px
+}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.table-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;background:white}
+th,td{
+  border:1px solid var(--line);padding:12px;
+  text-align:left;vertical-align:top;font-size:13px;
+  overflow-wrap:anywhere
+}
+th{background:#edf4f7;color:var(--navy)}
+.notice{
+  padding:17px;border-left:4px solid #d4a345;
+  background:#fff8e8;border-radius:8px;margin:20px 0
+}
+.notice p{color:#775b25;margin:0}
+.message{font-size:14px;font-weight:bold;min-height:24px}
+.small{font-size:13px;color:var(--muted)}
+footer{
+  background:var(--navy);padding:30px 0;text-align:center
+}
+footer p{color:white}
+@media(max-width:800px){
+  .grid,.metrics{grid-template-columns:1fr}
+  section{padding:35px 0}
+}
+</style>
+</head>
+<body>
+
+<header>
+<div class="container nav">
+  <a class="logo" href="research.html">AURA EDU</a>
+  <nav>
+    <a href="research.html">Research Lab</a>
+    <a href="research-documentation-hub.html">Documentation Hub</a>
+    <a href="prototype-evaluation.html">Evaluation Protocol</a>
+    <a href="research-methodology.html">Methodology</a>
+  </nav>
+</div>
+</header>
+
+<main>
+
+<section class="hero">
+<div class="container">
+  <div class="eyebrow">Research Lab / Step 19.14</div>
+  <h1>Evaluation Evidence Register</h1>
+  <p>
+    A traceable record of prototype testing,
+    reported failures, corrective actions
+    and subsequent verification.
+  </p>
+  <p>
+    原型评估证据登记系统：
+    记录测试结果、问题发现、修复过程和复测证据。
+  </p>
+  <div class="actions">
+    <a class="btn teal" href="#historical">Historical Evidence</a>
+    <a class="btn" href="#new-entry">New Evidence Entry</a>
+    <a class="btn" href="#register">Evidence Register</a>
+  </div>
+</div>
+</section>
+
+<section>
+<div class="container">
+  <div class="eyebrow">01 / Evidence Principles</div>
+  <h2>Transparent and Traceable Evaluation</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>Preserve Failures</h3>
+      <p>
+        Failed tests remain visible after fixes.
+        A successful retest is recorded separately.
+      </p>
+      <p>保留失败记录，不用后续成功覆盖历史问题。</p>
+    </div>
+    <div class="card">
+      <h3>Separate Evidence Types</h3>
+      <p>
+        Developer-reported tests, independent reviews
+        and empirical findings must be distinguished.
+      </p>
+      <p>区分开发测试、独立评审与真实教学研究。</p>
+    </div>
+  </div>
+  <div class="notice">
+    <p>
+      Historical entries below are reconstructed
+      from previous user-reported outcomes.
+      Exact original test timestamps and independent
+      verification materials are not available.
+    </p>
+  </div>
+</div>
+</section>
+
+<section id="historical" class="soft">
+<div class="container">
+  <div class="eyebrow">02 / Historical Evidence</div>
+  <h2>Reported Test and Repair History</h2>
+  <p>
+    These fixed reference entries are not
+    automatically inserted into localStorage.
+  </p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Evidence ID</th>
+          <th>Stage</th>
+          <th>Observation</th>
+          <th>Result</th>
+          <th>Relationship</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>H-001</td>
+          <td>Step 19.11.3</td>
+          <td>Research Lab integration: 10/10 reported PASS</td>
+          <td><span class="tag">PASS</span></td>
+          <td>Developer-reported integration test</td>
+        </tr>
+        <tr>
+          <td>H-002</td>
+          <td>Step 19.12</td>
+          <td>Methodology page: 10/10 reported PASS</td>
+          <td><span class="tag">PASS</span></td>
+          <td>Developer-reported page test</td>
+        </tr>
+        <tr>
+          <td>H-003</td>
+          <td>Step 19.12.3</td>
+          <td>Methodology integration: 10/10 reported PASS</td>
+          <td><span class="tag">PASS</span></td>
+          <td>Developer-reported integration test</td>
+        </tr>
+        <tr>
+          <td>H-004</td>
+          <td>Step 19.13</td>
+          <td>
+            Prototype Evaluation: 9/10 reported PASS;
+            Refresh Inventory not confirmed working
+          </td>
+          <td><span class="tag fail">FAIL</span></td>
+          <td>Followed by H-005</td>
+        </tr>
+        <tr>
+          <td>H-005</td>
+          <td>Step 19.13.3</td>
+          <td>
+            Refresh Inventory count and timestamp
+            feedback reported working; final integration
+            checklist 10/10 unique items PASS
+          </td>
+          <td><span class="tag">PASS</span></td>
+          <td>Retest after H-004; not a deletion of H-004</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="small">
+    H-005 reflects 10 unique checklist items.
+    The submitted 11/10 result repeated the
+    G1/G2/G3 functionality item.
+  </p>
+</div>
+</section>
+
+<section id="new-entry">
+<div class="container">
+  <div class="eyebrow">03 / New Evidence Entry</div>
+  <h2>Register a New Test</h2>
+  <p>
+    Save a developer test observation in a separate
+    local evidence register. Do not enter student names,
+    passwords or sensitive personal information.
+  </p>
+
+  <form id="evidence-form" class="card">
+    <div class="grid">
+      <div>
+        <label for="test-id">Test ID / 测试编号</label>
+        <input id="test-id" required maxlength="80"
+               placeholder="TC-011">
+      </div>
+      <div>
+        <label for="component">Component / 模块</label>
+        <input id="component" required maxlength="120"
+               placeholder="Evidence Register">
+      </div>
+      <div>
+        <label for="result">Result / 结果</label>
+        <select id="result" required>
+          <option value="PASS">PASS</option>
+          <option value="FAIL">FAIL</option>
+          <option value="REVIEW">REVIEW</option>
+          <option value="NOT TESTED">NOT TESTED</option>
+        </select>
+      </div>
+      <div>
+        <label for="environment">Environment / 环境</label>
+        <input id="environment" maxlength="180"
+               placeholder="Safari / Mac / Live Server">
+      </div>
+    </div>
+
+    <label for="procedure">Procedure / 操作步骤</label>
+    <textarea id="procedure" required maxlength="2000"
+              placeholder="Describe the steps performed"></textarea>
+
+    <label for="expected">Expected Result / 预期结果</label>
+    <textarea id="expected" required maxlength="2000"
+              placeholder="What should happen?"></textarea>
+
+    <label for="observed">Observed Result / 实际观察</label>
+    <textarea id="observed" required maxlength="2000"
+              placeholder="What actually happened?"></textarea>
+
+    <label for="reference">Evidence Reference / 证据来源</label>
+    <input id="reference" maxlength="300"
+           placeholder="Manual observation; screenshot filename if available">
+
+    <label for="related">Related Evidence / 关联记录</label>
+    <input id="related" maxlength="80"
+           placeholder="Optional: H-004 or another ID">
+
+    <div class="actions">
+      <button type="submit" class="teal">
+        Save Evidence
+      </button>
+      <button type="reset">
+        Clear Form
+      </button>
+    </div>
+
+    <p id="save-message" class="message"
+       role="status" aria-live="polite"></p>
+  </form>
+</div>
+</section>
+
+<section id="register" class="soft">
+<div class="container">
+  <div class="eyebrow">04 / Evidence Register</div>
+  <h2>Locally Saved Evidence</h2>
+
+  <div class="metrics">
+    <div class="metric">
+      <strong id="saved-total">0</strong>
+      <span>Saved Entries</span>
+    </div>
+    <div class="metric">
+      <strong id="saved-pass">0</strong>
+      <span>PASS</span>
+    </div>
+    <div class="metric">
+      <strong id="saved-fail">0</strong>
+      <span>FAIL</span>
+    </div>
+    <div class="metric">
+      <strong id="saved-review">0</strong>
+      <span>REVIEW / NOT TESTED</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <label for="filter">Filter by Result / 按结果筛选</label>
+    <select id="filter">
+      <option value="ALL">All Results</option>
+      <option value="PASS">PASS</option>
+      <option value="FAIL">FAIL</option>
+      <option value="REVIEW">REVIEW</option>
+      <option value="NOT TESTED">NOT TESTED</option>
+    </select>
+
+    <div class="actions">
+      <button id="copy-json" type="button" class="teal">
+        Copy Evidence JSON
+      </button>
+      <button id="refresh-register" type="button">
+        Refresh Register
+      </button>
+    </div>
+
+    <p id="register-message" class="message"
+       role="status" aria-live="polite"></p>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Entry ID</th>
+          <th>Test ID</th>
+          <th>Component</th>
+          <th>Result</th>
+          <th>Recorded At</th>
+          <th>Observation</th>
+          <th>Related</th>
+        </tr>
+      </thead>
+      <tbody id="register-body">
+        <tr><td colspan="7">No entries yet.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="small">
+    Saved entries are append-only through this interface.
+    There is no edit or delete button. They remain
+    browser-local until independently backed up.
+  </p>
+</div>
+</section>
+
+<section>
+<div class="container">
+  <div class="eyebrow">05 / Data Integrity</div>
+  <h2>Learning Record Preservation Check</h2>
+  <p>
+    This check reads the original G1/G2/G3 stores.
+    Evidence entries use a different storage key.
+  </p>
+
+  <div class="metrics">
+    <div class="metric">
+      <strong id="g1-count">—</strong>
+      <span>G1 Records</span>
+    </div>
+    <div class="metric">
+      <strong id="g2-count">—</strong>
+      <span>G2 Records</span>
+    </div>
+    <div class="metric">
+      <strong id="g3-count">—</strong>
+      <span>G3 Records</span>
+    </div>
+    <div class="metric">
+      <strong id="total-count">—</strong>
+      <span>Total Records</span>
+    </div>
+  </div>
+
+  <p id="integrity-status"
+     class="message" role="status"></p>
+
+  <div class="notice">
+    <p>
+      Baseline: G1=4, G2=3, G3=6, Total=13.
+      Matching counts do not establish byte-level
+      data integrity. Previous identity audit:
+      4 PASS / 9 REVIEW.
+    </p>
+  </div>
+</div>
+</section>
+
+</main>
+
+<footer>
+<div class="container">
+  <p>AURA EDU Research Lab</p>
+  <p>Evaluation Evidence Register · Step 19.14</p>
+</div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /*
+    AURA EDU — STEP 19.14
+
+    Evidence records are stored separately.
+    Original G1/G2/G3 records are read only.
+
+    No automatic migration.
+    No identity reassignment.
+    No record deletion.
+  */
+
+  const EVIDENCE_KEY =
+    "aura_evaluation_evidence_v1";
+
+  const LEARNING_KEYS = {
+    G1:"aura_g1_learning_records_v1",
+    G2:"aura_g2_learning_records_v1",
+    G3:"aura_g3_learning_records_v1"
+  };
+
+  function element(id){
+    return document.getElementById(id);
+  }
+
+  function readEvidence(){
+    const raw = localStorage.getItem(EVIDENCE_KEY);
+
+    if(raw === null){
+      return [];
+    }
+
+    const data = JSON.parse(raw);
+
+    if(!Array.isArray(data)){
+      throw new Error(
+        "Evidence storage is not an array."
+      );
+    }
+
+    return data;
+  }
+
+  function showMessage(id,message,success){
+    const target = element(id);
+    target.textContent = message;
+    target.style.color =
+      success ? "#17645e" : "#b42318";
+  }
+
+  function getValue(id){
+    return element(id).value.trim();
+  }
+
+  function addCell(row,value){
+    const cell = document.createElement("td");
+    cell.textContent = String(value ?? "");
+    row.appendChild(cell);
+  }
+
+  function renderRegister(){
+    try{
+      const entries = readEvidence();
+
+      element("saved-total").textContent =
+        entries.length;
+
+      element("saved-pass").textContent =
+        entries.filter(
+          e => e.result === "PASS"
+        ).length;
+
+      element("saved-fail").textContent =
+        entries.filter(
+          e => e.result === "FAIL"
+        ).length;
+
+      element("saved-review").textContent =
+        entries.filter(
+          e => e.result === "REVIEW" ||
+               e.result === "NOT TESTED"
+        ).length;
+
+      const filter = getValue("filter");
+
+      const filtered = entries.filter(
+        e => filter === "ALL" ||
+             e.result === filter
+      );
+
+      const body = element("register-body");
+      body.replaceChildren();
+
+      if(filtered.length === 0){
+        const row = document.createElement("tr");
+        const cell = document.createElement("td");
+        cell.colSpan = 7;
+        cell.textContent =
+          "No matching evidence entries.";
+        row.appendChild(cell);
+        body.appendChild(row);
+      }
+
+      filtered.slice().reverse().forEach(
+        function(entry){
+          const row = document.createElement("tr");
+
+          addCell(row,entry.id);
+          addCell(row,entry.testId);
+          addCell(row,entry.component);
+          addCell(row,entry.result);
+          addCell(row,entry.recordedAt);
+          addCell(row,entry.observed);
+          addCell(row,entry.related);
+
+          body.appendChild(row);
+        }
+      );
+
+      showMessage(
+        "register-message",
+        "Register loaded: " +
+          entries.length + " saved entries.",
+        true
+      );
+
+    }catch(error){
+      console.error(error);
+      showMessage(
+        "register-message",
+        "Cannot read evidence storage: " +
+          error.message,
+        false
+      );
+    }
+  }
+
+  function saveEvidence(event){
+    event.preventDefault();
+
+    try{
+      const entries = readEvidence();
+
+      const entry = {
+        id:"EV-" +
+          new Date().toISOString().replace(
+            /[-:.TZ]/g,""
+          ) + "-" +
+          Math.random().toString(36).slice(2,8),
+
+        testId:getValue("test-id"),
+        component:getValue("component"),
+        result:getValue("result"),
+        environment:getValue("environment"),
+        procedure:getValue("procedure"),
+        expected:getValue("expected"),
+        observed:getValue("observed"),
+        reference:getValue("reference"),
+        related:getValue("related"),
+        recordedAt:new Date().toISOString(),
+        source:"Developer-entered manual evidence"
+      };
+
+      if(
+        !entry.testId ||
+        !entry.component ||
+        !entry.procedure ||
+        !entry.expected ||
+        !entry.observed
+      ){
+        throw new Error(
+          "Complete all required fields."
+        );
+      }
+
+      entries.push(entry);
+
+      localStorage.setItem(
+        EVIDENCE_KEY,
+        JSON.stringify(entries)
+      );
+
+      element("evidence-form").reset();
+
+      showMessage(
+        "save-message",
+        "Evidence saved successfully: " +
+          entry.id,
+        true
+      );
+
+      renderRegister();
+
+    }catch(error){
+      console.error(error);
+      showMessage(
+        "save-message",
+        "Save failed: " + error.message,
+        false
+      );
+    }
+  }
+
+  async function copyEvidence(){
+    try{
+      const entries = readEvidence();
+
+      const payload = {
+        schema:"aura-evaluation-evidence-v1",
+        exportedAt:new Date().toISOString(),
+        source:"Browser-local developer evidence",
+        historicalReference:
+          "H-001 to H-005 are displayed " +
+          "in the page but not stored here.",
+        entries:entries
+      };
+
+      const json = JSON.stringify(
+        payload,null,2
+      );
+
+      if(
+        !navigator.clipboard ||
+        !navigator.clipboard.writeText
+      ){
+        throw new Error(
+          "Clipboard API unavailable."
+        );
+      }
+
+      await navigator.clipboard.writeText(json);
+
+      showMessage(
+        "register-message",
+        "Evidence JSON copied. " +
+          entries.length + " saved entries.",
+        true
+      );
+
+    }catch(error){
+      console.error(error);
+      showMessage(
+        "register-message",
+        "Copy failed: " + error.message,
+        false
+      );
+    }
+  }
+
+  function readLearningCount(key){
+    const raw = localStorage.getItem(key);
+
+    if(raw === null){
+      throw new Error(
+        "Missing learning record key: " + key
+      );
+    }
+
+    const data = JSON.parse(raw);
+
+    if(!Array.isArray(data)){
+      throw new Error(
+        "Invalid learning record format: " + key
+      );
+    }
+
+    return data.length;
+  }
+
+  function renderIntegrity(){
+    try{
+      const counts = {
+        G1:readLearningCount(LEARNING_KEYS.G1),
+        G2:readLearningCount(LEARNING_KEYS.G2),
+        G3:readLearningCount(LEARNING_KEYS.G3)
+      };
+
+      const total =
+        counts.G1 + counts.G2 + counts.G3;
+
+      element("g1-count").textContent = counts.G1;
+      element("g2-count").textContent = counts.G2;
+      element("g3-count").textContent = counts.G3;
+      element("total-count").textContent = total;
+
+      const match =
+        counts.G1 === 4 &&
+        counts.G2 === 3 &&
+        counts.G3 === 6;
+
+      showMessage(
+        "integrity-status",
+        match
+          ? "MATCH: Counts match the 13-record baseline."
+          : "REVIEW: Counts differ from the baseline.",
+        match
+      );
+
+    }catch(error){
+      console.error(error);
+
+      ["g1-count","g2-count",
+       "g3-count","total-count"].forEach(
+        id => element(id).textContent = "—"
+      );
+
+      showMessage(
+        "integrity-status",
+        "Read error: " + error.message,
+        false
+      );
+    }
+  }
+
+  element("evidence-form").addEventListener(
+    "submit",saveEvidence
+  );
+
+  element("filter").addEventListener(
+    "change",renderRegister
+  );
+
+  element("refresh-register").addEventListener(
+    "click",function(){
+      renderRegister();
+      renderIntegrity();
+    }
+  );
+
+  element("copy-json").addEventListener(
+    "click",copyEvidence
+  );
+
+  renderRegister();
+  renderIntegrity();
+
+  console.info(
+    "[AURA EDU] Evaluation Evidence Register ready."
+  );
+})();
+</script>
+
+</body>
+</html>

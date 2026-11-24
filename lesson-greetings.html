@@ -1,0 +1,945 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AURA EDU | Greetings Classroom</title>
+
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f2f5fc;color:#243451}
+header{background:#18284d;color:white;padding:18px 5%;display:flex;align-items:center;justify-content:space-between;gap:12px}
+header strong{font-size:23px}
+header strong span{color:#a8c9ff}
+header a{color:white;text-decoration:none;font-size:14px}
+main{max-width:1100px;margin:32px auto;padding:0 18px 60px}
+h1{font-size:clamp(26px,4vw,38px)}
+.muted{color:#697a97;line-height:1.7}
+.card{background:white;border-radius:22px;padding:24px;box-shadow:0 8px 30px #20345c10;margin-top:20px}
+.pill{display:inline-block;background:#e7edff;color:#355ca4;padding:7px 12px;border-radius:20px;font-size:12px;font-weight:700}
+.tabs,.controls,.options{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+button,select{font:inherit}
+button{border:0;border-radius:12px;padding:12px 17px;font-weight:700;cursor:pointer;background:#e8eefb;color:#31528d}
+button.primary,.tab.active{background:#4e70d4;color:white}
+button:disabled{opacity:.45;cursor:not-allowed}
+button:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid orange;outline-offset:3px}
+[hidden]{display:none!important}
+.panel{display:none}
+.panel.active{display:block}
+.stage{position:relative;min-height:425px;border-radius:20px;overflow:hidden;background:linear-gradient(#b9ddff 0%,#e7f2ff 65%,#b7dfb3 65%);padding:25px}
+.cloud{position:absolute;top:28px;font-size:45px;animation:drift 7s ease-in-out infinite alternate}
+.cloud.one{left:10%}
+.cloud.two{right:12%;animation-delay:1s}
+.school{position:absolute;top:65px;left:50%;transform:translateX(-50%);font-size:75px;opacity:.8}
+.scene-title{position:relative;text-align:center;font-weight:800;font-size:22px;background:#ffffffd9;border-radius:15px;padding:10px;margin:0 auto;max-width:470px}
+.actors{position:relative;display:flex;align-items:end;justify-content:space-around;gap:15px;margin-top:90px}
+.actor{text-align:center;flex:1;min-width:0}
+.face{font-size:clamp(65px,11vw,105px);display:inline-block;transform-origin:bottom center}
+.actor.talking .face{animation:talk .5s ease-in-out infinite alternate}
+.actor-name{font-weight:800;margin:6px}
+.bubble{background:white;border-radius:17px;padding:14px 8px;min-height:94px;box-shadow:0 5px 20px #22345b20}
+.bubble strong{display:block;color:#2e57a5;font-size:clamp(15px,2.5vw,23px)}
+.bubble small{display:block;color:#64748b;margin-top:8px;line-height:1.5}
+.actor.talking .bubble{outline:3px solid #6285e8}
+.subtitle{background:#ffffffea;border-radius:13px;text-align:center;padding:15px;line-height:1.7;margin-top:20px;position:relative}
+.progress{height:9px;border-radius:20px;background:#e6ebf6;overflow:hidden;margin:15px 0}
+.fill{height:100%;background:#668be9;width:0;transition:width .3s}
+.lesson-box{background:#f5f8ff;border-radius:16px;padding:20px;margin-top:20px}
+.examples{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.example{background:white;border:1px solid #dce5f5;border-radius:12px;padding:14px}
+.example strong{display:block;color:#3156a2;margin-bottom:8px}
+.example small{color:#6c7c95}
+.reading{font-size:clamp(23px,4vw,34px);font-weight:800;color:#3156a2;text-align:center;margin:20px 0}
+.translation{text-align:center;color:#687a97}
+.status{padding:14px;background:#edf3ff;border-radius:12px;line-height:1.8;margin-top:16px;min-height:55px;white-space:pre-wrap}
+.select-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:16px 0}
+select{padding:10px;border:1px solid #d3def2;border-radius:10px;background:white}
+.question{font-size:22px;font-weight:750}
+.option{border:2px solid #dbe4f5;background:white}
+.option:hover:not(:disabled){border-color:#557bd9}
+.audio-note{font-size:13px;color:#50678f;background:#edf3ff;padding:12px 14px;border-radius:12px;margin-top:14px;white-space:pre-wrap}
+footer{text-align:center;color:#74829b;font-size:12px;margin-top:25px;line-height:1.7}
+@keyframes talk{from{transform:rotate(-4deg) translateY(0)}to{transform:rotate(4deg) translateY(-8px)}}
+@keyframes drift{from{transform:translateX(-10px)}to{transform:translateX(25px)}}
+@media(max-width:600px){.card{padding:15px}.stage{padding:12px}.actors{margin-top:110px}.bubble{min-height:110px}.school{font-size:55px}.controls button{flex:1}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+
+<body>
+<header>
+<strong>AURA <span>EDU</span></strong>
+<a href="animated-library.html">← 返回课程中心</a>
+</header>
+
+<main>
+<span class="pill">PRIMARY ENGLISH · INTERACTIVE STORY</span>
+<h1>Meet My New Friend</h1>
+<p class="muted">Greetings · 英语问候与自我介绍｜观看故事、学习句型、跟读、角色扮演和闯关练习。</p>
+
+<div class="card">
+<div class="tabs" role="group" aria-label="学习模式">
+<button class="tab active" data-tab="story">🎬 观看故事</button>
+<button class="tab" data-tab="learn">📚 学习表达</button>
+<button class="tab" data-tab="shadow">🎤 跟读训练</button>
+<button class="tab" data-tab="role">🎭 角色扮演</button>
+<button class="tab" data-tab="quiz">⭐ 闯关练习</button>
+</div>
+
+<section class="panel active" id="story">
+<div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap">
+<strong id="scene-count"></strong>
+<span class="pill">Amy &amp; Ben</span>
+</div>
+<div class="progress"><div class="fill" id="story-fill"></div></div>
+
+<div class="stage">
+<div class="cloud one">☁️</div>
+<div class="cloud two">☁️</div>
+<div class="school">🏫</div>
+<div class="scene-title" id="scene-title"></div>
+
+<div class="actors">
+<div class="actor" id="amy">
+<div class="face">👧🏻</div>
+<div class="actor-name">Amy</div>
+<div class="bubble"><strong id="amy-en"></strong><small id="amy-cn"></small></div>
+</div>
+<div class="actor" id="ben">
+<div class="face">👦🏽</div>
+<div class="actor-name">Ben</div>
+<div class="bubble"><strong id="ben-en"></strong><small id="ben-cn"></small></div>
+</div>
+</div>
+
+<div class="subtitle" id="story-subtitle" aria-live="polite"></div>
+</div>
+
+<div class="select-row">
+<label for="story-speed">播放速度：</label>
+<select id="story-speed">
+<option value="0.7">慢速 0.7×</option>
+<option value="0.85" selected>学习速度 0.85×</option>
+<option value="1">正常速度 1×</option>
+</select>
+</div>
+
+<div class="controls">
+<button id="previous">◀ 上一幕</button>
+<button class="primary" id="play">▶ 播放故事</button>
+<button id="next">下一幕 ▶</button>
+<button id="repeat">🔊 重听本幕</button>
+<button id="restart">↻ 从头开始</button>
+</div>
+
+<div class="audio-note" id="audio-status" aria-live="polite">
+🎧 第一幕使用 ElevenLabs MP3。如果加载失败，会显示错误，不会自动播放机械语音。
+</div>
+</section>
+
+<section class="panel" id="learn">
+<h2>Useful Expressions · 实用英语表达</h2>
+<p class="muted">点击“听例句”可以播放英语朗读。</p>
+<div class="examples" id="examples"></div>
+</section>
+
+<section class="panel" id="shadow">
+<h2>Listen &amp; Repeat · 听音跟读</h2>
+<p class="muted">先听英文，再点击麦克风跟读。语音识别结果不是发音质量评分。</p>
+<div class="lesson-box">
+<span class="pill" id="shadow-count"></span>
+<div class="reading" id="shadow-sentence"></div>
+<div class="translation" id="shadow-cn"></div>
+<div class="select-row">
+<label for="shadow-speed">朗读速度：</label>
+<select id="shadow-speed">
+<option value="0.7">慢速</option>
+<option value="0.85" selected>学习速度</option>
+<option value="1">正常速度</option>
+</select>
+</div>
+<div class="controls">
+<button id="shadow-prev">◀ 上一句</button>
+<button id="shadow-listen">🔊 听原句</button>
+<button class="primary" id="shadow-mic">🎤 开始跟读</button>
+<button id="shadow-next">下一句 ▶</button>
+</div>
+<div class="status" id="shadow-status" aria-live="polite"></div>
+</div>
+</section>
+
+<section class="panel" id="role">
+<h2>Role-play · 角色扮演</h2>
+<p class="muted">选择扮演 Amy 或 Ben，听示范后说出自己角色的台词。</p>
+<div class="select-row">
+<label for="role-choice">我的角色：</label>
+<select id="role-choice">
+<option value="amy">Amy</option>
+<option value="ben">Ben</option>
+</select>
+</div>
+<div class="lesson-box">
+<span class="pill" id="role-count"></span>
+<p class="muted" id="role-context"></p>
+<div class="reading" id="role-prompt"></div>
+<div class="translation" id="role-translation"></div>
+<div class="controls">
+<button id="role-listen">🔊 听示范</button>
+<button class="primary" id="role-mic">🎤 我来说</button>
+<button id="role-next">下一轮 ▶</button>
+</div>
+<div class="status" id="role-status" aria-live="polite"></div>
+</div>
+</section>
+
+<section class="panel" id="quiz">
+<h2>Greetings Challenge · 闯关练习</h2>
+<p class="muted">共 15 题，包含基础、应用和情景练习。</p>
+<div class="lesson-box">
+<span class="pill" id="quiz-level"></span>
+<div class="progress"><div class="fill" id="quiz-fill"></div></div>
+<div class="question" id="quiz-question"></div>
+<div class="options" id="quiz-options"></div>
+<div class="status" id="quiz-feedback" aria-live="polite"></div>
+<div class="controls">
+<button class="primary" id="quiz-next" hidden>下一题 →</button>
+<button id="quiz-reset">↻ 重新挑战</button>
+</div>
+</div>
+</section>
+</div>
+
+<footer>
+AURA EDU · Rule-Based Learning Prototype · 语音识别仅供练习参考，不是发音测评
+</footer>
+</main>
+
+<script>
+"use strict";
+
+const $ = id => document.getElementById(id);
+
+const story = [
+["A New School Day","Hello, Ben!","你好，Ben！","Hi, Amy!","嗨，Amy！"],
+["Meeting a Friend","Good morning!","早上好！","Good morning, Amy!","早上好，Amy！"],
+["Asking Names","What's your name?","你叫什么名字？","My name is Ben.","我叫 Ben。"],
+["Introducing Yourself","I'm Amy.","我是 Amy。","Nice to meet you, Amy.","很高兴认识你，Amy。"],
+["Being Polite","Nice to meet you, too!","我也很高兴认识你！","Let's be friends!","我们做朋友吧！"],
+["Asking How Someone Is","How are you today?","你今天好吗？","I'm fine, thank you.","我很好，谢谢你。"],
+["Asking Back","And how are you?","那你好吗？","I'm great!","我很好！"],
+["Talking About School","Are you new here?","你是新来的吗？","Yes, I am.","是的，我是。"],
+["Talking About Classes","Are you in Class Three?","你在三班吗？","Yes, I am. What about you?","是的。你呢？"],
+["Making Plans","Let's go to class together.","我们一起去上课吧。","That's a good idea!","好主意！"],
+["Saying Thank You","Thank you for helping me.","谢谢你帮助我。","You're welcome!","不客气！"],
+["Saying Goodbye","See you tomorrow!","明天见！","Goodbye, Amy!","再见，Amy！"]
+];
+
+const expressions = [
+["Hello!","你好！"],
+["Hi!","嗨！"],
+["Good morning!","早上好！"],
+["Good afternoon!","下午好！"],
+["Good evening!","晚上好！"],
+["What's your name?","你叫什么名字？"],
+["My name is Amy.","我叫 Amy。"],
+["I'm Ben.","我是 Ben。"],
+["Nice to meet you!","很高兴认识你！"],
+["Nice to meet you, too!","我也很高兴认识你！"],
+["How are you?","你好吗？"],
+["I'm fine, thank you.","我很好，谢谢你。"],
+["I'm great!","我很好！"],
+["How about you?","你呢？"],
+["Let's be friends!","我们做朋友吧！"],
+["Are you new here?","你是新来的吗？"],
+["Yes, I am.","是的，我是。"],
+["Let's go together.","我们一起走吧。"],
+["That's a good idea!","好主意！"],
+["Thank you!","谢谢！"],
+["You're welcome!","不客气！"],
+["See you tomorrow!","明天见！"],
+["Goodbye!","再见！"],
+["Have a nice day!","祝你今天愉快！"]
+];
+
+const questions = [
+["基础","见面时可以说什么？",["Hello!","Goodbye!","Good night!"],0,"Hello 是常见问候语。"],
+["基础","Good morning 的意思是？",["晚安","早上好","再见"],1,"Good morning 表示早上好。"],
+["基础","What's your name? 用来询问什么？",["年龄","姓名","学校"],1,"这句话用来询问姓名。"],
+["基础","My name ___ Amy.",["am","are","is"],2,"My name is Amy. 是正确表达。"],
+["基础","Nice to meet you! 可以怎样回答？",["Nice to meet you, too!","I'm sleeping.","Good night!"],0,"初次见面可以礼貌回应。"],
+["应用","How are you? 的合适回答是？",["I'm fine, thank you.","My name is Ben.","Goodbye."],0,"询问近况时可以说 I'm fine。"],
+["应用","I'm Ben. 的意思是？",["我叫 Ben。","他是 Ben。","再见 Ben。"],0,"I'm 是 I am 的缩写。"],
+["应用","Thank you! 应该怎样回答？",["You're welcome!","Good morning!","What's your name?"],0,"You're welcome 表示不客气。"],
+["应用","Let's be friends! 的意思是？",["我们去睡觉","我们做朋友吧","我们去吃饭"],1,"friends 表示朋友。"],
+["应用","See you tomorrow! 表示？",["明天见","早上好","谢谢"],0,"tomorrow 表示明天。"],
+["情景","新同学说 Hi! 你应该回答？",["Hi!","Good night!","I'm ten."],0,"可以用 Hi 回应问候。"],
+["情景","你想知道新朋友的姓名，应该说？",["How old are you?","What's your name?","Where is my book?"],1,"What's your name 用来问姓名。"],
+["情景","朋友问 Are you new here? 你想说是的，应回答？",["Yes, I am.","No, thank you.","Goodbye."],0,"Yes, I am 是合适的肯定回答。"],
+["情景","朋友建议一起去上课，你同意时可以说？",["That's a good idea!","Good night!","I'm hungry."],0,"That's a good idea 表示赞同。"],
+["情景","放学后和朋友告别，可以说？",["See you tomorrow!","What's your name?","I'm fine."],0,"See you tomorrow 表示明天见。"]
+];
+
+// ==========================================
+// AI AUDIO CONFIGURATION
+// ==========================================
+
+const aiAudio = {
+  "Hello, Ben!": "audio/greetings/amy_01.mp3",
+  "Hi, Amy!": "audio/greetings/ben_01.mp3"
+};
+
+const AI_TIMEOUT = 6000;
+
+// ==========================================
+// STATE
+// ==========================================
+
+let sceneIndex = 0;
+let playing = false;
+let playToken = 0;
+
+let shadowIndex = 0;
+let roleIndex = 0;
+
+let quizIndex = 0;
+let score = 0;
+let answered = false;
+
+let activeAudio = null;
+let activeTimer = null;
+let audioTimeout = null;
+let speechToken = 0;
+let recognition = null;
+
+// ==========================================
+// AUDIO CLEANUP
+// ==========================================
+
+function stopAudio() {
+  speechToken++;
+
+  clearTimeout(activeTimer);
+  clearTimeout(audioTimeout);
+
+  activeTimer = null;
+  audioTimeout = null;
+
+  if (activeAudio) {
+    const oldAudio = activeAudio;
+    activeAudio = null;
+
+    oldAudio.onended = null;
+    oldAudio.onerror = null;
+
+    oldAudio.pause();
+    oldAudio.removeAttribute("src");
+    oldAudio.load();
+  }
+
+  if ("speechSynthesis" in window) {
+    window.speechSynthesis.cancel();
+  }
+}
+
+// ==========================================
+// AUDIO ENGINE
+// ==========================================
+
+function speak(text, rate = 0.85, onEnd = () => {}) {
+  stopAudio();
+
+  const token = speechToken;
+  let finished = false;
+
+  function finish(success) {
+    if (finished || token !== speechToken) return;
+
+    finished = true;
+
+    clearTimeout(audioTimeout);
+    audioTimeout = null;
+
+    onEnd(success);
+  }
+
+  const file = aiAudio[text];
+
+  // AI audio exists: never fall back to robotic voice.
+  if (file) {
+    const audio = new Audio();
+    activeAudio = audio;
+
+    audio.preload = "auto";
+    audio.playbackRate = rate;
+
+    function fail(reason) {
+      if (token !== speechToken || finished) return;
+
+      audio.pause();
+      audio.onended = null;
+      audio.onerror = null;
+
+      if (activeAudio === audio) {
+        activeAudio = null;
+      }
+
+      $("audio-status").textContent =
+        "⚠️ AI 音频播放失败：" + file +
+        "\n原因：" + reason +
+        "\n请检查 Live Server、文件路径和浏览器。";
+
+      finish(false);
+    }
+
+    audio.onended = () => {
+      if (token !== speechToken) return;
+
+      if (activeAudio === audio) {
+        activeAudio = null;
+      }
+
+      finish(true);
+    };
+
+    audio.onerror = () => {
+      fail("浏览器无法读取或解码 MP3");
+    };
+
+    audioTimeout = setTimeout(() => {
+      fail("加载超过 6 秒");
+    }, AI_TIMEOUT);
+
+    audio.src = file;
+
+    const promise = audio.play();
+
+    if (promise && typeof promise.catch === "function") {
+      promise.catch(error => {
+        fail(error.name || "播放被浏览器阻止");
+      });
+    }
+
+    return;
+  }
+
+  // Other sentences use browser speech temporarily.
+  if (!("speechSynthesis" in window)) {
+    finish(false);
+    return;
+  }
+
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = "en-US";
+  utterance.rate = rate;
+
+  utterance.onend = () => finish(true);
+  utterance.onerror = () => finish(false);
+
+  window.speechSynthesis.speak(utterance);
+}
+
+// ==========================================
+// STORY
+// ==========================================
+
+function stopStory() {
+  playToken++;
+  playing = false;
+
+  stopAudio();
+
+  $("amy").classList.remove("talking");
+  $("ben").classList.remove("talking");
+
+  $("play").textContent = "▶ 播放故事";
+}
+
+function renderStory() {
+  const scene = story[sceneIndex];
+
+  $("scene-title").textContent = scene[0];
+  $("amy-en").textContent = scene[1];
+  $("amy-cn").textContent = scene[2];
+  $("ben-en").textContent = scene[3];
+  $("ben-cn").textContent = scene[4];
+
+  $("scene-count").textContent =
+    `Scene ${sceneIndex + 1} / ${story.length}`;
+
+  $("story-fill").style.width =
+    `${(sceneIndex + 1) / story.length * 100}%`;
+
+  $("story-subtitle").textContent =
+    "点击播放，听 Amy 和 Ben 的英语对话。";
+
+  $("previous").disabled = sceneIndex === 0;
+  $("next").disabled = sceneIndex === story.length - 1;
+}
+
+function playScene(token, line = 0, continueStory = true) {
+  if (token !== playToken) return;
+
+  const scene = story[sceneIndex];
+
+  if (line >= 2) {
+    $("amy").classList.remove("talking");
+    $("ben").classList.remove("talking");
+
+    if (continueStory && sceneIndex < story.length - 1) {
+      activeTimer = setTimeout(() => {
+        if (token !== playToken) return;
+
+        sceneIndex++;
+        renderStory();
+        playScene(token, 0, true);
+      }, 1200);
+    } else {
+      stopStory();
+    }
+    return;
+  }
+
+  const who = line === 0 ? "amy" : "ben";
+  const text = line === 0 ? scene[1] : scene[3];
+  const cn = line === 0 ? scene[2] : scene[4];
+
+  $("amy").classList.toggle("talking", who === "amy");
+  $("ben").classList.toggle("talking", who === "ben");
+
+  $("story-subtitle").textContent =
+    `${who === "amy" ? "Amy" : "Ben"}: ${text} — ${cn}`;
+
+  $("audio-status").textContent = aiAudio[text]
+    ? `🎧 正在播放 AI 配音：${text}`
+    : "ℹ️ 当前句子暂时使用浏览器语音。";
+
+  speak(
+    text,
+    Number($("story-speed").value),
+    success => {
+      if (token !== playToken) return;
+
+      if (!success) {
+        $("story-subtitle").textContent =
+          "音频未成功播放，请查看下方错误提示。";
+        stopStory();
+        return;
+      }
+
+      activeTimer = setTimeout(() => {
+        playScene(token, line + 1, continueStory);
+      }, 800);
+    }
+  );
+}
+
+function startStory(continueStory = true) {
+  stopStory();
+
+  playing = true;
+  $("play").textContent = "⏸ 停止播放";
+
+  const token = playToken;
+  playScene(token, 0, continueStory);
+}
+
+$("play").onclick = () => {
+  if (playing) stopStory();
+  else startStory(true);
+};
+
+$("repeat").onclick = () => startStory(false);
+
+$("previous").onclick = () => {
+  stopStory();
+  sceneIndex = Math.max(0, sceneIndex - 1);
+  renderStory();
+};
+
+$("next").onclick = () => {
+  stopStory();
+  sceneIndex = Math.min(story.length - 1, sceneIndex + 1);
+  renderStory();
+};
+
+$("restart").onclick = () => {
+  stopStory();
+  sceneIndex = 0;
+  renderStory();
+};
+
+// ==========================================
+// TABS
+// ==========================================
+
+function switchTab(id) {
+  stopStory();
+  stopRecognition();
+
+  document.querySelectorAll(".tab").forEach(button => {
+    button.classList.toggle("active", button.dataset.tab === id);
+  });
+
+  document.querySelectorAll(".panel").forEach(panel => {
+    panel.classList.toggle("active", panel.id === id);
+  });
+}
+
+document.querySelectorAll(".tab").forEach(button => {
+  button.onclick = () => switchTab(button.dataset.tab);
+});
+
+// ==========================================
+// LEARNING EXPRESSIONS
+// ==========================================
+
+function renderExamples() {
+  expressions.forEach(([en, cn]) => {
+    const item = document.createElement("div");
+    item.className = "example";
+
+    const title = document.createElement("strong");
+    title.textContent = en;
+
+    const translation = document.createElement("small");
+    translation.textContent = cn;
+
+    const listen = document.createElement("button");
+    listen.textContent = "🔊 听例句";
+    listen.style.marginTop = "12px";
+    listen.onclick = () => speak(en);
+
+    item.append(
+      title,
+      translation,
+      document.createElement("br"),
+      listen
+    );
+
+    $("examples").appendChild(item);
+  });
+}
+
+// ==========================================
+// SHADOWING
+// ==========================================
+
+function renderShadow() {
+  const [en, cn] = expressions[shadowIndex];
+
+  $("shadow-count").textContent =
+    `Sentence ${shadowIndex + 1} / ${expressions.length}`;
+
+  $("shadow-sentence").textContent = en;
+  $("shadow-cn").textContent = cn;
+
+  $("shadow-status").textContent =
+    "先听原句，再点击麦克风跟读。";
+
+  $("shadow-prev").disabled = shadowIndex === 0;
+  $("shadow-next").disabled =
+    shadowIndex === expressions.length - 1;
+}
+
+$("shadow-prev").onclick = () => {
+  stopRecognition();
+  stopAudio();
+  shadowIndex = Math.max(0, shadowIndex - 1);
+  renderShadow();
+};
+
+$("shadow-next").onclick = () => {
+  stopRecognition();
+  stopAudio();
+  shadowIndex = Math.min(expressions.length - 1, shadowIndex + 1);
+  renderShadow();
+};
+
+$("shadow-listen").onclick = () => {
+  speak(
+    expressions[shadowIndex][0],
+    Number($("shadow-speed").value)
+  );
+};
+
+// ==========================================
+// SPEECH RECOGNITION
+// ==========================================
+
+function normalize(text) {
+  return text.toLowerCase()
+    .replace(/[^a-z0-9\s]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function stopRecognition() {
+  if (recognition) {
+    const current = recognition;
+    recognition = null;
+
+    try {
+      current.abort();
+    } catch (error) {
+      console.warn(error);
+    }
+  }
+
+  $("shadow-mic").textContent = "🎤 开始跟读";
+}
+
+function beginRecognition(target, statusId) {
+  const Recognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+  if (!Recognition) {
+    $(statusId).textContent =
+      "当前浏览器不支持语音识别。你仍可以听原句并自主跟读。";
+    return;
+  }
+
+  stopAudio();
+  stopRecognition();
+
+  const current = new Recognition();
+  recognition = current;
+
+  current.lang = "en-US";
+  current.interimResults = false;
+  current.maxAlternatives = 1;
+
+  if (statusId === "shadow-status") {
+    $("shadow-mic").textContent = "⏹ 停止跟读";
+  }
+
+  $(statusId).textContent =
+    "正在聆听……请说出屏幕上的英文句子。";
+
+  current.onresult = event => {
+    if (recognition !== current) return;
+
+    const heard = event.results[0][0].transcript;
+    const exact = normalize(heard) === normalize(target);
+
+    $(statusId).textContent =
+      `浏览器识别：${heard}\n` +
+      `目标句子：${target}\n` +
+      (exact
+        ? "文字匹配成功！"
+        : "识别文字与目标句子不同，可以重听再试。") +
+      "\n注意：这不是发音准确度评分。";
+  };
+
+  current.onerror = event => {
+    if (recognition !== current) return;
+
+    $(statusId).textContent =
+      `语音识别未完成（${event.error}）。请检查麦克风权限。`;
+  };
+
+  current.onend = () => {
+    if (recognition !== current) return;
+    recognition = null;
+    $("shadow-mic").textContent = "🎤 开始跟读";
+  };
+
+  try {
+    current.start();
+  } catch (error) {
+    recognition = null;
+    $(statusId).textContent =
+      "无法启动麦克风，请检查浏览器权限。";
+    $("shadow-mic").textContent = "🎤 开始跟读";
+  }
+}
+
+$("shadow-mic").onclick = () => {
+  if (recognition) {
+    stopRecognition();
+    return;
+  }
+
+  beginRecognition(
+    expressions[shadowIndex][0],
+    "shadow-status"
+  );
+};
+
+// ==========================================
+// ROLE PLAY
+// ==========================================
+
+function roleLines() {
+  const role = $("role-choice").value;
+  const scene = story[roleIndex];
+
+  if (role === "amy") {
+    return {
+      mine: scene[1],
+      cn: scene[2],
+      other: scene[3],
+      otherName: "Ben"
+    };
+  }
+
+  return {
+    mine: scene[3],
+    cn: scene[4],
+    other: scene[1],
+    otherName: "Amy"
+  };
+}
+
+function renderRole() {
+  const role = roleLines();
+
+  $("role-count").textContent =
+    `Dialogue ${roleIndex + 1} / ${story.length}`;
+
+  $("role-context").textContent = story[roleIndex][0];
+  $("role-prompt").textContent = role.mine;
+  $("role-translation").textContent = role.cn;
+
+  $("role-status").textContent =
+    `你扮演 ${$("role-choice").value === "amy" ? "Amy" : "Ben"}。` +
+    "先听示范，再说出屏幕上的英文。";
+
+  $("role-next").disabled = roleIndex === story.length - 1;
+}
+
+$("role-choice").onchange = () => {
+  stopRecognition();
+  stopAudio();
+  roleIndex = 0;
+  renderRole();
+};
+
+$("role-listen").onclick = () => {
+  const role = roleLines();
+
+  $("role-status").textContent =
+    `${role.otherName} 的台词：${role.other}\n` +
+    `接下来请你说：${role.mine}`;
+
+  speak(role.other, 0.85, success => {
+    if (success) speak(role.mine, 0.85);
+  });
+};
+
+$("role-mic").onclick = () => {
+  beginRecognition(roleLines().mine, "role-status");
+};
+
+$("role-next").onclick = () => {
+  stopRecognition();
+  stopAudio();
+  roleIndex = Math.min(story.length - 1, roleIndex + 1);
+  renderRole();
+};
+
+// ==========================================
+// QUIZ
+// ==========================================
+
+function renderQuiz() {
+  $("quiz-fill").style.width =
+    `${quizIndex / questions.length * 100}%`;
+
+  if (quizIndex >= questions.length) {
+    $("quiz-level").textContent = "CHALLENGE COMPLETED";
+    $("quiz-question").textContent =
+      `完成！${score} / ${questions.length} 题正确`;
+
+    $("quiz-options").replaceChildren();
+    $("quiz-feedback").textContent =
+      "完成 Greetings 闯关！可以重新挑战或回到跟读模式。";
+
+    $("quiz-next").hidden = true;
+    $("quiz-fill").style.width = "100%";
+    return;
+  }
+
+  const question = questions[quizIndex];
+
+  $("quiz-level").textContent =
+    `${question[0]} · Question ${quizIndex + 1} / ${questions.length}`;
+
+  $("quiz-question").textContent = question[1];
+  $("quiz-options").replaceChildren();
+  $("quiz-feedback").textContent = "选择你认为正确的答案。";
+  $("quiz-next").hidden = true;
+
+  answered = false;
+
+  question[2].forEach((choice, index) => {
+    const button = document.createElement("button");
+    button.className = "option";
+    button.textContent = choice;
+
+    button.onclick = () => {
+      if (answered) return;
+      answered = true;
+
+      const correct = index === question[3];
+      if (correct) score++;
+
+      $("quiz-feedback").textContent =
+        (correct ? "✓ 回答正确！ " : "继续学习： ") +
+        question[4];
+
+      $("quiz-options").querySelectorAll("button")
+        .forEach(item => item.disabled = true);
+
+      $("quiz-next").hidden = false;
+      $("quiz-next").textContent =
+        quizIndex === questions.length - 1
+          ? "查看成绩"
+          : "下一题 →";
+    };
+
+    $("quiz-options").appendChild(button);
+  });
+}
+
+$("quiz-next").onclick = () => {
+  quizIndex++;
+  renderQuiz();
+};
+
+$("quiz-reset").onclick = () => {
+  quizIndex = 0;
+  score = 0;
+  renderQuiz();
+};
+
+// ==========================================
+// PAGE CLEANUP
+// ==========================================
+
+window.addEventListener("pagehide", () => {
+  stopStory();
+  stopRecognition();
+});
+
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    stopStory();
+    stopRecognition();
+  }
+});
+
+// ==========================================
+// INITIALIZATION
+// ==========================================
+
+renderStory();
+renderExamples();
+renderShadow();
+renderRole();
+renderQuiz();
+
+</script>
+</body>
+</html>

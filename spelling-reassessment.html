@@ -1,0 +1,426 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AURA EDU | Independent Spelling Reassessment</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#eef7f2;color:#29455a;font-family:Arial,"PingFang SC","Microsoft YaHei",sans-serif}
+header{background:#fff;padding:16px 5%;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;border-bottom:1px solid #dce8df}
+.brand{font-size:21px;font-weight:900;color:#7659d5}
+a{color:#28746a;text-decoration:none}
+main{max-width:850px;margin:28px auto;padding:0 16px 50px}
+h1{margin-bottom:7px}
+.subtitle,.small{color:#647b70;line-height:1.7}
+.small{font-size:13px}
+.panel{background:#fff;border:1px solid #d9e8df;border-radius:20px;padding:24px;margin-top:18px;box-shadow:0 8px 24px #254b3410}
+.identity{background:#e6f3ff;padding:13px 16px;border-radius:12px;font-weight:bold}
+.context{background:#f2f7f8;border-radius:13px;padding:16px;white-space:pre-line;line-height:1.8;margin:15px 0}
+.progress{height:12px;background:#e6ece8;border-radius:20px;overflow:hidden;margin:15px 0}
+.progress-fill{height:100%;width:0;background:#36a783;transition:width .2s}
+.type{color:#7659d5;font-size:13px;font-weight:bold}
+input{width:100%;padding:15px;border:2px solid #cbded3;border-radius:12px;font-size:18px}
+input:focus{outline:2px solid #86d8bb}
+button{border:0;border-radius:12px;padding:13px 18px;font-weight:bold;font-size:14px;cursor:pointer}
+button:disabled{opacity:.5;cursor:not-allowed}
+.primary{background:#7659d5;color:#fff}
+.secondary{background:#e1f2e9;color:#246f50}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.message{color:#a34b39;line-height:1.7;margin-top:12px;white-space:pre-line}
+.result-row{padding:13px 0;border-bottom:1px solid #e0e9e3;line-height:1.7;white-space:pre-line}
+.hidden{display:none!important}
+.stat{background:#f0f8f3;border-radius:13px;padding:15px;margin:12px 0;line-height:1.8;white-space:pre-line}
+.access-notice{background:#fff0e8;border:1px solid #f1cbb9;border-radius:12px;padding:15px;margin:15px 0;color:#8b3a28;line-height:1.7}
+@media(max-width:600px){.panel{padding:18px}}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="brand">✦ AURA EDU</div>
+  <a href="adventure-mastery-map.html">← Adventure Map</a>
+</header>
+
+<main>
+  <h1>📝 Independent Spelling Reassessment</h1>
+  <p class="subtitle">
+    独立拼写复测 · Word Spelling + Sentence Application
+  </p>
+
+  <div class="identity" id="learner-display">
+    正在读取学生身份...
+  </div>
+
+  <section class="panel" id="intro-panel">
+    <h2>Show What You Can Do!</h2>
+    <p>现在请独立完成拼写复测，展示你在练习后的学习表现。</p>
+    <p class="small">
+      共 8 道题，每题只能提交一次。
+      不提供提示，不显示即时答案。
+      完成后可查看诊断与复测的比较结果。
+    </p>
+
+    <div class="context" id="readiness">
+      正在检查学习记录...
+    </div>
+
+    <div class="access-notice"
+         id="grammar-access-notice"
+         role="status">
+      正在验证 Grammar 学习资格...
+    </div>
+
+    <div class="actions">
+      <button class="primary"
+              id="start-btn"
+              disabled>
+        Start Independent Reassessment
+      </button>
+
+      <a class="secondary"
+         style="padding:13px 18px;border-radius:12px"
+         href="spelling-practice.html">
+        Back to Practice
+      </a>
+    </div>
+
+    <p class="message"
+       id="intro-message"
+       role="status"></p>
+  </section>
+
+  <section class="panel hidden" id="quiz-panel">
+    <div id="question-counter"></div>
+
+    <div class="progress">
+      <div class="progress-fill"
+           id="progress-fill"></div>
+    </div>
+
+    <p class="type" id="question-type"></p>
+    <h2 id="question-title"></h2>
+
+    <div class="context" id="question-context"></div>
+
+    <label for="answer-input">
+      <strong>Your Answer / 你的答案</strong>
+    </label>
+
+    <input
+      id="answer-input"
+      type="text"
+      maxlength="80"
+      autocomplete="off"
+      autocapitalize="off"
+      spellcheck="false"
+      placeholder="Type your answer"
+    >
+
+    <p class="small">
+      No hints · One attempt · Independent work
+    </p>
+
+    <div class="actions">
+      <button class="primary" id="submit-btn">
+        Submit Answer / 提交答案
+      </button>
+    </div>
+
+    <p class="message"
+       id="quiz-message"
+       role="status"></p>
+  </section>
+
+  <section class="panel hidden" id="result-panel">
+    <h2>🎉 Reassessment Completed!</h2>
+
+    <div id="result-summary"></div>
+
+    <h3>Question-Level Evidence / 逐题学习证据</h3>
+    <div id="result-details"></div>
+
+    <div class="actions">
+      <button class="secondary" id="copy-btn">
+        Copy JSON / 复制记录
+      </button>
+
+      <a class="secondary"
+         style="padding:13px 18px;border-radius:12px"
+         href="adventure-mastery-map.html">
+        Back to Adventure
+      </a>
+    </div>
+
+    <p class="message"
+       id="result-message"
+       role="status"></p>
+  </section>
+
+  <p class="small">
+    Research Prototype · This assessment measures performance
+    on the current item set. It does not establish durable mastery.
+  </p>
+</main>
+
+<script src="js/grammar-unlock.js"></script>
+<script src="js/spelling-knowledge.js"></script>
+<script src="js/spelling-reassessment.js"></script>
+
+<script>
+/* ============================================
+   AURA EDU — STAGE 28.5.3
+   INDEPENDENT REASSESSMENT ACCESS GUARD
+
+   - Grammar eligibility validation
+   - Learner identity consistency
+   - Mouse and Enter-key protection
+   - No changes to historical records
+============================================ */
+
+(function () {
+  "use strict";
+
+  const ACTIVE_KEY = "aura_active_learner_id_v2";
+
+  const startButton = document.getElementById("start-btn");
+  const submitButton = document.getElementById("submit-btn");
+  const answerInput = document.getElementById("answer-input");
+
+  const notice = document.getElementById("grammar-access-notice");
+  const introMessage = document.getElementById("intro-message");
+  const quizMessage = document.getElementById("quiz-message");
+
+  const introPanel = document.getElementById("intro-panel");
+  const quizPanel = document.getElementById("quiz-panel");
+
+  let sessionLearnerId = null;
+  let stopped = false;
+
+  function getActiveId() {
+    try {
+      const raw = localStorage.getItem(ACTIVE_KEY);
+
+      if (!raw) return null;
+
+      if (raw.startsWith('"')) {
+        const parsed = JSON.parse(raw);
+        return typeof parsed === "string" ? parsed : null;
+      }
+
+      return raw;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function checkGrammarAccess() {
+    const id = getActiveId();
+
+    if (!id) {
+      return {
+        allowed: false,
+        id: null,
+        message: "请先选择学生身份。"
+      };
+    }
+
+    const engine = window.AuraGrammarUnlock;
+
+    if (
+      !engine ||
+      typeof engine.evaluateGrammar !== "function"
+    ) {
+      return {
+        allowed: false,
+        id,
+        message: "Grammar 解锁引擎未加载，无法验证资格。"
+      };
+    }
+
+    try {
+      const report = engine.evaluateGrammar();
+
+      const allowed = Boolean(
+        report &&
+        report.ok === true &&
+        String(report.learnerId) === String(id) &&
+        report.grammarComplete === true &&
+        report.spellingEligible === true
+      );
+
+      return {
+        allowed,
+        id,
+        message: allowed
+          ? "✓ Grammar 前置条件已满足。"
+          : "🔒 Spelling 尚未解锁。请先完成 G1、G2、G3 的暂定掌握条件。"
+      };
+    } catch (error) {
+      console.error(
+        "[AURA Spelling Reassessment] Grammar check failed:",
+        error
+      );
+
+      return {
+        allowed: false,
+        id,
+        message: "Grammar 资格验证失败，请返回学习地图。"
+      };
+    }
+  }
+
+  function quizActive() {
+    return !quizPanel.classList.contains("hidden");
+  }
+
+  function stopReassessment(message) {
+    stopped = true;
+
+    startButton.disabled = true;
+    submitButton.disabled = true;
+    answerInput.disabled = true;
+
+    introMessage.textContent = message;
+    quizMessage.textContent = message;
+
+    if (quizActive()) {
+      let warning =
+        document.getElementById("reassessment-access-warning");
+
+      if (!warning) {
+        warning = document.createElement("div");
+        warning.id = "reassessment-access-warning";
+        warning.className = "access-notice";
+        warning.setAttribute("role", "alert");
+        quizPanel.prepend(warning);
+      }
+
+      warning.textContent = message;
+    }
+  }
+
+  function refreshAccess() {
+    const result = checkGrammarAccess();
+    notice.textContent = result.message;
+
+    if (stopped) {
+      startButton.disabled = true;
+      submitButton.disabled = true;
+      answerInput.disabled = true;
+      return;
+    }
+
+    if (quizActive()) {
+      if (
+        !result.allowed ||
+        !sessionLearnerId ||
+        String(result.id) !== String(sessionLearnerId)
+      ) {
+        stopReassessment(
+          "学生身份或 Grammar 解锁资格发生变化，独立复测已停止。请返回学习地图。"
+        );
+      }
+      return;
+    }
+
+    if (!introPanel.classList.contains("hidden")) {
+      if (!result.allowed) {
+        startButton.disabled = true;
+        introMessage.textContent = result.message;
+      } else if (
+        document.getElementById("readiness")
+          .textContent.includes(
+            "Ready for independent reassessment"
+          )
+      ) {
+        startButton.disabled = false;
+        introMessage.textContent = "";
+      }
+    }
+  }
+
+  function guardStart(event) {
+    const result = checkGrammarAccess();
+
+    if (stopped || !result.allowed) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+
+      startButton.disabled = true;
+      notice.textContent = result.message;
+      introMessage.textContent = result.message;
+      return;
+    }
+
+    sessionLearnerId = result.id;
+  }
+
+  function guardSubmit(event) {
+    const result = checkGrammarAccess();
+
+    if (
+      stopped ||
+      !result.allowed ||
+      !sessionLearnerId ||
+      String(result.id) !== String(sessionLearnerId)
+    ) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+
+      stopReassessment(
+        "学生身份或 Grammar 解锁资格无法验证，本次复测已停止。"
+      );
+    }
+  }
+
+  // Capture before the existing JavaScript handlers.
+  document.addEventListener(
+    "click",
+    function (event) {
+      const button = event.target.closest("button");
+      if (!button) return;
+
+      if (button.id === "start-btn") {
+        guardStart(event);
+      }
+
+      if (button.id === "submit-btn") {
+        guardSubmit(event);
+      }
+    },
+    true
+  );
+
+  document.addEventListener(
+    "keydown",
+    function (event) {
+      if (
+        event.key === "Enter" &&
+        event.target === answerInput
+      ) {
+        guardSubmit(event);
+      }
+    },
+    true
+  );
+
+  window.addEventListener("focus", refreshAccess);
+  window.addEventListener("storage", refreshAccess);
+
+  document.addEventListener(
+    "visibilitychange",
+    function () {
+      if (!document.hidden) {
+        refreshAccess();
+      }
+    }
+  );
+
+  refreshAccess();
+})();
+</script>
+
+</body>
+</html>

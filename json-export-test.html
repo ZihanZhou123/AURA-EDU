@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+  <title>AURA EDU — JSON Export Test</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f7fc;
+      padding: 40px 20px;
+      color: #24324b;
+    }
+
+    .container {
+      max-width: 650px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 5px 25px #00000010;
+    }
+
+    h1 {
+      color: #2454a6;
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      margin: 12px 0;
+      background: #2454a6;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #173e81;
+    }
+
+    #result {
+      margin-top: 20px;
+      padding: 15px;
+      background: #eef3fb;
+      border-radius: 8px;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <h1>AURA EDU</h1>
+
+    <h2>Step 19.2 — JSON Export Test</h2>
+
+    <p>
+      测试 Safari 是否能够正确下载 JSON 文件。
+    </p>
+
+    <button onclick="testBasic()">
+      Test 1 — Download Sample JSON
+    </button>
+
+    <button onclick="testG1()">
+      Test 2 — Export G1 Records
+    </button>
+
+    <button onclick="testG2()">
+      Test 3 — Export G2 Records
+    </button>
+
+    <button onclick="testG3()">
+      Test 4 — Export G3 Records
+    </button>
+
+    <button onclick="testAll()">
+      Test 5 — Export All Learning Data
+    </button>
+
+    <button onclick="testDiagnostic()">
+      Test 6 — Run Diagnostic
+    </button>
+
+    <div id="result">
+      Waiting for test...
+    </div>
+
+  </div>
+
+  <script src="js/json-export.js"></script>
+
+  <script>
+    "use strict";
+
+    function show(result) {
+      document.getElementById("result").textContent =
+        JSON.stringify(result, null, 2);
+    }
+
+    function testBasic() {
+      show(
+        AuraJSONExport.downloadJSON(
+          {
+            system: "AURA EDU",
+            test: "JSON Export",
+            success: true,
+            timestamp: new Date().toISOString()
+          },
+          "aura-json-test.json"
+        )
+      );
+    }
+
+    function testG1() {
+      show(AuraJSONExport.exportModule("G1"));
+    }
+
+    function testG2() {
+      show(AuraJSONExport.exportModule("G2"));
+    }
+
+    function testG3() {
+      show(AuraJSONExport.exportModule("G3"));
+    }
+
+    function testAll() {
+      show(AuraJSONExport.exportAll());
+    }
+
+    function testDiagnostic() {
+      show(AuraJSONExport.diagnostic());
+    }
+  </script>
+
+</body>
+</html>

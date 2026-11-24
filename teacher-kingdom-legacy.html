@@ -1,0 +1,27 @@
+<!DOCTYPE html><html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AURA EDU · Kingdom Evidence</title>
+<style>
+*{box-sizing:border-box}body{visibility:hidden;margin:0;background:#f3f5fa;color:#293b55;font-family:Arial,"PingFang SC",sans-serif}main{max-width:1100px;margin:auto;padding:28px 18px}h1{font-size:26px}a{color:#7049aa}select,button{padding:10px;border:1px solid #c9d0de;border-radius:9px;font:inherit}button{cursor:pointer}.card{padding:20px;margin:18px 0;background:white;border:1px solid #dce1ec;border-radius:16px}p{line-height:1.7}.scroll{overflow:auto}table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:11px;text-align:left;border-bottom:1px solid #e1e6ef;white-space:nowrap}pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;line-height:1.6}#status{color:#9b4535}
+</style>
+<script src="js/teacher-demo-auth.js"></script><script>if(!window.AuraTeacherDemoAuth?.isLoggedIn())location.replace('teacher-login.html');</script>
+</head><body><main>
+<a href="teacher-portal.html">← Teacher Portal</a>
+<h1>王国学习证据 · Kingdom Learning Evidence</h1>
+<p>新地图使用 KINGDOM-80-1.0：5 道独立复测题答对至少 4 道通关。练习提示不扣除通关资格。记录与旧版研究数据分开保存。</p>
+<label for="learner">选择学生（不改变学生端身份）</label> <select id="learner"></select> <button id="refresh">刷新</button> <button id="export">导出 JSON</button>
+<p id="status" role="status"></p><div id="summary" class="card"></div>
+<div class="card scroll"><table><thead><tr><th>时间</th><th>关卡</th><th>题组</th><th>诊断</th><th>练习首次</th><th>独立新题</th><th>支架路径</th><th>补习建议</th><th>详情</th></tr></thead><tbody id="rows"></tbody></table></div>
+<section class="card"><h2>逐题与逐次作答</h2><div id="audioEvidence"></div><pre id="detail">选择一条会话查看题目、回答、提示等级和时间。</pre></section>
+<p>分数是本轮小题集的即时表现，不代表长期掌握或干预因果效果。复习轮题目可能已见过。Speaking 是有限规则的表达内容检查；转写不是录音证据或发音评分，其他正确表达也可能未匹配。</p>
+<p>现有教师入口使用本地演示登录，不是服务器权限控制。</p>
+</main><script>
+'use strict';
+const $=id=>document.getElementById(id);let sessions=[];
+function permitted(){if(!window.AuraTeacherDemoAuth?.isLoggedIn()){location.replace('teacher-login.html');return false;}return true;}
+function load(){if(!permitted())return;try{const id=$('learner').value;const data=JSON.parse(localStorage.getItem('aura_kingdom_v4_'+encodeURIComponent(id))||'{"sessions":[]}');if(!Array.isArray(data.sessions))throw Error('记录格式异常');sessions=data.sessions.filter(s=>s.learnerId===id).sort((a,b)=>String(b.completedAt).localeCompare(String(a.completedAt)));$('rows').replaceChildren();$('detail').textContent='选择一条会话查看详情。';$('audioEvidence').replaceChildren();for(const s of sessions){const tr=document.createElement('tr');for(const value of [s.completedAt,s.moduleId,s.isTargeted?'错点巩固（不计整关掌握）':s.review?'复习轮':'新题组 '+(s.form+1),s.summary.diagnostic===null?'—':s.summary.diagnostic+'%',s.summary.practice===null?'—':s.summary.practice+'%',s.summary.reassessment===null?'待教师评估':s.summary.reassessment+'%',s.adaptivePath,s.recommendation?.target||'—']){const td=document.createElement('td');td.textContent=value;tr.append(td);}const td=document.createElement('td'),button=document.createElement('button');button.textContent='查看';button.onclick=()=>{if(!permitted())return;$('audioEvidence').replaceChildren();const safe=JSON.parse(JSON.stringify(s));for(const r of safe.records){if(r.inputMode==='audio'&&typeof r.dataUrl==='string'&&/^data:audio\//.test(r.dataUrl)){const player=document.createElement('audio');player.controls=true;player.src=r.dataUrl;$('audioEvidence').append(player);r.dataUrl='[音频已在上方播放器显示]';}}$('detail').textContent=JSON.stringify(safe,null,2);};td.append(button);tr.append(td);$('rows').append(tr);}$('summary').textContent='已保存 '+sessions.length+' 次完整会话。仅显示当前选定学生的新版王国数据。';$('status').textContent='';}catch(e){sessions=[];$('rows').replaceChildren();$('status').textContent='无法读取记录：'+e.message;}}
+if(permitted()){document.body.style.visibility='visible';try{const profiles=JSON.parse(localStorage.getItem('aura_learner_profiles_v2')||'[]');if(!Array.isArray(profiles))throw Error('学生档案格式异常');for(const p of profiles)$('learner').append(new Option(p.nickname||p.name||p.id,p.id));load();}catch(e){$('status').textContent=e.message;}}
+$('learner').onchange=load;$('refresh').onclick=load;
+$('export').onclick=()=>{if(!permitted())return;const blob=new Blob([JSON.stringify({learnerId:$('learner').value,exportedAt:new Date().toISOString(),sessions},null,2)],{type:'application/json'});const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='AURA-Kingdom-Evidence.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1500);};
+addEventListener('focus',()=>{if(permitted())load();});
+</script></body></html>

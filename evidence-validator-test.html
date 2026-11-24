@@ -1,0 +1,202 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AURA EDU — Validator Negative Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 820px;
+      margin: 40px auto;
+      padding: 20px;
+      line-height: 1.6;
+      color: #243247;
+    }
+    h1 { color: #254c79; }
+    .panel {
+      border: 1px solid #d5dce5;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+    button {
+      padding: 12px 20px;
+      border: 0;
+      border-radius: 8px;
+      background: #254c79;
+      color: white;
+      cursor: pointer;
+    }
+    pre {
+      background: #f1f4f8;
+      padding: 16px;
+      overflow-wrap: anywhere;
+      white-space: pre-wrap;
+    }
+    .pass { color: #167044; }
+    .fail { color: #b42318; }
+  </style>
+</head>
+<body>
+  <h1>AURA EDU — Evidence Validator Test</h1>
+  <p>Stage 25.3.5.5.2.1 — Missing Question ID</p>
+
+  <div class="panel">
+    <p>
+      This page uses synthetic evidence only.
+      It does not read or modify real learner records.
+    </p>
+    <button id="run">Run Negative Test</button>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    "use strict";
+
+    const TEST_LEARNER = "TEST_LEARNER_ONLY";
+    const TEST_SESSION = "TEST_SESSION_001";
+
+    window.AuraLearnerIdentity = {
+      findLearner(id) {
+        return id === TEST_LEARNER
+          ? { id, name: "Synthetic Learner" }
+          : null;
+      }
+    };
+
+    function makeQuestion(stage) {
+      return {
+        questionId: "Q1",
+        stage,
+        firstAttemptCorrect: true,
+        completedCorrectly: true,
+        attemptCount: 1,
+        highestHintUsed: 0,
+        attempts: [{
+          attemptNumber: 1,
+          selectedAnswer: "is",
+          correct: true,
+          hintLevelAtAttempt: 0
+        }],
+        errors: []
+      };
+    }
+
+    function makeTrace() {
+      const stages = {};
+
+      ["diagnostic", "practice", "reassessment"]
+        .forEach(stage => {
+          stages[stage] = {
+            questions: [makeQuestion(stage)]
+          };
+        });
+
+      // Intentional anomaly:
+      // Missing Question ID in the diagnostic stage.
+      stages.diagnostic.questions[0].questionId = "";
+
+      return {
+        learnerId: TEST_LEARNER,
+        moduleId: "G1",
+        sessionId: TEST_SESSION,
+        complete: true,
+        questionCount: 3,
+        stages
+      };
+    }
+
+    const syntheticTrace = makeTrace();
+
+    window.AuraTeacherEvidenceTrace = {
+      getSession(learnerId, moduleId, sessionId) {
+        return {
+          ok: true,
+          trace: syntheticTrace
+        };
+      },
+      listSessions() {
+        return {
+          ok: true,
+          sessions: [{
+            sessionId: TEST_SESSION,
+            complete: true
+          }]
+        };
+      }
+    };
+
+    window.AuraTeacherEvidenceMapping = {
+      getSessionMapping() {
+        return {
+          ok: true,
+          mappingCount: 0,
+          mappings: []
+        };
+      }
+    };
+  </script>
+
+  <script src="js/teacher-evidence-validator.js"></script>
+
+  <script>
+    "use strict";
+
+    document.getElementById("run")
+      .addEventListener("click", function () {
+        const output = document.getElementById("result");
+        output.replaceChildren();
+
+        try {
+          const validator =
+            window.AuraTeacherEvidenceValidator;
+
+          if (!validator) {
+            throw new Error("Validator script not loaded.");
+          }
+
+          const result = validator.validateSession(
+            "TEST_LEARNER_ONLY",
+            "G1",
+            "TEST_SESSION_001"
+          );
+
+          const detected =
+            result.ok === true &&
+            result.summary.status === "WARNING" &&
+            result.checks.some(item =>
+              item.id === "QUESTION_ID_MISSING" &&
+              item.status === "WARNING"
+            );
+
+          const heading = document.createElement("h2");
+          heading.className = detected ? "pass" : "fail";
+          heading.textContent = detected
+            ? "TEST PASS — Missing Question ID detected"
+            : "TEST FAIL — Expected warning not detected";
+
+          const details = document.createElement("pre");
+
+          details.textContent = JSON.stringify({
+            status: result.summary &&
+              result.summary.status,
+            detectedQuestionIdMissing: detected,
+            warnings: (result.checks || [])
+              .filter(item => item.status === "WARNING")
+          }, null, 2);
+
+          output.appendChild(heading);
+          output.appendChild(details);
+
+        } catch (error) {
+          const message = document.createElement("pre");
+          message.className = "fail";
+          message.textContent = error.message;
+          output.appendChild(message);
+        }
+      });
+  </script>
+</body>
+</html>

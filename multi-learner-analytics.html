@@ -1,0 +1,976 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AURA EDU | Multi-Learner Analytics</title>
+<style>
+:root{
+  --navy:#17365d;
+  --teal:#218b83;
+  --bg:#f5f8fc;
+  --line:#dfe7ee;
+  --muted:#64748b;
+  --blue:#7196bd;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--bg);
+  color:#26354a;
+  font-family:Arial,"PingFang SC",sans-serif;
+  line-height:1.65;
+}
+header{background:white;border-bottom:1px solid var(--line)}
+nav{
+  max-width:1180px;
+  margin:auto;
+  padding:18px 22px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px;
+  flex-wrap:wrap;
+}
+.logo{
+  font-size:23px;
+  font-weight:800;
+  color:var(--navy);
+  text-decoration:none;
+}
+.links{display:flex;flex-wrap:wrap;gap:17px}
+.links a{color:var(--navy);text-decoration:none}
+main{max-width:1180px;margin:auto;padding:30px 20px 65px}
+h1,h2,h3{color:var(--navy)}
+h1{font-size:clamp(29px,5vw,43px);line-height:1.2}
+p{color:var(--muted)}
+.hero{
+  padding:35px;
+  border-radius:20px;
+  background:linear-gradient(135deg,#17365d,#245e78);
+  margin-bottom:22px;
+}
+.hero h1,.hero p{color:white}
+.eyebrow{
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:2px;
+  color:#bce9e2;
+}
+.card{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:25px;
+  margin-bottom:20px;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:16px;
+}
+.grid.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+.metric{
+  font-size:30px;
+  color:var(--navy);
+  font-weight:800;
+}
+.metric-label{font-size:13px;color:var(--muted)}
+label{font-weight:600;color:var(--navy)}
+select{
+  width:100%;
+  max-width:450px;
+  font:inherit;
+  border:1px solid #cbd5e1;
+  border-radius:9px;
+  padding:12px;
+  background:white;
+}
+button{
+  font:inherit;
+  cursor:pointer;
+  border:1px solid var(--line);
+  background:white;
+  color:var(--navy);
+  border-radius:9px;
+  padding:11px 17px;
+}
+.btn{
+  background:var(--navy);
+  color:white;
+  border-color:var(--navy);
+}
+.btn.teal{
+  background:var(--teal);
+  border-color:var(--teal);
+}
+.buttons{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}
+.notice{
+  background:#eaf5f3;
+  border-left:4px solid var(--teal);
+  border-radius:8px;
+  padding:17px;
+  margin:20px 0;
+}
+.warning{
+  background:#fff7e9;
+  border-left:4px solid #c68629;
+  border-radius:8px;
+  padding:17px;
+  margin:20px 0;
+}
+.module-card{
+  padding:20px;
+  border:1px solid var(--line);
+  border-radius:13px;
+  background:#f8fafc;
+}
+.tag{
+  display:inline-block;
+  padding:5px 12px;
+  background:#e7f5f0;
+  color:#17645e;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:bold;
+}
+.bar-row{margin:16px 0}
+.bar-label{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  font-size:14px;
+  margin-bottom:7px;
+}
+.bar{
+  height:13px;
+  background:#e2e8f0;
+  border-radius:12px;
+  overflow:hidden;
+}
+.fill{height:100%;background:var(--teal);width:0}
+.fill.diagnostic{background:var(--blue)}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{
+  padding:12px;
+  border-bottom:1px solid var(--line);
+  text-align:left;
+  white-space:nowrap;
+}
+th{background:#f1f6f9;color:var(--navy)}
+.empty{padding:25px;color:var(--muted);text-align:center}
+.small{font-size:13px}
+.status{color:var(--muted);font-size:13px}
+footer{
+  background:var(--navy);
+  padding:24px;
+  text-align:center;
+}
+footer p{color:#e0eaf3}
+@media(max-width:850px){
+  .grid.four{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:650px){
+  .grid,.grid.four{grid-template-columns:1fr}
+  .hero{padding:24px}
+}
+</style>
+</head>
+
+<body>
+<header>
+<nav>
+  <a class="logo" href="index.html">AURA EDU</a>
+  <div class="links">
+    <a href="learner-manager.html">Learner Manager</a>
+    <a href="learner-linked-portal.html">Learning Portal</a>
+    <a href="grammar-hub.html">Grammar Hub</a>
+    <a href="research.html">Research Lab</a>
+  </div>
+</nav>
+</header>
+
+<main>
+<section class="hero">
+  <div class="eyebrow">AURA EDU / RESEARCH ANALYTICS</div>
+  <h1>Multi-Learner Analytics</h1>
+  <p>多学习者学习分析中心</p>
+  <p>
+    分析不同本地学习者在 G1、G2、G3 中的
+    学习表现、提示使用和学习路径。
+  </p>
+</section>
+
+<div class="notice">
+  <strong>数据说明：</strong>
+  本页面只把包含有效 learnerId、
+  且该 ID 对应现存本地档案的完整会话
+  计入学习者分析。
+  未归属的历史记录单独统计。
+  本地身份关联不等于真实身份验证。
+</div>
+
+<section class="card">
+  <h2>👥 选择学习者</h2>
+
+  <label for="learner-filter">Learner Filter</label>
+
+  <div style="margin-top:10px">
+    <select id="learner-filter">
+      <option value="all">全部已关联学习者</option>
+    </select>
+  </div>
+
+  <div class="buttons">
+    <button class="btn" id="refresh">
+      刷新学习数据
+    </button>
+    <button class="btn teal" id="export">
+      导出筛选后的 JSON
+    </button>
+  </div>
+
+  <p class="status" id="filter-status" aria-live="polite"></p>
+</section>
+
+<section class="grid four">
+  <div class="card">
+    <div class="metric-label">已关联完整会话</div>
+    <div class="metric" id="session-count">0</div>
+  </div>
+
+  <div class="card">
+    <div class="metric-label">有记录的学习者</div>
+    <div class="metric" id="learner-count">0</div>
+  </div>
+
+  <div class="card">
+    <div class="metric-label">诊断首次正确率</div>
+    <div class="metric" id="diagnostic-rate">—</div>
+  </div>
+
+  <div class="card">
+    <div class="metric-label">即时独立复测正确率</div>
+    <div class="metric" id="reassessment-rate">—</div>
+  </div>
+</section>
+
+<section class="card">
+  <h2>📚 G1–G3 跨模块表现</h2>
+  <p>
+    每个模块汇总当前筛选范围内所有可读取的完整会话。
+    不同模块的题目难度可能不同，因此正确率不能
+    直接解释为相同量尺上的能力水平。
+  </p>
+  <div class="grid" id="module-analysis"></div>
+</section>
+
+<section class="card">
+  <h2>💡 提示使用分析</h2>
+  <p>
+    统计有逐题练习记录的会话。
+    提示使用率表示使用过 H1、H2 或 H3 的练习题比例。
+  </p>
+
+  <div class="grid">
+    <div class="module-card">
+      <div class="metric" id="hinted-count">0</div>
+      <div class="metric-label">使用过提示的练习题</div>
+    </div>
+    <div class="module-card">
+      <div class="metric" id="practice-count">0</div>
+      <div class="metric-label">有逐题记录的练习题</div>
+    </div>
+    <div class="module-card">
+      <div class="metric" id="highest-hint">—</div>
+      <div class="metric-label">最高提示等级</div>
+    </div>
+  </div>
+
+  <div id="hint-bars"></div>
+</section>
+
+<section class="card">
+  <h2>🧭 学习路径分布</h2>
+  <p>
+    Foundation、Guided、Challenge 是当前原型规则
+    给出的学习路径建议，不是经过验证的能力分级。
+  </p>
+  <div id="path-analysis"></div>
+</section>
+
+<section class="card">
+  <h2>📋 学习会话历史</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>学习者</th>
+          <th>模块</th>
+          <th>完成时间</th>
+          <th>诊断</th>
+          <th>练习</th>
+          <th>独立复测</th>
+          <th>路径</th>
+          <th>关联方式</th>
+        </tr>
+      </thead>
+      <tbody id="history-body"></tbody>
+    </table>
+  </div>
+</section>
+
+<section class="card">
+  <h2>🔎 未归属与异常记录</h2>
+  <p>
+    以下记录不参与学习者正确率、提示使用或路径分布的计算。
+  </p>
+
+  <div class="grid">
+    <div class="module-card">
+      <div class="metric" id="unassigned-count">0</div>
+      <div class="metric-label">未归属完整会话</div>
+    </div>
+    <div class="module-card">
+      <div class="metric" id="orphan-count">0</div>
+      <div class="metric-label">关联到不存在档案的会话</div>
+    </div>
+    <div class="module-card">
+      <div class="metric" id="invalid-count">0</div>
+      <div class="metric-label">缺少完整结果或完成时间的条目</div>
+    </div>
+  </div>
+
+  <div class="warning">
+    未归属记录不会通过昵称、时间或浏览器自动分配给任何学习者。
+    如果删除了某个学习者档案，原来关联该 ID 的会话
+    将被标记为“档案不存在”，不会转移给其他人。
+  </div>
+</section>
+
+<div class="notice">
+  <strong>Research Integrity：</strong>
+  本页面展示描述性学习分析，不进行统计显著性检验，
+  不宣称已验证的知识掌握概率、延迟保持效果、
+  AI 教学效果或不同学习者之间的因果差异。
+</div>
+</main>
+
+<footer>
+  <p>AURA EDU · Multi-Learner Analytics · Research Prototype</p>
+</footer>
+
+<script>
+"use strict";
+
+/* =========================================
+   AURA EDU — STEP 17
+   MULTI-LEARNER LEARNING ANALYTICS
+========================================= */
+
+const PROFILES_KEY="aura_learner_profiles_v2";
+
+const MODULES=[
+  {
+    id:"G1",
+    name:"Verb to Be",
+    key:"aura_g1_learning_records_v1"
+  },
+  {
+    id:"G2",
+    name:"Subject–Verb Agreement",
+    key:"aura_g2_learning_records_v1"
+  },
+  {
+    id:"G3",
+    name:"Sentence Construction",
+    key:"aura_g3_learning_records_v1"
+  }
+];
+
+const $=id=>document.getElementById(id);
+
+let profiles=[];
+let allSessions=[];
+let invalidCount=0;
+
+function readJSON(key,fallback){
+  try{
+    const raw=localStorage.getItem(key);
+    return raw?JSON.parse(raw):fallback;
+  }catch(error){
+    console.warn("Storage read error:",key,error);
+    return fallback;
+  }
+}
+
+function loadData(){
+  const savedProfiles=readJSON(PROFILES_KEY,[]);
+  profiles=Array.isArray(savedProfiles)
+    ?savedProfiles.filter(p=>p&&typeof p.id==="string")
+    :[];
+
+  allSessions=[];
+  invalidCount=0;
+
+  MODULES.forEach(module=>{
+    const saved=readJSON(module.key,[]);
+
+    if(!Array.isArray(saved))return;
+
+    saved.forEach(record=>{
+      if(
+        !record||
+        !record.result||
+        !record.completedAt
+      ){
+        invalidCount++;
+        return;
+      }
+
+      allSessions.push({
+        ...record,
+        moduleId:module.id,
+        moduleName:module.name
+      });
+    });
+  });
+
+  allSessions.sort(
+    (a,b)=>
+      (Date.parse(b.completedAt)||0)-
+      (Date.parse(a.completedAt)||0)
+  );
+
+  renderFilter();
+  render();
+}
+
+function profileFor(id){
+  return profiles.find(p=>p.id===id)||null;
+}
+
+function isLinked(session){
+  return (
+    typeof session.learnerId==="string" &&
+    session.learnerId.length>0 &&
+    !!profileFor(session.learnerId)
+  );
+}
+
+function linkedSessions(){
+  return allSessions.filter(isLinked);
+}
+
+function selectedSessions(){
+  const selected=$("learner-filter").value;
+  const linked=linkedSessions();
+
+  if(selected==="all")return linked;
+
+  return linked.filter(
+    session=>session.learnerId===selected
+  );
+}
+
+function renderFilter(){
+  const select=$("learner-filter");
+  const previous=select.value;
+
+  select.replaceChildren();
+
+  const allOption=document.createElement("option");
+  allOption.value="all";
+  allOption.textContent="全部已关联学习者";
+  select.appendChild(allOption);
+
+  profiles.forEach(profile=>{
+    const option=document.createElement("option");
+    option.value=profile.id;
+    option.textContent=profile.nickname+" ("+
+      profile.id.slice(-8)+")";
+    select.appendChild(option);
+  });
+
+  const available=[...select.options].some(
+    option=>option.value===previous
+  );
+
+  select.value=available?previous:"all";
+}
+
+function scoreFromRecords(session,stage){
+  if(!Array.isArray(session.records))return null;
+
+  const records=session.records.filter(
+    r=>r&&r.stage===stage
+  );
+
+  if(!records.length)return null;
+
+  const valid=records.filter(
+    r=>typeof r.firstAttemptCorrect==="boolean"
+  );
+
+  if(!valid.length)return null;
+
+  return {
+    correct:valid.filter(r=>r.firstAttemptCorrect).length,
+    total:valid.length
+  };
+}
+
+function getScore(session,stage){
+  const fromRecords=scoreFromRecords(session,stage);
+  if(fromRecords)return fromRecords;
+
+  const saved=session.result?.[stage];
+
+  if(
+    saved &&
+    Number.isFinite(Number(saved.correct)) &&
+    Number.isFinite(Number(saved.total)) &&
+    Number(saved.total)>0
+  ){
+    const correct=Number(saved.correct);
+    const total=Number(saved.total);
+
+    if(correct>=0&&correct<=total){
+      return {correct,total};
+    }
+  }
+
+  return null;
+}
+
+function percent(correct,total){
+  return total>0
+    ?Math.round(correct/total*100)
+    :null;
+}
+
+function displayPercent(value){
+  return value===null?"—":value+"%";
+}
+
+function aggregate(sessions,stage){
+  let correct=0;
+  let total=0;
+
+  sessions.forEach(session=>{
+    const score=getScore(session,stage);
+    if(!score)return;
+
+    correct+=score.correct;
+    total+=score.total;
+  });
+
+  return {
+    correct,
+    total,
+    percent:percent(correct,total)
+  };
+}
+
+function makeText(tag,value){
+  const element=document.createElement(tag);
+  element.textContent=String(value);
+  return element;
+}
+
+function createBar(label,value,type=""){
+  const wrapper=document.createElement("div");
+  wrapper.className="bar-row";
+
+  const heading=document.createElement("div");
+  heading.className="bar-label";
+
+  heading.append(
+    makeText("span",label),
+    makeText("strong",displayPercent(value))
+  );
+
+  const track=document.createElement("div");
+  track.className="bar";
+
+  const fill=document.createElement("div");
+  fill.className="fill "+type;
+  fill.style.width=value===null
+    ?"0%"
+    :Math.max(0,Math.min(100,value))+"%";
+
+  track.appendChild(fill);
+  wrapper.append(heading,track);
+
+  return wrapper;
+}
+
+function renderMetrics(sessions){
+  $("session-count").textContent=sessions.length;
+
+  const learnerIds=new Set(
+    sessions.map(s=>s.learnerId)
+  );
+
+  $("learner-count").textContent=learnerIds.size;
+
+  $("diagnostic-rate").textContent=
+    displayPercent(
+      aggregate(sessions,"diagnostic").percent
+    );
+
+  $("reassessment-rate").textContent=
+    displayPercent(
+      aggregate(sessions,"reassessment").percent
+    );
+}
+
+function renderModules(sessions){
+  const container=$("module-analysis");
+  container.replaceChildren();
+
+  MODULES.forEach(module=>{
+    const subset=sessions.filter(
+      s=>s.moduleId===module.id
+    );
+
+    const card=document.createElement("div");
+    card.className="module-card";
+
+    const tag=makeText("span",module.id);
+    tag.className="tag";
+
+    card.appendChild(tag);
+    card.appendChild(makeText("h3",module.name));
+    card.appendChild(
+      makeText("p","完整会话："+subset.length)
+    );
+
+    if(subset.length===0){
+      card.appendChild(
+        makeText("p","当前筛选范围内暂无记录。")
+      );
+    }else{
+      card.appendChild(
+        createBar(
+          "诊断首次正确率",
+          aggregate(subset,"diagnostic").percent,
+          "diagnostic"
+        )
+      );
+
+      card.appendChild(
+        createBar(
+          "即时独立复测正确率",
+          aggregate(subset,"reassessment").percent
+        )
+      );
+    }
+
+    container.appendChild(card);
+  });
+}
+
+function getHints(sessions){
+  let total=0;
+  let hinted=0;
+  let highest=0;
+
+  sessions.forEach(session=>{
+    if(!Array.isArray(session.records))return;
+
+    session.records
+      .filter(r=>r&&r.stage==="practice")
+      .forEach(record=>{
+        total++;
+
+        const raw=Number(
+          record.highestHintUsed||0
+        );
+
+        const level=Number.isFinite(raw)
+          ?Math.max(0,Math.min(3,raw))
+          :0;
+
+        if(level>0)hinted++;
+        highest=Math.max(highest,level);
+      });
+  });
+
+  return {total,hinted,highest};
+}
+
+function renderHints(sessions){
+  const hints=getHints(sessions);
+
+  $("hinted-count").textContent=hints.hinted;
+  $("practice-count").textContent=hints.total;
+  $("highest-hint").textContent=
+    hints.highest?"H"+hints.highest:"—";
+
+  const container=$("hint-bars");
+  container.replaceChildren();
+
+  container.appendChild(
+    createBar(
+      "使用过提示的练习题比例",
+      percent(hints.hinted,hints.total)
+    )
+  );
+}
+
+function renderPaths(sessions){
+  const container=$("path-analysis");
+  container.replaceChildren();
+
+  const paths=["Foundation","Guided","Challenge"];
+
+  const counts={
+    Foundation:0,
+    Guided:0,
+    Challenge:0
+  };
+
+  sessions.forEach(session=>{
+    const path=session.result?.recommendedPath;
+
+    if(Object.prototype.hasOwnProperty.call(counts,path)){
+      counts[path]++;
+    }
+  });
+
+  const known=paths.reduce(
+    (sum,path)=>sum+counts[path],
+    0
+  );
+
+  paths.forEach(path=>{
+    const row=document.createElement("div");
+    row.className="bar-row";
+
+    const heading=document.createElement("div");
+    heading.className="bar-label";
+
+    heading.append(
+      makeText("span",path),
+      makeText("strong",counts[path]+" sessions")
+    );
+
+    const track=document.createElement("div");
+    track.className="bar";
+
+    const fill=document.createElement("div");
+    fill.className="fill";
+    fill.style.width=known
+      ?(counts[path]/known*100)+"%"
+      :"0%";
+
+    track.appendChild(fill);
+    row.append(heading,track);
+    container.appendChild(row);
+  });
+
+  const unknown=sessions.length-known;
+
+  container.appendChild(
+    makeText(
+      "p",
+      "未识别或未记录路径的会话："+unknown
+    )
+  );
+}
+
+function formatDate(value){
+  const date=new Date(value);
+
+  return Number.isNaN(date.getTime())
+    ?"—"
+    :date.toLocaleString("zh-CN");
+}
+
+function formatScore(score){
+  return score
+    ?score.correct+" / "+score.total
+    :"—";
+}
+
+function renderHistory(sessions){
+  const body=$("history-body");
+  body.replaceChildren();
+
+  if(!sessions.length){
+    const row=document.createElement("tr");
+    const cell=makeText(
+      "td",
+      "当前筛选范围内没有已关联的完整学习会话。"
+    );
+
+    cell.colSpan=8;
+    cell.className="empty";
+    row.appendChild(cell);
+    body.appendChild(row);
+    return;
+  }
+
+  sessions.forEach(session=>{
+    const learner=profileFor(session.learnerId);
+
+    const values=[
+      learner?.nickname||"—",
+      session.moduleId,
+      formatDate(session.completedAt),
+      formatScore(getScore(session,"diagnostic")),
+      formatScore(getScore(session,"practice")),
+      formatScore(getScore(session,"reassessment")),
+      session.result?.recommendedPath||"—",
+      session.learnerLink?.method||"未注明"
+    ];
+
+    const row=document.createElement("tr");
+
+    values.forEach(value=>{
+      row.appendChild(makeText("td",value));
+    });
+
+    body.appendChild(row);
+  });
+}
+
+function renderUnassigned(){
+  const unassigned=allSessions.filter(
+    session=>!session.learnerId
+  );
+
+  const orphan=allSessions.filter(
+    session=>session.learnerId &&
+    !profileFor(session.learnerId)
+  );
+
+  $("unassigned-count").textContent=unassigned.length;
+  $("orphan-count").textContent=orphan.length;
+  $("invalid-count").textContent=invalidCount;
+}
+
+function render(){
+  const sessions=selectedSessions();
+
+  renderMetrics(sessions);
+  renderModules(sessions);
+  renderHints(sessions);
+  renderPaths(sessions);
+  renderHistory(sessions);
+  renderUnassigned();
+
+  const selected=$("learner-filter").value;
+
+  $("filter-status").textContent=
+    selected==="all"
+      ?"正在显示所有已关联的完整学习会话。"
+      :"正在显示所选本地学习者的完整学习会话。";
+}
+
+function exportReport(){
+  const sessions=selectedSessions();
+  const selected=$("learner-filter").value;
+
+  const report={
+    reportType:"AURA EDU Multi-Learner Analytics",
+    exportedAt:new Date().toISOString(),
+    selectedLearnerId:
+      selected==="all"?null:selected,
+    selection:
+      selected==="all"?"all-linked":"single-learner",
+    sessionCount:sessions.length,
+    learnerCount:new Set(
+      sessions.map(s=>s.learnerId)
+    ).size,
+    aggregate:{
+      diagnostic:aggregate(sessions,"diagnostic"),
+      practice:aggregate(sessions,"practice"),
+      reassessment:aggregate(sessions,"reassessment"),
+      hints:getHints(sessions)
+    },
+    modules:MODULES.map(module=>{
+      const subset=sessions.filter(
+        s=>s.moduleId===module.id
+      );
+
+      return {
+        moduleId:module.id,
+        sessionCount:subset.length,
+        diagnostic:aggregate(subset,"diagnostic"),
+        reassessment:aggregate(subset,"reassessment")
+      };
+    }),
+    sessions:sessions.map(session=>({
+      sessionId:session.sessionId||null,
+      learnerId:session.learnerId,
+      moduleId:session.moduleId,
+      completedAt:session.completedAt,
+      diagnostic:getScore(session,"diagnostic"),
+      practice:getScore(session,"practice"),
+      reassessment:getScore(session,"reassessment"),
+      recommendedPath:
+        session.result?.recommendedPath||null,
+      attributionMethod:
+        session.learnerLink?.method||"unspecified"
+    })),
+    excluded:{
+      unassigned:allSessions.filter(
+        s=>!s.learnerId
+      ).length,
+      orphaned:allSessions.filter(
+        s=>s.learnerId&&!profileFor(s.learnerId)
+      ).length,
+      incomplete:invalidCount
+    },
+    limitations:[
+      "Local browser data only",
+      "Learner identity is not authenticated",
+      "Portal-observed attribution is provisional",
+      "No delayed reassessment",
+      "No validated mastery model",
+      "No causal claims"
+    ]
+  };
+
+  const blob=new Blob(
+    [JSON.stringify(report,null,2)],
+    {type:"application/json"}
+  );
+
+  const url=URL.createObjectURL(blob);
+  const link=document.createElement("a");
+
+  link.href=url;
+  link.download="AURA_Multi_Learner_Analytics.json";
+
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+
+$("learner-filter").addEventListener(
+  "change",render
+);
+
+$("refresh").addEventListener(
+  "click",loadData
+);
+
+$("export").addEventListener(
+  "click",exportReport
+);
+
+window.addEventListener(
+  "pageshow",loadData
+);
+
+loadData();
+</script>
+</body>
+</html>

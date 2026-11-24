@@ -1,0 +1,591 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AURA EDU | Spelling Diagnostic</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Arial, "PingFang SC",
+    "Microsoft YaHei", sans-serif;
+  background: #edf7f2;
+  color: #264257;
+}
+
+header {
+  background: white;
+  border-bottom: 1px solid #dce9e2;
+  padding: 16px 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.brand {
+  color: #7659d5;
+  font-size: 21px;
+  font-weight: 900;
+}
+
+a {
+  color: #246f65;
+  text-decoration: none;
+}
+
+main {
+  max-width: 850px;
+  margin: 30px auto;
+  padding: 0 16px 50px;
+}
+
+h1 { margin-bottom: 7px; }
+
+.subtitle {
+  color: #607b70;
+  line-height: 1.7;
+}
+
+.panel {
+  background: white;
+  border: 1px solid #d9e8df;
+  border-radius: 20px;
+  padding: 25px;
+  margin-top: 20px;
+  box-shadow: 0 8px 25px #254b3410;
+}
+
+.identity {
+  background: #eaf6ff;
+  border-radius: 12px;
+  padding: 12px 15px;
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+.progress {
+  height: 13px;
+  background: #e4e9e7;
+  border-radius: 20px;
+  overflow: hidden;
+  margin: 15px 0;
+}
+
+.progress-fill {
+  width: 0%;
+  height: 100%;
+  background: #39a985;
+  transition: width .25s;
+}
+
+.question-type {
+  color: #7659d5;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.question-title {
+  font-size: 21px;
+  line-height: 1.6;
+  margin: 16px 0;
+}
+
+.meaning {
+  background: #f3f7fa;
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  line-height: 1.7;
+}
+
+input {
+  width: 100%;
+  padding: 15px;
+  border: 2px solid #cddfd6;
+  border-radius: 12px;
+  font-size: 18px;
+}
+
+input:focus {
+  outline: 2px solid #8bdbbf;
+}
+
+button {
+  border: 0;
+  border-radius: 12px;
+  padding: 13px 20px;
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.primary {
+  background: #7659d5;
+  color: white;
+}
+
+.secondary {
+  background: #e3f3eb;
+  color: #246e50;
+}
+
+button:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.message {
+  min-height: 24px;
+  color: #a54b3d;
+  margin-top: 12px;
+  line-height: 1.7;
+}
+
+.result {
+  padding: 17px;
+  border-radius: 14px;
+  background: #f2f8f4;
+  margin-top: 15px;
+}
+
+.result-row {
+  padding: 12px 0;
+  border-bottom: 1px solid #dce8df;
+  line-height: 1.6;
+}
+
+.small {
+  color: #64786e;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.access-notice {
+  padding: 15px;
+  margin: 14px 0;
+  background: #fff0e8;
+  border: 1px solid #f1cbb9;
+  border-radius: 12px;
+  color: #8b3a28;
+  line-height: 1.7;
+}
+
+.hidden { display: none !important; }
+
+@media (max-width: 600px) {
+  .panel { padding: 18px; }
+  .question-title { font-size: 18px; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="brand">✦ AURA EDU</div>
+  <a href="adventure-mastery-map.html">
+    ← Adventure Map
+  </a>
+</header>
+
+<main>
+  <h1>🔤 Spelling Diagnostic</h1>
+  <p class="subtitle">
+    拼写诊断测评 · Word Spelling + Sentence Application
+  </p>
+
+  <div class="identity" id="learner-display">
+    正在读取学生身份...
+  </div>
+
+  <section class="panel" id="intro-panel">
+    <h2>Welcome to Spelling!</h2>
+    <p>欢迎来到拼写诊断测评。</p>
+
+    <p>
+      你将完成 8 道题目，了解自己在单词拼写
+      和句子应用方面的学习情况。
+    </p>
+
+    <p class="small">
+      本次为独立诊断，不提供提示。
+      每道题提交后不可修改。
+      完成后可以查看自己的学习结果。
+    </p>
+
+    <div class="access-notice"
+         id="grammar-access-notice"
+         role="status">
+      正在验证 Grammar 学习资格...
+    </div>
+
+    <div class="actions">
+      <button class="primary"
+              id="start-btn"
+              disabled>
+        Start Diagnostic / 开始诊断
+      </button>
+    </div>
+
+    <p class="message"
+       id="intro-message"
+       role="status"></p>
+  </section>
+
+  <section class="panel hidden" id="quiz-panel">
+    <div id="question-counter"></div>
+
+    <div class="progress">
+      <div class="progress-fill"
+           id="progress-fill"></div>
+    </div>
+
+    <p class="question-type"
+       id="question-type"></p>
+
+    <h2 class="question-title"
+        id="question-title"></h2>
+
+    <div class="meaning"
+         id="question-context"></div>
+
+    <label for="answer-input">
+      Your Answer / 你的答案
+    </label>
+
+    <input
+      id="answer-input"
+      type="text"
+      autocomplete="off"
+      autocapitalize="off"
+      spellcheck="false"
+      maxlength="80"
+      placeholder="Type your answer here"
+    >
+
+    <p class="small">
+      请独立作答。提交后自动进入下一题，
+      诊断过程中不会显示正确答案。
+    </p>
+
+    <p class="message"
+       id="quiz-message"
+       role="status"></p>
+
+    <div class="actions">
+      <button class="primary"
+              id="submit-btn">
+        Submit Answer / 提交答案
+      </button>
+    </div>
+  </section>
+
+  <section class="panel hidden" id="result-panel">
+    <h2>🎉 Diagnostic Completed!</h2>
+    <p>拼写诊断已完成。</p>
+
+    <div id="result-summary"></div>
+    <div id="result-details"></div>
+
+    <div class="actions">
+      <button class="secondary" id="copy-btn">
+        Copy JSON / 复制记录
+      </button>
+
+      <a class="secondary"
+         style="display:inline-block;padding:13px 20px;border-radius:12px"
+         href="adventure-mastery-map.html">
+        Back to Adventure
+      </a>
+    </div>
+
+    <p class="message"
+       id="result-message"
+       role="status"></p>
+  </section>
+
+  <p class="small">
+    Research Prototype · Diagnostic scores are descriptive
+    evidence, not proof of long-term mastery.
+  </p>
+</main>
+
+<script src="js/grammar-unlock.js"></script>
+<script src="js/spelling-knowledge.js"></script>
+<script src="js/spelling-diagnostic.js"></script>
+
+<script>
+/* ============================================
+   AURA EDU — STAGE 28.3.5
+   SPELLING DIAGNOSTIC ACCESS GUARD
+
+   Uses existing Grammar mastery rules.
+   Does not modify learning records.
+============================================ */
+
+(function () {
+  "use strict";
+
+  const ACTIVE_KEY =
+    "aura_active_learner_id_v2";
+
+  const startButton =
+    document.getElementById("start-btn");
+
+  const submitButton =
+    document.getElementById("submit-btn");
+
+  const answerInput =
+    document.getElementById("answer-input");
+
+  const introMessage =
+    document.getElementById("intro-message");
+
+  const quizMessage =
+    document.getElementById("quiz-message");
+
+  const accessNotice =
+    document.getElementById("grammar-access-notice");
+
+  const quizPanel =
+    document.getElementById("quiz-panel");
+
+  const introPanel =
+    document.getElementById("intro-panel");
+
+  let sessionLearnerId = null;
+  let sessionBlocked = false;
+
+  function getActiveLearnerId() {
+    try {
+      const raw = localStorage.getItem(ACTIVE_KEY);
+
+      if (!raw) return null;
+
+      if (raw.startsWith('"')) {
+        const value = JSON.parse(raw);
+
+        return typeof value === "string"
+          ? value
+          : null;
+      }
+
+      return raw;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function checkAccess() {
+    const id = getActiveLearnerId();
+    const engine = window.AuraGrammarUnlock;
+
+    if (!id) {
+      return {
+        allowed: false,
+        id: null,
+        message: "请先选择学生。"
+      };
+    }
+
+    if (
+      !engine ||
+      typeof engine.evaluateGrammar !== "function"
+    ) {
+      return {
+        allowed: false,
+        id,
+        message:
+          "Grammar 解锁引擎未能加载，请返回学习地图。"
+      };
+    }
+
+    try {
+      const report = engine.evaluateGrammar();
+
+      const allowed = Boolean(
+        report &&
+        report.ok === true &&
+        String(report.learnerId) === String(id) &&
+        report.grammarComplete === true &&
+        report.spellingEligible === true
+      );
+
+      return {
+        allowed,
+        id,
+        message: allowed
+          ? "✓ Grammar 已达到前置条件，可以开始 Spelling Diagnostic。"
+          : "🔒 Spelling 尚未解锁。请先完成 G1、G2、G3 的暂定掌握条件。"
+      };
+    } catch (error) {
+      console.error(
+        "[AURA Spelling] Access check failed:",
+        error
+      );
+
+      return {
+        allowed: false,
+        id,
+        message:
+          "无法验证 Grammar 学习证据，请返回学习地图。"
+      };
+    }
+  }
+
+  function stopSession(message) {
+    sessionBlocked = true;
+
+    startButton.disabled = true;
+    submitButton.disabled = true;
+    answerInput.disabled = true;
+
+    quizMessage.textContent =
+      message + " 当前诊断已停止，请返回学习地图。";
+
+    introMessage.textContent = message;
+
+    if (!quizPanel.classList.contains("hidden")) {
+      let warning =
+        document.getElementById("spelling-access-warning");
+
+      if (!warning) {
+        warning = document.createElement("div");
+        warning.id = "spelling-access-warning";
+        warning.className = "access-notice";
+        warning.setAttribute("role", "alert");
+        quizPanel.prepend(warning);
+      }
+
+      warning.textContent = quizMessage.textContent;
+    }
+  }
+
+  function refreshAccess() {
+    const result = checkAccess();
+
+    accessNotice.textContent = result.message;
+
+    const quizActive =
+      !quizPanel.classList.contains("hidden");
+
+    if (quizActive) {
+      if (
+        !result.allowed ||
+        !sessionLearnerId ||
+        String(result.id) !== String(sessionLearnerId)
+      ) {
+        stopSession(
+          "检测到学生身份变化或 Grammar 资格无法验证。"
+        );
+      }
+
+      return;
+    }
+
+    if (sessionBlocked) {
+      startButton.disabled = true;
+      return;
+    }
+
+    if (!introPanel.classList.contains("hidden")) {
+      startButton.disabled = !result.allowed;
+      introMessage.textContent = result.message;
+    }
+  }
+
+  // Check eligibility before the original start handler.
+  startButton.addEventListener(
+    "click",
+    function (event) {
+      const result = checkAccess();
+
+      if (sessionBlocked || !result.allowed) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+
+        startButton.disabled = true;
+        introMessage.textContent = result.message;
+
+        return;
+      }
+
+      sessionLearnerId = result.id;
+    },
+    true
+  );
+
+  // Check eligibility before every answer submission.
+  function guardSubmission(event) {
+    const result = checkAccess();
+
+    if (
+      sessionBlocked ||
+      !result.allowed ||
+      !sessionLearnerId ||
+      String(result.id) !== String(sessionLearnerId)
+    ) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+
+      stopSession(
+        "学生身份或 Grammar 解锁资格无法验证。"
+      );
+    }
+  }
+
+  submitButton.addEventListener(
+    "click",
+    guardSubmission,
+    true
+  );
+
+  answerInput.addEventListener(
+    "keydown",
+    function (event) {
+      if (event.key === "Enter") {
+        guardSubmission(event);
+      }
+    },
+    true
+  );
+
+  window.addEventListener(
+    "focus",
+    refreshAccess
+  );
+
+  window.addEventListener(
+    "storage",
+    refreshAccess
+  );
+
+  document.addEventListener(
+    "visibilitychange",
+    function () {
+      if (!document.hidden) {
+        refreshAccess();
+      }
+    }
+  );
+
+  refreshAccess();
+
+})();
+</script>
+
+</body>
+</html>

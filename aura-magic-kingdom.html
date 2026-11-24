@@ -1,0 +1,32 @@
+<!DOCTYPE html><html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AURA EDU · Learning Journey</title>
+<link rel="stylesheet" href="css/learning.css">
+</head><body>
+<header class="topbar"><a class="brand" href="aura-magic-kingdom.html">aura<span>EDU</span><small>每一步，都算进步。</small></a><div class="top-actions"><span id="learnerName"></span><button id="sound" class="quiet">音效开</button><details class="sound-settings"><summary>音量</summary><div class="sound-popover"><label for="effectsVolume">练习反馈音量 <span id="effectsValue">70%</span></label><input id="effectsVolume" type="range" min="0" max="100" step="5" value="70"><button id="testSound" class="quiet">试听答对音效</button><p>诊断和独立复测结束后统一反馈。</p></div></details><a href="index.html" class="quiet">切换学生</a></div></header>
+<main class="shell"><div class="workspace">
+<section id="mapPanel" aria-labelledby="mapTitle">
+<div class="eyebrow">YOUR LEARNING JOURNEY · 五年级样板</div><h1 id="mapTitle">今天，想探索哪一站？</h1><p class="muted">一步一步来。需要帮助时，伙伴就在身边。</p>
+<div id="resumeCard" class="resume" hidden><div><strong id="resumeTitle"></strong><p id="resumeText"></p></div><button id="resume" class="primary">继续上次任务</button></div>
+<div class="route-cards">
+<article class="world grammar"><span class="station">01 · GRAMMAR</span><div class="world-icon">Aa</div><h2>句子工坊</h2><p>找到规律，让句子变得完整。</p><div id="grammarLevels" class="level-list"></div></article>
+<article class="world spelling"><span class="station">02 · SPELLING</span><div class="world-icon">abc</div><h2>词汇花园</h2><p>拼好单词，也试着把它用进句子。</p><p id="spellingStatus" class="status"></p><button id="spellingStart" class="primary">进入花园</button></article>
+<article class="world speaking"><span class="station">03 · SPEAKING</span><div class="world-icon">“Hi”</div><h2>表达小屋</h2><p>练习如何回应，再录下真实表达。</p><p id="speakingStatus" class="status"></p><button id="speakingStart" class="primary">进入小屋</button></article>
+</div><div class="map-bottom"><button id="wrongBook" class="quiet">📒 我的巩固本</button><span id="stars" class="muted"></span><button id="restMap" class="quiet">☕ 伙伴休息站</button></div>
+<p class="scope">五年级原创研究样题 · 四、六年级内容建设中 · 尚未完成逐册教材对齐</p>
+</section>
+<section id="lessonPanel" hidden>
+<div class="lesson-nav"><button id="backMap" class="quiet">← 返回地图并暂停</button><button id="restLesson" class="quiet">我想休息一下</button></div>
+<div class="eyebrow" id="lessonModule"></div><h1 id="lessonTitle"></h1><p id="lessonDescription" class="muted"></p>
+<div id="introPanel"><div id="rules" class="rules"></div><button id="begin" class="primary">开始探索</button><button id="recordEntry" class="quiet" hidden>🎙 真实录音任务</button></div>
+<div id="questionPanel" hidden><div class="question-meta"><span id="phaseLabel"></span><span id="questionCount"></span></div><div class="progress"><div id="progressFill"></div></div><h2 id="questionText" class="question-text"></h2><div id="sentence" class="sentence" hidden></div><div id="options" class="options"></div><label id="answerLabel" for="answer" hidden>你的英文回答</label><input id="answer" class="answer" autocomplete="off" spellcheck="false" hidden><button id="resetWords" class="quiet" hidden>重新排列</button><p id="feedback" class="feedback" role="status" aria-live="polite"></p><div class="question-actions"><button id="check" class="primary">提交答案</button><button id="next" class="primary" hidden>下一题 →</button></div></div>
+<div id="resultPanel" hidden><div id="resultSummary" class="rules"></div><div id="reviewAnswers" class="review-list"></div><div class="question-actions"><button id="retrySave" class="primary" hidden>重新保存本次记录</button><button id="doFocus" class="primary" hidden>练练这个错点</button><button id="returnOrigin" class="quiet" hidden>回到原任务</button><button id="resultMap" class="quiet">返回地图</button><button id="exportSession" class="quiet">导出本次记录</button></div></div>
+</section>
+<section id="bookPanel" hidden><button id="bookBack" class="quiet">← 返回地图</button><div class="eyebrow">MY PRACTICE NOTES</div><h1>这些地方，再一起练练。</h1><p class="muted">一次答错只是线索。反复出现的困难，伙伴会优先陪你巩固。</p><div id="bookList"></div></section>
+<section id="restPanel" hidden><button id="restBack" class="quiet">← 返回原来的位置</button><div class="eyebrow">TAKE YOUR TIME</div><h1>休息也很重要。</h1><p id="restNote" class="muted"></p><div class="rest-tabs"><button id="quietRest" class="primary">安静休息</button><button id="wordGame" class="quiet">轻松猜词</button><button id="animation" class="quiet">英语动画</button><button id="music" class="quiet">听点音乐</button></div><div id="restContent" class="rest-content"></div></section>
+<section id="recordPanel" hidden><button id="recordBack" class="quiet">← 返回表达小屋</button><div class="eyebrow">YOUR VOICE</div><h1>把你的声音留下来。</h1><p>Introduce yourself and your partner. Tell us one thing you like.<br>介绍自己和伙伴，再说一项爱好。</p><p class="muted">最多 30 秒。播放确认后保存，供教师查看；不自动给发音或口语分数。</p><div class="question-actions"><button id="recordStart" class="primary">开始录音</button><button id="recordStop" class="quiet" disabled>停止录音</button></div><audio id="playback" controls></audio><label class="confirm"><input type="checkbox" id="recordConfirm" disabled>我已播放并确认包含自己的英语回答。</label><button id="recordSave" class="primary" disabled>保存录音</button><p id="recordStatus" role="status"></p></section>
+</div>
+<aside class="buddy-panel"><span class="eyebrow">YOUR COMPANION</span><div id="buddyStage" class="buddy-stage"><button id="buddy" class="buddy" aria-label="和伙伴互动"></button></div><h2 id="buddyName">Leo</h2><p id="buddyBubble" class="bubble" role="status" aria-live="polite">我们一起慢慢来。</p><button id="hint" class="quiet" hidden>请伙伴给一点提示 · H1</button><button id="encourage" class="quiet">和伙伴说句话</button><div class="partner-picker" aria-label="选择学习伙伴"><button data-partner="Mia" aria-label="选择 Mia">🦊</button><button data-partner="Leo" aria-label="选择 Leo">🦁</button><button data-partner="Luna" aria-label="选择 Luna">🐰</button><button data-partner="Finn" aria-label="选择 Finn">🐼</button></div><p class="buddy-note" id="buddyNote">休息、提问、再试一次，都可以。</p></aside>
+</main><div id="notice" class="notice" role="status" aria-live="polite" hidden></div><div id="fatal" class="fatal" role="alert" hidden><h2>先暂停一下，保护你的记录。</h2><p id="fatalText"></p><a href="index.html">返回学生入口</a><button id="reload">刷新后继续</button></div>
+<script src="js/identity.js"></script><script src="js/learning-content.js"></script><script src="js/learning-engine.js"></script><script src="js/learning-storage.js"></script><script src="js/learning-app.js"></script>
+</body></html>

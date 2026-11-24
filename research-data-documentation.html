@@ -1,0 +1,793 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AURA EDU | Research Data Documentation</title>
+
+<style>
+:root {
+  --navy:#17365d;
+  --teal:#218b83;
+  --bg:#f8fafc;
+  --text:#26354a;
+  --muted:#63748a;
+  --line:#e2e8f0;
+}
+
+* {box-sizing:border-box}
+
+body {
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Arial,sans-serif;
+  line-height:1.7;
+}
+
+.container {
+  max-width:1100px;
+  margin:auto;
+  padding:0 24px;
+}
+
+header {
+  background:white;
+  border-bottom:1px solid var(--line);
+}
+
+.nav {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:16px;
+  padding:18px 0;
+}
+
+.logo {
+  font-size:22px;
+  font-weight:bold;
+  color:var(--navy);
+  text-decoration:none;
+}
+
+nav {
+  display:flex;
+  gap:16px;
+  flex-wrap:wrap;
+}
+
+nav a {
+  color:var(--navy);
+  text-decoration:none;
+  font-size:14px;
+}
+
+nav a:hover {color:var(--teal)}
+
+.hero {
+  background:linear-gradient(135deg,#17365d,#245e78);
+  padding:75px 0;
+  color:white;
+}
+
+.hero h1 {
+  font-size:clamp(32px,5vw,48px);
+  line-height:1.2;
+  margin:12px 0 20px;
+}
+
+.hero p {
+  color:#e0eaf3;
+  max-width:760px;
+}
+
+.eyebrow {
+  color:var(--teal);
+  font-size:12px;
+  font-weight:bold;
+  letter-spacing:2px;
+  text-transform:uppercase;
+}
+
+.hero .eyebrow {color:#8de0d3}
+
+section {
+  padding:55px 0;
+}
+
+h2 {
+  color:var(--navy);
+  margin:0 0 18px;
+}
+
+h3 {color:var(--navy)}
+
+p {color:var(--muted)}
+
+.card {
+  background:white;
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:25px;
+  margin-bottom:20px;
+}
+
+.grid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+
+.metric {
+  text-align:center;
+  background:white;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:22px;
+}
+
+.metric strong {
+  display:block;
+  color:var(--navy);
+  font-size:34px;
+}
+
+.metric span {
+  color:var(--muted);
+  font-size:13px;
+}
+
+table {
+  width:100%;
+  border-collapse:collapse;
+  background:white;
+}
+
+th,td {
+  border:1px solid var(--line);
+  padding:12px;
+  text-align:left;
+  font-size:14px;
+  vertical-align:top;
+}
+
+th {
+  background:#edf4f7;
+  color:var(--navy);
+}
+
+.table-wrap {overflow-x:auto}
+
+.note {
+  background:#edf4f7;
+  border-left:4px solid var(--teal);
+  padding:16px;
+  border-radius:8px;
+  margin:20px 0;
+  font-size:14px;
+}
+
+.warning {
+  background:#fff8e8;
+  border-left:4px solid #d4a345;
+  padding:16px;
+  border-radius:8px;
+  margin:20px 0;
+  font-size:14px;
+}
+
+.btn {
+  display:inline-block;
+  padding:12px 20px;
+  border-radius:8px;
+  background:var(--navy);
+  color:white;
+  text-decoration:none;
+  border:0;
+  cursor:pointer;
+  font:inherit;
+}
+
+.btn.teal {background:var(--teal)}
+
+.actions {
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-top:25px;
+}
+
+.status {
+  font-weight:bold;
+  color:var(--teal);
+}
+
+footer {
+  background:var(--navy);
+  text-align:center;
+  padding:35px 0;
+}
+
+footer p {color:white}
+
+@media(max-width:750px) {
+  .grid {grid-template-columns:1fr}
+  section {padding:40px 0}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="container nav">
+    <a class="logo" href="research.html">
+      AURA EDU
+    </a>
+
+    <nav>
+      <a href="research.html">Research Lab</a>
+      <a href="research-analytics.html">Analytics</a>
+      <a href="data-quality-dashboard.html">
+        Data Quality
+      </a>
+      <a href="#dictionary">Data Dictionary</a>
+      <a href="#ethics">Ethics</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow">
+      Step 19.10 / Research Documentation
+    </div>
+
+    <h1>Research Data Documentation</h1>
+
+    <p>
+      A transparent documentation framework for
+      learning records, identity association,
+      historical compatibility and research
+      data quality within AURA EDU.
+    </p>
+
+    <p>
+      AURA EDU 研究数据说明：
+      记录来源、身份关联、历史数据兼容性、
+      数据质量及未来研究伦理要求。
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+
+    <h2>01 / Local Data Inventory</h2>
+
+    <p>
+      The following counts are read directly
+      from this browser's localStorage.
+      No records are modified.
+    </p>
+
+    <div class="grid">
+      <div class="metric">
+        <strong id="g1-count">—</strong>
+        <span>G1 Learning Records</span>
+      </div>
+
+      <div class="metric">
+        <strong id="g2-count">—</strong>
+        <span>G2 Learning Records</span>
+      </div>
+
+      <div class="metric">
+        <strong id="g3-count">—</strong>
+        <span>G3 Learning Records</span>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:20px">
+      <h3>Current Local Inventory</h3>
+      <p>
+        Total records:
+        <strong id="total-count">—</strong>
+      </p>
+      <p id="inventory-status">
+        Checking local storage...
+      </p>
+      <button class="btn teal"
+              type="button"
+              onclick="refreshInventory()">
+        Refresh Inventory
+      </button>
+    </div>
+
+    <div class="note">
+      Counts reflect records stored under the
+      current browser origin. They do not
+      automatically establish record validity,
+      identity verification or research eligibility.
+    </div>
+
+  </div>
+</section>
+
+<section style="background:#edf4f7">
+  <div class="container">
+
+    <h2>02 / Data Provenance</h2>
+
+    <div class="card">
+      <h3>Source of Learning Records</h3>
+
+      <p>
+        AURA EDU is a browser-based adaptive
+        English learning research prototype.
+        Its grammar modules can create local
+        learning session records.
+      </p>
+
+      <p>
+        The prototype currently uses localStorage
+        for learner profiles and module records.
+        These records are not stored in a
+        centrally authenticated research database.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>Grammar Modules</h3>
+
+      <p>
+        G1 — Verb to Be (am / is / are)
+      </p>
+
+      <p>
+        G2 — Subject–Verb Agreement
+      </p>
+
+      <p>
+        G3 — Sentence Construction
+      </p>
+    </div>
+
+    <div class="warning">
+      The existence of local records does not
+      establish that they were collected from
+      recruited research participants.
+      Prototype test records and simulated
+      demonstrations must be distinguished
+      from future empirical research data.
+    </div>
+
+  </div>
+</section>
+
+<section id="dictionary">
+  <div class="container">
+
+    <h2>03 / Data Dictionary</h2>
+
+    <p>
+      The following fields describe the
+      current session identity structure.
+      Legacy records may contain different
+      or incomplete fields.
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Field</th>
+            <th>Meaning</th>
+            <th>中文说明</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>sessionId</td>
+            <td>Learning session identifier</td>
+            <td>学习会话编号</td>
+          </tr>
+
+          <tr>
+            <td>learnerId</td>
+            <td>Local learner identifier</td>
+            <td>本地学习者编号</td>
+          </tr>
+
+          <tr>
+            <td>module</td>
+            <td>G1, G2 or G3</td>
+            <td>语法模块</td>
+          </tr>
+
+          <tr>
+            <td>startedAt</td>
+            <td>Session start timestamp</td>
+            <td>开始时间</td>
+          </tr>
+
+          <tr>
+            <td>completedAt</td>
+            <td>Completion timestamp</td>
+            <td>完成时间</td>
+          </tr>
+
+          <tr>
+            <td>identityBinding</td>
+            <td>
+              Identity association metadata
+            </td>
+            <td>身份关联元数据</td>
+          </tr>
+
+          <tr>
+            <td>result</td>
+            <td>
+              Module-specific learning result,
+              where present
+            </td>
+            <td>模块学习结果</td>
+          </tr>
+
+          <tr>
+            <td>records</td>
+            <td>
+              Module-specific nested records,
+              where present
+            </td>
+            <td>模块内部记录</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      This dictionary is descriptive.
+      It does not imply that every historical
+      record contains all listed fields.
+    </div>
+
+  </div>
+</section>
+
+<section style="background:#edf4f7">
+  <div class="container">
+
+    <h2>04 / Learner Identity Binding</h2>
+
+    <div class="card">
+      <h3>Local Identity Association</h3>
+
+      <p>
+        AURA EDU uses a Learner Identity Service
+        to associate a learning session with
+        the active local learner.
+      </p>
+
+      <p>
+        At session creation, the system records
+        the learner identifier and module.
+        Before saving a completed session,
+        identity consistency checks can prevent
+        accidental reassignment.
+      </p>
+
+      <p>
+        The service is not a user
+        authentication mechanism.
+      </p>
+    </div>
+
+    <div class="warning">
+      Learner identity association does not
+      verify a person's real-world identity.
+      Records without reliable identity
+      associations must not be automatically
+      assigned to another learner.
+    </div>
+
+  </div>
+</section>
+
+<section>
+  <div class="container">
+
+    <h2>05 / Historical Compatibility</h2>
+
+    <div class="card">
+      <h3>Legacy Learning Records</h3>
+
+      <p>
+        AURA EDU retains historical records
+        created under earlier versions of
+        the learning modules.
+      </p>
+
+      <p>
+        Historical compatibility checks
+        distinguish records that satisfy
+        current identity requirements from
+        records requiring further review.
+      </p>
+
+      <p>
+        A REVIEW classification is not
+        equivalent to deleting or
+        invalidating a record.
+      </p>
+    </div>
+
+    <div class="note">
+      Previous development audit:
+      13 historical records were inspected,
+      with 4 classified PASS and 9 REVIEW.
+      This is a documented prior test result,
+      not a live recalculation.
+    </div>
+
+  </div>
+</section>
+
+<section style="background:#edf4f7">
+  <div class="container">
+
+    <h2>06 / Data Quality and Reproducibility</h2>
+
+    <div class="card">
+      <h3>Data Quality Checks</h3>
+
+      <p>
+        The Data Quality Dashboard supports
+        inspection of local record structure,
+        historical compatibility and
+        identity association status.
+      </p>
+
+      <div class="actions">
+        <a class="btn teal"
+           href="data-quality-dashboard.html">
+          Open Data Quality Dashboard →
+        </a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Reproducibility Considerations</h3>
+
+      <p>
+        Future research documentation should
+        preserve data schema versions,
+        decision rules, module versions,
+        quality classifications and
+        reproducible analysis procedures.
+      </p>
+
+      <p>
+        JSON backups can support local
+        inspection and archival review,
+        but backup existence alone does not
+        guarantee reproducibility.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<section id="ethics">
+  <div class="container">
+
+    <h2>07 / Research Ethics and Limitations</h2>
+
+    <div class="card">
+      <h3>Research Ethics</h3>
+
+      <p>
+        AURA EDU currently functions as a
+        research and development prototype.
+      </p>
+
+      <p>
+        Future research involving children
+        should follow applicable institutional
+        ethical approval, parental permission,
+        child assent, privacy protection and
+        appropriate data management procedures.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>Current Limitations</h3>
+
+      <p>
+        The current prototype does not
+        establish educational effectiveness,
+        validated mastery thresholds or
+        verified real-world learner identity.
+      </p>
+
+      <p>
+        Historical data quality limitations
+        must be reported transparently.
+      </p>
+    </div>
+
+    <div class="actions">
+      <a class="btn" href="research.html">
+        Return to Research Lab →
+      </a>
+
+      <a class="btn teal"
+         href="data-quality-dashboard.html">
+        Inspect Data Quality →
+      </a>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <p>
+      AURA EDU Research Lab
+    </p>
+    <p>
+      Educational Technology · Adaptive Learning ·
+      Learning Analytics
+    </p>
+    <p>
+      Step 19.10 — Research Data Documentation
+    </p>
+  </div>
+</footer>
+
+<script>
+"use strict";
+
+/*
+  AURA EDU — STEP 19.10
+
+  Research Data Documentation
+
+  READ ONLY:
+  - No setItem
+  - No removeItem
+  - No clear
+  - No record reassignment
+*/
+
+const STORAGE_KEYS = {
+  G1: "aura_g1_learning_records_v1",
+  G2: "aura_g2_learning_records_v1",
+  G3: "aura_g3_learning_records_v1"
+};
+
+function inspectRecords(key) {
+  try {
+    const raw = localStorage.getItem(key);
+
+    if (raw === null) {
+      return {
+        count: 0,
+        valid: true,
+        missing: true
+      };
+    }
+
+    const data = JSON.parse(raw);
+
+    if (!Array.isArray(data)) {
+      return {
+        count: null,
+        valid: false,
+        missing: false
+      };
+    }
+
+    return {
+      count: data.length,
+      valid: true,
+      missing: false
+    };
+
+  } catch(error) {
+    console.error(
+      "[AURA Documentation] Read error:",
+      error
+    );
+
+    return {
+      count: null,
+      valid: false,
+      missing: false
+    };
+  }
+}
+
+function refreshInventory() {
+  const g1 = inspectRecords(STORAGE_KEYS.G1);
+  const g2 = inspectRecords(STORAGE_KEYS.G2);
+  const g3 = inspectRecords(STORAGE_KEYS.G3);
+
+  const results = {G1:g1,G2:g2,G3:g3};
+
+  for (const moduleId of ["G1","G2","G3"]) {
+    const result = results[moduleId];
+
+    document.getElementById(
+      moduleId.toLowerCase() + "-count"
+    ).textContent =
+      result.valid ? result.count : "ERROR";
+  }
+
+  const allValid =
+    g1.valid && g2.valid && g3.valid;
+
+  const status = document.getElementById(
+    "inventory-status"
+  );
+
+  if (!allValid) {
+    document.getElementById(
+      "total-count"
+    ).textContent = "—";
+
+    status.textContent =
+      "Storage inspection failed for one or more modules.";
+
+    status.style.color = "#b42318";
+
+    return;
+  }
+
+  const total =
+    g1.count + g2.count + g3.count;
+
+  document.getElementById(
+    "total-count"
+  ).textContent = total;
+
+  const missing = Object.entries(results)
+    .filter(([,value]) => value.missing)
+    .map(([key]) => key);
+
+  status.textContent = missing.length
+    ? "Readable inventory. Missing storage keys: " +
+      missing.join(", ") +
+      ". Counts are not a complete-data confirmation."
+    : "All three module stores are readable.";
+
+  status.style.color = missing.length
+    ? "#926900"
+    : "#17645e";
+
+  console.info(
+    "[AURA Documentation] Read-only inventory:",
+    {
+      G1:g1.count,
+      G2:g2.count,
+      G3:g3.count,
+      total:total,
+      missingKeys:missing
+    }
+  );
+}
+
+refreshInventory();
+</script>
+
+</body>
+</html>

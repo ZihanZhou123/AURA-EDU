@@ -1,0 +1,1098 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+<title>AURA EDU | Research Methodology</title>
+
+<style>
+:root {
+  --navy:#17365d;
+  --teal:#218b83;
+  --bg:#f8fafc;
+  --text:#26354a;
+  --muted:#63748a;
+  --line:#e2e8f0;
+}
+* {box-sizing:border-box}
+html {scroll-behavior:smooth}
+body {
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Arial,sans-serif;
+  line-height:1.7;
+}
+.container {
+  max-width:1120px;
+  margin:auto;
+  padding:0 24px;
+}
+header {
+  background:white;
+  border-bottom:1px solid var(--line);
+}
+.nav {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:15px;
+  padding:18px 0;
+}
+.logo {
+  font-size:22px;
+  font-weight:bold;
+  color:var(--navy);
+  text-decoration:none;
+}
+nav {
+  display:flex;
+  flex-wrap:wrap;
+  gap:15px;
+}
+nav a {
+  color:var(--navy);
+  text-decoration:none;
+  font-size:14px;
+}
+nav a:hover {color:var(--teal)}
+.hero {
+  background:linear-gradient(135deg,#17365d,#245e78);
+  color:white;
+  padding:80px 0;
+}
+.hero h1 {
+  font-size:clamp(34px,5vw,50px);
+  line-height:1.2;
+  margin:15px 0;
+}
+.hero p {color:#e0eaf3}
+.eyebrow {
+  color:var(--teal);
+  font-size:12px;
+  font-weight:bold;
+  letter-spacing:2px;
+  text-transform:uppercase;
+}
+.hero .eyebrow {color:#8de0d3}
+section {
+  padding:60px 0;
+  scroll-margin-top:30px;
+}
+h2,h3 {color:var(--navy)}
+h2 {margin-top:0}
+p {color:var(--muted)}
+.grid {
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:20px;
+}
+.card {
+  background:white;
+  border:1px solid var(--line);
+  border-radius:15px;
+  padding:25px;
+  margin-bottom:18px;
+}
+.soft {background:#edf4f7}
+.tag {
+  display:inline-block;
+  padding:5px 12px;
+  border-radius:20px;
+  background:#e7f5f0;
+  color:#17645e;
+  font-size:12px;
+  font-weight:bold;
+}
+.tag.planned {
+  background:#fff3dc;
+  color:#946100;
+}
+.btn {
+  display:inline-block;
+  padding:12px 20px;
+  background:var(--navy);
+  color:white;
+  text-decoration:none;
+  border:0;
+  border-radius:9px;
+  font:inherit;
+  cursor:pointer;
+}
+.btn.teal {background:var(--teal)}
+.btn:hover {opacity:.88}
+.btn:focus-visible,
+nav a:focus-visible {
+  outline:3px solid #79b7eb;
+  outline-offset:3px;
+}
+.actions {
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-top:24px;
+}
+.table-wrap {overflow-x:auto}
+table {
+  width:100%;
+  border-collapse:collapse;
+  background:white;
+}
+th,td {
+  border:1px solid var(--line);
+  padding:13px;
+  text-align:left;
+  vertical-align:top;
+  font-size:14px;
+}
+th {
+  background:#edf4f7;
+  color:var(--navy);
+}
+.flow {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+}
+.flow-item {
+  background:white;
+  border:1px solid var(--line);
+  border-top:4px solid var(--teal);
+  border-radius:12px;
+  padding:18px;
+}
+.flow-item strong {
+  display:block;
+  color:var(--navy);
+}
+.flow-item span {
+  color:var(--muted);
+  font-size:13px;
+}
+.metrics {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:15px;
+  margin:20px 0;
+}
+.metric {
+  background:white;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:20px;
+  text-align:center;
+}
+.metric strong {
+  display:block;
+  font-size:30px;
+  color:var(--navy);
+}
+.metric span {
+  font-size:13px;
+  color:var(--muted);
+}
+.notice {
+  background:#fff8e8;
+  border-left:4px solid #d4a345;
+  padding:18px;
+  border-radius:9px;
+  margin:20px 0;
+}
+.notice p {
+  color:#775b25;
+  margin:0;
+}
+.note {
+  background:#edf4f7;
+  border-left:4px solid var(--teal);
+  padding:18px;
+  border-radius:9px;
+  margin:20px 0;
+}
+.note p {margin:0}
+.check-list {
+  list-style:none;
+  padding:0;
+}
+.check-list li {
+  padding:12px 0;
+  border-bottom:1px solid var(--line);
+}
+.check-list li::before {
+  content:"✓ ";
+  color:var(--teal);
+  font-weight:bold;
+}
+footer {
+  background:var(--navy);
+  text-align:center;
+  padding:35px 0;
+}
+footer p {color:white}
+@media(max-width:800px) {
+  .grid,.flow,.metrics {
+    grid-template-columns:1fr;
+  }
+  section {padding:45px 0}
+  .hero {padding:60px 0}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="container nav">
+    <a class="logo" href="research.html">
+      AURA EDU
+    </a>
+    <nav aria-label="Research navigation">
+      <a href="research.html">Research Lab</a>
+      <a href="research-documentation-hub.html">
+        Documentation Hub
+      </a>
+      <a href="data-quality-dashboard.html">
+        Data Quality
+      </a>
+      <a href="#evaluation">Evaluation</a>
+      <a href="#future-study">Future Study</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow">
+      Research Lab / Step 19.12
+    </div>
+
+    <h1>
+      Research Methodology &
+      Prototype Evaluation
+    </h1>
+
+    <p>
+      A proposed research design and evaluation
+      framework for an AI-supported adaptive
+      English grammar learning prototype
+      for learners aged 10–12.
+    </p>
+
+    <p>
+      研究方法与原型评估：
+      说明研究设计、自适应教学机制、
+      功能评估指标，以及未来真实学习者
+      研究的实施条件。
+    </p>
+
+    <div class="actions">
+      <a class="btn teal" href="#methodology">
+        Explore Methodology
+      </a>
+      <a class="btn" href="#evaluation">
+        Evaluation Framework
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- RESEARCH APPROACH -->
+<section id="methodology">
+  <div class="container">
+    <div class="eyebrow">
+      01 / Research Approach
+    </div>
+
+    <h2>Design and Development Research</h2>
+
+    <div class="card">
+      <span class="tag">
+        Proposed Research Approach
+      </span>
+
+      <h3>Research Design</h3>
+
+      <p>
+        AURA EDU is being developed as an
+        educational technology research prototype.
+        A Design and Development Research approach
+        is proposed to guide the systematic design,
+        development and evaluation of its
+        adaptive learning mechanisms.
+      </p>
+
+      <p>
+        本项目拟采用设计与开发研究方法，
+        系统地设计、开发并评估自适应英语
+        语法学习原型。
+      </p>
+
+      <p>
+        Current activities focus on prototype
+        implementation and functional verification.
+        Future stages may include expert evaluation,
+        usability testing and empirical investigation
+        of student learning outcomes.
+      </p>
+    </div>
+
+    <div class="flow">
+      <div class="flow-item">
+        <strong>01 / Analysis</strong>
+        <span>
+          Learner needs, grammar difficulties
+          and instructional requirements
+        </span>
+      </div>
+
+      <div class="flow-item">
+        <strong>02 / Design</strong>
+        <span>
+          Scaffolding, assessment and
+          adaptive decision rules
+        </span>
+      </div>
+
+      <div class="flow-item">
+        <strong>03 / Development</strong>
+        <span>
+          G1/G2/G3 learning modules
+          and analytics components
+        </span>
+      </div>
+
+      <div class="flow-item">
+        <strong>04 / Evaluation</strong>
+        <span>
+          Functional testing and
+          planned empirical validation
+        </span>
+      </div>
+    </div>
+
+    <div class="notice">
+      <p>
+        <strong>Methodological distinction:</strong>
+        A working prototype is not equivalent
+        to an empirically validated educational
+        intervention. Future studies require
+        appropriate research design and ethics.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- RESEARCH QUESTIONS -->
+<section class="soft">
+  <div class="container">
+    <div class="eyebrow">
+      02 / Research Questions
+    </div>
+
+    <h2>Proposed Research Questions</h2>
+
+    <div class="card">
+      <h3>RQ1 — Design</h3>
+      <p>
+        How can learner performance,
+        error patterns and instructional
+        support needs inform the design
+        of an adaptive English grammar
+        learning system?
+      </p>
+      <p>
+        如何利用学生表现、错误模式与
+        教学支持需求设计自适应英语
+        语法学习系统？
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>RQ2 — Adaptive Decisions</h3>
+      <p>
+        How can question-level and
+        knowledge-level evidence inform
+        explainable instructional
+        scaffolding decisions?
+      </p>
+      <p>
+        如何利用题目层面与知识点层面的
+        学习证据，形成可解释的教学
+        支架决策？
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>RQ3 — Prototype Evaluation</h3>
+      <p>
+        To what extent does the prototype
+        satisfy predefined functional,
+        data quality, usability and
+        explainability criteria?
+      </p>
+      <p>
+        原型在功能正确性、数据质量、
+        可用性和决策可解释性方面，
+        能否达到预先制定的评价标准？
+      </p>
+    </div>
+
+    <div class="card">
+      <span class="tag planned">
+        Future Empirical Research
+      </span>
+
+      <h3>RQ4 — Learning Outcomes</h3>
+      <p>
+        How does adaptive scaffolding
+        relate to independent grammar
+        application and knowledge
+        retention among learners aged 10–12?
+      </p>
+      <p>
+        对于10–12岁学习者，
+        自适应教学支架与独立语法应用
+        及知识保持之间存在怎样的关系？
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ADAPTIVE MODEL -->
+<section>
+  <div class="container">
+    <div class="eyebrow">
+      03 / Adaptive Learning Mechanism
+    </div>
+
+    <h2>Dual-Layer Adaptive Framework</h2>
+
+    <div class="grid">
+      <div class="card">
+        <h3>Layer 1 — Question-Level</h3>
+        <p>
+          The proposed system provides
+          graduated hints, targeted feedback
+          and opportunities for self-correction
+          during grammar tasks.
+        </p>
+        <p>
+          第一层：题目层面的提示、
+          错误反馈和学生自主修改。
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Layer 2 — Knowledge-Level</h3>
+        <p>
+          Learning evidence across tasks
+          informs provisional recommendations
+          for foundation, guided practice
+          or more advanced challenges.
+        </p>
+        <p>
+          第二层：根据跨题目学习证据，
+          推荐基础巩固、引导练习
+          或进阶挑战。
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Evidence-Based Mastery</h3>
+        <p>
+          Assisted completion should be
+          distinguished from independent
+          performance. Mastery thresholds
+          require future validation.
+        </p>
+        <p>
+          区分借助提示完成任务与
+          独立掌握知识，避免把
+          提示后的正确答案直接
+          等同于知识掌握。
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Two-Stage Reassessment</h3>
+        <p>
+          Immediate independent reassessment
+          examines application after support.
+          Delayed reassessment is proposed
+          to examine subsequent retention.
+        </p>
+        <p>
+          两阶段复测：
+          即时独立复测与计划中的
+          延迟知识保持评估。
+        </p>
+      </div>
+    </div>
+
+    <div class="actions">
+      <a class="btn teal"
+         href="decision-explorer.html">
+        Explore Adaptive Decisions →
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- PROTOTYPE EVALUATION -->
+<section id="evaluation" class="soft">
+  <div class="container">
+    <div class="eyebrow">
+      04 / Prototype Evaluation
+    </div>
+
+    <h2>Evaluation Framework</h2>
+
+    <p>
+      Prototype evaluation should use
+      predefined criteria and distinguish
+      functional test evidence from
+      educational effectiveness evidence.
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Dimension</th>
+            <th>Evaluation Focus</th>
+            <th>Evidence / Method</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Functional Correctness</td>
+            <td>
+              Navigation, module operation
+              and interaction correctness
+            </td>
+            <td>
+              Manual test cases,
+              pass/fail records
+            </td>
+            <td>Testing underway</td>
+          </tr>
+
+          <tr>
+            <td>Data Integrity</td>
+            <td>
+              Preservation of historical
+              learning records
+            </td>
+            <td>
+              Local inventory,
+              JSON backup comparison
+            </td>
+            <td>Previously tested</td>
+          </tr>
+
+          <tr>
+            <td>Identity Consistency</td>
+            <td>
+              Local learner-session
+              association
+            </td>
+            <td>
+              Identity binding checks,
+              legacy classification
+            </td>
+            <td>
+              4 PASS / 9 REVIEW
+              in prior audit
+            </td>
+          </tr>
+
+          <tr>
+            <td>Explainability</td>
+            <td>
+              Clarity and consistency
+              of adaptive recommendations
+            </td>
+            <td>
+              Decision rule inspection,
+              expert review
+            </td>
+            <td>Further review planned</td>
+          </tr>
+
+          <tr>
+            <td>Usability</td>
+            <td>
+              Task completion, navigation
+              and learner experience
+            </td>
+            <td>
+              Observational usability
+              testing and feedback
+            </td>
+            <td>Planned</td>
+          </tr>
+
+          <tr>
+            <td>Instructional Quality</td>
+            <td>
+              Hint relevance, feedback
+              and grammar alignment
+            </td>
+            <td>
+              Curriculum mapping,
+              educator expert review
+            </td>
+            <td>Planned</td>
+          </tr>
+
+          <tr>
+            <td>Learning Effectiveness</td>
+            <td>
+              Independent performance
+              and retention
+            </td>
+            <td>
+              Future empirical study
+            </td>
+            <td>Not established</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      <p>
+        <strong>Evaluation rule:</strong>
+        Each future test should record
+        its objective, procedure, expected
+        result, observed result and
+        pass/fail decision.
+        Passing a software test must not
+        be reported as evidence of
+        improved student learning.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- DATA QUALITY -->
+<section>
+  <div class="container">
+    <div class="eyebrow">
+      05 / Data Quality Evidence
+    </div>
+
+    <h2>Local Research Record Inventory</h2>
+
+    <p>
+      The following counts are read
+      from this browser's localStorage.
+      This page does not write, remove
+      or reassign any records.
+    </p>
+
+    <div class="metrics">
+      <div class="metric">
+        <strong id="g1-count">—</strong>
+        <span>G1 Records</span>
+      </div>
+      <div class="metric">
+        <strong id="g2-count">—</strong>
+        <span>G2 Records</span>
+      </div>
+      <div class="metric">
+        <strong id="g3-count">—</strong>
+        <span>G3 Records</span>
+      </div>
+      <div class="metric">
+        <strong id="total-count">—</strong>
+        <span>Total Records</span>
+      </div>
+    </div>
+
+    <p id="inventory-status"
+       role="status"
+       aria-live="polite">
+      Checking local inventory...
+    </p>
+
+    <div class="card">
+      <h3>Historical Compatibility</h3>
+
+      <p>
+        In the previously completed
+        data quality audit, 13 records
+        were inspected:
+      </p>
+
+      <p>
+        <strong>4 PASS</strong> —
+        records satisfying the tested
+        identity quality requirements.
+      </p>
+
+      <p>
+        <strong>9 REVIEW</strong> —
+        historical records requiring
+        further identity association review.
+      </p>
+
+      <p>
+        These are prior audit findings,
+        not live identity classifications.
+        The records remain preserved.
+      </p>
+
+      <div class="actions">
+        <a class="btn teal"
+           href="data-quality-dashboard.html">
+          Inspect Data Quality →
+        </a>
+
+        <a class="btn"
+           href="research-data-documentation.html">
+          View Data Documentation →
+        </a>
+      </div>
+    </div>
+
+    <div class="notice">
+      <p>
+        Local learner identifiers are not
+        verified real-world identities.
+        Historical records must not be
+        reassigned automatically.
+        The presence of 13 records does
+        not establish 13 research participants.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- FUTURE STUDY -->
+<section id="future-study" class="soft">
+  <div class="container">
+    <div class="eyebrow">
+      06 / Future Empirical Research
+    </div>
+
+    <h2>Proposed Empirical Evaluation Plan</h2>
+
+    <div class="grid">
+      <div class="card">
+        <span class="tag planned">Planned</span>
+        <h3>Participants</h3>
+        <p>
+          Learners aged 10–12,
+          with recruitment criteria
+          and sample size determined
+          during research planning.
+        </p>
+        <p>
+          研究对象：10–12岁学生。
+          具体样本量与招募标准
+          尚需研究设计确定。
+        </p>
+      </div>
+
+      <div class="card">
+        <span class="tag planned">Planned</span>
+        <h3>Learning Content</h3>
+        <p>
+          English grammar and sentence
+          construction, with curriculum
+          alignment and assessment
+          content reviewed before use.
+        </p>
+        <p>
+          学习内容：英语语法与句子构建，
+          后续依据中国课程与所选教材
+          完成正式知识点映射。
+        </p>
+      </div>
+
+      <div class="card">
+        <span class="tag planned">Planned</span>
+        <h3>Learning Measures</h3>
+        <p>
+          Initial independent performance,
+          hint usage, revision behaviour,
+          immediate reassessment and
+          delayed retention measures.
+        </p>
+        <p>
+          评价指标：独立作答表现、
+          提示使用、自主修改、
+          即时复测及延迟保持。
+        </p>
+      </div>
+
+      <div class="card">
+        <span class="tag planned">Planned</span>
+        <h3>Study Design</h3>
+        <p>
+          A suitable comparative or
+          repeated-measures design may
+          be considered. The final
+          design and analysis plan
+          require further development.
+        </p>
+        <p>
+          可考虑比较研究或重复测量设计，
+          但尚未确定实验分组、
+          测量时间点及统计分析方案。
+        </p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Ethical Requirements</h3>
+
+      <ul class="check-list">
+        <li>
+          Institutional ethical approval
+          before participant research
+        </li>
+        <li>
+          Appropriate parental or
+          guardian permission
+        </li>
+        <li>
+          Age-appropriate child assent
+        </li>
+        <li>
+          Data minimisation and
+          privacy protection
+        </li>
+        <li>
+          Clear distinction between
+          prototype tests and empirical data
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- CURRENT STATUS -->
+<section>
+  <div class="container">
+    <div class="eyebrow">
+      07 / Research Status
+    </div>
+
+    <h2>What Has and Has Not Been Established</h2>
+
+    <div class="grid">
+      <div class="card">
+        <span class="tag">Prototype Evidence</span>
+        <h3>Currently Demonstrated</h3>
+        <ul class="check-list">
+          <li>Working G1/G2/G3 modules</li>
+          <li>Interactive simulated learner demo</li>
+          <li>Research Analytics navigation</li>
+          <li>Data Quality Dashboard</li>
+          <li>Research Data Documentation</li>
+          <li>Historical record preservation tests</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <span class="tag planned">
+          Further Validation Required
+        </span>
+        <h3>Not Yet Established</h3>
+        <p>
+          Educational effectiveness,
+          validated mastery thresholds,
+          student usability outcomes,
+          expert-confirmed instructional
+          quality and causal learning
+          improvements remain to be
+          investigated.
+        </p>
+      </div>
+    </div>
+
+    <div class="actions">
+      <a class="btn teal"
+         href="research-documentation-hub.html">
+        Return to Documentation Hub →
+      </a>
+
+      <a class="btn"
+         href="research.html">
+        Return to Research Lab →
+      </a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <p>AURA EDU Research Lab</p>
+    <p>
+      Research Methodology &
+      Prototype Evaluation
+    </p>
+    <p>
+      Step 19.12 — Research Prototype
+    </p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  /*
+    AURA EDU STEP 19.12
+
+    Research Methodology & Prototype Evaluation
+
+    READ-ONLY LOCAL INVENTORY
+
+    No localStorage.setItem
+    No localStorage.removeItem
+    No localStorage.clear
+    No record reassignment
+  */
+
+  const KEYS = {
+    G1:"aura_g1_learning_records_v1",
+    G2:"aura_g2_learning_records_v1",
+    G3:"aura_g3_learning_records_v1"
+  };
+
+  function inspect(key) {
+    try {
+      const raw = localStorage.getItem(key);
+
+      if (raw === null) {
+        return {
+          valid:true,
+          count:0,
+          missing:true
+        };
+      }
+
+      const data = JSON.parse(raw);
+
+      if (!Array.isArray(data)) {
+        return {
+          valid:false,
+          count:null,
+          missing:false
+        };
+      }
+
+      return {
+        valid:true,
+        count:data.length,
+        missing:false
+      };
+
+    } catch(error) {
+      console.error(
+        "[AURA Methodology] Storage error:",
+        error
+      );
+
+      return {
+        valid:false,
+        count:null,
+        missing:false
+      };
+    }
+  }
+
+  function renderInventory() {
+    const results = {
+      G1:inspect(KEYS.G1),
+      G2:inspect(KEYS.G2),
+      G3:inspect(KEYS.G3)
+    };
+
+    let total = 0;
+    let valid = true;
+    const missing = [];
+
+    for (const id of ["G1","G2","G3"]) {
+      const result = results[id];
+
+      document.getElementById(
+        id.toLowerCase() + "-count"
+      ).textContent =
+        result.valid ? result.count : "ERROR";
+
+      if (!result.valid) {
+        valid = false;
+      } else {
+        total += result.count;
+      }
+
+      if (result.missing) {
+        missing.push(id);
+      }
+    }
+
+    const status = document.getElementById(
+      "inventory-status"
+    );
+
+    if (!valid) {
+      document.getElementById(
+        "total-count"
+      ).textContent = "—";
+
+      status.textContent =
+        "One or more module stores " +
+        "could not be read.";
+
+      status.style.color = "#b42318";
+      return;
+    }
+
+    document.getElementById(
+      "total-count"
+    ).textContent = total;
+
+    if (missing.length) {
+      status.textContent =
+        "Missing storage keys: " +
+        missing.join(", ") +
+        ". Inventory may be incomplete.";
+
+      status.style.color = "#946100";
+    } else {
+      status.textContent =
+        "All module stores are readable. " +
+        "Inventory is read-only.";
+
+      status.style.color = "#17645e";
+    }
+
+    console.info(
+      "[AURA Methodology] Local inventory:",
+      {
+        G1:results.G1.count,
+        G2:results.G2.count,
+        G3:results.G3.count,
+        total:total
+      }
+    );
+  }
+
+  renderInventory();
+})();
+</script>
+
+</body>
+</html>

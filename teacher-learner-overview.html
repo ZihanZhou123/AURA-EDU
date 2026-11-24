@@ -1,0 +1,787 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width,initial-scale=1">
+
+<title>AURA EDU | Teacher Learner Overview</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, "PingFang SC", sans-serif;
+  background: #f4f7fb;
+  color: #34465e;
+  visibility: hidden;
+}
+
+header {
+  background: white;
+  border-bottom: 1px solid #e1e6ef;
+  padding: 20px 6%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.logo {
+  font-size: 23px;
+  font-weight: 900;
+  color: #7659d5;
+}
+
+.nav {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.nav a {
+  color: #65758c;
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.logout {
+  border: 0;
+  border-radius: 10px;
+  padding: 11px 16px;
+  background: #7659d5;
+  color: white;
+  font-weight: bold;
+}
+
+main {
+  max-width: 1100px;
+  margin: auto;
+  padding: 35px 20px 65px;
+}
+
+h1 {
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  color: #718096;
+  line-height: 1.8;
+}
+
+.notice {
+  background: #eaf1ff;
+  border-radius: 14px;
+  padding: 18px;
+  line-height: 1.8;
+  margin: 25px 0;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.panel {
+  background: white;
+  border: 1px solid #e1e8f0;
+  border-radius: 20px;
+  padding: 23px;
+}
+
+.panel h2 {
+  margin-top: 0;
+  font-size: 20px;
+}
+
+.learner-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.learner-button {
+  width: 100%;
+  text-align: left;
+  background: #f5f7fb;
+  border: 2px solid transparent;
+  border-radius: 13px;
+  padding: 15px;
+  color: #34465e;
+}
+
+.learner-button:hover {
+  border-color: #c8baf4;
+}
+
+.learner-button.selected {
+  border-color: #7659d5;
+  background: #f0ecff;
+}
+
+.learner-name {
+  font-weight: bold;
+  display: block;
+}
+
+.learner-id {
+  font-size: 11px;
+  color: #758399;
+  display: block;
+  margin-top: 6px;
+  overflow-wrap: anywhere;
+}
+
+.info {
+  color: #718096;
+  line-height: 1.8;
+  font-size: 14px;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.stat {
+  background: #f5f7fb;
+  padding: 20px;
+  border-radius: 15px;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: #758399;
+}
+
+.stat-value {
+  font-size: 29px;
+  font-weight: 900;
+  margin-top: 10px;
+  color: #5f4db4;
+}
+
+.status {
+  display: inline-block;
+  background: #e5f6ec;
+  color: #26774b;
+  border-radius: 9px;
+  padding: 7px 11px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.muted-status {
+  background: #edf1f5;
+  color: #68788c;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 22px;
+  flex-wrap: wrap;
+}
+
+.action-button {
+  border: 0;
+  background: #7659d5;
+  color: white;
+  border-radius: 11px;
+  padding: 12px 17px;
+  font-weight: bold;
+}
+
+.action-button:hover {
+  background: #6047c1;
+}
+
+.secondary-button {
+  background: #e9edf5;
+  color: #445570;
+}
+
+.secondary-button:hover {
+  background: #dce3ef;
+}
+
+.report-button {
+  background: #287e74;
+}
+
+.report-button:hover {
+  background: #20685f;
+}
+
+.error {
+  background: #fff0ef;
+  color: #a64242;
+  padding: 14px;
+  border-radius: 12px;
+  margin-top: 15px;
+  line-height: 1.7;
+}
+
+.note {
+  font-size: 13px;
+  color: #718096;
+  line-height: 1.8;
+  margin-top: 20px;
+}
+
+@media(max-width:750px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .cards {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+
+<script src="js/teacher-demo-auth.js"></script>
+<script src="js/learner-identity.js"></script>
+
+<script>
+"use strict";
+
+if (
+  !window.AuraTeacherDemoAuth ||
+  !window.AuraTeacherDemoAuth.isLoggedIn()
+) {
+  window.location.replace("teacher-login.html");
+}
+</script>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">✦ AURA EDU</div>
+
+  <nav class="nav">
+    <a href="teacher-portal.html">
+      ← Teacher Dashboard
+    </a>
+
+    <button
+      class="logout"
+      id="logoutButton"
+      type="button">
+      Log Out
+    </button>
+  </nav>
+</header>
+
+<main>
+  <h1>Teacher Learner Overview</h1>
+
+  <p class="subtitle">
+    教师学生总览 · Learner Evidence
+    <br>
+    Select a learner to inspect existing records.
+  </p>
+
+  <div class="notice">
+    <strong>Read-Only Teacher View</strong>
+    <br>
+    教师选择学生不会改变学生端的当前身份。
+    本页面只读取已有数据，不创建、
+    修改或删除任何学习记录。
+  </div>
+
+  <div class="layout">
+
+    <section class="panel">
+      <h2>👥 Learners / 学生列表</h2>
+
+      <p class="info" id="learnerCount">
+        Loading learners...
+      </p>
+
+      <div
+        id="learnerList"
+        class="learner-list">
+      </div>
+    </section>
+
+    <section class="panel">
+
+      <h2 id="reportTitle">
+        Select a Learner
+      </h2>
+
+      <p class="info" id="reportSubtitle">
+        请从左侧选择一名学生。
+      </p>
+
+      <div id="reportContent"></div>
+
+      <div class="actions">
+
+        <button
+          class="action-button report-button"
+          id="openReportButton"
+          type="button"
+          disabled>
+          📊 View Individual Report
+        </button>
+
+        <button
+          class="action-button secondary-button"
+          id="refreshButton"
+          type="button">
+          Refresh Overview
+        </button>
+
+      </div>
+
+      <p class="note">
+        Counts represent stored records,
+        not mastery or learning gains.
+        <br>
+        记录数量不等于知识掌握程度。
+        详细成绩请点击 View Individual Report。
+      </p>
+    </section>
+
+  </div>
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  const auth = window.AuraTeacherDemoAuth;
+  const identity = window.AuraLearnerIdentity;
+
+  if (!auth || !auth.isLoggedIn()) {
+    return;
+  }
+
+  document.body.style.visibility = "visible";
+
+  const STORAGE_KEYS = {
+    G1: "aura_g1_learning_records_v1",
+    G2: "aura_g2_learning_records_v1",
+    G3: "aura_g3_learning_records_v1",
+
+    diagnostic:
+      "aura_spelling_diagnostic_records_v1",
+
+    practice:
+      "aura_spelling_practice_records_v1",
+
+    reassessment:
+      "aura_spelling_reassessment_records_v1"
+  };
+
+  let selectedLearnerId = null;
+
+  const openReportButton =
+    document.getElementById("openReportButton");
+
+  function element(tag, text, className) {
+    const node = document.createElement(tag);
+
+    if (text !== undefined) {
+      node.textContent = String(text);
+    }
+
+    if (className) {
+      node.className = className;
+    }
+
+    return node;
+  }
+
+  function getDisplayName(profile) {
+    return (
+      profile.name ||
+      profile.nickname ||
+      profile.displayName ||
+      profile.id
+    );
+  }
+
+  function readRecords(storageKey) {
+    try {
+      const raw = localStorage.getItem(storageKey);
+
+      if (!raw) {
+        return {
+          ok: true,
+          records: []
+        };
+      }
+
+      const parsed = JSON.parse(raw);
+
+      if (!Array.isArray(parsed)) {
+        return {
+          ok: false,
+          records: [],
+          error: "Unexpected record format"
+        };
+      }
+
+      return {
+        ok: true,
+        records: parsed
+      };
+    } catch (error) {
+      return {
+        ok: false,
+        records: [],
+        error: error.message
+      };
+    }
+  }
+
+  function getRecordCount(storageKey, learnerId) {
+    const result = readRecords(storageKey);
+
+    if (!result.ok) {
+      return {
+        count: null,
+        error: result.error
+      };
+    }
+
+    const count = result.records.filter(
+      record =>
+        record &&
+        record.learnerId === learnerId
+    ).length;
+
+    return {
+      count: count,
+      error: null
+    };
+  }
+
+  function addStat(container, label, result) {
+    const card = element("div", "", "stat");
+
+    card.appendChild(
+      element("div", label, "stat-label")
+    );
+
+    card.appendChild(
+      element(
+        "div",
+        result.error ? "—" : result.count,
+        "stat-value"
+      )
+    );
+
+    if (result.error) {
+      card.appendChild(
+        element(
+          "div",
+          "Record format needs review",
+          "info"
+        )
+      );
+    }
+
+    container.appendChild(card);
+  }
+
+  function renderReport() {
+    const title =
+      document.getElementById("reportTitle");
+
+    const subtitle =
+      document.getElementById("reportSubtitle");
+
+    const content =
+      document.getElementById("reportContent");
+
+    content.replaceChildren();
+
+    openReportButton.disabled = true;
+
+    if (!identity) {
+      title.textContent =
+        "Identity Service Unavailable";
+
+      subtitle.textContent =
+        "无法读取学生身份服务。";
+
+      return;
+    }
+
+    const learner =
+      identity.findLearner(selectedLearnerId);
+
+    if (!learner) {
+      title.textContent = "Select a Learner";
+      subtitle.textContent =
+        "请从左侧选择一名学生。";
+
+      return;
+    }
+
+    title.textContent =
+      "👤 " + getDisplayName(learner);
+
+    subtitle.textContent =
+      "Learner ID: " + learner.id;
+
+    openReportButton.disabled = false;
+
+    const activeId =
+      identity.getActiveLearnerId();
+
+    const status = element(
+      "span",
+      learner.id === activeId
+        ? "Current Student Portal Learner"
+        : "Teacher Viewing Only",
+      learner.id === activeId
+        ? "status"
+        : "status muted-status"
+    );
+
+    content.appendChild(status);
+
+    const cards =
+      element("div", "", "cards");
+
+    const labels = {
+      G1: "Grammar G1 Records",
+      G2: "Grammar G2 Records",
+      G3: "Grammar G3 Records",
+      diagnostic: "Spelling Diagnostic",
+      practice: "Spelling Practice",
+      reassessment: "Spelling Reassessment"
+    };
+
+    let hasError = false;
+
+    Object.keys(STORAGE_KEYS).forEach(key => {
+      const result = getRecordCount(
+        STORAGE_KEYS[key],
+        learner.id
+      );
+
+      if (result.error) {
+        hasError = true;
+      }
+
+      addStat(cards, labels[key], result);
+    });
+
+    content.appendChild(cards);
+
+    if (hasError) {
+      content.appendChild(
+        element(
+          "div",
+          "部分学习记录格式无法识别。" +
+          "为了保护数据，本页面没有修改这些记录。",
+          "error"
+        )
+      );
+    }
+
+    content.appendChild(
+      element(
+        "p",
+        "Click View Individual Report to inspect " +
+        "linked Spelling learning evidence. " +
+        "Grammar detailed analytics will be " +
+        "integrated separately.",
+        "note"
+      )
+    );
+  }
+
+  function renderLearners() {
+    const list =
+      document.getElementById("learnerList");
+
+    const count =
+      document.getElementById("learnerCount");
+
+    list.replaceChildren();
+
+    if (!identity) {
+      count.textContent =
+        "Learner Identity Service unavailable.";
+      return;
+    }
+
+    const profiles = identity.getProfiles();
+
+    count.textContent =
+      profiles.length + " learner(s) found";
+
+    if (!profiles.length) {
+      list.appendChild(
+        element(
+          "p",
+          "暂无学生档案。请先在 Learner Manager " +
+          "创建演示学生。",
+          "info"
+        )
+      );
+
+      selectedLearnerId = null;
+      renderReport();
+      return;
+    }
+
+    if (
+      !profiles.some(
+        profile => profile.id === selectedLearnerId
+      )
+    ) {
+      const activeId =
+        identity.getActiveLearnerId();
+
+      const initial =
+        profiles.find(
+          profile => profile.id === activeId
+        ) || profiles[0];
+
+      selectedLearnerId = initial.id;
+    }
+
+    profiles.forEach(profile => {
+      const button = element(
+        "button",
+        "",
+        "learner-button" +
+        (
+          profile.id === selectedLearnerId
+            ? " selected"
+            : ""
+        )
+      );
+
+      button.type = "button";
+
+      button.appendChild(
+        element(
+          "span",
+          "👤 " + getDisplayName(profile),
+          "learner-name"
+        )
+      );
+
+      button.appendChild(
+        element(
+          "span",
+          profile.id,
+          "learner-id"
+        )
+      );
+
+      button.addEventListener(
+        "click",
+        function () {
+          selectedLearnerId = profile.id;
+          renderLearners();
+        }
+      );
+
+      list.appendChild(button);
+    });
+
+    renderReport();
+  }
+
+  openReportButton.addEventListener(
+    "click",
+    function () {
+      if (!auth.isLoggedIn()) {
+        window.location.replace(
+          "teacher-login.html"
+        );
+        return;
+      }
+
+      if (!identity || !selectedLearnerId) {
+        return;
+      }
+
+      const learner =
+        identity.findLearner(selectedLearnerId);
+
+      if (!learner) {
+        return;
+      }
+
+      const url =
+        "teacher-individual-report.html" +
+        "?learnerId=" +
+        encodeURIComponent(learner.id);
+
+      window.location.href = url;
+    }
+  );
+
+  document.getElementById(
+    "refreshButton"
+  ).addEventListener(
+    "click",
+    renderLearners
+  );
+
+  document.getElementById(
+    "logoutButton"
+  ).addEventListener(
+    "click",
+    function () {
+      auth.logout();
+      window.location.replace(
+        "teacher-login.html"
+      );
+    }
+  );
+
+  window.addEventListener(
+    "focus",
+    renderLearners
+  );
+
+  document.addEventListener(
+    "visibilitychange",
+    function () {
+      if (!document.hidden) {
+        if (!auth.isLoggedIn()) {
+          window.location.replace(
+            "teacher-login.html"
+          );
+          return;
+        }
+
+        renderLearners();
+      }
+    }
+  );
+
+  renderLearners();
+
+})();
+</script>
+
+</body>
+</html>

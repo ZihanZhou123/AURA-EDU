@@ -1,0 +1,888 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AURA EDU | Question-Level Analytics</title>
+<style>
+:root{
+  --navy:#17365d;
+  --teal:#16877f;
+  --bg:#f4f7fb;
+  --line:#dce5ef;
+  --muted:#64748b;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,"PingFang SC",sans-serif;
+  background:var(--bg);
+  color:#25354a;
+  line-height:1.6;
+}
+header{
+  background:white;
+  border-bottom:1px solid var(--line);
+}
+nav{
+  max-width:1150px;
+  margin:auto;
+  padding:18px 22px;
+  display:flex;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:15px;
+}
+nav a{
+  color:var(--navy);
+  text-decoration:none;
+}
+.logo{font-size:21px;font-weight:bold}
+.links{display:flex;gap:18px;flex-wrap:wrap}
+main{
+  max-width:1150px;
+  margin:auto;
+  padding:35px 20px 70px;
+}
+h1,h2,h3{color:var(--navy)}
+h1{font-size:clamp(27px,4vw,40px)}
+p{color:var(--muted)}
+.card{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:15px;
+  padding:24px;
+  margin:20px 0;
+}
+.eyebrow{
+  color:var(--teal);
+  font-size:12px;
+  letter-spacing:2px;
+  font-weight:bold;
+}
+.controls{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  align-items:center;
+}
+select,button{
+  padding:10px 15px;
+  font:inherit;
+  border:1px solid var(--line);
+  border-radius:9px;
+  background:white;
+  color:var(--navy);
+}
+button{cursor:pointer}
+button:hover{background:#edf5f3}
+.primary{
+  background:var(--navy);
+  color:white;
+}
+.primary:hover{background:#24517e}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:14px;
+}
+.metric{
+  background:#f0f5f8;
+  padding:18px;
+  border-radius:12px;
+}
+.metric strong{
+  display:block;
+  font-size:27px;
+  color:var(--navy);
+}
+.metric span{
+  font-size:12px;
+  color:var(--muted);
+}
+.table-wrap{overflow-x:auto}
+table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:14px;
+}
+th,td{
+  padding:12px;
+  text-align:left;
+  border-bottom:1px solid var(--line);
+}
+th{background:#f3f7fa;color:var(--navy)}
+.notice{
+  background:#eaf5f3;
+  border-left:4px solid var(--teal);
+  padding:15px;
+  border-radius:8px;
+}
+.warning{
+  background:#fff5e9;
+  border-left:4px solid #c58b39;
+  padding:15px;
+  border-radius:8px;
+}
+.bar{
+  height:10px;
+  background:#e4ebf1;
+  border-radius:20px;
+  overflow:hidden;
+  min-width:80px;
+  margin-top:6px;
+}
+.fill{
+  height:100%;
+  background:var(--teal);
+}
+.small{font-size:12px;color:var(--muted)}
+.empty{color:var(--muted);text-align:center}
+footer{
+  background:var(--navy);
+  text-align:center;
+  padding:25px;
+  color:white;
+}
+footer p{color:#e0eaf3}
+@media(max-width:750px){
+  .grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:420px){
+  .grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header>
+<nav>
+  <a class="logo" href="index.html">AURA EDU</a>
+  <div class="links">
+    <a href="research.html">Research Lab</a>
+    <a href="learner-evidence.html">Learner Evidence</a>
+    <a href="learner-manager.html">Learner Manager</a>
+  </div>
+</nav>
+</header>
+
+<main>
+<div class="eyebrow">
+  RESEARCH LAB / STAGE 21.4.2
+</div>
+
+<h1>Question-Level Learning Analytics</h1>
+<p>
+  跨模块题目级学习过程分析 · G1 / G2 / G3
+</p>
+
+<div class="notice">
+  <strong>Browser-Local Research Evidence</strong>
+  <p>
+    本页面只读取已有学习记录。
+    不修改学生身份、不保存新会话、
+    不删除历史数据。
+    旧版未归属记录不进入学生个人分析。
+  </p>
+</div>
+
+<section class="card">
+  <h2>01 · Learner Selection</h2>
+  <div class="controls">
+    <label for="learner">学生：</label>
+    <select id="learner">
+      <option value="all">全部匹配学生</option>
+    </select>
+    <button class="primary" id="refresh">
+      Refresh Evidence
+    </button>
+    <button id="copy">
+      Copy Analysis JSON
+    </button>
+  </div>
+  <p class="small" id="status"></p>
+</section>
+
+<section class="card">
+  <h2>02 · Question-Level Overview</h2>
+  <div class="grid">
+    <div class="metric">
+      <strong id="sessions">—</strong>
+      <span>Matched Sessions</span>
+    </div>
+    <div class="metric">
+      <strong id="questions">—</strong>
+      <span>Question Records</span>
+    </div>
+    <div class="metric">
+      <strong id="first-rate">—</strong>
+      <span>First-Attempt Accuracy</span>
+    </div>
+    <div class="metric">
+      <strong id="hint-rate">—</strong>
+      <span>Hint Exposure Rate</span>
+    </div>
+  </div>
+  <p class="small">
+    首次正确率按可识别的题目记录计算。
+    提示暴露率指最高提示等级大于零的题目比例。
+    这些指标不等同于独立学习能力或提示依赖。
+  </p>
+</section>
+
+<section class="card">
+  <h2>03 · First-Attempt Performance</h2>
+  <p>比较三个语法模块中首次作答正确的题目比例。</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Module</th>
+          <th>Question Records</th>
+          <th>First Correct</th>
+          <th>Accuracy</th>
+        </tr>
+      </thead>
+      <tbody id="first-body"></tbody>
+    </table>
+  </div>
+</section>
+
+<section class="card">
+  <h2>04 · Hint Exposure Distribution</h2>
+  <p>
+    统计每道题目记录的最高提示等级。
+    H0 表示没有记录到提示使用。
+  </p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Module</th>
+          <th>H0</th>
+          <th>H1</th>
+          <th>H2</th>
+          <th>H3</th>
+          <th>Other / Missing</th>
+        </tr>
+      </thead>
+      <tbody id="hint-body"></tbody>
+    </table>
+  </div>
+</section>
+
+<section class="card">
+  <h2>05 · Error Pattern Analysis</h2>
+  <p>
+    G1 使用 errorCodes，
+    G2/G3 使用 errors。
+    这里只统计实际保存的错误代码，
+    不自动推断错误的教学含义。
+  </p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Module</th>
+          <th>Error Code</th>
+          <th>Occurrences</th>
+        </tr>
+      </thead>
+      <tbody id="error-body"></tbody>
+    </table>
+  </div>
+</section>
+
+<section class="card">
+  <h2>06 · Independent Reassessment Comparison</h2>
+  <p>
+    比较同一批匹配会话的诊断成绩与
+    即时独立复测成绩。
+  </p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Module</th>
+          <th>Paired Sessions</th>
+          <th>Mean Diagnostic</th>
+          <th>Mean Reassessment</th>
+          <th>Mean Difference</th>
+        </tr>
+      </thead>
+      <tbody id="reassessment-body"></tbody>
+    </table>
+  </div>
+  <p class="small">
+    Mean Difference = 即时复测百分比 − 诊断百分比，
+    单位为百分点。
+    这是描述性会话内差值，不代表因果学习增益。
+  </p>
+</section>
+
+<section class="card">
+  <h2>07 · Research Interpretation</h2>
+  <div class="warning">
+    <p>
+      <strong>Interpretation Boundary</strong>
+    </p>
+    <p>
+      本页面展示开发原型中的学习过程记录。
+      同一学生可能贡献多次会话和多道题目，
+      因此题目记录并非独立研究参与者。
+    </p>
+    <p>
+      提示使用与答题正确率的关系不能单独证明
+      教学支架的因果效果。
+      即时独立复测不等于延迟知识保持测量。
+    </p>
+    <p>
+      目前尚未实施延迟独立复测，
+      也不能仅凭本地学生 ID 验证实际答题者身份。
+    </p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <strong>AURA EDU Research Lab</strong>
+  <p>Question-Level Process Evidence · Read Only</p>
+</footer>
+
+<script>
+"use strict";
+
+const KEYS={
+  G1:"aura_g1_learning_records_v1",
+  G2:"aura_g2_learning_records_v1",
+  G3:"aura_g3_learning_records_v1"
+};
+
+const PROFILE_KEY="aura_learner_profiles_v2";
+const MODULES=["G1","G2","G3"];
+
+const $=id=>document.getElementById(id);
+
+let profiles=[];
+let sessions=[];
+let selected="all";
+let warnings=[];
+
+function readArray(key){
+  try{
+    const value=JSON.parse(
+      localStorage.getItem(key)||"[]"
+    );
+    if(Array.isArray(value))return value;
+    warnings.push(key+": not an array");
+  }catch(error){
+    warnings.push(key+": "+error.message);
+  }
+  return [];
+}
+
+function validNumber(value){
+  return typeof value==="number"&&
+    Number.isFinite(value);
+}
+
+function validPercent(value){
+  return validNumber(value)&&
+    value>=0&&value<=100;
+}
+
+function mean(values){
+  const valid=values.filter(validNumber);
+  if(!valid.length)return null;
+  return valid.reduce((a,b)=>a+b,0)/valid.length;
+}
+
+function percentage(a,b){
+  return b>0?a/b*100:null;
+}
+
+function displayPercent(value){
+  return validNumber(value)?
+    value.toFixed(1)+"%":"N/A";
+}
+
+function displayDifference(value){
+  return validNumber(value)?
+    (value>0?"+":"")+value.toFixed(1)+" pp":
+    "N/A";
+}
+
+function nameOf(p){
+  return p.nickname||
+    p.name||
+    p.displayName||
+    p.learnerName||
+    p.id;
+}
+
+function load(){
+  warnings=[];
+  profiles=readArray(PROFILE_KEY).filter(
+    p=>p&&typeof p.id==="string"
+  );
+
+  const ids=new Set(profiles.map(p=>p.id));
+  sessions=[];
+
+  MODULES.forEach(module=>{
+    readArray(KEYS[module]).forEach(record=>{
+      if(
+        record&&
+        ids.has(record.learnerId)
+      ){
+        sessions.push({module,record});
+      }
+    });
+  });
+}
+
+function updateOptions(){
+  const select=$("learner");
+  select.replaceChildren();
+
+  const all=document.createElement("option");
+  all.value="all";
+  all.textContent="全部匹配学生";
+  select.appendChild(all);
+
+  profiles.forEach(profile=>{
+    const option=document.createElement("option");
+    option.value=profile.id;
+    option.textContent=nameOf(profile);
+    select.appendChild(option);
+  });
+
+  if(
+    selected!=="all"&&
+    !profiles.some(p=>p.id===selected)
+  ){
+    selected="all";
+  }
+  select.value=selected;
+}
+
+function chosenSessions(){
+  return sessions.filter(item=>
+    selected==="all"||
+    item.record.learnerId===selected
+  );
+}
+
+function moduleSessions(module){
+  return chosenSessions().filter(
+    item=>item.module===module
+  );
+}
+
+function questionsFor(module){
+  return moduleSessions(module).flatMap(item=>
+    Array.isArray(item.record.records)?
+      item.record.records.filter(
+        q=>q&&typeof q==="object"
+      ):[]
+  );
+}
+
+function firstCorrect(q){
+  return typeof q.firstAttemptCorrect==="boolean"?
+    q.firstAttemptCorrect:null;
+}
+
+function hintLevel(q){
+  return validNumber(q.highestHintUsed)?
+    q.highestHintUsed:null;
+}
+
+function cell(text){
+  const td=document.createElement("td");
+  td.textContent=String(text);
+  return td;
+}
+
+function addRow(body,values){
+  const tr=document.createElement("tr");
+  values.forEach(value=>{
+    tr.appendChild(cell(value));
+  });
+  body.appendChild(tr);
+}
+
+function clear(id){
+  const body=$(id);
+  body.replaceChildren();
+  return body;
+}
+
+function renderOverview(){
+  const items=chosenSessions();
+
+  const questions=MODULES.flatMap(
+    module=>questionsFor(module)
+  );
+
+  const first=questions.map(firstCorrect).filter(
+    value=>value!==null
+  );
+
+  const hints=questions.map(hintLevel).filter(
+    value=>value!==null
+  );
+
+  $("sessions").textContent=items.length;
+  $("questions").textContent=questions.length;
+
+  $("first-rate").textContent=displayPercent(
+    percentage(
+      first.filter(Boolean).length,
+      first.length
+    )
+  );
+
+  $("hint-rate").textContent=displayPercent(
+    percentage(
+      hints.filter(h=>h>0).length,
+      hints.length
+    )
+  );
+}
+
+function renderFirst(){
+  const body=clear("first-body");
+
+  MODULES.forEach(module=>{
+    const questions=questionsFor(module);
+
+    const first=questions.map(firstCorrect).filter(
+      value=>value!==null
+    );
+
+    const correct=first.filter(Boolean).length;
+
+    addRow(body,[
+      module,
+      questions.length,
+      correct+" / "+first.length,
+      displayPercent(
+        percentage(correct,first.length)
+      )
+    ]);
+  });
+}
+
+function renderHints(){
+  const body=clear("hint-body");
+
+  MODULES.forEach(module=>{
+    const questions=questionsFor(module);
+
+    const counts=[0,0,0,0];
+    let other=0;
+
+    questions.forEach(q=>{
+      const level=hintLevel(q);
+
+      if(
+        Number.isInteger(level)&&
+        level>=0&&level<=3
+      ){
+        counts[level]++;
+      }else{
+        other++;
+      }
+    });
+
+    addRow(body,[
+      module,
+      ...counts,
+      other
+    ]);
+  });
+}
+
+function errorLabels(question,module){
+  const source=module==="G1"?
+    question.errorCodes:
+    question.errors;
+
+  if(!Array.isArray(source))return [];
+
+  return source.map(value=>{
+    if(typeof value==="string"){
+      return value.trim();
+    }
+
+    if(validNumber(value)){
+      return String(value);
+    }
+
+    if(value&&typeof value==="object"){
+      const code=
+        value.code??value.errorCode??value.type;
+
+      if(typeof code==="string"||
+         validNumber(code)){
+        return String(code);
+      }
+
+      return "[Unclassified object]";
+    }
+
+    return "[Unknown]";
+  }).filter(Boolean);
+}
+
+function renderErrors(){
+  const body=clear("error-body");
+  let any=false;
+
+  MODULES.forEach(module=>{
+    const counts=new Map();
+
+    questionsFor(module).forEach(q=>{
+      errorLabels(q,module).forEach(code=>{
+        counts.set(
+          code,(counts.get(code)||0)+1
+        );
+      });
+    });
+
+    const sorted=[...counts.entries()].sort(
+      (a,b)=>b[1]-a[1]
+    );
+
+    sorted.forEach(([code,count])=>{
+      any=true;
+      addRow(body,[module,code,count]);
+    });
+  });
+
+  if(!any){
+    addRow(body,[
+      "—",
+      "No recorded error codes",
+      0
+    ]);
+  }
+}
+
+function score(record,stage){
+  const value=record.result?.[stage]?.percent;
+  return validPercent(value)?value:null;
+}
+
+function renderReassessment(){
+  const body=clear("reassessment-body");
+
+  MODULES.forEach(module=>{
+    const pairs=moduleSessions(module).map(
+      item=>({
+        diagnostic:score(item.record,"diagnostic"),
+        reassessment:score(
+          item.record,"reassessment"
+        )
+      })
+    ).filter(pair=>
+      pair.diagnostic!==null&&
+      pair.reassessment!==null
+    );
+
+    const diagnostics=pairs.map(
+      p=>p.diagnostic
+    );
+
+    const reassessments=pairs.map(
+      p=>p.reassessment
+    );
+
+    const differences=pairs.map(
+      p=>p.reassessment-p.diagnostic
+    );
+
+    addRow(body,[
+      module,
+      pairs.length,
+      displayPercent(mean(diagnostics)),
+      displayPercent(mean(reassessments)),
+      displayDifference(mean(differences))
+    ]);
+  });
+}
+
+function buildReport(){
+  const items=chosenSessions();
+
+  return {
+    project:"AURA EDU",
+    report:"Question-Level Analytics",
+    dataMode:"Browser-Local Matched Records",
+    learnerFilter:selected,
+    generatedAt:new Date().toISOString(),
+    sessions:items.length,
+    modules:Object.fromEntries(
+      MODULES.map(module=>{
+        const qs=questionsFor(module);
+        const first=qs.map(firstCorrect).filter(
+          v=>v!==null
+        );
+        const hints=qs.map(hintLevel).filter(
+          v=>v!==null
+        );
+
+        const pairs=moduleSessions(module).map(
+          item=>({
+            diagnostic:score(
+              item.record,"diagnostic"
+            ),
+            reassessment:score(
+              item.record,"reassessment"
+            )
+          })
+        ).filter(p=>
+          p.diagnostic!==null&&
+          p.reassessment!==null
+        );
+
+        const errorCounts={};
+
+        qs.forEach(q=>{
+          errorLabels(q,module).forEach(code=>{
+            errorCounts[code]=
+              (errorCounts[code]||0)+1;
+          });
+        });
+
+        return [module,{
+          sessions:moduleSessions(module).length,
+          questions:qs.length,
+          firstAttemptMeasured:first.length,
+          firstAttemptCorrect:first.filter(Boolean).length,
+          firstAttemptAccuracyPercent:percentage(
+            first.filter(Boolean).length,
+            first.length
+          ),
+          hintMeasured:hints.length,
+          hintExposureCount:hints.filter(
+            h=>h>0
+          ).length,
+          errorCounts,
+          pairedSessions:pairs.length,
+          meanDiagnosticPercent:mean(
+            pairs.map(p=>p.diagnostic)
+          ),
+          meanReassessmentPercent:mean(
+            pairs.map(p=>p.reassessment)
+          ),
+          meanDifferencePercentagePoints:mean(
+            pairs.map(
+              p=>p.reassessment-p.diagnostic
+            )
+          )
+        }];
+      })
+    ),
+    limitations:[
+      "Matched learner IDs are not proof of actual respondent identity.",
+      "Historical sessions may predate identity locking.",
+      "Question observations are clustered within sessions and learners.",
+      "Error code meanings require a validated data dictionary.",
+      "Immediate reassessment does not measure long-term retention.",
+      "Descriptive differences do not establish causality."
+    ]
+  };
+}
+
+async function copyReport(){
+  const output=JSON.stringify(
+    buildReport(),null,2
+  );
+
+  try{
+    await navigator.clipboard.writeText(output);
+    alert("Analysis JSON 已复制。");
+  }catch(error){
+    const area=document.createElement("textarea");
+    area.value=output;
+    area.style.position="fixed";
+    area.style.top="10%";
+    area.style.left="5%";
+    area.style.width="90%";
+    area.style.height="65%";
+    area.style.zIndex="1000";
+
+    document.body.appendChild(area);
+    area.focus();
+    area.select();
+
+    const copied=document.execCommand("copy");
+    area.remove();
+
+    alert(
+      copied?
+      "Analysis JSON 已复制。":
+      "自动复制失败，请检查 Safari 剪贴板权限。"
+    );
+  }
+}
+
+function render(){
+  renderOverview();
+  renderFirst();
+  renderHints();
+  renderErrors();
+  renderReassessment();
+
+  $("status").textContent=
+    "已读取："+new Date().toLocaleString()+
+    " | "+sessions.length+
+    " matched sessions"+
+    (warnings.length?
+      " | Warnings: "+warnings.join("; "):
+      " | Read-only mode");
+}
+
+function refresh(){
+  load();
+  updateOptions();
+  render();
+}
+
+$("learner").addEventListener(
+  "change",event=>{
+    selected=event.target.value;
+    render();
+  }
+);
+
+$("refresh").addEventListener(
+  "click",refresh
+);
+
+$("copy").addEventListener(
+  "click",copyReport
+);
+
+window.addEventListener("storage",event=>{
+  if(
+    event.key===null||
+    event.key===PROFILE_KEY||
+    Object.values(KEYS).includes(event.key)
+  ){
+    refresh();
+  }
+});
+
+refresh();
+
+console.info(
+  "[AURA EDU] Stage 21.4.2 Question-Level Analytics ready."
+);
+</script>
+
+</body>
+</html>

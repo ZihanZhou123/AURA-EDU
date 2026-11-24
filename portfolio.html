@@ -1,0 +1,1375 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="AURA EDU: An adaptive English grammar learning research prototype integrating instructional scaffolding and learning analytics.">
+<title>AURA EDU | PhD Research Portfolio</title>
+
+<style>
+:root{
+  --navy:#17365d;
+  --navy2:#244f72;
+  --teal:#16877f;
+  --mint:#e8f6f2;
+  --bg:#f7f9fc;
+  --white:#ffffff;
+  --text:#29384b;
+  --muted:#65758a;
+  --line:#e0e7ef;
+  --gold:#d7a65a;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Arial,"PingFang SC",sans-serif;
+  color:var(--text);
+  background:var(--bg);
+  line-height:1.75;
+}
+a{color:inherit}
+button{font:inherit}
+.container{
+  width:min(1160px,calc(100% - 40px));
+  margin:auto;
+}
+header{
+  position:sticky;
+  top:0;
+  z-index:20;
+  background:rgba(255,255,255,.97);
+  border-bottom:1px solid var(--line);
+}
+.nav{
+  min-height:76px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  flex-wrap:wrap;
+}
+.logo{
+  text-decoration:none;
+  font-size:23px;
+  font-weight:800;
+  color:var(--navy);
+}
+.logo span{color:var(--teal)}
+.nav-links{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:16px;
+}
+.nav-links a{
+  text-decoration:none;
+  font-size:13px;
+  font-weight:600;
+}
+.nav-links a:hover{color:var(--teal)}
+.language{
+  border:1px solid var(--line);
+  background:white;
+  border-radius:8px;
+  padding:7px 12px;
+  cursor:pointer;
+  color:var(--navy);
+}
+.hero{
+  background:linear-gradient(130deg,#f8fbfd,#e9f5f2);
+  padding:105px 0 95px;
+}
+.hero-grid{
+  display:grid;
+  grid-template-columns:1.2fr .9fr;
+  gap:65px;
+  align-items:center;
+}
+.eyebrow{
+  font-size:12px;
+  letter-spacing:2px;
+  font-weight:800;
+  color:var(--teal);
+  text-transform:uppercase;
+}
+h1,h2,h3{
+  color:var(--navy);
+  line-height:1.25;
+}
+h1{
+  font-size:clamp(36px,5vw,60px);
+  margin:22px 0;
+  letter-spacing:-1.5px;
+}
+h2{
+  font-size:clamp(28px,3.5vw,39px);
+  margin:12px 0 22px;
+}
+h3{font-size:20px}
+p{color:var(--muted)}
+.lead{
+  font-size:18px;
+  max-width:650px;
+}
+.actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-top:28px;
+}
+.btn{
+  display:inline-block;
+  padding:12px 19px;
+  border-radius:9px;
+  text-decoration:none;
+  font-weight:700;
+  font-size:14px;
+  background:var(--navy);
+  color:white;
+  border:1px solid var(--navy);
+  transition:.2s;
+}
+.btn:hover{
+  transform:translateY(-2px);
+  opacity:.9;
+}
+.btn.outline{
+  background:transparent;
+  color:var(--navy);
+}
+.btn.teal{
+  background:var(--teal);
+  border-color:var(--teal);
+}
+.hero-panel{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:22px;
+  padding:30px;
+  box-shadow:0 20px 55px rgba(23,54,93,.09);
+}
+.panel-label{
+  color:var(--teal);
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:1px;
+}
+.process-step{
+  background:#f0f5f8;
+  border-radius:10px;
+  padding:15px;
+  font-size:14px;
+  font-weight:700;
+  text-align:center;
+}
+.process-arrow{
+  text-align:center;
+  color:var(--teal);
+  font-size:22px;
+  margin:4px;
+}
+.hero-note{
+  font-size:12px;
+  margin-top:15px;
+}
+section{
+  padding:85px 0;
+  scroll-margin-top:100px;
+}
+.section-head{
+  max-width:760px;
+  margin-bottom:32px;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:22px;
+}
+.grid.two{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+.card{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:27px;
+}
+.card p{margin-bottom:0}
+.card-number{
+  color:var(--teal);
+  font-size:13px;
+  font-weight:800;
+}
+.soft{background:#edf4f7}
+.dark{
+  background:linear-gradient(135deg,#17365d,#245b72);
+  color:white;
+}
+.dark h2,.dark h3,.dark p{color:white}
+.dark .eyebrow{color:#91dfd5}
+.architecture{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+  align-items:stretch;
+}
+.arch-item{
+  background:white;
+  border:1px solid var(--line);
+  border-top:4px solid var(--teal);
+  padding:23px;
+  border-radius:13px;
+}
+.arch-item strong{
+  display:block;
+  color:var(--navy);
+  margin-bottom:8px;
+}
+.arch-item p{
+  margin:0;
+  font-size:13px;
+}
+.arch-arrow{
+  grid-column:1/-1;
+  text-align:center;
+  font-size:24px;
+  color:var(--teal);
+}
+.module-tag{
+  display:inline-block;
+  background:var(--mint);
+  color:#14675f;
+  border-radius:20px;
+  padding:5px 12px;
+  font-size:12px;
+  font-weight:700;
+}
+.module-card{
+  display:flex;
+  flex-direction:column;
+}
+.module-card .btn{
+  margin-top:auto;
+  align-self:flex-start;
+}
+.module-card p{margin-bottom:22px}
+.evidence-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:22px;
+}
+.evidence-card{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:28px;
+  border-top:4px solid var(--teal);
+}
+.evidence-card .btn{margin-top:14px}
+.note{
+  padding:20px;
+  border-left:4px solid var(--gold);
+  background:#fff8eb;
+  border-radius:9px;
+  margin-top:30px;
+}
+.note p{
+  margin:0;
+  color:#765c31;
+}
+.timeline{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:20px;
+}
+.timeline-item{
+  background:white;
+  border:1px solid var(--line);
+  padding:24px;
+  border-radius:13px;
+}
+.timeline-item span{
+  font-size:12px;
+  color:var(--teal);
+  font-weight:800;
+}
+.timeline-item h3{margin:10px 0}
+.contribution-card{
+  border-top:5px solid var(--teal);
+}
+.contribution-card .card-number{
+  letter-spacing:1px;
+}
+.contribution-card p{
+  margin-top:14px;
+}
+.research-feature{
+  background:linear-gradient(135deg,#17365d,#245e78);
+  border-radius:18px;
+  padding:32px;
+  color:white;
+  margin-top:30px;
+}
+.research-feature h3,
+.research-feature p{
+  color:white;
+}
+.research-feature .btn.outline{
+  color:white;
+  border-color:white;
+}
+.research-feature .eyebrow{
+  color:#91dfd5;
+}
+footer{
+  background:#102c4b;
+  padding:40px 0;
+  text-align:center;
+}
+footer p,footer a{color:#d8e6f0}
+footer a{margin:0 10px}
+@media(max-width:850px){
+  .hero-grid,
+  .grid,
+  .grid.two,
+  .architecture,
+  .evidence-grid,
+  .timeline{
+    grid-template-columns:1fr;
+  }
+  .hero{padding:65px 0}
+  section{padding:60px 0}
+  .nav{padding:15px 0}
+}
+@media print{
+  header,.actions,footer,.language{
+    display:none;
+  }
+  section{padding:30px 0}
+  body{background:white}
+  .card,.arch-item,.evidence-card{
+    break-inside:avoid;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="container nav">
+
+  <a href="portfolio.html" class="logo">
+    AURA <span>EDU</span>
+  </a>
+
+  <nav class="nav-links">
+
+    <a href="#vision"
+       data-en="Research"
+       data-zh="研究方向">
+      Research
+    </a>
+
+    <a href="#motivation"
+       data-en="Motivation"
+       data-zh="研究动机">
+      Motivation
+    </a>
+
+    <a href="#architecture"
+       data-en="Architecture"
+       data-zh="系统架构">
+      Architecture
+    </a>
+
+    <a href="research-architecture.html"
+       data-en="Research Framework"
+       data-zh="研究框架">
+      Research Framework
+    </a>
+
+    <a href="#contributions"
+       data-en="Contributions"
+       data-zh="研究贡献">
+      Contributions
+    </a>
+
+    <a href="#prototype"
+       data-en="Prototype"
+       data-zh="学习原型">
+      Prototype
+    </a>
+
+    <a href="#analytics"
+       data-en="Analytics"
+       data-zh="学习分析">
+      Analytics
+    </a>
+
+    <a href="#future"
+       data-en="Future Research"
+       data-zh="未来研究">
+      Future Research
+    </a>
+
+    <button type="button"
+            class="language"
+            id="language-btn">
+      中文
+    </button>
+
+  </nav>
+</div>
+</header>
+
+<main>
+
+<section class="hero">
+<div class="container hero-grid">
+
+  <div>
+    <div class="eyebrow">
+      PhD Research Portfolio · Educational Technology
+    </div>
+
+    <h1
+      data-en="Designing Adaptive Learning That Supports Independent Thinking."
+      data-zh="设计促进独立思考的自适应学习系统">
+      Designing Adaptive Learning That Supports Independent Thinking.
+    </h1>
+
+    <p class="lead"
+       data-en="AURA EDU is a research prototype exploring how instructional scaffolding, explainable adaptive decisions and learning analytics can support English grammar learning among students aged 10–12."
+       data-zh="AURA EDU 是一个教育研究原型，探索如何结合分层教学支架、可解释的自适应决策和学习分析，支持10至12岁学生的英语语法学习。">
+      AURA EDU is a research prototype exploring
+      how instructional scaffolding, explainable
+      adaptive decisions and learning analytics
+      can support English grammar learning among
+      students aged 10–12.
+    </p>
+
+    <div class="actions">
+
+      <a href="research-architecture.html"
+         class="btn teal"
+         data-en="Explore Research Architecture"
+         data-zh="探索研究架构">
+        Explore Research Architecture
+      </a>
+
+      <a href="research.html"
+         class="btn"
+         data-en="Explore Research Lab"
+         data-zh="探索研究实验室">
+        Explore Research Lab
+      </a>
+
+      <a href="unit/" class="btn teal">体验 PEP 单元学习与 AI 口语</a>
+      <a href="index.html"
+         class="btn outline"
+         data-en="Experience Learning Prototype"
+         data-zh="体验学习原型">
+        Experience Learning Prototype
+      </a>
+
+    </div>
+
+    <p class="hero-note"
+       data-en="Functional research prototype · Developer-tested · Empirical validation not yet conducted"
+       data-zh="功能性研究原型 · 已进行开发测试 · 尚未开展正式实证验证">
+      Functional research prototype · Developer-tested ·
+      Empirical validation not yet conducted
+    </p>
+  </div>
+
+  <div class="hero-panel">
+
+    <div class="panel-label">
+      AURA EDU · ADAPTIVE LEARNING MODEL
+    </div>
+
+    <h3>Learning Evidence Pipeline</h3>
+
+    <div class="process-step">
+      Learner Response
+    </div>
+
+    <div class="process-arrow">↓</div>
+
+    <div class="process-step">
+      Error &amp; Performance Analysis
+    </div>
+
+    <div class="process-arrow">↓</div>
+
+    <div class="process-step">
+      Graduated Instructional Scaffolding
+    </div>
+
+    <div class="process-arrow">↓</div>
+
+    <div class="process-step">
+      Immediate Independent Reassessment
+    </div>
+
+    <div class="process-arrow">↓</div>
+
+    <div class="process-step">
+      Learning Analytics &amp; Recommendations
+    </div>
+
+    <p class="hero-note">
+      Conceptual representation of the implemented
+      prototype workflow.
+    </p>
+
+  </div>
+
+</div>
+</section>
+
+<section id="vision">
+<div class="container">
+
+  <div class="section-head">
+
+    <div class="eyebrow">
+      01 / Research Vision
+    </div>
+
+    <h2 data-en="Why Adaptive Learning?"
+        data-zh="为什么研究自适应学习？">
+      Why Adaptive Learning?
+    </h2>
+
+    <p
+      data-en="Learners differ in prior knowledge, learning difficulties and support needs. A learning system should respond to these differences rather than assume that one sequence is appropriate for everyone."
+      data-zh="学生在先前知识、学习困难和所需支持方面存在差异。学习系统应当回应这些差异，而不是假设所有学生都适合同一种学习路径。">
+      Learners differ in prior knowledge,
+      learning difficulties and support needs.
+      A learning system should respond to
+      these differences rather than assume
+      that one sequence is appropriate for everyone.
+    </p>
+
+  </div>
+
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-number">
+        RESEARCH QUESTION
+      </div>
+      <h3>Adaptive Support</h3>
+      <p>
+        How can learning evidence inform
+        differentiated instructional support?
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="card-number">
+        RESEARCH QUESTION
+      </div>
+      <h3>Independent Learning</h3>
+      <p>
+        How can a system distinguish supported
+        task completion from independent performance?
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="card-number">
+        RESEARCH QUESTION
+      </div>
+      <h3>Learning Analytics</h3>
+      <p>
+        How can question-level evidence
+        make adaptive learning decisions
+        more transparent and explainable?
+      </p>
+    </div>
+
+  </div>
+
+</div>
+</section>
+
+<section id="motivation" class="soft">
+<div class="container">
+
+  <div class="eyebrow">
+    02 / Research Motivation
+  </div>
+
+  <h2
+    data-en="Inspired by Individual Differences in Learning."
+    data-zh="研究动机源于对学生个体学习差异的观察">
+    Inspired by Individual Differences in Learning.
+  </h2>
+
+  <div class="grid two">
+
+    <div class="card">
+
+      <h3>Teaching Experience</h3>
+
+      <p>
+        My experience providing one-to-one tutoring
+        highlighted that learners may require
+        different explanations, levels of guidance
+        and opportunities for practice, even when
+        studying the same concept.
+      </p>
+
+      <p>
+        This experience motivated my interest in
+        designing adaptive support that is not
+        limited to individual tutoring settings.
+      </p>
+
+    </div>
+
+    <div class="card">
+
+      <h3>
+        From Business Analytics to Learning Analytics
+      </h3>
+
+      <p>
+        My academic background in Business Analytics
+        motivated me to explore how structured data,
+        transparent decision rules and analytical
+        reasoning could be applied to educational
+        learning processes.
+      </p>
+
+      <p>
+        AURA EDU connects this analytical perspective
+        with educational questions about feedback,
+        scaffolding and independent learning.
+      </p>
+
+    </div>
+
+  </div>
+
+</div>
+</section>
+
+<section id="architecture">
+<div class="container">
+
+  <div class="section-head">
+
+    <div class="eyebrow">
+      03 / System Architecture
+    </div>
+
+    <h2>
+      How AURA EDU Connects Learning and Evidence
+    </h2>
+
+    <p>
+      A dual-layer adaptive framework combines
+      question-level instructional support
+      with knowledge-level learning recommendations.
+    </p>
+
+  </div>
+
+  <div class="architecture">
+
+    <div class="arch-item">
+      <strong>
+        01 · Diagnostic Assessment
+      </strong>
+      <p>
+        Collect initial grammar performance
+        and identify task difficulties.
+      </p>
+    </div>
+
+    <div class="arch-item">
+      <strong>
+        02 · Question-Level Scaffolding
+      </strong>
+      <p>
+        Provide graduated hints and feedback
+        during learning tasks.
+      </p>
+    </div>
+
+    <div class="arch-item">
+      <strong>
+        03 · Practice Evidence
+      </strong>
+      <p>
+        Record first-attempt correctness,
+        hint exposure and error codes.
+      </p>
+    </div>
+
+    <div class="arch-arrow">↓</div>
+
+    <div class="arch-item">
+      <strong>
+        04 · Independent Reassessment
+      </strong>
+      <p>
+        Examine immediate independent
+        application after practice.
+      </p>
+    </div>
+
+    <div class="arch-item">
+      <strong>
+        05 · Adaptive Decision Rules
+      </strong>
+      <p>
+        Generate provisional learning
+        recommendations from recorded evidence.
+      </p>
+    </div>
+
+    <div class="arch-item">
+      <strong>
+        06 · Learning Analytics
+      </strong>
+      <p>
+        Present learner-level and
+        question-level descriptive evidence.
+      </p>
+    </div>
+
+  </div>
+
+  <div class="research-feature">
+
+    <div class="eyebrow">
+      RESEARCH FRAMEWORK
+    </div>
+
+    <h3>
+      Explore the Full Dual-Layer Adaptive Architecture
+    </h3>
+
+    <p>
+      Examine how content adaptation,
+      support adaptation, immediate independent
+      reassessment and explainable learning
+      decisions are connected within AURA EDU.
+    </p>
+
+    <div class="actions">
+
+      <a href="research-architecture.html"
+         class="btn teal"
+         data-en="View Full Research Architecture"
+         data-zh="查看完整研究架构">
+        View Full Research Architecture
+      </a>
+
+      <a href="decision-explorer.html"
+         class="btn outline">
+        Decision Explorer
+      </a>
+
+    </div>
+
+  </div>
+
+  <div class="note">
+    <p>
+      <strong>Implementation Boundary:</strong>
+      The current prototype uses structured
+      adaptive rules and recorded learning
+      evidence. It should not be presented
+      as a validated autonomous AI tutor.
+      Delayed reassessment and formal
+      educational evaluation remain future work.
+    </p>
+  </div>
+
+</div>
+</section>
+
+<section id="contributions" class="soft">
+<div class="container">
+
+  <div class="section-head">
+
+    <div class="eyebrow">
+      04 / Proposed Research Contributions
+    </div>
+
+    <h2
+      data-en="Connecting Educational Theory, Adaptive Technology and Learning Analytics"
+      data-zh="连接教育理论、自适应技术与学习分析">
+      Connecting Educational Theory,
+      Adaptive Technology and Learning Analytics
+    </h2>
+
+    <p
+      data-en="AURA EDU provides a functional design foundation for investigating three proposed areas of doctoral research contribution. These are research directions, not empirically established findings."
+      data-zh="AURA EDU 为未来博士研究提供了功能性设计基础，重点探索三个拟议研究贡献方向。这些属于研究方向，而不是已经通过实证验证的研究结论。">
+      AURA EDU provides a functional design
+      foundation for investigating three proposed
+      areas of doctoral research contribution.
+      These are research directions, not
+      empirically established findings.
+    </p>
+
+  </div>
+
+  <div class="grid">
+
+    <div class="card contribution-card">
+
+      <div class="card-number">
+        CONTRIBUTION 01
+      </div>
+
+      <h3>Educational Design</h3>
+
+      <p>
+        Explore how graduated instructional
+        scaffolding and formative assessment
+        can support English grammar learning.
+      </p>
+
+      <p>
+        Emphasise independent application
+        rather than answer provision alone.
+      </p>
+
+    </div>
+
+    <div class="card contribution-card">
+
+      <div class="card-number">
+        CONTRIBUTION 02
+      </div>
+
+      <h3>Explainable Adaptive Technology</h3>
+
+      <p>
+        Investigate a dual-layer adaptive
+        framework combining learning content
+        recommendations with differentiated
+        instructional support.
+      </p>
+
+      <p>
+        Use inspectable decision rules
+        and recorded learning evidence.
+      </p>
+
+    </div>
+
+    <div class="card contribution-card">
+
+      <div class="card-number">
+        CONTRIBUTION 03
+      </div>
+
+      <h3>Learning Analytics Methodology</h3>
+
+      <p>
+        Examine how first-attempt correctness,
+        error patterns, hint exposure
+        and independent reassessment
+        can be analysed together.
+      </p>
+
+      <p>
+        Inform future educational evaluation
+        and research design.
+      </p>
+
+    </div>
+
+  </div>
+
+  <div class="actions">
+
+    <a href="research-architecture.html#contributions"
+       class="btn teal"
+       data-en="Explore Proposed Contributions"
+       data-zh="探索拟议研究贡献">
+      Explore Proposed Contributions
+    </a>
+
+    <a href="research-architecture.html#roadmap"
+       class="btn outline"
+       data-en="View Doctoral Research Roadmap"
+       data-zh="查看博士研究路线图">
+      View Doctoral Research Roadmap
+    </a>
+
+  </div>
+
+</div>
+</section>
+
+<section id="prototype">
+<div class="container">
+
+  <div class="section-head">
+
+    <div class="eyebrow">
+      05 / Functional Prototype
+    </div>
+
+    <h2>
+      Three English Grammar Learning Modules
+    </h2>
+
+    <p>
+      The current prototype focuses on English
+      grammar and sentence construction
+      for learners aged 10–12.
+    </p>
+
+  </div>
+
+  <div class="grid">
+
+    <div class="card module-card">
+
+      <span class="module-tag">
+        G1 · IMPLEMENTED
+      </span>
+
+      <h3>Verb to Be</h3>
+
+      <p>
+        Practice the use of am, is and are
+        through diagnostic tasks, scaffolded
+        practice and immediate reassessment.
+      </p>
+
+      <a href="g1.html" class="btn outline">
+        Explore G1
+      </a>
+
+    </div>
+
+    <div class="card module-card">
+
+      <span class="module-tag">
+        G2 · IMPLEMENTED
+      </span>
+
+      <h3>Subject–Verb Agreement</h3>
+
+      <p>
+        Examine subject–verb relationships,
+        record learner difficulties and
+        provide differentiated support.
+      </p>
+
+      <a href="g2.html" class="btn outline">
+        Explore G2
+      </a>
+
+    </div>
+
+    <div class="card module-card">
+
+      <span class="module-tag">
+        G3 · IMPLEMENTED
+      </span>
+
+      <h3>Sentence Construction</h3>
+
+      <p>
+        Support sentence ordering,
+        grammar awareness and
+        independent sentence construction.
+      </p>
+
+      <a href="g3.html" class="btn outline">
+        Explore G3
+      </a>
+
+    </div>
+
+  </div>
+
+  <div class="actions">
+
+    <a href="index.html" class="btn teal">
+      Open Learning Platform
+    </a>
+
+    <a href="decision-explorer.html"
+       class="btn outline">
+      Explore Adaptive Decisions
+    </a>
+
+  </div>
+
+</div>
+</section>
+
+<section id="analytics" class="soft">
+<div class="container">
+
+  <div class="section-head">
+
+    <div class="eyebrow">
+      06 / Learning Analytics
+    </div>
+
+    <h2>
+      Making the Learning Process Visible
+    </h2>
+
+    <p>
+      AURA EDU connects learner-specific sessions,
+      question-level records and
+      descriptive learning analytics.
+    </p>
+
+  </div>
+
+  <div class="evidence-grid">
+
+    <div class="evidence-card">
+
+      <h3>
+        Cross-Module Learner Evidence
+      </h3>
+
+      <p>
+        Inspect matched G1/G2/G3 learning sessions,
+        assessment stages and recorded support.
+      </p>
+
+      <a href="learner-evidence.html" class="btn">
+        Explore Learner Evidence
+      </a>
+
+    </div>
+
+    <div class="evidence-card">
+
+      <h3>
+        Question-Level Analytics
+      </h3>
+
+      <p>
+        Analyse first-attempt accuracy,
+        hint exposure, error codes
+        and immediate reassessment.
+      </p>
+
+      <a href="question-level-analytics.html"
+         class="btn">
+        Explore Question Analytics
+      </a>
+
+    </div>
+
+    <div class="evidence-card">
+
+      <h3>
+        Learner Process Report
+      </h3>
+
+      <p>
+        Generate descriptive individual reports
+        from matched browser-local sessions.
+      </p>
+
+      <a href="learner-process-report.html"
+         class="btn">
+        Open Learner Report
+      </a>
+
+    </div>
+
+    <div class="evidence-card">
+
+      <h3>Research Lab</h3>
+
+      <p>
+        Explore research methodology,
+        decision models, data quality
+        and prototype evaluation resources.
+      </p>
+
+      <a href="research.html" class="btn">
+        Open Research Lab
+      </a>
+
+    </div>
+
+  </div>
+
+  <div class="note">
+    <p>
+      <strong>Evidence Integrity:</strong>
+      Student A/B/C in the Research Lab
+      are fictional demonstration profiles.
+      Browser-local learner records
+      are development evidence, not
+      independently verified research data.
+    </p>
+  </div>
+
+</div>
+</section>
+
+<section id="future">
+<div class="container">
+
+  <div class="section-head">
+
+    <div class="eyebrow">
+      07 / Future PhD Research
+    </div>
+
+    <h2>
+      From Prototype Development to
+      Empirical Investigation
+    </h2>
+
+    <p>
+      AURA EDU provides a starting point
+      for a future doctoral research programme
+      in Educational Technology and Learning Analytics.
+    </p>
+
+  </div>
+
+  <div class="timeline">
+
+    <div class="timeline-item">
+
+      <span>PHASE 01</span>
+
+      <h3>Expert Review</h3>
+
+      <p>
+        Evaluate instructional content,
+        scaffolding appropriateness,
+        adaptive rules and research instruments.
+      </p>
+
+    </div>
+
+    <div class="timeline-item">
+
+      <span>PHASE 02</span>
+
+      <h3>Usability and Feasibility</h3>
+
+      <p>
+        Conduct ethically approved pilot
+        studies to investigate learner
+        usability and implementation feasibility.
+      </p>
+
+    </div>
+
+    <div class="timeline-item">
+
+      <span>PHASE 03</span>
+
+      <h3>Learning Outcomes Evaluation</h3>
+
+      <p>
+        Investigate independent grammar
+        performance, delayed retention
+        and the relationship between
+        support patterns and learning outcomes.
+      </p>
+
+    </div>
+
+  </div>
+
+  <div class="actions">
+
+    <a href="research-methodology.html"
+       class="btn">
+      View Research Methodology
+    </a>
+
+    <a href="research-documentation-hub.html"
+       class="btn outline">
+      View Documentation Hub
+    </a>
+
+    <a href="research-architecture.html#roadmap"
+       class="btn outline">
+      Research Roadmap
+    </a>
+
+  </div>
+
+</div>
+</section>
+
+<section class="dark">
+<div class="container">
+
+  <div class="eyebrow">
+    Research Portfolio
+  </div>
+
+  <h2>Explore AURA EDU</h2>
+
+  <p>
+    A functional prototype demonstrating
+    explainable adaptive grammar learning,
+    instructional scaffolding and
+    learning process analytics.
+  </p>
+
+  <div class="actions">
+
+    <a href="research-architecture.html"
+       class="btn teal">
+      Research Architecture
+    </a>
+
+    <a href="research.html"
+       class="btn">
+      Research Lab
+    </a>
+
+    <a href="index.html"
+       class="btn outline"
+       style="color:white;border-color:white">
+      Learning Platform
+    </a>
+
+  </div>
+
+</div>
+</section>
+
+</main>
+
+<footer>
+<div class="container">
+
+  <strong>
+    AURA EDU · PhD Research Portfolio
+  </strong>
+
+  <p>
+    Adaptive Learning · Instructional Scaffolding ·
+    Learning Analytics
+  </p>
+
+  <p>
+    <a href="research-architecture.html">
+      Research Architecture
+    </a>
+
+    <a href="research.html">
+      Research Lab
+    </a>
+
+    <a href="index.html">
+      Learning Platform
+    </a>
+
+    <a href="research-documentation-hub.html">
+      Documentation
+    </a>
+  </p>
+
+  <p>
+    Functional research prototype.
+    Empirical effectiveness has not been established.
+  </p>
+
+</div>
+</footer>
+
+<script>
+"use strict";
+
+/*
+  AURA EDU
+  Stage 22.2.2 — Portfolio Integration
+
+  Preserves:
+  - Original portfolio sections
+  - Bilingual controls
+  - Learning module links
+  - Learning analytics links
+  - Future research roadmap
+
+  Adds:
+  - Research Architecture navigation
+  - Research Contributions section
+  - Architecture and roadmap links
+
+  No localStorage reads or writes.
+  No changes to learner records.
+*/
+
+let language="en";
+
+const languageButton=
+  document.getElementById("language-btn");
+
+function updateLanguage(){
+
+  document.querySelectorAll(
+    "[data-en][data-zh]"
+  ).forEach(element=>{
+
+    element.textContent=
+      element.getAttribute(
+        language==="en"
+          ? "data-en"
+          : "data-zh"
+      );
+
+  });
+
+  languageButton.textContent=
+    language==="en"
+      ? "中文"
+      : "English";
+
+  document.documentElement.lang=
+    language==="en"
+      ? "en"
+      : "zh-CN";
+
+}
+
+languageButton.addEventListener(
+  "click",
+  ()=>{
+
+    language=
+      language==="en"
+        ? "zh"
+        : "en";
+
+    updateLanguage();
+
+  }
+);
+
+updateLanguage();
+
+console.info(
+  "[AURA EDU] Stage 22.2.2 Portfolio Integration ready."
+);
+</script>
+
+</body>
+</html>

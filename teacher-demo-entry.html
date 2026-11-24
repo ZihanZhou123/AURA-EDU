@@ -1,0 +1,167 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width,initial-scale=1">
+
+<title>AURA EDU | Teacher Demo Entry</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:Arial,"PingFang SC",sans-serif;
+  background:#f4f7fb;
+  color:#34465e;
+}
+header{
+  background:white;
+  padding:22px 6%;
+  border-bottom:1px solid #e2e7f0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.logo{
+  font-weight:900;
+  font-size:23px;
+  color:#7659d5;
+}
+button{
+  background:#7659d5;
+  color:white;
+  border:0;
+  padding:12px 20px;
+  border-radius:10px;
+  font-weight:bold;
+  cursor:pointer;
+}
+main{
+  max-width:800px;
+  margin:70px auto;
+  padding:20px;
+}
+.card{
+  background:white;
+  padding:35px;
+  border-radius:22px;
+  box-shadow:0 12px 35px #44557712;
+}
+h1{margin-top:0}
+p{
+  color:#718096;
+  line-height:1.9;
+}
+.status{
+  display:inline-block;
+  background:#e5f6ec;
+  color:#26774b;
+  padding:9px 14px;
+  border-radius:9px;
+  font-size:14px;
+  font-weight:bold;
+}
+.notice{
+  background:#f2f0ff;
+  padding:18px;
+  border-radius:13px;
+  margin-top:25px;
+  line-height:1.8;
+}
+.dashboard-link{
+  display:inline-block;
+  margin-top:24px;
+  padding:15px 24px;
+  border-radius:12px;
+  background:#287e74;
+  color:white;
+  text-decoration:none;
+  font-weight:bold;
+}
+.dashboard-link:hover{
+  background:#20685f;
+}
+@media(max-width:600px){
+  main{margin:25px auto}
+  .card{padding:22px}
+}
+</style>
+
+<script src="js/teacher-demo-auth.js"></script>
+<script>
+"use strict";
+
+if (
+  !window.AuraTeacherDemoAuth ||
+  !window.AuraTeacherDemoAuth.isLoggedIn()
+) {
+  window.location.replace("teacher-login.html");
+}
+</script>
+</head>
+
+<body style="visibility:hidden">
+
+<header>
+  <div class="logo">✦ AURA EDU</div>
+  <button id="logoutButton" type="button">
+    Log Out
+  </button>
+</header>
+
+<main>
+  <section class="card">
+    <h1>Welcome, Teacher!</h1>
+
+    <div class="status">
+      ✓ Demo Session Active
+    </div>
+
+    <p>
+      欢迎进入 AURA EDU 教师演示空间。
+    </p>
+
+    <p>
+      Your demonstration session is active.
+      You may continue to the research dashboard.
+    </p>
+
+    <a class="dashboard-link"
+       href="teacher-portal.html">
+      📊 Open Teacher Dashboard →
+    </a>
+
+    <div class="notice">
+      <strong>Stage 25.2.2</strong>
+      <br>
+      Teacher Navigation Guard
+      <br><br>
+      教师后台现在检查演示登录状态。
+      下一阶段将整合学生列表与个人学习报告。
+    </div>
+  </section>
+</main>
+
+<script>
+"use strict";
+
+if (
+  window.AuraTeacherDemoAuth &&
+  window.AuraTeacherDemoAuth.isLoggedIn()
+) {
+  document.body.style.visibility = "visible";
+
+  document.getElementById(
+    "logoutButton"
+  ).addEventListener("click", function() {
+    window.AuraTeacherDemoAuth.logout();
+    window.location.replace("teacher-login.html");
+  });
+}
+</script>
+
+</body>
+</html>

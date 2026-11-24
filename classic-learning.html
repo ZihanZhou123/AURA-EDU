@@ -1,0 +1,1145 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AURA EDU — Adaptive English Learning Research Prototype</title>
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+.research-lab-entry,.grammar-entry{
+  margin-top:18px;
+  padding:24px;
+  border:1px solid #d7e8e6;
+  border-radius:16px;
+  background:linear-gradient(135deg,#f2f8fc,#eaf7f4);
+}
+.research-lab-entry h3,.grammar-entry h3{
+  color:#17365d;
+  margin:8px 0;
+}
+.research-lab-entry p,.grammar-entry p{
+  color:#52647a;
+  line-height:1.7;
+}
+.research-lab-button,.grammar-button{
+  display:inline-block;
+  margin-top:12px;
+  padding:12px 20px;
+  border-radius:9px;
+  background:#17365d;
+  color:white;
+  text-decoration:none;
+  font-weight:600;
+}
+.research-lab-button:hover,.grammar-button:hover{
+  background:#218b83;
+}
+.sidebar .research-nav-link,
+.sidebar .grammar-nav-link,
+.sidebar .analytics-nav-link{
+  display:block;
+  box-sizing:border-box;
+  width:100%;
+  text-decoration:none;
+  text-align:left;
+  color:inherit;
+}
+.grammar-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:16px;
+  margin-top:20px;
+}
+.grammar-card{
+  background:white;
+  border:1px solid #dfe7ee;
+  border-radius:14px;
+  padding:20px;
+}
+.grammar-card h3{
+  color:#17365d;
+  margin:12px 0;
+}
+.grammar-card p{
+  color:#64748b;
+  line-height:1.7;
+}
+.grammar-tag{
+  display:inline-block;
+  background:#e7f5f0;
+  color:#17645e;
+  padding:5px 12px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:700;
+}
+.grammar-card a{
+  display:inline-block;
+  margin-top:10px;
+  background:#218b83;
+  color:white;
+  padding:10px 16px;
+  border-radius:8px;
+  text-decoration:none;
+  font-weight:600;
+}
+.grammar-card a:hover{background:#17365d}
+.grammar-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-top:20px;
+}
+.grammar-actions a{
+  display:inline-block;
+  text-decoration:none;
+  padding:12px 19px;
+  border-radius:9px;
+  font-weight:600;
+  background:#17365d;
+  color:white;
+}
+.grammar-actions a.secondary{
+  background:#218b83;
+}
+.grammar-actions a:hover{
+  opacity:.9;
+}
+.grammar-note{
+  background:#edf7f4;
+  border-left:4px solid #218b83;
+  padding:15px;
+  border-radius:8px;
+  margin-top:20px;
+}
+@media(max-width:850px){
+  .grammar-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+<div class="shell">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div class="brand">
+      AURA <span>EDU</span>
+    </div>
+
+    <div class="caption">
+      Adaptive Learning Research Prototype
+    </div>
+
+    <button class="nav active" data-page="home">
+      ⌂ Dashboard
+    </button>
+
+    <button class="nav" data-page="curriculum">
+      ▤ Curriculum
+    </button>
+
+    <button class="nav" data-page="learn">
+      ✦ Adaptive Learning
+    </button>
+
+    <a class="nav grammar-nav-link" href="grammar-hub.html">
+      ✎ Grammar Learning ↗
+    </a>
+
+    <button class="nav" data-page="speaking">
+      ♬ Speaking Partner
+    </button>
+
+    <button class="nav" data-page="writing">
+      ✎ Writing Tutor
+    </button>
+
+    <button class="nav" data-page="analytics">
+      ▥ Learning Analytics
+    </button>
+
+    <a class="nav analytics-nav-link" href="grammar-analytics.html">
+      ◫ Grammar Analytics ↗
+    </a>
+
+    <button class="nav" data-page="research">
+      ◇ Research Portfolio
+    </button>
+
+    <a class="nav research-nav-link" href="research.html">
+      ◈ Research Lab ↗
+    </a>
+
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <header class="top">
+      <div>
+        <strong>AURA Learning Studio</strong>
+        <div class="small muted">
+          Curriculum-aligned adaptive English learning
+        </div>
+      </div>
+
+      <div class="chip">
+        🎓 <span id="student-label">Explorer</span>
+      </div>
+    </header>
+
+    <!-- PAGE 1: DASHBOARD -->
+    <section class="page active" id="home">
+
+      <div class="hero">
+        <div class="eyebrow" style="color:#e0dfff">
+          EDUCATION × AI × LEARNING ANALYTICS
+        </div>
+
+        <h1>
+          Learn English.<br>
+          Find Your Voice.
+        </h1>
+
+        <p>
+          A research-oriented learning experience that connects
+          understanding, guided practice and independent communication.
+        </p>
+
+        <div class="buttons">
+          <button class="btn" data-go="curriculum">
+            Explore Learning Path →
+          </button>
+
+          <button class="btn secondary" data-go="research">
+            Research Vision
+          </button>
+        </div>
+      </div>
+
+      <div class="grid section">
+
+        <div class="card">
+          <span class="pill">01 · UNDERSTAND</span>
+          <h3 class="section">Learn with purpose</h3>
+          <p>
+            Explore structured sample learning units and
+            knowledge prerequisites.
+          </p>
+        </div>
+
+        <div class="card">
+          <span class="pill">02 · PRACTISE</span>
+          <h3 class="section">Get helpful feedback</h3>
+          <p>
+            Review errors, request graduated hints and
+            retry difficult skills.
+          </p>
+        </div>
+
+        <div class="card">
+          <span class="pill">03 · COMMUNICATE</span>
+          <h3 class="section">Speak independently</h3>
+          <p>
+            Practise conversations using microphone or
+            typed testing mode.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- GRAMMAR LEARNING -->
+      <div class="grammar-entry">
+
+        <span class="pill">
+          ADAPTIVE GRAMMAR LEARNING
+        </span>
+
+        <h3>Grammar Learning Hub</h3>
+
+        <p>
+          面向 10–12 岁学习者的英语语法学习中心。
+          完成诊断、分层练习和即时独立复测，
+          了解自己的学习过程。
+        </p>
+
+        <div class="grammar-grid">
+
+          <div class="grammar-card">
+            <span class="grammar-tag">G1 · AVAILABLE</span>
+            <h3>Verb to Be</h3>
+            <p>学习 am、is、are。</p>
+            <p>She is my friend.</p>
+            <a href="grammar-g1.html">开始 G1 →</a>
+          </div>
+
+          <div class="grammar-card">
+            <span class="grammar-tag">G2 · AVAILABLE</span>
+            <h3>Subject–Verb Agreement</h3>
+            <p>学习一般现在时的主谓一致。</p>
+            <p>He plays football.</p>
+            <a href="grammar-g2.html">开始 G2 →</a>
+          </div>
+
+          <div class="grammar-card">
+            <span class="grammar-tag">G3 · AVAILABLE</span>
+            <h3>Sentence Construction</h3>
+            <p>通过词块排序练习简单句。</p>
+            <p>The girl reads books.</p>
+            <a href="grammar-g3.html">开始 G3 →</a>
+          </div>
+
+        </div>
+
+        <div class="grammar-actions">
+          <a href="grammar-hub.html">
+            Explore Grammar Hub →
+          </a>
+          <a href="grammar-analytics.html" class="secondary">
+            View Real Grammar Analytics →
+          </a>
+        </div>
+
+        <div class="grammar-note">
+          <strong>学习数据说明：</strong>
+          G1、G2、G3 的完整学习会话保存在浏览器本地。
+          Grammar Analytics 读取这些记录；
+          原来的 Learning Analytics 仍显示原有学习活动数据。
+        </div>
+
+      </div>
+
+      <!-- RESEARCH LAB PREVIEW -->
+      <div class="research-lab-entry">
+
+        <span class="pill">
+          DOCTORAL RESEARCH PORTFOLIO
+        </span>
+
+        <h3>Explore the AURA EDU Research Lab</h3>
+
+        <p>
+          Discover the research behind AURA EDU:
+          dual-layer adaptive learning, instructional
+          scaffolding, evidence-based mastery evaluation
+          and learning analytics.
+        </p>
+
+        <p>
+          Explore simulated learner pathways and
+          transparent instructional decisions.
+        </p>
+
+        <a href="research.html" class="research-lab-button">
+          Enter Research Lab →
+        </a>
+
+      </div>
+
+      <div class="grid two section">
+
+        <div class="card">
+          <h2>Learning Profile</h2>
+
+          <label class="field" for="student-name">
+            Nickname
+          </label>
+
+          <input
+            id="student-name"
+            maxlength="30"
+            placeholder="Your nickname"
+          >
+
+          <label class="field" for="student-grade">
+            Grade
+          </label>
+
+          <select id="student-grade"></select>
+
+          <div class="buttons">
+            <button class="btn" id="save-profile">
+              Save Profile
+            </button>
+          </div>
+
+          <p class="small">
+            Use a nickname rather than a child's real name.
+          </p>
+        </div>
+
+        <div class="card">
+          <h2>Your Learning Journey</h2>
+
+          <div class="grid two">
+
+            <div>
+              <div class="metric" id="home-quiz">0</div>
+              <span class="small muted">Quiz attempts</span>
+            </div>
+
+            <div>
+              <div class="metric" id="home-voice">0</div>
+              <span class="small muted">Voice attempts</span>
+            </div>
+
+            <div>
+              <div class="metric" id="home-complete">0</div>
+              <span class="small muted">Dialogues completed</span>
+            </div>
+
+            <div>
+              <div class="metric" id="home-hints">0</div>
+              <span class="small muted">Hints requested</span>
+            </div>
+
+          </div>
+
+          <p class="small">
+            G1–G3 grammar session records are reported
+            separately in Grammar Analytics.
+          </p>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- PAGE 2: CURRICULUM -->
+    <section class="page" id="curriculum">
+
+      <div class="eyebrow">
+        STEP 5 · CURRICULUM EXPLORER
+      </div>
+
+      <h1>Curriculum Learning Path</h1>
+
+      <p>
+        Target context: China compulsory English education,
+        Grades 3–9, with FLTRP as the intended textbook family.
+      </p>
+
+      <div class="notice">
+        Important: These are original demonstration units
+        organised by broad learning themes, not verified FLTRP
+        unit titles or textbook extracts. Official edition,
+        volume and unit mappings must be checked before
+        claiming formal alignment.
+      </div>
+
+      <div class="card section">
+
+        <label class="field" for="curriculum-grade">
+          Choose a grade
+        </label>
+
+        <select id="curriculum-grade"></select>
+
+        <h3 class="section">
+          Illustrative learning units
+        </h3>
+
+        <div id="unit-list" class="grid two"></div>
+      </div>
+
+      <div class="card section">
+        <h2>Skill and Knowledge Structure</h2>
+        <div class="grid two" id="domain-list"></div>
+
+        <div class="step">
+          <strong>
+            Curriculum objective → Prerequisite →
+            Practice → Scaffold → Independent transfer
+          </strong>
+
+          <p class="small">
+            This structure is designed to make the
+            educational reasoning visible to prospective supervisors.
+          </p>
+        </div>
+      </div>
+
+      <div class="card section">
+        <h2>Grammar Knowledge Modules</h2>
+
+        <p>
+          Three implemented grammar modules for
+          learners aged 10–12.
+        </p>
+
+        <div class="grammar-grid">
+
+          <div class="grammar-card">
+            <span class="grammar-tag">G1</span>
+            <h3>Verb to Be</h3>
+            <p>am / is / are</p>
+            <a href="grammar-g1.html">Start G1 →</a>
+          </div>
+
+          <div class="grammar-card">
+            <span class="grammar-tag">G2</span>
+            <h3>Subject–Verb Agreement</h3>
+            <p>he plays / they play</p>
+            <a href="grammar-g2.html">Start G2 →</a>
+          </div>
+
+          <div class="grammar-card">
+            <span class="grammar-tag">G3</span>
+            <h3>Sentence Construction</h3>
+            <p>Subject + Verb + Object</p>
+            <a href="grammar-g3.html">Start G3 →</a>
+          </div>
+
+        </div>
+
+        <div class="grammar-actions">
+          <a href="grammar-hub.html">Open Grammar Hub →</a>
+          <a href="grammar-analytics.html" class="secondary">
+            View Grammar Analytics →
+          </a>
+        </div>
+
+        <p class="small">
+          These are original research prototype modules.
+          Formal FLTRP textbook alignment remains to be verified.
+        </p>
+      </div>
+
+    </section>
+
+    <!-- PAGE 3: ADAPTIVE LEARNING -->
+    <section class="page" id="learn">
+
+      <div class="eyebrow">
+        STEP 5 · DIAGNOSTIC LEARNING
+      </div>
+
+      <h1>Learn, Reflect, Transfer</h1>
+
+      <p>
+        Complete original curriculum-themed questions.
+        AURA records skill-specific evidence, hints and review needs.
+      </p>
+
+      <div class="grammar-entry">
+        <span class="pill">GRAMMAR LEARNING</span>
+        <h3>Choose a Grammar Mission</h3>
+
+        <p>
+          选择 G1、G2 或 G3，完成诊断、分层练习和独立复测。
+        </p>
+
+        <div class="grammar-actions">
+          <a href="grammar-hub.html">Grammar Learning Hub →</a>
+          <a href="grammar-analytics.html" class="secondary">
+            View Learning Evidence →
+          </a>
+        </div>
+      </div>
+
+      <div class="grid two section">
+
+        <div class="card">
+
+          <span class="pill" id="lesson-badge">
+            FOUNDATION
+          </span>
+
+          <h2 class="section" id="question-title">
+            Loading
+          </h2>
+
+          <p id="question-context"></p>
+          <div id="question-options"></div>
+
+          <div class="buttons">
+            <button class="btn secondary" id="quiz-hint">
+              💡 Need a Hint?
+            </button>
+
+            <button class="btn outline" id="quiz-next">
+              Next Task →
+            </button>
+          </div>
+
+          <div
+            class="feedback"
+            id="question-feedback"
+            aria-live="polite"
+          >
+            Try the task independently.
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Current Learning Unit</h3>
+          <p id="learning-unit-name"></p>
+
+          <div class="barline">
+            <div class="barlabel">
+              <span>Session progress</span>
+              <span id="quiz-progress-label">0 / 0</span>
+            </div>
+
+            <div class="bar">
+              <div id="quiz-progress" style="width:0"></div>
+            </div>
+          </div>
+
+          <div class="feedback" id="quiz-hint-box">
+            Hints begin with ideas and gradually
+            become more specific.
+          </div>
+
+          <h3 class="section">Learning Diagnosis</h3>
+
+          <div id="skill-diagnosis" class="small muted">
+            Answer a question to see learning evidence.
+          </div>
+
+          <div class="buttons">
+            <button class="btn secondary" id="retry-needs">
+              Review a Skill
+            </button>
+
+            <button class="btn" data-go="speaking">
+              Try Speaking →
+            </button>
+          </div>
+
+          <p class="small">
+            The system records observable task performance;
+            it does not infer a validated knowledge-mastery probability.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- PAGE 4: SPEAKING PARTNER -->
+    <section class="page" id="speaking">
+
+      <div class="eyebrow">SPEAKING PARTNER · V2.2</div>
+      <h1>Speak English with AURA</h1>
+
+      <p>
+        Listen, respond, request hints and practise independent
+        communication. Scenario questions are original
+        demonstration content.
+      </p>
+
+      <div class="scenarios" id="scenarios"></div>
+
+      <div class="grid two section">
+
+        <div class="card">
+
+          <div class="barlabel">
+            <span class="pill" id="scenario-label">
+              MAKING FRIENDS
+            </span>
+
+            <span id="turn-label" class="small muted">
+              Turn 1 / 4
+            </span>
+          </div>
+
+          <h3 id="scenario-title" class="section">
+            Meet a New Friend
+          </h3>
+
+          <div
+            class="chat"
+            id="chat"
+            aria-live="polite"
+          ></div>
+
+          <div class="buttons" style="align-items:center">
+
+            <button
+              class="mic"
+              id="mic"
+              aria-label="Start or stop microphone"
+            >
+              🎤
+            </button>
+
+            <button class="btn secondary" id="repeat">
+              🔊 Listen Again
+            </button>
+
+            <button class="btn outline" id="restart">
+              ↻ Restart
+            </button>
+          </div>
+
+          <label class="field" for="speech-input">
+            Typing fallback (not counted as oral practice)
+          </label>
+
+          <input
+            id="speech-input"
+            placeholder="Type an English response"
+          >
+
+          <div class="buttons">
+            <button class="btn" id="send-speech">
+              Send Response
+            </button>
+          </div>
+
+          <div
+            class="feedback"
+            id="speech-status"
+            aria-live="polite"
+          >
+            Choose a scenario and begin.
+          </div>
+        </div>
+
+        <div class="card">
+
+          <h3>Adaptive Speaking Support</h3>
+          <p>Request only as much help as you need.</p>
+
+          <div class="buttons">
+
+            <button
+              class="btn secondary"
+              data-speech-hint="1"
+            >
+              Hint 1 · Idea
+            </button>
+
+            <button
+              class="btn secondary"
+              data-speech-hint="2"
+            >
+              Hint 2 · Starter
+            </button>
+
+            <button
+              class="btn secondary"
+              data-speech-hint="3"
+            >
+              Hint 3 · Example
+            </button>
+          </div>
+
+          <div class="feedback" id="speech-hint-box">
+            Try to answer independently first.
+          </div>
+
+          <div class="grid section">
+
+            <div class="domain">
+              <strong id="turns-done">0</strong>
+              <span class="small muted">Turns completed</span>
+            </div>
+
+            <div class="domain">
+              <strong id="turns-independent">0</strong>
+              <span class="small muted">Independent turns</span>
+            </div>
+
+            <div class="domain">
+              <strong id="turns-retry">0</strong>
+              <span class="small muted">Retries</span>
+            </div>
+
+          </div>
+
+          <h3 class="section">Audio Settings</h3>
+
+          <label class="check">
+            <input type="checkbox" id="sound-toggle" checked>
+            Success sounds
+          </label>
+
+          <label class="check">
+            <input type="checkbox" id="voice-toggle" checked>
+            Spoken AI prompts
+          </label>
+
+          <label class="field" for="voice-rate">
+            Voice speed
+          </label>
+
+          <select id="voice-rate">
+            <option value="0.72">Slow</option>
+            <option value="0.88">Learning pace</option>
+            <option value="1">Natural pace</option>
+          </select>
+
+          <p class="small">
+            Browser speech recognition may use an external
+            service and may misrecognise children or accented
+            speech. Pattern matching is not a pronunciation assessment.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- PAGE 5: WRITING TUTOR -->
+    <section class="page" id="writing">
+
+      <div class="eyebrow">WRITING TUTOR</div>
+      <h1>Write. Revise. Grow.</h1>
+
+      <p>
+        Practise writing an introduction.
+        Selected rule-based checks help students notice possible errors.
+      </p>
+
+      <div class="grid two">
+
+        <div class="card">
+          <span class="pill">WRITING MISSION</span>
+          <h3 class="section">Introduce Yourself</h3>
+
+          <p>
+            Include a name, an age or school detail,
+            and an interest.
+          </p>
+
+          <textarea
+            id="writing-text"
+            placeholder="Hello! My name is..."
+          ></textarea>
+
+          <div class="buttons">
+            <button class="btn" id="check-writing">
+              Check My Writing
+            </button>
+
+            <button class="btn secondary" id="writing-hint">
+              Give Me a Hint
+            </button>
+          </div>
+
+          <div class="feedback" id="writing-feedback">
+            Your writing feedback will appear here.
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Learning Through Revision</h3>
+
+          <div class="step">
+            <strong>1 · Express</strong>
+            <p class="small">Try your own ideas first.</p>
+          </div>
+
+          <div class="step">
+            <strong>2 · Notice</strong>
+            <p class="small">Consider a specific possible issue.</p>
+          </div>
+
+          <div class="step">
+            <strong>3 · Revise</strong>
+            <p class="small">Make an independent change.</p>
+          </div>
+
+          <div class="step">
+            <strong>4 · Transfer</strong>
+            <p class="small">
+              Use your new language in conversation.
+            </p>
+          </div>
+
+          <p class="small">
+            This demonstration does not provide unrestricted
+            grammatical or semantic evaluation.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- PAGE 6: LEARNING ANALYTICS -->
+    <section class="page" id="analytics">
+
+      <div class="eyebrow">LEARNING ANALYTICS</div>
+      <h1>Evidence of the Learning Process</h1>
+
+      <p>
+        Activity data stored in this browser,
+        not validated estimates of proficiency or educational impact.
+      </p>
+
+      <div class="grammar-entry">
+        <span class="pill">GRAMMAR ANALYTICS</span>
+        <h3>G1–G3 Real Learning Evidence</h3>
+
+        <p>
+          查看三个语法模块的诊断正确率、即时独立复测表现、
+          提示使用情况和学习路径建议。
+        </p>
+
+        <a href="grammar-analytics.html" class="grammar-button">
+          Open Grammar Analytics →
+        </a>
+      </div>
+
+      <div class="grid section">
+
+        <div class="card">
+          <div class="small muted">Quiz accuracy</div>
+          <div class="metric" id="accuracy">—</div>
+        </div>
+
+        <div class="card">
+          <div class="small muted">Voice attempts</div>
+          <div class="metric" id="voice-count">0</div>
+        </div>
+
+        <div class="card">
+          <div class="small muted">Completed dialogues</div>
+          <div class="metric" id="dialogue-count">0</div>
+        </div>
+
+      </div>
+
+      <div class="grid two section">
+
+        <div class="card">
+          <h3>Activity Breakdown</h3>
+          <div id="analytics-bars"></div>
+        </div>
+
+        <div class="card">
+          <h3>Skill Evidence</h3>
+          <div id="skill-evidence"></div>
+
+          <h3 class="section">Interpretation</h3>
+          <div class="feedback" id="analytics-note"></div>
+        </div>
+
+      </div>
+
+      <div class="card section">
+        <h3>Data Controls</h3>
+
+        <p>
+          Existing AURA Learn activity data is stored locally.
+          G1–G3 grammar sessions use separate browser storage.
+          No audio recordings are saved by this application.
+          Browser recognition may process audio externally.
+        </p>
+
+        <div class="buttons">
+          <button class="btn secondary" id="export">
+            Export JSON
+          </button>
+
+          <button class="btn outline" id="clear">
+            Clear Local Data
+          </button>
+        </div>
+
+        <p class="small">
+          These controls belong to the original AURA Learn
+          analytics system. Use Grammar Analytics to export
+          G1–G3 summary data separately.
+        </p>
+      </div>
+
+    </section>
+
+    <!-- PAGE 7: RESEARCH PORTFOLIO -->
+    <section class="page" id="research">
+
+      <div class="eyebrow">DOCTORAL RESEARCH PORTFOLIO</div>
+      <h1>Research Behind AURA EDU</h1>
+
+      <div class="card">
+        <h2>Research Vision</h2>
+        <p>
+          How can curriculum-aligned adaptive scaffolding
+          support individual English learning difficulties
+          and promote independent communication?
+        </p>
+
+        <span class="pill">
+          EDUCATION × AI × LEARNING ANALYTICS
+        </span>
+      </div>
+
+      <div class="research-lab-entry">
+        <h3>Explore the New Research Lab</h3>
+        <p>
+          The dedicated AURA EDU Research Lab explores
+          dual-layer adaptation, evidence-based mastery,
+          immediate and delayed reassessment,
+          and explainable learning decisions.
+        </p>
+
+        <a href="research.html" class="research-lab-button">
+          Open Research Lab →
+        </a>
+      </div>
+
+      <div class="grammar-entry">
+        <h3>Real Grammar Learning Evidence</h3>
+        <p>
+          G1–G3 已实现浏览器本地学习过程记录，
+          包括诊断、分层提示和即时独立复测。
+          这些记录可与 Research Lab 的模拟数据演示区分展示。
+        </p>
+
+        <div class="grammar-actions">
+          <a href="grammar-hub.html">Grammar Hub →</a>
+          <a href="grammar-analytics.html" class="secondary">
+            Real Grammar Analytics →
+          </a>
+        </div>
+      </div>
+
+      <div class="grid two section">
+
+        <div class="card">
+          <h3>Curriculum Alignment</h3>
+          <p>
+            Connect teaching goals, prerequisites,
+            activities and communication outcomes.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>Adaptive Scaffolding</h3>
+          <p>
+            Use learning evidence to offer targeted support
+            and encourage independence.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>Spoken Interaction</h3>
+          <p>
+            Assess independent meaning-making rather than
+            only answer recognition.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>Learning Analytics</h3>
+          <p>
+            Study errors, revision, support dependence
+            and transfer across tasks.
+          </p>
+        </div>
+
+      </div>
+
+      <div class="card section">
+        <h2>Proposed Research Questions</h2>
+
+        <div class="step">
+          RQ1 · How do students respond to different
+          levels of instructional scaffolding?
+        </div>
+
+        <div class="step">
+          RQ2 · How is scaffolded practice associated
+          with independent spoken communication?
+        </div>
+
+        <div class="step">
+          RQ3 · Which task-level indicators help identify
+          learners' support needs?
+        </div>
+      </div>
+
+      <div class="card section">
+        <h2>Pedagogical and Technical Foundations</h2>
+
+        <p>
+          Zone of Proximal Development, instructional
+          scaffolding, formative assessment, self-regulated
+          learning and knowledge tracing are relevant
+          theoretical and methodological directions.
+          These are conceptual references, not claims
+          of empirically demonstrated effectiveness.
+        </p>
+
+        <p>
+          Open-source architecture inspirations:
+
+          <a
+            href="https://github.com/learningequality/kolibri"
+            target="_blank"
+            rel="noopener"
+          >Kolibri</a>,
+
+          <a
+            href="https://github.com/livekit/agents"
+            target="_blank"
+            rel="noopener"
+          >LiveKit Agents</a>,
+
+          <a
+            href="https://github.com/languagetool-org/languagetool"
+            target="_blank"
+            rel="noopener"
+          >LanguageTool</a>,
+
+          and
+
+          <a
+            href="https://github.com/CAHLR/pyBKT"
+            target="_blank"
+            rel="noopener"
+          >pyBKT</a>.
+
+          These projects are not integrated into
+          this standalone prototype.
+        </p>
+      </div>
+
+      <div class="card section">
+        <h2>Research Integrity and Next Steps</h2>
+
+        <p>
+          The curriculum-themed examples are original and
+          not verified FLTRP textbook units. The system
+          is rule-driven, not a deployed large-language-model
+          tutor. Formal textbook verification, ethics approval,
+          consent and safeguarding, independent speaking
+          assessment, teacher validation and longitudinal
+          evaluation are necessary before making educational
+          efficacy claims.
+        </p>
+      </div>
+
+    </section>
+
+    <footer class="footer">
+      AURA EDU · Research Demonstrator V2.2 ·
+      Original sample learning content ·
+      Not a validated teaching intervention
+    </footer>
+
+  </main>
+</div>
+
+<!-- STAGE 21.4.7: LOAD IDENTITY SERVICE FIRST -->
+<script src="js/identity.js"></script>
+<script src="js/identity-bridge.js"></script>
+
+<!-- KEEP ORIGINAL JAVASCRIPT ORDER -->
+<script src="js/app.js"></script>
+<script src="js/curriculum.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/adaptive.js"></script>
+<script src="js/speaking.js"></script>
+<script src="js/writing.js"></script>
+<script src="js/analytics.js"></script>
+<script src="js/init.js"></script>
+
+</body>
+</html>

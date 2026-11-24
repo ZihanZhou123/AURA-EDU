@@ -1,0 +1,6 @@
+{
+  "name": "AURA EDU · 单元口语伙伴",
+  "description": "基于 Gemini Live 的英语单元口语交互练习伙伴，支持慢速英语语音对话、句首与词语提示、多说法认可与学习记录。",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

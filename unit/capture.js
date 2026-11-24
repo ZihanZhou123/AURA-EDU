@@ -1,0 +1,15 @@
+/* Audio stays local unless the learner explicitly enables browser recognition. */
+(function(root){'use strict';
+async function analyse(blob){let ac;try{const AC=root.AudioContext||root.webkitAudioContext;if(!AC)return {signalStatus:'unavailable',speechVerified:false};ac=new AC();const b=await ac.decodeAudioData(await blob.arrayBuffer());return root.UnitDialogue.analysePCM(b.getChannelData(0),b.sampleRate);}catch{return {signalStatus:'unavailable',speechVerified:false};}finally{if(ac)await ac.close().catch(()=>{});}}
+async function start({recognize=false,onState=()=>{}}={}){
+ if(!navigator.mediaDevices?.getUserMedia||!root.MediaRecorder)throw Error('当前浏览器不能录音，请换一个支持麦克风录音的浏览器。');
+ const stream=await navigator.mediaDevices.getUserMedia({audio:true}),chunks=[];let text='',recognitionError=null,recognizer=null,ended=false,finishRecognition=null,cancelled=false,resolveStop;
+ const stopped=new Promise(resolve=>resolveStop=resolve),startedAt=Date.now();let recorder;try{recorder=new MediaRecorder(stream);}catch(e){stream.getTracks().forEach(t=>t.stop());throw e;}
+ if(recognize){const SR=root.SpeechRecognition||root.webkitSpeechRecognition;if(SR){try{recognizer=new SR();recognizer.lang='en-US';recognizer.continuous=true;recognizer.interimResults=false;recognizer.onresult=e=>{for(let i=e.resultIndex;i<e.results.length;i++)if(e.results[i].isFinal)text+=(text?' ':'')+e.results[i][0].transcript;text=text.slice(0,1000);onState({transcript:text});};recognizer.onerror=e=>{recognitionError=e.error;};recognizer.onend=()=>{ended=true;finishRecognition?.();if(recorder.state==='recording'&&!cancelled&&!['not-allowed','service-not-allowed','audio-capture','network'].includes(recognitionError)){onState({reconnecting:true});setTimeout(()=>{if(recorder.state!=='recording'||cancelled)return;try{recognizer.start();ended=false;}catch{recognitionError='reconnect-failed';}},150);}};recognizer.start();}catch{recognitionError='unavailable';recognizer=null;}}else recognitionError='unsupported';}
+ recorder.ondataavailable=e=>{if(e.data.size)chunks.push(e.data);};
+ recorder.onerror=()=>{recognitionError='recording-error';};
+ recorder.onstop=async()=>{if(recognizer&&!ended){await new Promise(resolve=>{let timer;const done=()=>{clearTimeout(timer);resolve();};finishRecognition=done;timer=setTimeout(done,1800);try{recognizer.stop();}catch{done();}});}stream.getTracks().forEach(t=>t.stop());if(cancelled)return resolveStop({cancelled:true});const blob=new Blob(chunks,{type:chunks[0]?.type||recorder.mimeType||'audio/webm'});const audioEvidence=await analyse(blob);resolveStop({blob,transcript:text,transcriptSource:text?'browser-asr':null,recognitionError,audioEvidence,durationMs:Date.now()-startedAt});};
+ try{recorder.start();}catch(e){try{recognizer?.abort();}catch{}stream.getTracks().forEach(t=>t.stop());throw e;}return {stop(){if(recorder.state!=='inactive')recorder.stop();return stopped;},cancel(){cancelled=true;try{recognizer?.abort();}catch{}if(recorder.state!=='inactive')recorder.stop();stream.getTracks().forEach(t=>t.stop());},startedAt};
+}
+root.UnitCapture={start,analyse};
+})(window);

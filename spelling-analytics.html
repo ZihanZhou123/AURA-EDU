@@ -1,0 +1,479 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AURA EDU | Spelling Learning Analytics</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#eef7f2;color:#29465b;font-family:Arial,"PingFang SC","Microsoft YaHei",sans-serif}
+header{background:white;padding:17px 5%;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border-bottom:1px solid #dce9df}
+.brand{color:#7659d5;font-weight:900;font-size:21px}
+a{color:#287569;text-decoration:none}
+main{max-width:1080px;margin:28px auto;padding:0 16px 50px}
+h1{margin-bottom:8px}
+.subtitle,.small{color:#647b70;line-height:1.7}
+.small{font-size:13px}
+.panel{background:white;padding:23px;border:1px solid #d9e8df;border-radius:19px;margin-top:18px}
+.identity{background:#e6f3ff;border-radius:12px;padding:13px;font-weight:bold}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.metric{background:#f0f7f3;padding:16px;border-radius:13px;min-width:0}
+.metric span{display:block;color:#607b70;font-size:13px}
+.metric strong{display:block;font-size:25px;margin-top:8px}
+.row{padding:11px 0;border-bottom:1px solid #e2eae4;line-height:1.7}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.chart-row{display:grid;grid-template-columns:110px 1fr 50px;gap:10px;align-items:center;margin:12px 0;font-size:13px}
+.track{background:#e8eee9;border-radius:20px;height:13px;overflow:hidden}
+.bar{background:#7d69d6;height:100%;border-radius:20px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:11px 8px;text-align:left;border-bottom:1px solid #e2e9e3}
+th{background:#f2f7f4}
+.table-wrap{overflow-x:auto}
+button{background:#7659d5;color:white;border:0;border-radius:11px;padding:12px 18px;font-weight:bold;cursor:pointer}
+button.secondary{background:#e3f2eb;color:#276e51}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+pre{background:#f3f7f5;border-radius:12px;padding:15px;white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;max-height:320px;overflow:auto}
+.status{background:#f0f7f3;padding:15px;border-radius:12px;line-height:1.7}
+.hidden{display:none!important}
+@media(max-width:800px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.two{grid-template-columns:1fr}}
+@media(max-width:500px){.grid{grid-template-columns:1fr}.panel{padding:17px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">✦ AURA EDU</div>
+  <a href="adventure-mastery-map.html">← Adventure Map</a>
+</header>
+
+<main>
+  <h1>📊 Spelling Learning Analytics</h1>
+  <p class="subtitle">
+    拼写学习分析 · Diagnostic → Adaptive Practice →
+    Independent Reassessment
+  </p>
+
+  <div class="identity" id="learner-display">
+    正在读取学生身份...
+  </div>
+
+  <section class="panel">
+    <h2>Research Evidence Overview</h2>
+    <div class="status" id="status-display"></div>
+    <div class="actions">
+      <button id="refresh-btn">Refresh Evidence</button>
+      <button class="secondary" id="copy-btn">Copy JSON</button>
+    </div>
+    <p id="copy-message" class="small" role="status"></p>
+  </section>
+
+  <div id="analytics-content" class="hidden">
+
+    <section class="panel">
+      <h2>Learning Performance</h2>
+      <div class="grid" id="metrics"></div>
+      <h3>Diagnostic vs Independent Reassessment</h3>
+      <div id="comparison"></div>
+      <p class="small">
+        分数差异使用百分点（percentage points）表示，
+        不代表教学因果效果。
+      </p>
+    </section>
+
+    <section class="panel">
+      <h2>Adaptive Scaffolding Evidence</h2>
+      <div class="grid" id="scaffold-metrics"></div>
+      <h3>Highest Hint Level per Question</h3>
+      <div id="hint-distribution"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Learning Transitions</h2>
+      <div id="transitions"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Error Code Analysis</h2>
+      <div class="two">
+        <div>
+          <h3>Diagnostic Errors</h3>
+          <div id="diagnostic-errors"></div>
+        </div>
+        <div>
+          <h3>Reassessment Errors</h3>
+          <div id="reassessment-errors"></div>
+        </div>
+      </div>
+      <h3>Practice Attempt Errors</h3>
+      <div id="practice-errors"></div>
+      <p class="small">
+        句子填空的 SP05 是任务层面的错误，
+        不应直接解释为语法或语义错误。
+      </p>
+    </section>
+
+    <section class="panel">
+      <h2>Question-Level Evidence</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Word</th>
+              <th>Task</th>
+              <th>Diagnostic</th>
+              <th>Practice Attempts</th>
+              <th>Highest Hint</th>
+              <th>Independent</th>
+            </tr>
+          </thead>
+          <tbody id="question-table"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Research Interpretation</h2>
+      <div id="interpretation"></div>
+      <h3>Complete Analytics JSON</h3>
+      <pre id="json-preview"></pre>
+    </section>
+
+  </div>
+</main>
+
+<script src="js/spelling-mastery.js"></script>
+<script src="js/spelling-analytics.js"></script>
+
+<script>
+(function () {
+  "use strict";
+
+  const $ = id => document.getElementById(id);
+  let report = null;
+
+  function textNode(parent, tag, value, className) {
+    const element = document.createElement(tag);
+    element.textContent = String(value);
+    if (className) element.className = className;
+    parent.appendChild(element);
+    return element;
+  }
+
+  function metric(parent, label, value) {
+    const card = document.createElement("div");
+    card.className = "metric";
+    textNode(card, "span", label);
+    textNode(card, "strong", value);
+    parent.appendChild(card);
+  }
+
+  function bar(parent, label, percent, suffix) {
+    const row = document.createElement("div");
+    row.className = "chart-row";
+
+    textNode(row, "span", label);
+
+    const track = document.createElement("div");
+    track.className = "track";
+
+    const fill = document.createElement("div");
+    fill.className = "bar";
+    fill.style.width = Math.max(
+      0, Math.min(100, Number(percent) || 0)
+    ) + "%";
+
+    track.appendChild(fill);
+    row.appendChild(track);
+    textNode(row, "span", suffix);
+    parent.appendChild(row);
+  }
+
+  function errorRows(parent, errors) {
+    parent.replaceChildren();
+
+    const entries = Object.entries(errors);
+
+    if (!entries.length) {
+      textNode(parent, "p", "No recorded errors.");
+      return;
+    }
+
+    entries.sort((a, b) => b[1] - a[1]);
+
+    entries.forEach(([code, count]) => {
+      textNode(
+        parent, "div",
+        code + ": " + count,
+        "row"
+      );
+    });
+  }
+
+  function refresh() {
+    if (!window.AuraSpellingAnalytics) {
+      $("status-display").textContent =
+        "Analytics module not loaded.";
+      return;
+    }
+
+    report = window.AuraSpellingAnalytics.evaluate();
+
+    $("learner-display").textContent =
+      report.learnerId
+        ? "👤 " + (report.learnerName || "姓名未设置")
+        : "👤 请先选择学生";
+
+    $("status-display").textContent =
+      report.ok
+        ? "Decision: " + report.decision +
+          "\nStatus: " + report.status
+        : report.explanation || report.status;
+
+    $("status-display").style.whiteSpace = "pre-line";
+
+    $("analytics-content").classList.toggle(
+      "hidden", !report.ok
+    );
+
+    if (!report.ok) return;
+
+    const scores = report.scores;
+    const scaffold = report.scaffolding;
+
+    $("metrics").replaceChildren();
+
+    metric(
+      $("metrics"), "Diagnostic",
+      scores.diagnostic.percent + "%"
+    );
+
+    metric(
+      $("metrics"), "Independent Reassessment",
+      scores.reassessment.percent + "%"
+    );
+
+    metric(
+      $("metrics"), "Word Spelling",
+      scores.wordSpelling.percent + "%"
+    );
+
+    metric(
+      $("metrics"), "Sentence Application",
+      scores.sentenceApplication.percent + "%"
+    );
+
+    $("comparison").replaceChildren();
+
+    bar(
+      $("comparison"), "Diagnostic",
+      scores.diagnostic.percent,
+      scores.diagnostic.percent + "%"
+    );
+
+    bar(
+      $("comparison"), "Reassessment",
+      scores.reassessment.percent,
+      scores.reassessment.percent + "%"
+    );
+
+    const diff = scores.percentagePointDifference;
+
+    textNode(
+      $("comparison"), "p",
+      "Difference: " +
+      (diff > 0 ? "+" : "") +
+      diff + " percentage points"
+    );
+
+    $("scaffold-metrics").replaceChildren();
+
+    metric(
+      $("scaffold-metrics"),
+      "Practiced Questions",
+      scaffold.practicedQuestions
+    );
+
+    metric(
+      $("scaffold-metrics"),
+      "Total Attempts",
+      scaffold.totalAttempts
+    );
+
+    metric(
+      $("scaffold-metrics"),
+      "Questions Using Hints",
+      scaffold.questionsUsingHints
+    );
+
+    metric(
+      $("scaffold-metrics"),
+      "Highest Hint",
+      scaffold.highestHintLevel
+    );
+
+    $("hint-distribution").replaceChildren();
+
+    Object.entries(
+      scaffold.highestHintDistribution
+    ).forEach(([level, count]) => {
+      const total = scaffold.practicedQuestions;
+      const percent = total
+        ? count / total * 100
+        : 0;
+
+      bar(
+        $("hint-distribution"),
+        level,
+        percent,
+        String(count)
+      );
+    });
+
+    const transitions = report.learningTransitions;
+
+    $("transitions").replaceChildren();
+
+    textNode(
+      $("transitions"), "div",
+      "Initially incorrect → Reassessment correct: " +
+      transitions.incorrectToCorrect,
+      "row"
+    );
+
+    textNode(
+      $("transitions"), "div",
+      "Initially correct → Reassessment incorrect: " +
+      transitions.correctToIncorrect,
+      "row"
+    );
+
+    textNode(
+      $("transitions"), "div",
+      "Unchanged correctness: " +
+      transitions.unchanged,
+      "row"
+    );
+
+    errorRows(
+      $("diagnostic-errors"),
+      report.errors.diagnostic
+    );
+
+    errorRows(
+      $("reassessment-errors"),
+      report.errors.reassessment
+    );
+
+    errorRows(
+      $("practice-errors"),
+      report.errors.practiceAttempts
+    );
+
+    $("question-table").replaceChildren();
+
+    report.questions.forEach(question => {
+      const row = document.createElement("tr");
+
+      const values = [
+        question.target,
+        question.taskType,
+        question.diagnosticCorrect ? "✓" : "✗",
+        question.practiced
+          ? question.practiceAttempts
+          : "Not practiced",
+        question.practiced
+          ? "H" + question.highestHintUsed
+          : "—",
+        question.reassessmentCorrect ? "✓" : "✗"
+      ];
+
+      values.forEach(value => {
+        textNode(row, "td", value);
+      });
+
+      $("question-table").appendChild(row);
+    });
+
+    $("interpretation").replaceChildren();
+
+    textNode(
+      $("interpretation"), "p",
+      "Design: " +
+      report.researchInterpretation.design
+    );
+
+    textNode(
+      $("interpretation"), "p",
+      "Evidence: " +
+      report.researchInterpretation.evidence
+    );
+
+    const list = document.createElement("ul");
+
+    report.researchInterpretation.limitations
+      .forEach(item => {
+        textNode(list, "li", item);
+      });
+
+    $("interpretation").appendChild(list);
+
+    $("json-preview").textContent =
+      JSON.stringify(report, null, 2);
+
+    $("copy-message").textContent = "";
+  }
+
+  async function copyJSON() {
+    if (!report) return;
+
+    const content = JSON.stringify(report, null, 2);
+
+    try {
+      await navigator.clipboard.writeText(content);
+
+      $("copy-message").textContent =
+        "✓ Analytics JSON 已复制。";
+    } catch (error) {
+      let area = $("json-fallback");
+
+      if (!area) {
+        area = document.createElement("textarea");
+        area.id = "json-fallback";
+        area.style.width = "100%";
+        area.style.height = "170px";
+        $("json-preview").after(area);
+      }
+
+      area.value = content;
+      area.focus();
+      area.select();
+
+      $("copy-message").textContent =
+        "自动复制失败，请手动复制下方文本。";
+    }
+  }
+
+  $("refresh-btn").addEventListener(
+    "click", refresh
+  );
+
+  $("copy-btn").addEventListener(
+    "click", copyJSON
+  );
+
+  window.addEventListener("focus", refresh);
+
+  window.addEventListener("storage", refresh);
+
+  document.addEventListener(
+    "visibilitychange",
+    function () {
+      if (!document.hidden) refresh();
+    }
+  );
+
+  refresh();
+})();
+</script>
+</body>
+</html>

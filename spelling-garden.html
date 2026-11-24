@@ -1,0 +1,652 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AURA EDU | Spelling Garden</title>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:#eef8f2;
+  color:#29465b;
+  font-family:Arial,"PingFang SC","Microsoft YaHei",sans-serif;
+}
+header{
+  background:white;
+  border-bottom:1px solid #dce9df;
+  padding:17px 5%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:12px;
+}
+.brand{font-size:22px;font-weight:900;color:#7659d5}
+a{text-decoration:none;color:#277468}
+main{max-width:1000px;margin:28px auto;padding:0 16px 50px}
+h1{font-size:30px;margin-bottom:8px}
+.subtitle{color:#647b70;line-height:1.7}
+.identity{
+  background:#e6f3ff;
+  padding:14px 17px;
+  border-radius:13px;
+  font-weight:bold;
+  margin:18px 0;
+}
+.panel{
+  background:white;
+  border:1px solid #dce8e0;
+  border-radius:20px;
+  padding:24px;
+  margin:18px 0;
+}
+.status{
+  padding:16px;
+  background:#f0f7f3;
+  border-radius:13px;
+  line-height:1.8;
+  white-space:pre-line;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:15px;
+  margin-top:18px;
+}
+.step{
+  border:1px solid #dce7df;
+  background:#fbfefd;
+  border-radius:16px;
+  padding:20px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.step h3{margin:0;font-size:18px}
+.step p{line-height:1.7;margin:0;color:#60796d}
+.step .number{
+  font-size:28px;
+  font-weight:bold;
+  color:#7659d5;
+}
+.state{
+  font-size:13px;
+  color:#527b66;
+  font-weight:bold;
+}
+.action{
+  display:inline-block;
+  margin-top:auto;
+  padding:12px 15px;
+  border-radius:11px;
+  background:#7659d5;
+  color:white;
+  font-weight:bold;
+  text-align:center;
+}
+.action.locked{
+  background:#e5e9e6;
+  color:#7b8880;
+  pointer-events:none;
+  cursor:not-allowed;
+}
+button{
+  border:0;
+  border-radius:11px;
+  background:#e4f2eb;
+  color:#246d50;
+  font-weight:bold;
+  padding:12px 17px;
+  cursor:pointer;
+}
+.small{
+  color:#667d71;
+  font-size:13px;
+  line-height:1.8;
+}
+.hidden{display:none!important}
+@media(max-width:650px){
+  .grid{grid-template-columns:1fr}
+  .panel{padding:18px}
+}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="brand">✦ AURA EDU</div>
+  <a href="adventure-mastery-map.html">
+    ← Adventure Map
+  </a>
+</header>
+
+<main>
+  <h1>🌷 Welcome to Spelling Garden!</h1>
+  <p class="subtitle">
+    拼写花园 · Learn, Reflect, Revise and Grow
+  </p>
+
+  <div class="identity" id="learner-display">
+    正在读取学生身份...
+  </div>
+
+  <section class="panel">
+    <h2>🌟 Your Learning Journey</h2>
+    <div class="status" id="journey-status">
+      正在检查 Grammar 前置条件...
+    </div>
+    <p class="small" id="journey-message"></p>
+    <button id="refresh-btn">
+      Refresh My Progress / 刷新进度
+    </button>
+  </section>
+
+  <section class="panel hidden" id="learning-panel">
+    <h2>Choose Your Learning Step</h2>
+    <p class="subtitle">
+      根据你的学习记录，系统会推荐下一步。
+      已完成的阶段仍然可以重新练习。
+    </p>
+
+    <div class="grid">
+
+      <article class="step">
+        <div class="number">01</div>
+        <h3>🔍 Spelling Diagnostic</h3>
+        <p>初始诊断：了解单词拼写与句子填空表现。</p>
+        <div class="state" id="diag-status">
+          Checking...
+        </div>
+        <a class="action" id="diag-link"
+           href="spelling-diagnostic.html">
+          Start Diagnostic
+        </a>
+      </article>
+
+      <article class="step">
+        <div class="number">02</div>
+        <h3>🌱 Adaptive Practice</h3>
+        <p>根据诊断错误提供分层提示，帮助学生自主修改。</p>
+        <div class="state" id="practice-status">
+          Checking...
+        </div>
+        <a class="action locked" id="practice-link"
+           href="spelling-practice.html"
+           aria-disabled="true">
+          Start Practice
+        </a>
+      </article>
+
+      <article class="step">
+        <div class="number">03</div>
+        <h3>📝 Independent Reassessment</h3>
+        <p>无提示、单次提交，检查学生的独立表现。</p>
+        <div class="state" id="reassess-status">
+          Checking...
+        </div>
+        <a class="action locked" id="reassess-link"
+           href="spelling-reassessment.html"
+           aria-disabled="true">
+          Start Reassessment
+        </a>
+      </article>
+
+      <article class="step">
+        <div class="number">04</div>
+        <h3>🧠 Mastery Decision</h3>
+        <p>查看可解释的暂定掌握度决策和学习建议。</p>
+        <div class="state" id="mastery-status">
+          Checking...
+        </div>
+        <a class="action locked" id="mastery-link"
+           href="spelling-mastery.html"
+           aria-disabled="true">
+          View Decision
+        </a>
+      </article>
+
+      <article class="step">
+        <div class="number">05</div>
+        <h3>📊 Learning Analytics</h3>
+        <p>查看错误类型、提示使用和逐题学习过程。</p>
+        <div class="state" id="analytics-status">
+          Checking...
+        </div>
+        <a class="action locked" id="analytics-link"
+           href="spelling-analytics.html"
+           aria-disabled="true">
+          View Analytics
+        </a>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Research Note</h2>
+    <p class="small">
+      本学习中心展示的是当前学生的阶段完成情况。
+      Provisional Mastery 不是长期掌握；
+      Spelling 完成也不会在此阶段解锁 Speaking。
+      本页面只读取学习记录，不修改历史数据。
+    </p>
+  </section>
+</main>
+
+<script src="js/grammar-unlock.js"></script>
+<script src="js/spelling-mastery.js"></script>
+
+<script>
+(function () {
+  "use strict";
+
+  const $ = id => document.getElementById(id);
+
+  const ACTIVE_KEY =
+    "aura_active_learner_id_v2";
+
+  const PROFILES_KEY =
+    "aura_learner_profiles_v2";
+
+  const DIAG_KEY =
+    "aura_spelling_diagnostic_records_v1";
+
+  const PRACTICE_KEY =
+    "aura_spelling_practice_records_v1";
+
+  const REASSESS_KEY =
+    "aura_spelling_reassessment_records_v1";
+
+  function readJSON(key, fallback) {
+    try {
+      const raw = localStorage.getItem(key);
+      return raw ? JSON.parse(raw) : fallback;
+    } catch (error) {
+      return fallback;
+    }
+  }
+
+  function activeId() {
+    try {
+      const raw = localStorage.getItem(ACTIVE_KEY);
+
+      if (!raw) return null;
+
+      if (raw.startsWith('"')) {
+        const parsed = JSON.parse(raw);
+
+        return typeof parsed === "string"
+          ? parsed
+          : null;
+      }
+
+      return raw;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function findProfile(data, id) {
+    if (!data || !id) return null;
+
+    const visited = new Set();
+    const target = String(id);
+
+    function search(value, depth, keyHint) {
+      if (
+        !value ||
+        typeof value !== "object" ||
+        depth > 5 ||
+        visited.has(value)
+      ) return null;
+
+      visited.add(value);
+
+      if (Array.isArray(value)) {
+        for (const item of value) {
+          const found = search(item, depth + 1, null);
+          if (found) return found;
+        }
+        return null;
+      }
+
+      const profileId =
+        value.id ??
+        value.learnerId ??
+        value.learner_id ??
+        value.profileId ??
+        value.profile_id;
+
+      if (
+        (
+          profileId != null &&
+          String(profileId) === target
+        ) ||
+        keyHint === target
+      ) return value;
+
+      for (const [key, child] of Object.entries(value)) {
+        if (child && typeof child === "object") {
+          const found = search(child, depth + 1, key);
+          if (found) return found;
+        }
+      }
+
+      return null;
+    }
+
+    return search(data, 0, null);
+  }
+
+  function learnerName(id) {
+    const profile = findProfile(
+      readJSON(PROFILES_KEY, null),
+      id
+    );
+
+    if (!profile) return null;
+
+    return [
+      profile.name,
+      profile.displayName,
+      profile.display_name,
+      profile.learnerName,
+      profile.studentName,
+      profile.nickname,
+      profile.nickName
+    ].find(
+      value =>
+        typeof value === "string" &&
+        value.trim()
+    )?.trim() || null;
+  }
+
+  function getSessions(key, id) {
+    const all = readJSON(key, []);
+
+    if (!Array.isArray(all)) return [];
+
+    return all.filter(session =>
+      session &&
+      String(session.learnerId) === String(id) &&
+      typeof session.sessionId === "string" &&
+      typeof session.completedAt === "string" &&
+      Array.isArray(session.records)
+    );
+  }
+
+  function latest(items) {
+    return [...items].sort((a, b) =>
+      String(b.completedAt).localeCompare(
+        String(a.completedAt)
+      )
+    )[0] || null;
+  }
+
+  function getLearningChain(id) {
+    const diagnostic = latest(
+      getSessions(DIAG_KEY, id).filter(s =>
+        s.stage === "diagnostic" &&
+        s.records.length === 8
+      )
+    );
+
+    const practice = diagnostic
+      ? latest(
+          getSessions(PRACTICE_KEY, id).filter(s =>
+            s.stage === "practice" &&
+            s.sourceDiagnosticSessionId ===
+              diagnostic.sessionId &&
+            s.records.length > 0
+          )
+        )
+      : null;
+
+    const reassessment =
+      diagnostic && practice
+        ? latest(
+            getSessions(REASSESS_KEY, id).filter(s =>
+              s.stage === "reassessment" &&
+              s.sourceDiagnosticSessionId ===
+                diagnostic.sessionId &&
+              s.sourcePracticeSessionId ===
+                practice.sessionId &&
+              s.records.length === 8
+            )
+          )
+        : null;
+
+    return {
+      diagnostic,
+      practice,
+      reassessment
+    };
+  }
+
+  function setLink(id, enabled) {
+    const link = $(id);
+
+    link.classList.toggle(
+      "locked",
+      !enabled
+    );
+
+    link.setAttribute(
+      "aria-disabled",
+      enabled ? "false" : "true"
+    );
+
+    link.tabIndex = enabled ? 0 : -1;
+  }
+
+  function setStatus(id, complete, text) {
+    $(id).textContent = complete
+      ? "✓ Completed / 已完成"
+      : text;
+  }
+
+  function refresh() {
+    const id = activeId();
+
+    const name = id ? learnerName(id) : null;
+
+    $("learner-display").textContent =
+      id
+        ? "👤 " + (name || "姓名未设置")
+        : "👤 请先选择学生";
+
+    const engine = window.AuraGrammarUnlock;
+
+    let eligible = false;
+
+    if (
+      id &&
+      engine &&
+      typeof engine.evaluateGrammar === "function"
+    ) {
+      try {
+        const report = engine.evaluateGrammar();
+
+        eligible = Boolean(
+          report &&
+          report.ok === true &&
+          String(report.learnerId) === String(id) &&
+          report.grammarComplete === true &&
+          report.spellingEligible === true
+        );
+      } catch (error) {
+        console.error(
+          "[Spelling Garden] Grammar check:",
+          error
+        );
+      }
+    }
+
+    $("learning-panel").classList.toggle(
+      "hidden",
+      !eligible
+    );
+
+    if (!eligible) {
+      $("journey-status").textContent =
+        id
+          ? "🔒 Spelling Garden Locked\n" +
+            "当前学生尚未满足 Grammar 前置条件，" +
+            "或暂时无法验证 Grammar 学习证据。"
+          : "🔒 请先选择学生。";
+
+      $("journey-message").textContent =
+        "请返回 Grammar Hub 完成 G1、G2、G3，" +
+        "然后刷新学习进度。";
+
+      return;
+    }
+
+    const chain = getLearningChain(id);
+
+    const hasDiag = Boolean(chain.diagnostic);
+    const hasPractice = Boolean(chain.practice);
+    const hasReassess = Boolean(chain.reassessment);
+
+    const masteryEngine =
+      window.AuraSpellingMastery;
+
+    let mastery = null;
+
+    if (
+      masteryEngine &&
+      typeof masteryEngine.evaluate === "function"
+    ) {
+      try {
+        mastery = masteryEngine.evaluate();
+      } catch (error) {
+        console.error(
+          "[Spelling Garden] Mastery:",
+          error
+        );
+      }
+    }
+
+    const masteryReady = Boolean(
+      hasReassess &&
+      mastery &&
+      mastery.ok === true &&
+      String(mastery.learnerId) === String(id) &&
+      mastery.status === "EVALUATED"
+    );
+
+    setStatus(
+      "diag-status",
+      hasDiag,
+      "Not completed / 未完成"
+    );
+
+    setStatus(
+      "practice-status",
+      hasPractice,
+      hasDiag
+        ? "Ready / 可以开始"
+        : "Complete Diagnostic first"
+    );
+
+    setStatus(
+      "reassess-status",
+      hasReassess,
+      hasPractice
+        ? "Ready / 可以开始"
+        : "Complete Adaptive Practice first"
+    );
+
+    setStatus(
+      "mastery-status",
+      masteryReady,
+      "Complete the learning cycle first"
+    );
+
+    setStatus(
+      "analytics-status",
+      masteryReady,
+      "Complete the learning cycle first"
+    );
+
+    setLink("diag-link", true);
+    setLink("practice-link", hasDiag);
+    setLink("reassess-link", hasPractice);
+    setLink("mastery-link", masteryReady);
+    setLink("analytics-link", masteryReady);
+
+    let recommendation;
+
+    if (!hasDiag) {
+      recommendation =
+        "Next Step: Spelling Diagnostic";
+    } else if (!hasPractice) {
+      recommendation =
+        "Next Step: Adaptive Practice";
+    } else if (!hasReassess) {
+      recommendation =
+        "Next Step: Independent Reassessment";
+    } else if (!masteryReady) {
+      recommendation =
+        "Learning cycle completed. " +
+        "Please check decision evidence.";
+    } else {
+      recommendation =
+        "Learning cycle completed.\n" +
+        "Decision: " + mastery.decision;
+    }
+
+    $("journey-status").textContent =
+      "🌟 Grammar prerequisite achieved\n" +
+      recommendation;
+
+    $("journey-message").textContent =
+      "当前学生的学习记录已独立读取。" +
+      "Speaking 仍然锁定。";
+  }
+
+  document.querySelectorAll(
+    "a.action"
+  ).forEach(link => {
+    link.addEventListener("click", event => {
+      refresh();
+
+      if (
+        link.getAttribute("aria-disabled") ===
+        "true"
+      ) {
+        event.preventDefault();
+      }
+    });
+  });
+
+  $("refresh-btn").addEventListener(
+    "click",
+    refresh
+  );
+
+  window.addEventListener(
+    "focus",
+    refresh
+  );
+
+  window.addEventListener(
+    "storage",
+    refresh
+  );
+
+  document.addEventListener(
+    "visibilitychange",
+    function () {
+      if (!document.hidden) refresh();
+    }
+  );
+
+  refresh();
+
+})();
+</script>
+</body>
+</html>

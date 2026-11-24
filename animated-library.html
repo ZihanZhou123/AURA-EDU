@@ -1,0 +1,645 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AURA EDU | Animated Learning Library</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  background: #f3f6fc;
+  color: #243451;
+}
+
+header {
+  background: #17264b;
+  color: white;
+  padding: 20px 6%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.logo {
+  font-size: 23px;
+  font-weight: 800;
+}
+
+.logo span { color: #9bc4ff; }
+
+header a {
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+main {
+  max-width: 1100px;
+  margin: 35px auto;
+  padding: 0 20px 60px;
+}
+
+h1 { font-size: clamp(26px, 4vw, 40px); }
+
+.intro {
+  color: #64748b;
+  line-height: 1.8;
+}
+
+.pill {
+  display: inline-block;
+  background: #e7edff;
+  color: #385b9b;
+  border-radius: 20px;
+  padding: 7px 12px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.library {
+  display: grid;
+  grid-template-columns:
+    repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  margin-top: 25px;
+}
+
+.card {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 6px 25px #263b6010;
+}
+
+.thumbnail {
+  height: 170px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 74px;
+  background: linear-gradient(135deg,#dbeaff,#eee4ff);
+}
+
+.card-body { padding: 22px; }
+
+.card h3 { margin: 13px 0 8px; }
+
+.card p {
+  color: #687894;
+  line-height: 1.7;
+  min-height: 52px;
+}
+
+button {
+  border: 0;
+  padding: 12px 18px;
+  border-radius: 12px;
+  background: #4e70d4;
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+button:disabled {
+  background: #dce2ef;
+  color: #71809b;
+  cursor: not-allowed;
+}
+
+button:focus-visible {
+  outline: 3px solid orange;
+  outline-offset: 3px;
+}
+
+.lesson {
+  display: none;
+  margin-top: 30px;
+  background: white;
+  border-radius: 22px;
+  padding: 24px;
+}
+
+.lesson.active { display: block; }
+
+.stage {
+  min-height: 340px;
+  background: linear-gradient(135deg,#dbeaff,#f1e8ff);
+  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 25px;
+}
+
+.actor {
+  font-size: 85px;
+  animation: float 2s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+.sentence {
+  font-size: clamp(25px,4vw,38px);
+  font-weight: 800;
+  color: #3155a1;
+  margin: 18px 0 8px;
+}
+
+.explanation {
+  font-size: 17px;
+  line-height: 1.8;
+}
+
+.controls {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+
+.secondary {
+  background: #e8eefb;
+  color: #294b89;
+}
+
+.progress {
+  background: #e8ecf5;
+  height: 9px;
+  border-radius: 20px;
+  overflow: hidden;
+  margin: 18px 0;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0;
+  background: #5479da;
+  transition: width .3s;
+}
+
+.quiz {
+  display: none;
+  margin-top: 24px;
+  padding: 20px;
+  border-radius: 16px;
+  background: #f4f7ff;
+}
+
+.quiz.active { display: block; }
+
+.quiz-options {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 15px;
+}
+
+.quiz-options button {
+  min-width: 85px;
+}
+
+.feedback {
+  min-height: 35px;
+  margin-top: 16px;
+  line-height: 1.7;
+}
+
+.small {
+  font-size: 13px;
+  color: #71809a;
+  line-height: 1.7;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">AURA <span>EDU</span></div>
+  <a href="index.html">← 返回 AURA EDU 首页</a>
+</header>
+
+<main>
+
+  <span class="pill">PRIMARY ENGLISH</span>
+
+  <h1>Animated Learning Library</h1>
+
+  <p class="intro">
+    欢迎来到 AURA 英语动画课堂！
+    选择知识点，观看中英文动画讲解，
+    然后完成课后练习。
+  </p>
+
+  <div class="library">
+
+    <div class="card">
+      <div class="thumbnail">👋👧</div>
+      <div class="card-body">
+        <span class="pill">COMING SOON</span>
+        <h3>Lesson 01 — Greetings</h3>
+        <p>打招呼、自我介绍和日常问候。</p>
+        <button disabled>即将开放</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="thumbnail">👩‍🏫📚</div>
+      <div class="card-body">
+        <span class="pill">AVAILABLE</span>
+        <h3>Lesson 02 — Verb to Be</h3>
+        <p>通过原创动画学习 am、is、are。</p>
+        <button id="open-lesson">
+          ▶ 观看动画课程
+        </button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="thumbnail">🎨⚽</div>
+      <div class="card-body">
+        <span class="pill">COMING SOON</span>
+        <h3>Lesson 03 — Hobbies</h3>
+        <p>学习如何用英语介绍自己的兴趣。</p>
+        <button disabled>即将开放</button>
+      </div>
+    </div>
+
+  </div>
+
+  <section class="lesson" id="lesson">
+
+    <span class="pill">ORIGINAL ANIMATED LESSON</span>
+
+    <h2>Verb to Be — am / is / are</h2>
+
+    <p class="small" id="scene-label"></p>
+
+    <div class="progress">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
+
+    <div class="stage" aria-live="polite">
+      <div class="actor" id="actor">👩‍🏫</div>
+      <div class="sentence" id="sentence"></div>
+      <div class="explanation" id="explanation"></div>
+    </div>
+
+    <div class="controls">
+      <button class="secondary" id="previous">
+        ◀ 上一幕
+      </button>
+
+      <button id="play">▶ 自动播放</button>
+
+      <button class="secondary" id="next">
+        下一幕 ▶
+      </button>
+
+      <button class="secondary" id="listen">
+        🔊 英文朗读
+      </button>
+
+      <button class="secondary" id="restart">
+        ↻ 重新开始
+      </button>
+    </div>
+
+    <p class="small">
+      动画每幕约 6 秒。可以手动切换、暂停或重新播放。
+      英文朗读依赖浏览器语音功能。
+    </p>
+
+    <div class="quiz" id="quiz">
+      <span class="pill">PRACTICE</span>
+      <h2>课后小测验</h2>
+      <h3 id="quiz-question"></h3>
+      <div class="quiz-options" id="quiz-options"></div>
+      <div class="feedback" id="quiz-feedback"
+           aria-live="polite"></div>
+      <button id="quiz-next" style="display:none">
+        下一题 →
+      </button>
+    </div>
+
+  </section>
+
+</main>
+
+<script>
+"use strict";
+
+// ==========================================
+// ORIGINAL LESSON SCENES
+// ==========================================
+
+const scenes = [
+  {
+    actor: "👩‍🏫",
+    sentence: "am · is · are",
+    explanation:
+      "今天我们学习 be 动词的三个现在时形式：am、is、are。",
+    speech:
+      "Today we will learn am, is, and are."
+  },
+  {
+    actor: "🙋",
+    sentence: "I am happy.",
+    explanation:
+      "当主语是 I（我）时，使用 am。意思是：我很开心。",
+    speech: "I am happy."
+  },
+  {
+    actor: "👧",
+    sentence: "She is a student.",
+    explanation:
+      "She（她）搭配 is。意思是：她是一名学生。",
+    speech: "She is a student."
+  },
+  {
+    actor: "👦",
+    sentence: "He is my friend.",
+    explanation:
+      "He（他）也搭配 is。意思是：他是我的朋友。",
+    speech: "He is my friend."
+  },
+  {
+    actor: "👫",
+    sentence: "They are friends.",
+    explanation:
+      "They（他们）搭配 are。You 和 We 也搭配 are。",
+    speech:
+      "They are friends. We are happy. You are kind."
+  },
+  {
+    actor: "🌟",
+    sentence: "I am · She is · They are",
+    explanation:
+      "总结：I 用 am；He、She、It 用 is；You、We、They 用 are。",
+    speech:
+      "I am. She is. They are."
+  }
+];
+
+const questions = [
+  {
+    text: "I ___ happy.",
+    choices: ["am", "is", "are"],
+    answer: "am",
+    explanation: "I 搭配 am。"
+  },
+  {
+    text: "She ___ my teacher.",
+    choices: ["are", "am", "is"],
+    answer: "is",
+    explanation: "She 搭配 is。"
+  },
+  {
+    text: "They ___ friends.",
+    choices: ["is", "are", "am"],
+    answer: "are",
+    explanation: "They 搭配 are。"
+  }
+];
+
+const $ = id => document.getElementById(id);
+
+let sceneIndex = 0;
+let timer = null;
+let playing = false;
+
+let questionIndex = 0;
+let score = 0;
+let answered = false;
+
+function stopPlayback() {
+  clearTimeout(timer);
+  timer = null;
+  playing = false;
+  $("play").textContent = "▶ 自动播放";
+}
+
+function renderScene() {
+  const scene = scenes[sceneIndex];
+
+  $("actor").textContent = scene.actor;
+  $("sentence").textContent = scene.sentence;
+  $("explanation").textContent = scene.explanation;
+
+  $("scene-label").textContent =
+    `Scene ${sceneIndex + 1} / ${scenes.length}`;
+
+  $("progress-fill").style.width =
+    `${(sceneIndex + 1) / scenes.length * 100}%`;
+
+  $("previous").disabled = sceneIndex === 0;
+
+  $("next").disabled =
+    sceneIndex === scenes.length - 1;
+
+  // Restart character motion.
+  const actor = $("actor");
+  actor.style.animation = "none";
+  void actor.offsetWidth;
+  actor.style.animation = "";
+
+  $("quiz").classList.toggle(
+    "active",
+    sceneIndex === scenes.length - 1
+  );
+
+  if (sceneIndex === scenes.length - 1) {
+    renderQuestion();
+  }
+}
+
+function advanceScene() {
+  if (sceneIndex < scenes.length - 1) {
+    sceneIndex++;
+    renderScene();
+  } else {
+    stopPlayback();
+  }
+}
+
+function schedulePlayback() {
+  if (!playing) return;
+
+  timer = setTimeout(() => {
+    if (!playing) return;
+
+    if (sceneIndex === scenes.length - 1) {
+      stopPlayback();
+      return;
+    }
+
+    advanceScene();
+    schedulePlayback();
+  }, 6000);
+}
+
+function startPlayback() {
+  stopPlayback();
+  playing = true;
+  $("play").textContent = "⏸ 暂停动画";
+  schedulePlayback();
+}
+
+function speakEnglish() {
+  if (!("speechSynthesis" in window)) {
+    alert("当前浏览器不支持语音朗读。");
+    return;
+  }
+
+  window.speechSynthesis.cancel();
+
+  const utterance = new SpeechSynthesisUtterance(
+    scenes[sceneIndex].speech
+  );
+
+  utterance.lang = "en-US";
+  utterance.rate = 0.85;
+
+  window.speechSynthesis.speak(utterance);
+}
+
+function renderQuestion() {
+  if (questionIndex >= questions.length) {
+    $("quiz-question").textContent =
+      `练习完成！得分 ${score} / ${questions.length}`;
+
+    $("quiz-options").replaceChildren();
+
+    $("quiz-feedback").textContent =
+      "你已经完成第一节动画课程，可以重新观看巩固知识。";
+
+    $("quiz-next").style.display = "none";
+    return;
+  }
+
+  const question = questions[questionIndex];
+
+  $("quiz-question").textContent =
+    `${questionIndex + 1}. ${question.text}`;
+
+  $("quiz-feedback").textContent = "";
+  $("quiz-options").replaceChildren();
+  $("quiz-next").style.display = "none";
+
+  answered = false;
+
+  question.choices.forEach(choice => {
+    const button = document.createElement("button");
+
+    button.textContent = choice;
+    button.className = "secondary";
+
+    button.onclick = () => {
+      if (answered) return;
+
+      answered = true;
+
+      const correct = choice === question.answer;
+
+      if (correct) score++;
+
+      $("quiz-feedback").textContent = correct
+        ? `✓ 答对了！${question.explanation}`
+        : `再学习一下：${question.explanation}`;
+
+      $("quiz-next").style.display = "inline-block";
+
+      $("quiz-next").textContent =
+        questionIndex === questions.length - 1
+          ? "查看成绩"
+          : "下一题 →";
+
+      $("quiz-options")
+        .querySelectorAll("button")
+        .forEach(item => {
+          item.disabled = true;
+        });
+    };
+
+    $("quiz-options").appendChild(button);
+  });
+}
+
+function resetLesson() {
+  stopPlayback();
+
+  if ("speechSynthesis" in window) {
+    window.speechSynthesis.cancel();
+  }
+
+  sceneIndex = 0;
+  questionIndex = 0;
+  score = 0;
+  answered = false;
+
+  renderScene();
+}
+
+$("open-lesson").onclick = () => {
+  $("lesson").classList.add("active");
+  resetLesson();
+
+  $("lesson").scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+};
+
+$("previous").onclick = () => {
+  stopPlayback();
+  sceneIndex = Math.max(0, sceneIndex - 1);
+  renderScene();
+};
+
+$("next").onclick = () => {
+  stopPlayback();
+  advanceScene();
+};
+
+$("play").onclick = () => {
+  if (playing) {
+    stopPlayback();
+  } else {
+    startPlayback();
+  }
+};
+
+$("listen").onclick = speakEnglish;
+
+$("restart").onclick = resetLesson;
+
+$("quiz-next").onclick = () => {
+  questionIndex++;
+  renderQuestion();
+};
+
+renderScene();
+</script>
+
+</body>
+</html>

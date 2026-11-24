@@ -1,0 +1,1139 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AURA EDU V3 | 3D Magic Island</title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: Arial, "PingFang SC", sans-serif;
+      background: #9cdbff;
+    }
+
+    #game {
+      position: fixed;
+      inset: 0;
+    }
+
+    #game canvas {
+      display: block;
+    }
+
+    .topbar {
+      position: fixed;
+      top: 18px;
+      left: 20px;
+      right: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .logo {
+      background: #fff8e9;
+      color: #6b4226;
+      border: 3px solid #d7a45a;
+      border-radius: 22px;
+      padding: 12px 20px;
+      box-shadow: 0 6px 0 #b9854c;
+    }
+
+    .logo strong {
+      display: block;
+      font-size: 23px;
+    }
+
+    .logo small {
+      display: block;
+      margin-top: 4px;
+      color: #956c45;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+      pointer-events: auto;
+    }
+
+    button {
+      cursor: pointer;
+      border: 2px solid #e2b976;
+      background: #fff9eb;
+      border-radius: 14px;
+      color: #694529;
+      font-weight: bold;
+      padding: 11px 14px;
+      box-shadow: 0 4px 0 #bd915b;
+      font-size: 13px;
+    }
+
+    button:hover {
+      background: #fff0c9;
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .panel {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(460px, calc(100% - 30px));
+      background: rgba(255, 250, 237, 0.96);
+      border: 3px solid #e6bc77;
+      border-radius: 22px;
+      padding: 17px 20px;
+      box-shadow: 0 8px 0 rgba(122, 83, 45, 0.18);
+      z-index: 10;
+      text-align: center;
+    }
+
+    .panel h2 {
+      margin: 0 0 7px;
+      font-size: 21px;
+      color: #67402a;
+    }
+
+    .panel p {
+      margin: 5px 0 12px;
+      color: #80634b;
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    .primary {
+      background: #67c982;
+      border-color: #3da764;
+      box-shadow: 0 4px 0 #348f56;
+      color: white;
+    }
+
+    .hint {
+      position: fixed;
+      bottom: 14px;
+      right: 18px;
+      color: #385b76;
+      background: rgba(255,255,255,0.78);
+      border-radius: 12px;
+      padding: 8px 12px;
+      font-size: 12px;
+      z-index: 5;
+    }
+
+    .status {
+      position: fixed;
+      top: 105px;
+      left: 20px;
+      background: rgba(255,255,255,0.88);
+      padding: 9px 13px;
+      border-radius: 12px;
+      font-size: 12px;
+      color: #456078;
+      z-index: 5;
+    }
+
+    @media (max-width: 650px) {
+      .topbar { top: 10px; left: 10px; right: 10px; }
+      .logo { padding: 9px 11px; }
+      .logo strong { font-size: 15px; }
+      .logo small { font-size: 10px; }
+      button { padding: 9px; font-size: 11px; }
+      .status { top: 105px; left: 10px; }
+      .hint { display: none; }
+      .panel { bottom: 12px; }
+    }
+  </style>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.1/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+
+<body>
+  <div id="game"></div>
+
+  <div class="topbar">
+    <div class="logo">
+      <strong>⭐ AURA EDU V3</strong>
+      <small>Magic Island · 3D Adventure</small>
+    </div>
+
+    <div class="controls">
+      <button id="overviewBtn">🗺️ 全景</button>
+      <button id="zoomInBtn">＋</button>
+      <button id="zoomOutBtn">－</button>
+      <button id="soundBtn">🔊 声音</button>
+    </div>
+  </div>
+
+  <div class="status" id="status">
+    🌳 3D 世界已准备加载
+  </div>
+
+  <div class="panel">
+    <h2 id="zoneTitle">🌟 Welcome to Magic Island!</h2>
+    <p id="zoneText">
+      点击森林、花园或城堡，开始探索真正的 3D 世界。
+    </p>
+    <button class="primary" id="actionBtn" disabled>
+      请选择冒险区域
+    </button>
+  </div>
+
+  <div class="hint">
+    🖱️ 左键旋转 · 滚轮缩放 · 右键平移
+  </div>
+
+  <script type="module">
+    import * as THREE from "three";
+    import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+    "use strict";
+
+    // ========================================
+    // 1. SCENE
+    // ========================================
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color("#a5dcff");
+    scene.fog = new THREE.Fog("#a5dcff", 35, 85);
+
+    const camera = new THREE.PerspectiveCamera(
+      45,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      150
+    );
+
+    camera.position.set(16, 19, 24);
+
+    const renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      alpha: false
+    });
+
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(
+      Math.min(window.devicePixelRatio || 1, 2)
+    );
+
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.5;
+
+    document.getElementById("game").appendChild(
+      renderer.domElement
+    );
+
+    // ========================================
+    // 2. CAMERA CONTROLS
+    // ========================================
+
+    const controls = new OrbitControls(
+      camera,
+      renderer.domElement
+    );
+
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.06;
+    controls.minDistance = 7;
+    controls.maxDistance = 48;
+    controls.maxPolarAngle = Math.PI * 0.48;
+    controls.target.set(0, 0, 0);
+
+    const cameraGoal = new THREE.Vector3(16, 19, 24);
+    const targetGoal = new THREE.Vector3(0, 0, 0);
+    let cameraAnimating = false;
+
+    function moveCamera(position, target) {
+      cameraGoal.copy(position);
+      targetGoal.copy(target);
+      cameraAnimating = true;
+    }
+
+    function overview() {
+      moveCamera(
+        new THREE.Vector3(16, 19, 24),
+        new THREE.Vector3(0, 0, 0)
+      );
+    }
+
+    controls.addEventListener("start", () => {
+      cameraAnimating = false;
+    });
+
+    // ========================================
+    // 3. LIGHTS
+    // ========================================
+
+    scene.add(new THREE.HemisphereLight(
+      0xffffff,
+      0x7e9b83,
+      2.2
+    ));
+
+    const sun = new THREE.DirectionalLight(
+      0xfff2d5,
+      3.2
+    );
+
+    sun.position.set(-10, 20, 12);
+    sun.castShadow = true;
+
+    sun.shadow.mapSize.set(2048, 2048);
+    sun.shadow.camera.left = -20;
+    sun.shadow.camera.right = 20;
+    sun.shadow.camera.top = 20;
+    sun.shadow.camera.bottom = -20;
+    sun.shadow.normalBias = 0.025;
+
+    scene.add(sun);
+
+    // ========================================
+    // 4. MATERIALS & HELPERS
+    // ========================================
+
+    function mat(color, extra = {}) {
+      return new THREE.MeshStandardMaterial({
+        color,
+        roughness: 0.82,
+        ...extra
+      });
+    }
+
+    const grassMat = mat("#86d66f");
+    const dirtMat = mat("#a77a55");
+    const stoneMat = mat("#f2dbb2");
+    const trunkMat = mat("#986039");
+    const leafMat = mat("#43b76c");
+    const darkLeafMat = mat("#278c59");
+    const pinkMat = mat("#ff8cc3");
+    const purpleMat = mat("#b18af6");
+    const goldMat = mat("#ffd35a", {
+      metalness: 0.2,
+      roughness: 0.4
+    });
+
+    function mesh(geometry, material, parent = scene) {
+      const obj = new THREE.Mesh(geometry, material);
+      obj.castShadow = true;
+      obj.receiveShadow = true;
+      parent.add(obj);
+      return obj;
+    }
+
+    function box(w, h, d, material, x, y, z, parent = scene) {
+      const obj = mesh(
+        new THREE.BoxGeometry(w, h, d),
+        material,
+        parent
+      );
+      obj.position.set(x, y, z);
+      return obj;
+    }
+
+    function sphere(r, material, x, y, z, parent = scene) {
+      const obj = mesh(
+        new THREE.SphereGeometry(r, 16, 12),
+        material,
+        parent
+      );
+      obj.position.set(x, y, z);
+      return obj;
+    }
+
+    function cylinder(
+      rt, rb, h, material, x, y, z,
+      parent = scene, sides = 12
+    ) {
+      const obj = mesh(
+        new THREE.CylinderGeometry(rt, rb, h, sides),
+        material,
+        parent
+      );
+      obj.position.set(x, y, z);
+      return obj;
+    }
+
+    function cone(r, h, material, x, y, z, parent = scene) {
+      const obj = mesh(
+        new THREE.ConeGeometry(r, h, 8),
+        material,
+        parent
+      );
+      obj.position.set(x, y, z);
+      return obj;
+    }
+
+    // ========================================
+    // 5. FLOATING ISLAND
+    // ========================================
+
+    const island = new THREE.Group();
+    scene.add(island);
+
+    cylinder(
+      10.8, 8.6, 1.2,
+      grassMat, 0, -0.6, 0,
+      island, 12
+    );
+
+    const underside = cone(
+      8.7, 5.5, dirtMat,
+      0, -3.85, 0, island
+    );
+
+    underside.rotation.y = Math.PI / 12;
+
+    // Island decorative stones
+
+    const rockMat = mat("#b89b7d");
+
+    for (let i = 0; i < 18; i++) {
+      const angle = i * Math.PI * 2 / 18;
+      const radius = 8.8 + Math.sin(i * 4) * 0.6;
+
+      const rock = sphere(
+        0.65 + (i % 3) * 0.12,
+        rockMat,
+        Math.cos(angle) * radius,
+        -0.75,
+        Math.sin(angle) * radius,
+        island
+      );
+
+      rock.scale.set(1.1, 0.7, 0.8);
+    }
+
+    // ========================================
+    // 6. TREES
+    // ========================================
+
+    function createTree(x, z, scale = 1) {
+      const tree = new THREE.Group();
+      tree.position.set(x, 0, z);
+      tree.scale.setScalar(scale);
+      island.add(tree);
+
+      cylinder(
+        0.2, 0.3, 1.5,
+        trunkMat, 0, 0.75, 0, tree
+      );
+
+      sphere(0.85, darkLeafMat, 0, 1.85, 0, tree);
+      sphere(0.75, leafMat, -0.5, 2.05, 0, tree);
+      sphere(0.75, leafMat, 0.5, 2.05, 0, tree);
+      sphere(0.72, leafMat, 0, 2.4, 0, tree);
+
+      return tree;
+    }
+
+    const treePositions = [
+      [-7, -3], [-8, -1], [-7, 1],
+      [-6, 3], [-5, 5], [-4, -5],
+      [-5, -2], [-3, 4], [-2, -6],
+      [0, -7], [2, -6], [4, -5],
+      [6, -3], [7, 0], [5, 5],
+      [-1, 7], [1, 6]
+    ];
+
+    treePositions.forEach((p, i) => {
+      createTree(
+        p[0],
+        p[1],
+        0.7 + (i % 4) * 0.12
+      );
+    });
+
+    // ========================================
+    // 7. GRAMMAR FOREST
+    // ========================================
+
+    const grammarGroup = new THREE.Group();
+    grammarGroup.position.set(-5, 0, 0);
+    island.add(grammarGroup);
+
+    cylinder(
+      1.5, 1.8, 0.45,
+      mat("#62b966"),
+      0, 0.22, 0,
+      grammarGroup
+    );
+
+    // Magical treehouse
+
+    cylinder(
+      0.45, 0.65, 2.8,
+      trunkMat, 0, 1.4, 0,
+      grammarGroup
+    );
+
+    sphere(
+      1.65, darkLeafMat,
+      0, 3.4, 0, grammarGroup
+    );
+
+    sphere(
+      1.25, leafMat,
+      -0.6, 3.8, 0, grammarGroup
+    );
+
+    sphere(
+      1.25, leafMat,
+      0.7, 3.8, 0, grammarGroup
+    );
+
+    box(
+      1.7, 1.2, 1.3,
+      mat("#dba66c"),
+      0, 2.35, 0.55,
+      grammarGroup
+    );
+
+    cone(
+      1.5, 1.15,
+      mat("#d65d68"),
+      0, 3.5, 0.55,
+      grammarGroup
+    );
+
+    box(
+      0.48, 0.65, 0.08,
+      mat("#ffe68e", {
+        emissive: "#e6a53e",
+        emissiveIntensity: 0.5
+      }),
+      0, 2.4, 1.25,
+      grammarGroup
+    );
+
+    // Mushrooms
+
+    function mushroom(x, z) {
+      cylinder(
+        0.12, 0.17, 0.45,
+        mat("#fff2dc"),
+        x, 0.23, z,
+        grammarGroup
+      );
+
+      sphere(
+        0.33,
+        mat("#ff7187"),
+        x, 0.48, z,
+        grammarGroup
+      );
+    }
+
+    mushroom(-1.5, 0.8);
+    mushroom(1.4, -0.8);
+    mushroom(-1.2, -1.3);
+
+    // ========================================
+    // 8. SPELLING GARDEN
+    // ========================================
+
+    const spellingGroup = new THREE.Group();
+    spellingGroup.position.set(0.6, 0, 0.4);
+    island.add(spellingGroup);
+
+    cylinder(
+      2.5, 2.6, 0.22,
+      mat("#f6b7d5"),
+      0, 0.11, 0,
+      spellingGroup
+    );
+
+    // Fountain
+
+    cylinder(
+      1.1, 1.25, 0.5,
+      mat("#f5f0df"),
+      0, 0.45, 0,
+      spellingGroup
+    );
+
+    cylinder(
+      0.95, 0.95, 0.12,
+      mat("#64cce9", {
+        metalness: 0.15,
+        roughness: 0.25
+      }),
+      0, 0.75, 0,
+      spellingGroup
+    );
+
+    cylinder(
+      0.18, 0.25, 1.25,
+      mat("#fff2d6"),
+      0, 1.25, 0,
+      spellingGroup
+    );
+
+    sphere(
+      0.34,
+      mat("#80e6ff", {
+        emissive: "#36b9ff",
+        emissiveIntensity: 0.4
+      }),
+      0, 2.0, 0,
+      spellingGroup
+    );
+
+    // Flowers
+
+    function flower(x, z, color) {
+      cylinder(
+        0.035, 0.045, 0.45,
+        mat("#3cae61"),
+        x, 0.3, z,
+        spellingGroup
+      );
+
+      for (let i = 0; i < 5; i++) {
+        const a = i * Math.PI * 2 / 5;
+
+        sphere(
+          0.15, mat(color),
+          x + Math.cos(a) * 0.15,
+          0.58,
+          z + Math.sin(a) * 0.15,
+          spellingGroup
+        );
+      }
+
+      sphere(
+        0.12, goldMat,
+        x, 0.6, z,
+        spellingGroup
+      );
+    }
+
+    for (let i = 0; i < 28; i++) {
+      const angle = i * 2.399;
+      const radius = 1.45 + (i % 4) * 0.22;
+
+      flower(
+        Math.cos(angle) * radius,
+        Math.sin(angle) * radius,
+        i % 2 ? "#ff79bd" : "#b48aff"
+      );
+    }
+
+    // ========================================
+    // 9. SPEAKING CASTLE
+    // ========================================
+
+    const castleGroup = new THREE.Group();
+    castleGroup.position.set(5.3, 0, -1.5);
+    island.add(castleGroup);
+
+    cylinder(
+      2.8, 3.1, 0.6,
+      mat("#b4b0df"),
+      0, 0.3, 0,
+      castleGroup
+    );
+
+    box(
+      3.1, 2.5, 2.3,
+      mat("#f6e7d5"),
+      0, 1.85, 0,
+      castleGroup
+    );
+
+    const roofMat = mat("#4d83e8");
+
+    const towers = [
+      [-1.8, -1.25],
+      [1.8, -1.25],
+      [-1.8, 1.25],
+      [1.8, 1.25]
+    ];
+
+    towers.forEach(([x, z]) => {
+      cylinder(
+        0.56, 0.66, 3.5,
+        mat("#f4e6d7"),
+        x, 1.95, z,
+        castleGroup
+      );
+
+      cone(
+        0.85, 1.6,
+        roofMat,
+        x, 4.45, z,
+        castleGroup
+      );
+
+      sphere(
+        0.13, goldMat,
+        x, 5.35, z,
+        castleGroup
+      );
+    });
+
+    cone(
+      2.0, 1.8,
+      roofMat,
+      0, 4.0, 0,
+      castleGroup
+    );
+
+    box(
+      0.95, 1.55, 0.13,
+      mat("#ad79b7"),
+      0, 1.25, 1.23,
+      castleGroup
+    );
+
+    // ========================================
+    // 10. ADVENTURE ROAD
+    // ========================================
+
+    const roadPoints = [
+      new THREE.Vector3(-6.5, 0.09, 2.5),
+      new THREE.Vector3(-5.0, 0.09, 3.0),
+      new THREE.Vector3(-3.3, 0.09, 2.7),
+      new THREE.Vector3(-1.5, 0.09, 2.2),
+      new THREE.Vector3(0.5, 0.09, 2.4),
+      new THREE.Vector3(2.0, 0.09, 1.8),
+      new THREE.Vector3(3.5, 0.09, 0.5),
+      new THREE.Vector3(5.3, 0.09, -1.5)
+    ];
+
+    const roadCurve = new THREE.CatmullRomCurve3(
+      roadPoints
+    );
+
+    for (let i = 0; i <= 100; i++) {
+      const t = i / 100;
+      const p = roadCurve.getPoint(t);
+      const tangent = roadCurve.getTangent(t);
+
+      const tile = box(
+        0.34, 0.09, 0.5,
+        stoneMat,
+        p.x, p.y, p.z,
+        island
+      );
+
+      tile.rotation.y = -Math.atan2(
+        tangent.z,
+        tangent.x
+      );
+    }
+
+    // ========================================
+    // 11. 3D FOX COMPANION
+    // ========================================
+
+    const fox = new THREE.Group();
+    island.add(fox);
+
+    const orangeMat = mat("#f29a42");
+    const creamMat = mat("#fff0d7");
+    const blackMat = mat("#302b31");
+    const scarfMat = mat("#49b8af");
+
+    sphere(
+      0.34, orangeMat,
+      0, 0.65, 0, fox
+    ).scale.set(0.85, 1.25, 0.75);
+
+    sphere(
+      0.38, orangeMat,
+      0, 1.23, 0, fox
+    );
+
+    sphere(
+      0.25, creamMat,
+      0, 1.1, 0.26, fox
+    );
+
+    for (const side of [-1, 1]) {
+      const ear = cone(
+        0.17, 0.43,
+        orangeMat,
+        side * 0.23, 1.68, 0,
+        fox
+      );
+
+      ear.rotation.z = side * -0.18;
+
+      sphere(
+        0.055, blackMat,
+        side * 0.15, 1.28, 0.33,
+        fox
+      );
+
+      sphere(
+        0.12, orangeMat,
+        side * 0.22, 0.32, 0,
+        fox
+      );
+    }
+
+    sphere(
+      0.08, blackMat,
+      0, 1.05, 0.49,
+      fox
+    );
+
+    cylinder(
+      0.34, 0.34, 0.13,
+      scarfMat,
+      0, 0.91, 0,
+      fox
+    );
+
+    const tail = sphere(
+      0.34, orangeMat,
+      0, 0.55, -0.38,
+      fox
+    );
+
+    tail.scale.set(0.65, 0.7, 1.4);
+
+    fox.scale.setScalar(0.75);
+
+    let foxProgress = 0;
+    let foxDestination = 0;
+    let foxWalking = false;
+
+    function updateFox(delta, elapsed) {
+      if (foxWalking) {
+        const difference = foxDestination - foxProgress;
+        const step = Math.min(
+          Math.abs(difference),
+          delta * 0.15
+        );
+
+        foxProgress += Math.sign(difference) * step;
+
+        if (Math.abs(difference) < 0.002) {
+          foxProgress = foxDestination;
+          foxWalking = false;
+        }
+      }
+
+      const p = roadCurve.getPoint(foxProgress);
+      const tangent = roadCurve.getTangent(foxProgress);
+
+      fox.position.copy(p);
+      fox.position.y += foxWalking
+        ? Math.abs(Math.sin(elapsed * 13)) * 0.09
+        : Math.sin(elapsed * 2) * 0.025;
+
+      fox.rotation.y = Math.atan2(
+        tangent.x,
+        tangent.z
+      );
+    }
+
+    // ========================================
+    // 12. CLOUDS
+    // ========================================
+
+    const clouds = [];
+
+    function createCloud(x, y, z, scale) {
+      const group = new THREE.Group();
+      group.position.set(x, y, z);
+      group.scale.setScalar(scale);
+
+      const cloudMat = new THREE.MeshStandardMaterial({
+        color: "#ffffff",
+        transparent: true,
+        opacity: 0.88,
+        roughness: 1
+      });
+
+      sphere(1.0, cloudMat, 0, 0, 0, group);
+      sphere(0.8, cloudMat, 0.9, 0.1, 0, group);
+      sphere(0.7, cloudMat, -0.9, 0, 0, group);
+
+      scene.add(group);
+      clouds.push(group);
+    }
+
+    createCloud(-12, -3, -8, 1.5);
+    createCloud(12, -4, 6, 1.7);
+    createCloud(-5, -5, 11, 1.2);
+    createCloud(7, -4, -12, 1.4);
+
+    // ========================================
+    // 13. CLICKABLE ZONES
+    // ========================================
+
+    const zones = [
+      {
+        id: "grammar",
+        title: "🌳 Grammar Forest",
+        description:
+          "语法森林：探索魔法树屋，学习英语语法。",
+        group: grammarGroup,
+        camera: new THREE.Vector3(-2, 8, 10),
+        target: new THREE.Vector3(-5, 1.6, 0),
+        progress: 0.18
+      },
+      {
+        id: "spelling",
+        title: "🌸 Spelling Garden",
+        description:
+          "拼写花园：用字母魔法修复花园。",
+        group: spellingGroup,
+        camera: new THREE.Vector3(5, 8, 10),
+        target: new THREE.Vector3(0.6, 1, 0.4),
+        progress: 0.58
+      },
+      {
+        id: "speaking",
+        title: "🏰 Speaking Castle",
+        description:
+          "口语城堡：通过真实英语交流完成挑战。",
+        group: castleGroup,
+        camera: new THREE.Vector3(10, 9, 6),
+        target: new THREE.Vector3(5.3, 2, -1.5),
+        progress: 1
+      }
+    ];
+
+    let selectedZone = null;
+
+    const titleEl = document.getElementById("zoneTitle");
+    const textEl = document.getElementById("zoneText");
+    const actionBtn = document.getElementById("actionBtn");
+    const statusEl = document.getElementById("status");
+
+    function selectZone(zone) {
+      selectedZone = zone;
+
+      titleEl.textContent = zone.title;
+      textEl.textContent = zone.description;
+
+      actionBtn.disabled = false;
+      actionBtn.textContent = "🚶 前往区域 / Go";
+
+      statusEl.textContent = "📍 " + zone.title;
+
+      moveCamera(zone.camera, zone.target);
+    }
+
+    const raycaster = new THREE.Raycaster();
+    const pointer = new THREE.Vector2();
+
+    let pointerDown = null;
+
+    renderer.domElement.addEventListener(
+      "pointerdown",
+      (event) => {
+        pointerDown = {
+          x: event.clientX,
+          y: event.clientY
+        };
+      }
+    );
+
+    renderer.domElement.addEventListener(
+      "pointerup",
+      (event) => {
+        if (!pointerDown) return;
+
+        const distance = Math.hypot(
+          event.clientX - pointerDown.x,
+          event.clientY - pointerDown.y
+        );
+
+        pointerDown = null;
+
+        // Do not select when dragging to rotate.
+
+        if (distance > 7) return;
+
+        const rect = renderer.domElement
+          .getBoundingClientRect();
+
+        pointer.x =
+          ((event.clientX - rect.left) / rect.width) * 2 - 1;
+
+        pointer.y =
+          -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+        raycaster.setFromCamera(pointer, camera);
+
+        for (const zone of zones) {
+          const hits = raycaster.intersectObjects(
+            zone.group.children,
+            true
+          );
+
+          if (hits.length) {
+            selectZone(zone);
+            break;
+          }
+        }
+      }
+    );
+
+    // ========================================
+    // 14. BUTTON ACTIONS
+    // ========================================
+
+    actionBtn.addEventListener("click", () => {
+      if (!selectedZone) return;
+
+      foxDestination = selectedZone.progress;
+      foxWalking = true;
+
+      statusEl.textContent =
+        "🦊 Finn 正在前往 " + selectedZone.title;
+
+      actionBtn.textContent = "🦊 伙伴正在冒险";
+
+      // Stage 30.1 is a visual test.
+      // No learning pages are opened yet.
+    });
+
+    document.getElementById("overviewBtn")
+      .addEventListener("click", () => {
+        overview();
+
+        selectedZone = null;
+
+        titleEl.textContent =
+          "🌟 Welcome to Magic Island!";
+
+        textEl.textContent =
+          "点击森林、花园或城堡，探索 3D 魔法岛屿。";
+
+        actionBtn.textContent = "请选择冒险区域";
+        actionBtn.disabled = true;
+      });
+
+    document.getElementById("zoomInBtn")
+      .addEventListener("click", () => {
+        cameraAnimating = false;
+        camera.position.lerp(
+          controls.target,
+          0.18
+        );
+      });
+
+    document.getElementById("zoomOutBtn")
+      .addEventListener("click", () => {
+        cameraAnimating = false;
+        const direction = camera.position.clone()
+          .sub(controls.target);
+
+        camera.position.addScaledVector(
+          direction,
+          0.2
+        );
+      });
+
+    let soundEnabled = true;
+
+    document.getElementById("soundBtn")
+      .addEventListener("click", () => {
+        soundEnabled = !soundEnabled;
+
+        document.getElementById("soundBtn")
+          .textContent = soundEnabled
+            ? "🔊 声音"
+            : "🔇 静音";
+
+        statusEl.textContent = soundEnabled
+          ? "声音已开启（音效将在后续阶段接入）"
+          : "声音已关闭";
+      });
+
+    // ========================================
+    // 15. ANIMATION LOOP
+    // ========================================
+
+    const clock = new THREE.Clock();
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      const delta = Math.min(clock.getDelta(), 0.05);
+      const elapsed = clock.elapsedTime;
+
+      if (cameraAnimating) {
+        camera.position.lerp(
+          cameraGoal,
+          Math.min(1, delta * 2.5)
+        );
+
+        controls.target.lerp(
+          targetGoal,
+          Math.min(1, delta * 2.5)
+        );
+
+        if (
+          camera.position.distanceTo(cameraGoal) < 0.03 &&
+          controls.target.distanceTo(targetGoal) < 0.03
+        ) {
+          camera.position.copy(cameraGoal);
+          controls.target.copy(targetGoal);
+          cameraAnimating = false;
+        }
+      }
+
+      controls.update();
+
+      updateFox(delta, elapsed);
+
+      clouds.forEach((cloud, i) => {
+        cloud.position.x +=
+          Math.sin(elapsed * 0.25 + i) * delta * 0.04;
+      });
+
+      renderer.render(scene, camera);
+    }
+
+    animate();
+
+    // ========================================
+    // 16. RESIZE
+    // ========================================
+
+    window.addEventListener("resize", () => {
+      camera.aspect =
+        window.innerWidth / window.innerHeight;
+
+      camera.updateProjectionMatrix();
+
+      renderer.setSize(
+        window.innerWidth,
+        window.innerHeight
+      );
+    });
+
+    statusEl.textContent =
+      "✅ 3D Magic Island 已加载";
+  </script>
+</body>
+</html>

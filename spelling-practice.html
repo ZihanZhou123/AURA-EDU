@@ -1,0 +1,312 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AURA EDU | Adaptive Spelling Practice</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#edf7f2;color:#29445a;font-family:Arial,"PingFang SC","Microsoft YaHei",sans-serif}
+header{background:white;padding:17px 5%;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border-bottom:1px solid #dbe8df}
+.brand{font-size:21px;font-weight:900;color:#7659d5}
+a{color:#28776b;text-decoration:none}
+main{max-width:850px;margin:30px auto;padding:0 16px 45px}
+h1{margin-bottom:8px}
+.subtitle,.muted{color:#647c70;line-height:1.7}
+.panel{background:white;padding:25px;border:1px solid #d8e8df;border-radius:20px;margin-top:18px;box-shadow:0 8px 25px #254b3410}
+.identity{padding:13px 16px;background:#e6f3ff;border-radius:12px;font-weight:bold}
+.progress{height:12px;background:#e7ece8;border-radius:20px;overflow:hidden;margin:16px 0}
+.progress-fill{height:100%;width:0;background:#38a786;transition:width .2s}
+.question-type{font-size:13px;color:#7659d5;font-weight:bold}
+.context{background:#f2f7f8;padding:16px;border-radius:13px;line-height:1.8;white-space:pre-line;margin:15px 0}
+input{width:100%;padding:15px;border:2px solid #c9ded2;border-radius:12px;font-size:18px}
+input:focus{outline:2px solid #8bd8bd}
+button{border:0;border-radius:11px;padding:12px 17px;font-size:14px;font-weight:bold;cursor:pointer}
+button:disabled{opacity:.5;cursor:not-allowed}
+.primary{background:#7659d5;color:white}
+.hint{background:#fff0cb;color:#855d1c}
+.secondary{background:#e1f2ea;color:#226f50}
+.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:18px}
+.feedback{padding:14px;background:#f0f7f2;border-radius:12px;line-height:1.7;margin-top:15px;white-space:pre-line}
+.feedback.error{background:#fff3ec;color:#954b30}
+.feedback:empty{display:none}
+.small{font-size:13px;color:#657b71;line-height:1.7}
+.hidden{display:none!important}
+.result-row{padding:13px 0;border-bottom:1px solid #e1e9e4;line-height:1.8}
+.status{margin-top:12px;color:#a34b39;line-height:1.6}
+.access-notice{background:#fff0e8;border:1px solid #f1cbb9;border-radius:12px;padding:14px;color:#8b3a28;line-height:1.7;margin:14px 0}
+@media(max-width:600px){.panel{padding:18px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">✦ AURA EDU</div>
+  <a href="adventure-mastery-map.html">← Adventure Map</a>
+</header>
+
+<main>
+  <h1>🌱 Adaptive Spelling Practice</h1>
+  <p class="subtitle">自适应拼写练习 · Learn, Reflect and Revise</p>
+  <div class="identity" id="learner-display">正在读取学生身份...</div>
+
+  <section class="panel" id="intro-panel">
+    <h2>Your Personal Learning Path</h2>
+    <p>系统将读取你最近一次完成的 Spelling Diagnostic，优先安排需要加强的词汇。</p>
+    <p class="small">练习允许修改答案，也可以使用三级提示。所有尝试和提示都会记录下来。</p>
+    <p id="diagnostic-summary" class="context">正在检查诊断记录...</p>
+    <div class="access-notice" id="grammar-access-notice" role="status">
+      正在验证 Grammar 学习资格...
+    </div>
+    <div class="actions">
+      <button class="primary" id="start-btn" disabled>Start Adaptive Practice</button>
+      <a href="spelling-diagnostic.html" class="secondary" style="padding:12px 17px;border-radius:11px">Take Diagnostic</a>
+    </div>
+    <p id="intro-message" class="status" role="status"></p>
+  </section>
+
+  <section class="panel hidden" id="practice-panel">
+    <div id="question-counter"></div>
+    <div class="progress"><div class="progress-fill" id="progress-fill"></div></div>
+    <p class="question-type" id="question-type"></p>
+    <h2 id="question-title"></h2>
+    <div class="context" id="question-context"></div>
+    <label for="answer-input"><strong>Your Answer / 你的答案</strong></label>
+    <input id="answer-input" type="text" autocomplete="off"
+      autocapitalize="off" spellcheck="false" maxlength="80"
+      placeholder="Type your answer">
+    <div class="actions">
+      <button class="primary" id="check-btn">Check My Answer</button>
+      <button class="hint" id="hint-btn">💡 Hint 1</button>
+      <button class="secondary hidden" id="next-btn">Next Question →</button>
+    </div>
+    <div id="hint-output" class="feedback" role="status"></div>
+    <div id="feedback-output" class="feedback" role="status"></div>
+    <p id="practice-message" class="status" role="status"></p>
+    <p class="small">Hint 1 → Hint 2 → Hint 3。练习阶段允许修正答案；独立复测阶段不提供提示。</p>
+  </section>
+
+  <section class="panel hidden" id="result-panel">
+    <h2>🎉 Practice Completed!</h2>
+    <div id="result-summary"></div>
+    <h3>Question-Level Learning Evidence</h3>
+    <div id="result-details"></div>
+    <div class="actions">
+      <button class="secondary" id="copy-btn">Copy JSON</button>
+      <a href="adventure-mastery-map.html" class="secondary" style="padding:12px 17px;border-radius:11px">Back to Adventure</a>
+    </div>
+    <p id="result-message" class="status" role="status"></p>
+  </section>
+
+  <p class="small">Research prototype: Practice performance is not independent mastery evidence.</p>
+</main>
+
+<script src="js/grammar-unlock.js"></script>
+<script src="js/spelling-knowledge.js"></script>
+<script src="js/spelling-practice.js"></script>
+
+<script>
+/* AURA EDU Stage 28.4.3
+   Spelling Practice access protection.
+   Existing learning records are unchanged. */
+(function () {
+  "use strict";
+
+  const ACTIVE_KEY = "aura_active_learner_id_v2";
+  const startButton = document.getElementById("start-btn");
+  const notice = document.getElementById("grammar-access-notice");
+  const introMessage = document.getElementById("intro-message");
+  const practiceMessage = document.getElementById("practice-message");
+  const practicePanel = document.getElementById("practice-panel");
+
+  const practiceControls = [
+    "answer-input",
+    "check-btn",
+    "hint-btn",
+    "next-btn"
+  ];
+
+  let sessionLearnerId = null;
+  let permanentlyStopped = false;
+
+  function activeId() {
+    try {
+      const raw = localStorage.getItem(ACTIVE_KEY);
+      if (!raw) return null;
+      if (raw.startsWith('"')) {
+        const parsed = JSON.parse(raw);
+        return typeof parsed === "string" ? parsed : null;
+      }
+      return raw;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function eligibility() {
+    const id = activeId();
+    if (!id) {
+      return { allowed: false, id, message: "请先选择学生。" };
+    }
+
+    const engine = window.AuraGrammarUnlock;
+    if (!engine || typeof engine.evaluateGrammar !== "function") {
+      return {
+        allowed: false,
+        id,
+        message: "Grammar 解锁引擎未加载，无法开始练习。"
+      };
+    }
+
+    try {
+      const report = engine.evaluateGrammar();
+      const allowed = Boolean(
+        report &&
+        report.ok === true &&
+        String(report.learnerId) === String(id) &&
+        report.grammarComplete === true &&
+        report.spellingEligible === true
+      );
+
+      return {
+        allowed,
+        id,
+        message: allowed
+          ? "✓ Grammar 前置条件已满足。"
+          : "🔒 Spelling 尚未解锁。请先完成 G1、G2、G3 的暂定掌握条件。"
+      };
+    } catch (error) {
+      console.error("[AURA Spelling Practice] Access check:", error);
+      return {
+        allowed: false,
+        id,
+        message: "Grammar 资格验证失败，请返回学习地图。"
+      };
+    }
+  }
+
+  function inPractice() {
+    return !practicePanel.classList.contains("hidden");
+  }
+
+  function stopPractice(message) {
+    permanentlyStopped = true;
+    startButton.disabled = true;
+
+    for (const id of practiceControls) {
+      const element = document.getElementById(id);
+      if (element) element.disabled = true;
+    }
+
+    practiceMessage.textContent = message;
+    introMessage.textContent = message;
+
+    if (inPractice()) {
+      let warning = document.getElementById("practice-access-warning");
+      if (!warning) {
+        warning = document.createElement("div");
+        warning.id = "practice-access-warning";
+        warning.className = "access-notice";
+        warning.setAttribute("role", "alert");
+        practicePanel.prepend(warning);
+      }
+      warning.textContent = message;
+    }
+  }
+
+  function refreshAccess() {
+    const result = eligibility();
+    notice.textContent = result.message;
+
+    if (permanentlyStopped) {
+      stopPractice("当前练习已停止。请返回学习地图重新进入。");
+      return;
+    }
+
+    if (inPractice()) {
+      if (
+        !result.allowed ||
+        !sessionLearnerId ||
+        String(result.id) !== String(sessionLearnerId)
+      ) {
+        stopPractice("学生身份或 Grammar 解锁资格发生变化，练习已停止。");
+      }
+      return;
+    }
+
+    if (!document.getElementById("intro-panel").classList.contains("hidden")) {
+      if (!result.allowed) {
+        startButton.disabled = true;
+        introMessage.textContent = result.message;
+      }
+    }
+  }
+
+  function guardAction(event) {
+    const result = eligibility();
+    const isStart = event.target.id === "start-btn";
+
+    if (
+      permanentlyStopped ||
+      !result.allowed ||
+      (!isStart && (
+        !sessionLearnerId ||
+        String(result.id) !== String(sessionLearnerId)
+      ))
+    ) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+
+      if (inPractice() || permanentlyStopped) {
+        stopPractice("学生身份或 Grammar 资格无法验证，练习已停止。");
+      } else {
+        startButton.disabled = true;
+        introMessage.textContent = result.message;
+        notice.textContent = result.message;
+      }
+      return false;
+    }
+
+    if (isStart) {
+      sessionLearnerId = result.id;
+    }
+    return true;
+  }
+
+  // Capture actions before the existing practice.js handlers.
+  document.addEventListener("click", function (event) {
+    const target = event.target.closest("button");
+    if (!target) return;
+
+    if ([
+      "start-btn",
+      "check-btn",
+      "hint-btn",
+      "next-btn"
+    ].includes(target.id)) {
+      guardAction(event);
+    }
+  }, true);
+
+  document.getElementById("answer-input").addEventListener(
+    "keydown",
+    function (event) {
+      if (event.key === "Enter") {
+        guardAction(event);
+      }
+    },
+    true
+  );
+
+  window.addEventListener("focus", refreshAccess);
+  window.addEventListener("storage", refreshAccess);
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) refreshAccess();
+  });
+
+  refreshAccess();
+})();
+</script>
+</body>
+</html>

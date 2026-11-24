@@ -1,0 +1,1175 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AURA EDU | Learner Dashboard</title>
+<style>
+:root{
+  --navy:#17365d;
+  --teal:#218b83;
+  --bg:#f5f8fc;
+  --line:#dfe7ee;
+  --muted:#64748b;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,"PingFang SC","Microsoft YaHei",sans-serif;
+  background:var(--bg);
+  color:#26354a;
+  line-height:1.65;
+}
+header{background:white;border-bottom:1px solid var(--line)}
+nav{
+  max-width:1150px;
+  margin:auto;
+  padding:18px 22px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  flex-wrap:wrap;
+}
+nav a{color:var(--navy);text-decoration:none}
+.logo{font-size:23px;font-weight:800}
+.links{display:flex;gap:18px;flex-wrap:wrap}
+main{max-width:1150px;margin:auto;padding:34px 22px 70px}
+h1,h2,h3{color:var(--navy)}
+h1{font-size:clamp(30px,5vw,43px);line-height:1.2}
+p{color:var(--muted)}
+.hero{
+  padding:35px;
+  border-radius:20px;
+  background:linear-gradient(135deg,#17365d,#245e78);
+  margin-bottom:23px;
+}
+.hero h1,.hero p{color:white}
+.eyebrow{
+  color:var(--teal);
+  font-size:12px;
+  font-weight:bold;
+  letter-spacing:2px;
+}
+.hero .eyebrow{color:#bce9e2}
+.card{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:25px;
+  margin-bottom:20px;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:16px;
+}
+.grid.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+.module-card{
+  background:#f7fafc;
+  border:1px solid var(--line);
+  padding:20px;
+  border-radius:13px;
+}
+.tag{
+  display:inline-block;
+  border-radius:20px;
+  background:#e7f5f0;
+  color:#17645e;
+  padding:5px 12px;
+  font-size:12px;
+  font-weight:bold;
+}
+.notice{
+  padding:17px;
+  border-left:4px solid var(--teal);
+  background:#eaf5f3;
+  border-radius:8px;
+  margin:20px 0;
+}
+.notice.warning{
+  border-left-color:#d4a345;
+  background:#fff8e8;
+}
+.notice.warning p{color:#775b25}
+.metric{
+  color:var(--navy);
+  font-size:30px;
+  font-weight:800;
+}
+.metric-label{color:var(--muted);font-size:13px}
+.buttons{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-top:16px;
+}
+button,.action-link{
+  font:inherit;
+  border:1px solid var(--line);
+  border-radius:9px;
+  padding:11px 18px;
+  background:white;
+  color:var(--navy);
+  cursor:pointer;
+}
+.btn{
+  background:var(--navy);
+  border-color:var(--navy);
+  color:white;
+}
+.btn.teal{
+  background:var(--teal);
+  border-color:var(--teal);
+}
+.action-link{
+  display:inline-block;
+  margin-top:12px;
+  background:var(--teal);
+  border-color:var(--teal);
+  color:white;
+  text-decoration:none;
+}
+.bar-row{margin:17px 0}
+.bar-label{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:7px;
+  font-size:14px;
+}
+.bar{
+  background:#e2e8f0;
+  height:13px;
+  border-radius:12px;
+  overflow:hidden;
+}
+.fill{height:100%;width:0;background:var(--teal)}
+.fill.diagnostic{background:#7196bd}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{
+  text-align:left;
+  padding:12px;
+  border-bottom:1px solid var(--line);
+  white-space:nowrap;
+}
+th{background:#f1f6f9;color:var(--navy)}
+.empty{text-align:center;color:var(--muted);padding:25px}
+.small{font-size:13px}
+.profile-name{font-size:28px;font-weight:800;color:var(--navy)}
+.profile-id{overflow-wrap:anywhere;font-size:13px;color:var(--muted)}
+.status{font-size:13px;color:var(--teal);font-weight:bold}
+footer{background:var(--navy);padding:24px;text-align:center}
+footer p{color:#e0eaf3}
+@media(max-width:800px){
+  .grid,.grid.four{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:550px){
+  .grid,.grid.four{grid-template-columns:1fr}
+  .hero{padding:23px}
+}
+</style>
+</head>
+
+<body>
+<header>
+<nav>
+  <a href="index.html" class="logo">AURA EDU</a>
+  <div class="links">
+    <a href="index.html">AURA Learn</a>
+    <a href="grammar-hub.html">Grammar Hub</a>
+    <a href="learner-manager.html">Learner Manager</a>
+    <a href="grammar-analytics.html">Grammar Analytics</a>
+    <a href="research.html">Research Lab</a>
+  </div>
+</nav>
+</header>
+
+<main>
+<section class="hero">
+  <div class="eyebrow">AURA EDU / LEARNER ANALYTICS</div>
+  <h1>My Learning Dashboard</h1>
+  <p>我的英语学习档案 · G1 / G2 / G3</p>
+  <p>查看语法学习表现、提示使用情况和下一步学习建议。</p>
+</section>
+
+<div class="notice">
+  <strong>隐私与研究说明：</strong>
+  本页面使用浏览器本地数据，不要求真实姓名。
+  当前学生身份由 Learner Manager 统一管理。
+  未经过身份关联验证的历史学习会话不会自动归入当前学生。
+</div>
+
+<section class="card">
+  <h2>👤 当前学习者 / Active Learner</h2>
+  <div class="grid">
+    <div>
+      <div class="metric-label">昵称 / Nickname</div>
+      <div class="profile-name" id="nickname">—</div>
+    </div>
+    <div>
+      <div class="metric-label">年龄 / Age</div>
+      <h3 id="age">—</h3>
+    </div>
+    <div>
+      <div class="metric-label">兴趣 / Interest</div>
+      <h3 id="interest">—</h3>
+    </div>
+  </div>
+  <p class="profile-id" id="profile-id"></p>
+  <p class="status" id="profile-status" role="status"></p>
+  <div class="buttons">
+    <a class="action-link" href="learner-manager.html">
+      切换学习者 / Switch Learner
+    </a>
+    <button id="refresh-profile">刷新当前身份</button>
+  </div>
+</section>
+
+<section class="grid four">
+  <div class="card">
+    <div class="metric-label">当前学生已关联完整会话</div>
+    <div class="metric" id="sessions">0</div>
+  </div>
+  <div class="card">
+    <div class="metric-label">有记录的模块</div>
+    <div class="metric" id="modules">0 / 3</div>
+  </div>
+  <div class="card">
+    <div class="metric-label">诊断首次正确率</div>
+    <div class="metric" id="diagnostic">—</div>
+  </div>
+  <div class="card">
+    <div class="metric-label">即时独立复测正确率</div>
+    <div class="metric" id="reassessment">—</div>
+  </div>
+</section>
+
+<section class="card">
+  <h2>🔐 学习记录身份审查</h2>
+  <div class="grid">
+    <div class="module-card">
+      <div class="metric" id="linked-count">0</div>
+      <div class="metric-label">明确关联当前学生</div>
+    </div>
+    <div class="module-card">
+      <div class="metric" id="other-count">0</div>
+      <div class="metric-label">明确关联其他学生</div>
+    </div>
+    <div class="module-card">
+      <div class="metric" id="unverified-count">0</div>
+      <div class="metric-label">无法确认身份的历史会话</div>
+    </div>
+  </div>
+  <div class="notice warning">
+    <p id="attribution-note">
+      正在检查历史学习记录的身份关联信息。
+    </p>
+  </div>
+</section>
+
+<section class="card">
+  <h2>📊 跨模块学习表现</h2>
+  <p>
+    以下图表使用当前学习者已明确关联的、
+    每个模块最近一次完整会话。
+  </p>
+  <div id="comparison"></div>
+</section>
+
+<section class="card">
+  <h2>🧠 知识点学习状态</h2>
+  <div class="grid" id="module-cards"></div>
+</section>
+
+<section class="card">
+  <h2>💡 教学提示使用分析</h2>
+  <p>
+    统计当前学习者已关联会话中的练习提示记录。
+    提示使用不等于学习失败，也不能单独证明提示依赖。
+  </p>
+  <div class="grid">
+    <div class="module-card">
+      <div class="metric" id="hinted-questions">0</div>
+      <div class="metric-label">使用过提示的练习题</div>
+    </div>
+    <div class="module-card">
+      <div class="metric" id="total-practice">0</div>
+      <div class="metric-label">有记录的练习题</div>
+    </div>
+    <div class="module-card">
+      <div class="metric" id="highest-hint">None</div>
+      <div class="metric-label">最高提示等级</div>
+    </div>
+  </div>
+  <div id="hint-chart"></div>
+</section>
+
+<section class="card">
+  <h2>📚 当前学习者的学习历史</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>模块</th>
+          <th>完成时间</th>
+          <th>诊断</th>
+          <th>练习</th>
+          <th>独立复测</th>
+          <th>学习路径</th>
+        </tr>
+      </thead>
+      <tbody id="history"></tbody>
+    </table>
+  </div>
+</section>
+
+<section class="card">
+  <h2>🎯 下一步学习建议</h2>
+  <div id="recommendations"></div>
+  <div class="buttons">
+    <button class="btn teal" id="export">Copy Learning Report JSON</button>
+    <button class="btn" id="refresh">刷新学习记录</button>
+  </div>
+  <p class="small" id="export-status" role="status"></p>
+</section>
+
+<section class="card">
+  <h2>🗂 未验证归属的历史记录</h2>
+  <p>
+    此处仅显示无法确认身份的历史会话数量和模块分布。
+    它们仍保留在原始存储中，不会被删除或自动关联。
+  </p>
+  <div id="legacy-summary"></div>
+</section>
+
+<div class="notice">
+  <strong>研究局限性：</strong>
+  Foundation、Guided、Challenge 是规则生成的初步学习路径建议。
+  即时复测不能验证长期掌握。当前页面也不能独立认证真实参与者身份。
+</div>
+</main>
+
+<footer>
+<p>AURA EDU · Learner Dashboard · Research Prototype</p>
+</footer>
+
+<script src="js/learner-identity.js"></script>
+<script>
+(function(){
+"use strict";
+
+/*
+ AURA EDU — STAGE 21
+ LEARNER DASHBOARD IDENTITY SYNCHRONIZATION
+
+ Identity source:
+ aura_learner_profiles_v2
+ aura_active_learner_id_v2
+
+ Historical sessions are read-only.
+ No legacy reassignment.
+ No localStorage writes.
+*/
+
+const PROFILES_KEY="aura_learner_profiles_v2";
+const ACTIVE_KEY="aura_active_learner_id_v2";
+
+const MODULES=[
+  {
+    id:"G1",
+    name:"Verb to Be",
+    key:"aura_g1_learning_records_v1",
+    url:"grammar-g1.html"
+  },
+  {
+    id:"G2",
+    name:"Subject–Verb Agreement",
+    key:"aura_g2_learning_records_v1",
+    url:"grammar-g2.html"
+  },
+  {
+    id:"G3",
+    name:"Sentence Construction",
+    key:"aura_g3_learning_records_v1",
+    url:"grammar-g3.html"
+  }
+];
+
+const $=id=>document.getElementById(id);
+
+let activeLearner=null;
+let sessions=[];
+let allSessions=[];
+let otherSessions=[];
+let unverifiedSessions=[];
+let storageErrors=[];
+
+function readJSON(key,fallback){
+  try{
+    const raw=localStorage.getItem(key);
+    return raw===null?fallback:JSON.parse(raw);
+  }catch(error){
+    console.warn("[AURA Dashboard] Storage error:",error);
+    storageErrors.push(key);
+    return fallback;
+  }
+}
+
+function isObject(value){
+  return value!==null &&
+    typeof value==="object" &&
+    !Array.isArray(value);
+}
+
+function path(object,key){
+  let current=object;
+
+  for(const part of key.split(".")){
+    if(!isObject(current) ||
+      !Object.prototype.hasOwnProperty.call(current,part)){
+      return undefined;
+    }
+    current=current[part];
+  }
+
+  return current;
+}
+
+function firstValue(object,paths){
+  for(const key of paths){
+    const value=path(object,key);
+    if(value!==undefined && value!==null && value!==""){
+      return value;
+    }
+  }
+  return null;
+}
+
+function getId(profile){
+  if(!isObject(profile))return null;
+
+  const value=firstValue(profile,[
+    "id","learnerId","profileId"
+  ]);
+
+  return typeof value==="string" && value.trim()
+    ?value.trim():null;
+}
+
+function getName(profile){
+  return String(firstValue(profile,[
+    "nickname","name","displayName"
+  ])||"未命名学习者");
+}
+
+function getProfiles(){
+  const value=readJSON(PROFILES_KEY,[]);
+
+  if(Array.isArray(value))return value;
+
+  if(isObject(value)){
+    if(Array.isArray(value.profiles))return value.profiles;
+    if(Array.isArray(value.learners))return value.learners;
+  }
+
+  return [];
+}
+
+function readActiveId(){
+  const raw=localStorage.getItem(ACTIVE_KEY);
+  if(raw===null)return null;
+
+  /*
+   Active ID may be stored as a plain string
+   or as a JSON string/object.
+  */
+  let parsed=raw;
+
+  try{
+    parsed=JSON.parse(raw);
+  }catch(error){
+    parsed=raw;
+  }
+
+  if(typeof parsed==="string"){
+    return parsed.trim()||null;
+  }
+
+  if(isObject(parsed)){
+    const value=firstValue(parsed,[
+      "learnerId","id","activeLearnerId","profileId"
+    ]);
+
+    return typeof value==="string"?value:null;
+  }
+
+  return null;
+}
+
+function loadActiveLearner(){
+  const id=readActiveId();
+  const profiles=getProfiles();
+
+  activeLearner=id
+    ?profiles.find(profile=>getId(profile)===id)||null
+    :null;
+
+  if(!activeLearner){
+    $("nickname").textContent="尚未选择学习者";
+    $("age").textContent="—";
+    $("interest").textContent="—";
+    $("profile-id").textContent="";
+    $("profile-status").textContent=
+      "请先在 Learner Manager 选择学习者。";
+    return;
+  }
+
+  $("nickname").textContent=getName(activeLearner);
+  $("age").textContent=String(
+    firstValue(activeLearner,["age"])||"—"
+  );
+  $("interest").textContent=String(
+    firstValue(activeLearner,["interest"])||"—"
+  );
+
+  $("profile-id").textContent=
+    "Active Learner ID: "+getId(activeLearner);
+
+  $("profile-status").textContent=
+    "当前学习者身份已从 Learner Manager 同步。";
+}
+
+function sessionShape(value){
+  return isObject(value) &&
+    isObject(value.result) &&
+    (
+      Array.isArray(value.records) ||
+      isObject(value.result.diagnostic) ||
+      isObject(value.result.reassessment)
+    );
+}
+
+function resolveSession(original){
+  const candidates=[
+    original,
+    path(original,"session"),
+    path(original,"data"),
+    path(original,"learningSession"),
+    path(original,"sessionData"),
+    path(original,"payload"),
+    path(original,"data.session"),
+    path(original,"payload.session")
+  ];
+
+  return candidates.find(sessionShape)||null;
+}
+
+function getSessionOwner(original,session){
+  /*
+   Accept only explicit learner identifiers.
+   Never infer identity from nickname, age,
+   timestamp, storage order or active profile.
+  */
+  const fields=[
+    "learnerId",
+    "learnerID",
+    "profileId",
+    "identity.learnerId",
+    "identity.profileId",
+    "learner.id",
+    "learnerIdentity.learnerId",
+    "learnerIdentity.id",
+    "identitySnapshot.learnerId",
+    "identitySnapshot.id",
+    "learnerSnapshot.id",
+    "learnerSnapshot.learnerId"
+  ];
+
+  const values=[];
+
+  for(const object of [original,session]){
+    if(!isObject(object))continue;
+
+    for(const field of fields){
+      const value=path(object,field);
+
+      if(typeof value==="string" && value.trim()){
+        values.push(value.trim());
+      }
+    }
+  }
+
+  const unique=[...new Set(values)];
+
+  /*
+   Conflicting owner identifiers are not
+   safe to attribute to any learner.
+  */
+  return unique.length===1?unique[0]:null;
+}
+
+function completed(session){
+  return sessionShape(session) &&
+    isObject(session.result) &&
+    !!session.completedAt;
+}
+
+function loadSessions(){
+  sessions=[];
+  allSessions=[];
+  otherSessions=[];
+  unverifiedSessions=[];
+  storageErrors=[];
+
+  const activeId=getId(activeLearner);
+
+  for(const module of MODULES){
+    const records=readJSON(module.key,[]);
+
+    if(!Array.isArray(records)){
+      storageErrors.push(module.key);
+      continue;
+    }
+
+    for(const original of records){
+      if(!isObject(original))continue;
+
+      const session=resolveSession(original);
+      if(!session || !completed(session))continue;
+
+      const owner=getSessionOwner(original,session);
+
+      const entry={
+        ...session,
+        moduleId:module.id,
+        moduleName:module.name,
+        ownerId:owner
+      };
+
+      allSessions.push(entry);
+
+      if(owner===null){
+        unverifiedSessions.push(entry);
+      }else if(activeId && owner===activeId){
+        sessions.push(entry);
+      }else{
+        otherSessions.push(entry);
+      }
+    }
+  }
+
+  const sortByDate=(a,b)=>{
+    const ta=Date.parse(a.completedAt)||0;
+    const tb=Date.parse(b.completedAt)||0;
+    return tb-ta;
+  };
+
+  sessions.sort(sortByDate);
+  allSessions.sort(sortByDate);
+
+  render();
+}
+
+function getScore(session,stage){
+  const records=Array.isArray(session.records)
+    ?session.records.filter(r=>r && r.stage===stage)
+    :[];
+
+  if(records.length){
+    const known=records.filter(
+      r=>typeof r.firstAttemptCorrect==="boolean"
+    );
+
+    if(known.length===records.length){
+      return {
+        correct:known.filter(
+          r=>r.firstAttemptCorrect===true
+        ).length,
+        total:known.length
+      };
+    }
+  }
+
+  const saved=session.result?.[stage];
+
+  if(
+    saved &&
+    Number.isFinite(saved.correct) &&
+    Number.isFinite(saved.total) &&
+    saved.total>0
+  ){
+    return {
+      correct:saved.correct,
+      total:saved.total
+    };
+  }
+
+  return null;
+}
+
+function percent(correct,total){
+  return total>0?Math.round(correct/total*100):null;
+}
+
+function scorePercent(score){
+  return score?percent(score.correct,score.total):null;
+}
+
+function display(value){
+  return value===null?"—":value+"%";
+}
+
+function aggregate(stage){
+  let correct=0;
+  let total=0;
+
+  for(const session of sessions){
+    const score=getScore(session,stage);
+    if(!score)continue;
+
+    correct+=score.correct;
+    total+=score.total;
+  }
+
+  return percent(correct,total);
+}
+
+function latestByModule(id){
+  return sessions.find(s=>s.moduleId===id)||null;
+}
+
+function createBar(label,value,className=""){
+  const wrapper=document.createElement("div");
+  wrapper.className="bar-row";
+
+  const heading=document.createElement("div");
+  heading.className="bar-label";
+
+  const name=document.createElement("span");
+  name.textContent=label;
+
+  const number=document.createElement("strong");
+  number.textContent=display(value);
+
+  heading.append(name,number);
+
+  const track=document.createElement("div");
+  track.className="bar";
+
+  const fill=document.createElement("div");
+  fill.className="fill "+className;
+  fill.style.width=value===null
+    ?"0%":Math.max(0,Math.min(100,value))+"%";
+
+  track.appendChild(fill);
+  wrapper.append(heading,track);
+
+  return wrapper;
+}
+
+function renderMetrics(){
+  $("sessions").textContent=sessions.length;
+
+  const count=MODULES.filter(
+    module=>sessions.some(s=>s.moduleId===module.id)
+  ).length;
+
+  $("modules").textContent=count+" / 3";
+  $("diagnostic").textContent=display(aggregate("diagnostic"));
+  $("reassessment").textContent=display(aggregate("reassessment"));
+
+  $("linked-count").textContent=sessions.length;
+  $("other-count").textContent=otherSessions.length;
+  $("unverified-count").textContent=unverifiedSessions.length;
+
+  $("attribution-note").textContent=
+    "本地共识别 "+allSessions.length+
+    " 条完整学习会话。其中 "+sessions.length+
+    " 条明确关联当前学生，"+
+    otherSessions.length+" 条关联其他学生，"+
+    unverifiedSessions.length+
+    " 条无法确认归属。未验证记录不会自动关联。"+
+    (storageErrors.length
+      ?" 注意：部分存储读取异常，请检查浏览器控制台。"
+      :"");
+}
+
+function renderComparison(){
+  const container=$("comparison");
+  container.replaceChildren();
+
+  for(const module of MODULES){
+    const session=latestByModule(module.id);
+    const card=document.createElement("div");
+
+    card.className="module-card";
+    card.style.marginBottom="16px";
+
+    const heading=document.createElement("h3");
+    heading.textContent=module.id+" · "+module.name;
+    card.appendChild(heading);
+
+    if(!session){
+      const p=document.createElement("p");
+      p.textContent="当前学习者尚无明确关联的完整记录。";
+      card.appendChild(p);
+    }else{
+      card.appendChild(createBar(
+        "诊断首次正确率",
+        scorePercent(getScore(session,"diagnostic")),
+        "diagnostic"
+      ));
+
+      card.appendChild(createBar(
+        "即时独立复测正确率",
+        scorePercent(getScore(session,"reassessment"))
+      ));
+    }
+
+    container.appendChild(card);
+  }
+}
+
+function renderModuleCards(){
+  const container=$("module-cards");
+  container.replaceChildren();
+
+  for(const module of MODULES){
+    const session=latestByModule(module.id);
+
+    const card=document.createElement("div");
+    card.className="module-card";
+
+    const tag=document.createElement("span");
+    tag.className="tag";
+    tag.textContent=module.id;
+
+    const title=document.createElement("h3");
+    title.textContent=module.name;
+
+    const pathText=document.createElement("p");
+    pathText.textContent=session
+      ?"当前记录的学习路径："+(
+        session.result?.recommendedPath||"—"
+      )
+      :"当前学习者尚无明确关联的学习记录";
+
+    const link=document.createElement("a");
+    link.className="action-link";
+    link.href=module.url;
+    link.textContent=session?"再次练习 →":"开始学习 →";
+
+    card.append(tag,title,pathText,link);
+    container.appendChild(card);
+  }
+}
+
+function parseHint(value){
+  if(Number.isInteger(value) && value>=0 && value<=3){
+    return value;
+  }
+
+  if(typeof value==="string"){
+    const text=value.trim().toUpperCase();
+
+    if(["0","H0","NONE"].includes(text))return 0;
+    if(/^[123]$/.test(text))return Number(text);
+    if(/^H[123]$/.test(text))return Number(text.slice(1));
+  }
+
+  return null;
+}
+
+function hintStats(){
+  let hinted=0;
+  let total=0;
+  let highest=0;
+  let known=0;
+
+  for(const session of sessions){
+    const records=Array.isArray(session.records)
+      ?session.records:[];
+
+    for(const record of records){
+      if(!record || record.stage!=="practice")continue;
+
+      total++;
+
+      const level=parseHint(record.highestHintUsed);
+
+      if(level===null)continue;
+
+      known++;
+      if(level>0)hinted++;
+      highest=Math.max(highest,level);
+    }
+  }
+
+  return {hinted,total,highest,known};
+}
+
+function renderHints(){
+  const stats=hintStats();
+
+  $("hinted-questions").textContent=stats.hinted;
+  $("total-practice").textContent=stats.total;
+
+  $("highest-hint").textContent=stats.known
+    ?(stats.highest?"H"+stats.highest:"None")
+    :"N/A";
+
+  const container=$("hint-chart");
+  container.replaceChildren();
+
+  container.appendChild(createBar(
+    "已知提示记录中使用提示的比例",
+    percent(stats.hinted,stats.known)
+  ));
+
+  const p=document.createElement("p");
+  p.className="small";
+  p.textContent=
+    "具有可识别提示等级的练习题："+stats.known+
+    " / "+stats.total;
+
+  container.appendChild(p);
+}
+
+function formatDate(value){
+  const date=new Date(value);
+  return Number.isNaN(date.getTime())
+    ?"—":date.toLocaleString("zh-CN");
+}
+
+function formatScore(score){
+  return score?score.correct+" / "+score.total:"—";
+}
+
+function renderHistory(){
+  const body=$("history");
+  body.replaceChildren();
+
+  if(!sessions.length){
+    const row=body.insertRow();
+    const cell=row.insertCell();
+    cell.colSpan=6;
+    cell.className="empty";
+    cell.textContent="当前学习者暂无明确关联的完整学习会话。";
+    return;
+  }
+
+  for(const session of sessions){
+    const row=body.insertRow();
+
+    const values=[
+      session.moduleId,
+      formatDate(session.completedAt),
+      formatScore(getScore(session,"diagnostic")),
+      formatScore(getScore(session,"practice")),
+      formatScore(getScore(session,"reassessment")),
+      session.result?.recommendedPath||"—"
+    ];
+
+    for(const value of values){
+      const cell=row.insertCell();
+      cell.textContent=value;
+    }
+  }
+}
+
+function renderRecommendations(){
+  const container=$("recommendations");
+  container.replaceChildren();
+
+  for(const module of MODULES){
+    const session=latestByModule(module.id);
+
+    const block=document.createElement("div");
+    block.className="module-card";
+    block.style.marginBottom="12px";
+
+    const heading=document.createElement("h3");
+    heading.textContent=module.id+" · "+module.name;
+
+    const p=document.createElement("p");
+
+    if(!session){
+      p.textContent=
+        "建议先完成该模块的诊断、练习和即时独立复测。";
+    }else{
+      const path=session.result?.recommendedPath;
+
+      if(path==="Foundation"){
+        p.textContent=
+          "建议复习基础知识，使用更多引导示例，"+
+          "然后再次进行独立练习。";
+      }else if(path==="Guided"){
+        p.textContent=
+          "建议继续练习易错知识点，逐渐减少提示，"+
+          "再尝试新的独立题目。";
+      }else if(path==="Challenge"){
+        p.textContent=
+          "可以尝试更复杂的句子任务，"+
+          "并在未来通过延迟复测检查保持情况。";
+      }else{
+        p.textContent=
+          "目前记录不足以提供明确的学习路径建议。";
+      }
+    }
+
+    block.append(heading,p);
+    container.appendChild(block);
+  }
+}
+
+function renderLegacy(){
+  const container=$("legacy-summary");
+  container.replaceChildren();
+
+  for(const module of MODULES){
+    const count=unverifiedSessions.filter(
+      s=>s.moduleId===module.id
+    ).length;
+
+    const p=document.createElement("p");
+    p.textContent=module.id+" · "+module.name+
+      "："+count+" 条未验证归属的完整会话";
+
+    container.appendChild(p);
+  }
+}
+
+function render(){
+  renderMetrics();
+  renderComparison();
+  renderModuleCards();
+  renderHints();
+  renderHistory();
+  renderRecommendations();
+  renderLegacy();
+}
+
+function reportData(){
+  return {
+    exportedAt:new Date().toISOString(),
+    reportType:"AURA EDU Learner-Bound Dashboard",
+    activeLearner:activeLearner?{
+      id:getId(activeLearner),
+      nickname:getName(activeLearner),
+      age:activeLearner.age||null,
+      interest:activeLearner.interest||null
+    }:null,
+    attributionPolicy:
+      "Only sessions with explicit matching learner identifiers are included.",
+    sessionCount:sessions.length,
+    attributionAudit:{
+      linkedToActive:sessions.length,
+      linkedToOther:otherSessions.length,
+      unverified:unverifiedSessions.length
+    },
+    modules:MODULES.map(module=>{
+      const latest=latestByModule(module.id);
+
+      return {
+        id:module.id,
+        topic:module.name,
+        latestSession:latest?{
+          completedAt:latest.completedAt,
+          diagnostic:getScore(latest,"diagnostic"),
+          practice:getScore(latest,"practice"),
+          reassessment:getScore(latest,"reassessment"),
+          recommendedPath:
+            latest.result?.recommendedPath||null
+        }:null
+      };
+    }),
+    overall:{
+      diagnosticAccuracy:aggregate("diagnostic"),
+      reassessmentAccuracy:aggregate("reassessment"),
+      hints:hintStats()
+    },
+    sessionHistory:sessions.map(session=>({
+      sessionId:session.sessionId||null,
+      module:session.moduleId,
+      completedAt:session.completedAt,
+      diagnostic:getScore(session,"diagnostic"),
+      practice:getScore(session,"practice"),
+      reassessment:getScore(session,"reassessment"),
+      recommendedPath:
+        session.result?.recommendedPath||null
+    })),
+    limitations:[
+      "Browser-local data only",
+      "Identity fields are not independently authenticated",
+      "Unverified historical sessions are excluded",
+      "Delayed reassessment not verified",
+      "Mastery rules are not empirically validated"
+    ]
+  };
+}
+
+async function copyReport(){
+  const text=JSON.stringify(reportData(),null,2);
+
+  try{
+    if(!navigator.clipboard || !window.isSecureContext){
+      throw new Error("Clipboard API unavailable");
+    }
+
+    await navigator.clipboard.writeText(text);
+    $("export-status").textContent=
+      "学习报告 JSON 已复制到剪贴板。";
+  }catch(error){
+    const area=document.createElement("textarea");
+    area.value=text;
+    area.style.position="fixed";
+    area.style.left="-9999px";
+    document.body.appendChild(area);
+    area.select();
+
+    let success=false;
+
+    try{
+      success=document.execCommand("copy");
+    }catch(e){
+      success=false;
+    }
+
+    area.remove();
+
+    $("export-status").textContent=success
+      ?"学习报告 JSON 已复制到剪贴板。"
+      :"自动复制失败，请检查 Safari 剪贴板权限。";
+  }
+}
+
+function refresh(){
+  loadActiveLearner();
+  loadSessions();
+}
+
+$("refresh-profile").addEventListener("click",refresh);
+$("refresh").addEventListener("click",refresh);
+$("export").addEventListener("click",copyReport);
+
+window.addEventListener("pageshow",refresh);
+
+window.addEventListener("storage",function(event){
+  if(
+    event.key===ACTIVE_KEY ||
+    event.key===PROFILES_KEY ||
+    MODULES.some(module=>module.key===event.key)
+  ){
+    refresh();
+  }
+});
+
+refresh();
+
+})();
+</script>
+</body>
+</html>

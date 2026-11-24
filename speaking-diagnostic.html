@@ -1,0 +1,217 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AURA EDU | Speaking Diagnostic</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, "PingFang SC", sans-serif;
+      background: linear-gradient(135deg, #f1edff, #e9f8f5);
+      color: #302653;
+      min-height: 100vh;
+    }
+    header {
+      background: white;
+      padding: 18px 5%;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      border-bottom: 1px solid #e4ddf6;
+    }
+    a { color: #6044b6; text-decoration: none; font-weight: 700; }
+    main { max-width: 850px; margin: 30px auto; padding: 0 18px 45px; }
+    .card {
+      background: white;
+      border-radius: 22px;
+      border: 1px solid #e4ddf6;
+      padding: 25px;
+      margin-bottom: 18px;
+      box-shadow: 0 10px 28px #55447b12;
+    }
+    h1 { margin: 0 0 12px; font-size: 28px; }
+    h2 { font-size: 21px; }
+    p { line-height: 1.7; }
+    .status {
+      background: #f3f0ff;
+      padding: 14px;
+      border-radius: 12px;
+      margin: 15px 0;
+      overflow-wrap: anywhere;
+    }
+    .error { background: #fff0ec; color: #9e342c; }
+    .success { background: #e5f7ed; color: #176c4c; }
+    .prompt {
+      background: #f5f2ff;
+      padding: 18px;
+      border-radius: 15px;
+      line-height: 1.8;
+      font-size: 18px;
+      margin: 16px 0;
+    }
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 15px 0; }
+    button {
+      border: 0;
+      border-radius: 12px;
+      padding: 12px 17px;
+      font: inherit;
+      font-weight: 700;
+      background: #7458d8;
+      color: white;
+      cursor: pointer;
+    }
+    button.secondary { background: #eae4ff; color: #50369c; }
+    button.danger { background: #bd4e60; }
+    button:disabled { opacity: .45; cursor: not-allowed; }
+    button:focus-visible, textarea:focus-visible {
+      outline: 3px solid #e4a845;
+      outline-offset: 3px;
+    }
+    textarea {
+      width: 100%;
+      min-height: 90px;
+      padding: 12px;
+      border: 2px solid #ded5f6;
+      border-radius: 12px;
+      font: inherit;
+      resize: vertical;
+    }
+    audio { width: 100%; margin-top: 12px; }
+    .hidden { display: none !important; }
+    .muted { color: #6d6680; font-size: 14px; }
+    .progress {
+      height: 12px;
+      background: #eee9fc;
+      border-radius: 20px;
+      overflow: hidden;
+      margin: 16px 0;
+    }
+    .progress div {
+      height: 100%;
+      width: 0%;
+      background: #7458d8;
+      transition: width .3s;
+    }
+    .result {
+      background: #f5faf7;
+      padding: 12px;
+      border-radius: 12px;
+      margin: 10px 0;
+      line-height: 1.7;
+      overflow-wrap: anywhere;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <strong>🎙️ AURA EDU · Speaking Diagnostic</strong>
+    <a href="speaking-stage29.html">← Speaking Classroom</a>
+  </header>
+
+  <main>
+    <section class="card">
+      <h1>Stage 29.1 — Speaking Diagnostic</h1>
+      <p>英语口语初始诊断 / Initial Speaking Assessment</p>
+      <div id="access-status" class="status" role="status">
+        正在检查学生资格...
+      </div>
+      <p id="learner-label"></p>
+    </section>
+
+    <section id="locked-panel" class="card hidden">
+      <h2>🔒 Diagnostic Locked</h2>
+      <p>请先满足 Grammar 和 Spelling 解锁条件。</p>
+      <a href="speaking-stage29.html">返回 Speaking Classroom</a>
+    </section>
+
+    <section id="diagnostic-panel" class="card hidden">
+      <h2 id="task-title">Speaking Task</h2>
+      <p class="muted">
+        请独立完成任务。诊断阶段不提供答案提示。
+        Please answer independently.
+      </p>
+
+      <div class="progress">
+        <div id="progress-fill"></div>
+      </div>
+
+      <div id="task-prompt" class="prompt"></div>
+
+      <p class="muted">
+        请点击 Start Recording，允许麦克风权限，
+        说完后点击 Stop Recording。
+      </p>
+
+      <div class="actions">
+        <button id="start-recording">🎤 Start Recording</button>
+        <button id="stop-recording" class="danger" disabled>
+          ⏹ Stop Recording
+        </button>
+      </div>
+
+      <div id="recording-status" class="status" role="status">
+        尚未录音 / Not recorded
+      </div>
+
+      <audio id="recording-playback" controls class="hidden"></audio>
+
+      <p>
+        <label for="confirmed-text">
+          <strong>What did you say? / 你刚才说了什么？</strong>
+        </label>
+      </p>
+      <textarea
+        id="confirmed-text"
+        placeholder="可选：录音结束后，填写你刚才说出的英文。"
+      ></textarea>
+      <p class="muted">
+        这段文字由学生自行填写，不是自动语音转录，
+        也不能代替录音或作为已验证的口语成绩。
+      </p>
+
+      <div class="actions">
+        <button id="save-next" disabled>
+          Save & Next / 保存并继续
+        </button>
+        <button id="retry-recording" class="secondary" disabled>
+          ↻ Record Again
+        </button>
+      </div>
+    </section>
+
+    <section id="complete-panel" class="card hidden">
+      <h2>🌟 Diagnostic Recording Completed</h2>
+      <p>
+        你已完成本轮初始口语录音。
+        这表示任务已提交，不代表已经达到口语掌握标准。
+      </p>
+      <div id="result-summary"></div>
+      <div class="actions">
+        <button id="restart-diagnostic" class="secondary">
+          Start New Session
+        </button>
+        <a href="speaking-stage29.html">返回 Speaking Classroom</a>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>🔬 Research Note</h2>
+      <p class="muted">
+        本阶段记录录音任务完成情况、时长、重录次数和
+        学生自行确认的文本。系统暂不自动判断发音、
+        流畅度、语法正确率或独立口语掌握度。
+        音频仅在当前页面会话中保留，
+        刷新或关闭页面后不可恢复。
+      </p>
+    </section>
+  </main>
+
+  <script src="js/grammar-unlock.js"></script>
+  <script src="js/spelling-mastery.js"></script>
+  <script src="js/speaking-diagnostic.js"></script>
+</body>
+</html>

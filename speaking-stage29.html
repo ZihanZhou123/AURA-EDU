@@ -1,0 +1,279 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AURA EDU | Stage 29 Speaking</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: #edf8f2;
+      color: #24445a;
+    }
+    header {
+      background: white;
+      border-bottom: 1px solid #d8e9de;
+      padding: 18px 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    header strong { font-size: 19px; color: #267b66; }
+    a { color: #276c91; text-decoration: none; font-weight: 700; }
+    main { max-width: 900px; margin: 38px auto; padding: 0 18px 50px; }
+    .card {
+      background: white;
+      border: 1px solid #d7e8dd;
+      border-radius: 22px;
+      padding: 28px;
+      box-shadow: 0 10px 28px #315b4510;
+      margin-bottom: 20px;
+    }
+    h1 { margin-top: 0; font-size: 30px; }
+    h2 { font-size: 20px; margin-top: 0; }
+    p { line-height: 1.8; }
+    .status {
+      border-radius: 12px;
+      padding: 14px;
+      background: #f1f6fb;
+      margin: 18px 0;
+      font-weight: 700;
+      overflow-wrap: anywhere;
+    }
+    .success { background: #e5f7ed; color: #176c4c; }
+    .error { background: #fff0ec; color: #a33c34; }
+    .steps { display: grid; gap: 12px; margin-top: 20px; }
+    .step {
+      padding: 16px;
+      background: #f5faf7;
+      border-radius: 14px;
+      border: 1px solid #e0eee4;
+    }
+    .step strong { display: block; margin-bottom: 6px; }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 20px;
+    }
+    .button {
+      display: inline-block;
+      background: #7258c8;
+      color: white;
+      border-radius: 12px;
+      padding: 12px 17px;
+    }
+    .button.secondary { background: #e8f4eb; color: #226b50; }
+    .hidden { display: none; }
+    .note { font-size: 13px; color: #687c72; }
+  </style>
+</head>
+<body>
+  <header>
+    <strong>🎤 AURA EDU · Speaking</strong>
+    <a href="adventure-mastery-map.html">
+      ← Adventure Map / 返回地图
+    </a>
+  </header>
+
+  <main>
+    <section class="card">
+      <h1>Stage 29 — Speaking Classroom</h1>
+      <p>
+        欢迎来到英语口语学习阶段。
+        Welcome to your speaking journey!
+      </p>
+      <div id="status" class="status" role="status" aria-live="polite">
+        正在检查学习资格...
+      </div>
+      <p id="learner-info"></p>
+    </section>
+
+    <section id="locked" class="card hidden">
+      <h2>🔒 Speaking 尚未解锁</h2>
+      <p>
+        请先完成 Grammar 和 Spelling 的学习，
+        并达到相应的暂定掌握条件。
+      </p>
+      <div class="actions">
+        <a class="button secondary" href="spelling-garden.html">
+          返回 Spelling
+        </a>
+        <a class="button secondary" href="learner-manager.html">
+          切换学生
+        </a>
+      </div>
+    </section>
+
+    <section id="unlocked" class="card hidden">
+      <h2>🌟 Speaking 已解锁</h2>
+      <p>
+        你已经达到 Spelling Provisional Mastery。
+        现在可以开始下一阶段的口语学习。
+      </p>
+
+      <div class="steps">
+        <div class="step">
+          <strong>1. Speaking Diagnostic</strong>
+          口语初始诊断：录制真实英语回答，观察独立表达。
+        </div>
+        <div class="step">
+          <strong>2. Adaptive Speaking Practice</strong>
+          根据学生的困难提供不同等级的表达支架。
+        </div>
+        <div class="step">
+          <strong>3. Targeted Remediation</strong>
+          根据错误类型推荐 Grammar、
+          Spelling 或口语专项复习。
+        </div>
+        <div class="step">
+          <strong>4. Independent Reassessment</strong>
+          在减少提示的情况下重新评估独立表达。
+        </div>
+      </div>
+
+      <div class="actions">
+        <a class="button" href="speaking-diagnostic.html">
+          🎙️ Start Speaking Diagnostic
+        </a>
+        <a class="button secondary" href="spelling-garden.html">
+          ✏️ Review Spelling
+        </a>
+        <a class="button secondary" href="grammar-hub.html">
+          📚 Review Grammar
+        </a>
+      </div>
+
+      <p class="note">
+        Stage 29.1 提供初始录音诊断。
+        录音时长和完成记录不等于发音评分；
+        Adaptive Practice 与 Independent Reassessment
+        将在后续阶段实现。
+      </p>
+    </section>
+  </main>
+
+  <script src="js/grammar-unlock.js"></script>
+  <script src="js/spelling-mastery.js"></script>
+
+  <script>
+    "use strict";
+
+    (function () {
+      const ACTIVE_KEY = "aura_active_learner_id_v2";
+      const status = document.getElementById("status");
+      const learnerInfo = document.getElementById("learner-info");
+
+      function activeLearnerId() {
+        try {
+          const raw = localStorage.getItem(ACTIVE_KEY);
+          if (!raw) return null;
+
+          if (raw.startsWith('"')) {
+            const parsed = JSON.parse(raw);
+            return typeof parsed === "string" ? parsed : null;
+          }
+          return raw;
+        } catch (error) {
+          return null;
+        }
+      }
+
+      function evaluate() {
+        const learnerId = activeLearnerId();
+
+        if (!learnerId) {
+          return {
+            eligible: false,
+            learnerId: null,
+            reason: "请先选择学生。"
+          };
+        }
+
+        try {
+          const grammar =
+            window.AuraGrammarUnlock.evaluateGrammar();
+
+          if (
+            !grammar ||
+            grammar.ok !== true ||
+            String(grammar.learnerId) !== learnerId ||
+            grammar.grammarComplete !== true ||
+            grammar.spellingEligible !== true
+          ) {
+            return {
+              eligible: false,
+              learnerId,
+              reason: "Grammar 暂定掌握条件尚未满足。"
+            };
+          }
+
+          const spelling =
+            window.AuraSpellingMastery.evaluate(learnerId);
+
+          const eligible = Boolean(
+            spelling &&
+            spelling.ok === true &&
+            String(spelling.learnerId) === learnerId &&
+            spelling.decision === "PROVISIONAL_MASTERY" &&
+            spelling.provisionalMastery === true
+          );
+
+          return {
+            eligible,
+            learnerId,
+            reason: eligible
+              ? "Spelling Provisional Mastery 已验证。"
+              : "Spelling 暂定掌握条件尚未满足。"
+          };
+        } catch (error) {
+          console.error("[Stage 29] Unlock verification:", error);
+          return {
+            eligible: false,
+            learnerId,
+            reason: "无法验证学习证据。"
+          };
+        }
+      }
+
+      function render() {
+        const report = evaluate();
+
+        learnerInfo.textContent =
+          "Current Learner: " +
+          (report.learnerId || "Not selected");
+
+        status.textContent = report.eligible
+          ? "✓ Speaking UNLOCKED · " + report.reason
+          : "🔒 Speaking LOCKED · " + report.reason;
+
+        status.className = report.eligible
+          ? "status success"
+          : "status error";
+
+        document.getElementById("unlocked")
+          .classList.toggle("hidden", !report.eligible);
+
+        document.getElementById("locked")
+          .classList.toggle("hidden", report.eligible);
+      }
+
+      window.addEventListener("pageshow", render);
+      window.addEventListener("focus", render);
+      window.addEventListener("storage", render);
+
+      document.addEventListener("visibilitychange", function () {
+        if (!document.hidden) render();
+      });
+
+      render();
+    })();
+  </script>
+</body>
+</html>

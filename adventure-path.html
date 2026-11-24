@@ -1,0 +1,556 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AURA EDU | Interactive Adventure Path</title>
+
+<style>
+:root {
+  --ink:#34465a;
+  --purple:#7659d5;
+  --green:#2f9569;
+  --paper:#fffdf5;
+}
+* { box-sizing:border-box; }
+
+body {
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,
+    "Segoe UI",Arial,sans-serif;
+  background:#eaf6e7;
+  color:var(--ink);
+}
+button,a { font:inherit; }
+button { cursor:pointer; }
+button:focus-visible,a:focus-visible {
+  outline:3px solid #e9a632;
+  outline-offset:3px;
+}
+button:disabled { cursor:not-allowed; opacity:.5; }
+
+header {
+  background:#fff;
+  border-bottom:1px solid #dce8d9;
+  padding:14px 5%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+.brand {
+  font-size:21px;
+  font-weight:900;
+  color:var(--purple);
+}
+header a {
+  text-decoration:none;
+  color:var(--ink);
+  font-size:14px;
+  font-weight:700;
+}
+main {
+  max-width:1220px;
+  padding:22px 16px 40px;
+  margin:auto;
+}
+h1 { font-size:27px; margin:0 0 5px; }
+.subtitle {
+  color:#657c70;
+  font-size:14px;
+  margin:0 0 16px;
+}
+.hud {
+  display:flex;
+  flex-wrap:wrap;
+  gap:9px;
+  margin-bottom:15px;
+}
+.hud span {
+  background:#fff;
+  border:1px solid #d8e7d1;
+  border-radius:30px;
+  padding:9px 13px;
+  font-size:13px;
+  font-weight:700;
+}
+.map-shell {
+  position:relative;
+  border:8px solid white;
+  border-radius:25px;
+  overflow:hidden;
+  background:#91d866;
+  box-shadow:0 16px 38px #326b3d25;
+}
+.map-svg {
+  display:block;
+  width:100%;
+  height:auto;
+  user-select:none;
+}
+.level {
+  position:absolute;
+  z-index:6;
+  width:66px;
+  height:66px;
+  transform:translate(-50%,-50%);
+  border:5px solid white;
+  border-radius:50%;
+  background:linear-gradient(#ffe89a,#ffbd57);
+  color:#86531e;
+  box-shadow:0 7px 0 #b77b43,0 12px 16px #355a3035;
+  font-size:23px;
+  font-weight:900;
+  transition:filter .2s;
+}
+.level:hover { filter:brightness(1.07); }
+.level.locked {
+  background:linear-gradient(#e5e9ec,#adb8c2);
+  color:#657280;
+  box-shadow:0 7px 0 #8c98a3,0 12px 16px #355a3025;
+}
+.level.selected {
+  outline:5px solid #fff5a9;
+  outline-offset:4px;
+}
+.level-symbol {
+  position:absolute;
+  top:-22px;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:20px;
+}
+.level-name {
+  position:absolute;
+  z-index:5;
+  transform:translateX(-50%);
+  background:#fffffff0;
+  border:2px solid #e3ecd9;
+  border-radius:13px;
+  padding:8px 13px;
+  font-size:14px;
+  font-weight:900;
+  text-align:center;
+  white-space:nowrap;
+  box-shadow:0 6px 14px #3c68321c;
+}
+.level-name small {
+  display:block;
+  font-size:11px;
+  color:#657c70;
+  margin-top:2px;
+}
+.character {
+  position:absolute;
+  z-index:8;
+  left:0;
+  top:0;
+  transform:translate(-50%,-100%);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  pointer-events:none;
+  filter:drop-shadow(0 6px 5px #3e633c55);
+}
+.avatar {
+  font-size:62px;
+  line-height:1.15;
+  transform-origin:center bottom;
+}
+.character.walking .avatar {
+  animation:walk .32s ease-in-out infinite alternate;
+}
+.character:not(.walking) .avatar {
+  animation:idle 2.5s ease-in-out infinite;
+}
+.character-name {
+  background:#fff;
+  border-radius:20px;
+  padding:3px 9px;
+  font-size:12px;
+  font-weight:900;
+}
+@keyframes walk {
+  from { transform:rotate(-8deg) translateY(-3px); }
+  to { transform:rotate(8deg) translateY(2px); }
+}
+@keyframes idle {
+  50% { transform:translateY(-5px); }
+}
+.controls {
+  margin-top:16px;
+  background:#fff;
+  border:1px solid #dce9d5;
+  border-radius:20px;
+  padding:20px;
+  display:grid;
+  grid-template-columns:1fr auto;
+  align-items:center;
+  gap:15px;
+}
+.controls h2 {
+  margin:0 0 7px;
+  font-size:19px;
+}
+.controls p {
+  margin:0;
+  line-height:1.6;
+  color:#62786d;
+  font-size:14px;
+}
+.actions {
+  display:flex;
+  gap:9px;
+  flex-wrap:wrap;
+}
+.action {
+  background:#ece8fa;
+  color:#614bad;
+  border:0;
+  border-radius:13px;
+  padding:12px 15px;
+  font-weight:800;
+}
+.action.primary {
+  background:var(--purple);
+  color:white;
+}
+.action.demo {
+  background:#e2f6e9;
+  color:#217a51;
+}
+.notice {
+  margin-top:14px;
+  color:#718277;
+  font-size:12px;
+  line-height:1.7;
+}
+@media(max-width:700px) {
+  h1 { font-size:22px; }
+  .controls { grid-template-columns:1fr; }
+  .level {
+    width:43px;
+    height:43px;
+    border-width:3px;
+    font-size:15px;
+  }
+  .level-symbol {
+    font-size:14px;
+    top:-17px;
+  }
+  .level-name {
+    padding:5px 7px;
+    font-size:10px;
+    border-radius:8px;
+  }
+  .level-name small { font-size:8px; }
+  .avatar { font-size:37px; }
+  .character-name { font-size:9px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .avatar { animation:none!important; }
+}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="brand">✦ AURA EDU</div>
+  <a href="partner-selection.html">
+    ← My Partner / 我的伙伴
+  </a>
+</header>
+
+<main>
+  <h1>🌿 My Learning Adventure</h1>
+  <p class="subtitle">
+    Follow the path · Grammar → Spelling → Speaking
+  </p>
+
+  <div class="hud">
+    <span id="learner-name">👤 Learner</span>
+    <span id="partner-name">🎒 Partner</span>
+    <span>⭐ Stars: Preview</span>
+    <span>🎟️ Hints: Preview</span>
+  </div>
+
+  <div class="map-shell" id="map-shell">
+
+    <svg class="map-svg"
+      viewBox="0 0 1000 620"
+      xmlns="http://www.w3.org/2000/svg"
+      role="img"
+      aria-label="Colorful school adventure map with a winding path, three blue-roof houses, trees, flowers and level checkpoints">
+
+      <defs>
+        <linearGradient id="grass" x2="0" y2="1">
+          <stop stop-color="#c4ef93"/>
+          <stop offset="1" stop-color="#73ca55"/>
+        </linearGradient>
+        <linearGradient id="roof" x2="0" y2="1">
+          <stop stop-color="#8bdbff"/>
+          <stop offset="1" stop-color="#368ecb"/>
+        </linearGradient>
+        <linearGradient id="house" x2="0" y2="1">
+          <stop stop-color="#fff7e8"/>
+          <stop offset="1" stop-color="#e8c69c"/>
+        </linearGradient>
+        <linearGradient id="water" x2="0" y2="1">
+          <stop stop-color="#9ceeff"/>
+          <stop offset="1" stop-color="#39b5e3"/>
+        </linearGradient>
+        <filter id="soft-shadow">
+          <feDropShadow dx="3" dy="7"
+            stdDeviation="5" flood-opacity=".22"/>
+        </filter>
+      </defs>
+
+      <!-- Landscape -->
+      <rect width="1000" height="620" fill="url(#grass)"/>
+      <path d="M0 120 Q160 10 320 100 T680 65 T1000 115
+               V0 H0Z" fill="#dcf6a7" opacity=".75"/>
+      <ellipse cx="80" cy="500" rx="210" ry="115"
+        fill="#a8e57d"/>
+      <ellipse cx="870" cy="520" rx="230" ry="100"
+        fill="#b4e886"/>
+
+      <!-- Pond -->
+      <path d="M765 492 C800 445 930 443 977 495
+        C1030 560 920 625 822 595
+        C768 581 740 535 765 492Z"
+        fill="url(#water)"
+        stroke="#dcfaff" stroke-width="9"/>
+      <ellipse cx="865" cy="540" rx="23" ry="9"
+        fill="#a0df77"/>
+      <ellipse cx="928" cy="570" rx="18" ry="7"
+        fill="#a0df77"/>
+
+      <!-- Winding road -->
+      <path id="walking-path"
+        d="M120 467
+           C225 495 245 340 367 377
+           C485 414 448 514 590 474
+           C730 435 715 325 865 399"
+        fill="none"
+        stroke="#aa956a"
+        stroke-width="91"
+        stroke-linecap="round"
+        opacity=".25"/>
+      <path
+        d="M120 467
+           C225 495 245 340 367 377
+           C485 414 448 514 590 474
+           C730 435 715 325 865 399"
+        fill="none"
+        stroke="#fff3d0"
+        stroke-width="79"
+        stroke-linecap="round"/>
+      <path
+        d="M120 467
+           C225 495 245 340 367 377
+           C485 414 448 514 590 474
+           C730 435 715 325 865 399"
+        fill="none"
+        stroke="#fffbea"
+        stroke-width="4"
+        stroke-dasharray="8 23"
+        stroke-linecap="round"
+        opacity=".65"/>
+
+      <!-- Small bushes -->
+      <g fill="#53b95a" opacity=".85">
+        <ellipse cx="275" cy="540" rx="40" ry="20"/>
+        <ellipse cx="655" cy="570" rx="45" ry="20"/>
+        <ellipse cx="695" cy="280" rx="32" ry="16"/>
+        <ellipse cx="355" cy="270" rx="32" ry="16"/>
+      </g>
+
+      <!-- Grammar school -->
+      <g filter="url(#soft-shadow)">
+        <rect x="77" y="150" width="223" height="143"
+          rx="13" fill="url(#house)"
+          stroke="#d8b78c" stroke-width="5"/>
+        <path d="M53 163 L189 65 L326 163Z"
+          fill="url(#roof)"
+          stroke="#357eae" stroke-width="7"
+          stroke-linejoin="round"/>
+        <path d="M90 157 L188 90 L286 157"
+          fill="none" stroke="#b3edff"
+          stroke-width="7" opacity=".65"/>
+        <rect x="165" y="209" width="49" height="84"
+          rx="18" fill="#bc855c"/>
+        <circle cx="202" cy="253" r="4" fill="#fff1c4"/>
+        <rect x="102" y="191" width="42" height="45"
+          rx="8" fill="#9ee8ff"
+          stroke="#f6dbac" stroke-width="7"/>
+        <rect x="237" y="191" width="42" height="45"
+          rx="8" fill="#9ee8ff"
+          stroke="#f6dbac" stroke-width="7"/>
+        <text x="188" y="156" font-size="31"
+          text-anchor="middle">📖</text>
+      </g>
+
+      <!-- Spelling house -->
+      <g filter="url(#soft-shadow)">
+        <rect x="398" y="140" width="198" height="149"
+          rx="13" fill="url(#house)"
+          stroke="#d8b78c" stroke-width="5"/>
+        <path d="M374 154 L495 61 L620 154Z"
+          fill="url(#roof)"
+          stroke="#357eae" stroke-width="7"
+          stroke-linejoin="round"/>
+        <rect x="472" y="216" width="48" height="73"
+          rx="18" fill="#bc855c"/>
+        <rect x="420" y="190" width="36" height="40"
+          rx="8" fill="#9ee8ff"
+          stroke="#f6dbac" stroke-width="7"/>
+        <rect x="542" y="190" width="36" height="40"
+          rx="8" fill="#9ee8ff"
+          stroke="#f6dbac" stroke-width="7"/>
+        <text x="496" y="169" font-size="30"
+          font-weight="900" fill="#7953bc"
+          text-anchor="middle">ABC</text>
+      </g>
+
+      <!-- Speaking house -->
+      <g filter="url(#soft-shadow)">
+        <rect x="747" y="140" width="197" height="151"
+          rx="13" fill="url(#house)"
+          stroke="#d8b78c" stroke-width="5"/>
+        <path d="M722 155 L844 60 L970 155Z"
+          fill="url(#roof)"
+          stroke="#357eae" stroke-width="7"
+          stroke-linejoin="round"/>
+        <rect x="818" y="214" width="50" height="77"
+          rx="18" fill="#bc855c"/>
+        <rect x="765" y="185" width="39" height="43"
+          rx="8" fill="#9ee8ff"
+          stroke="#f6dbac" stroke-width="7"/>
+        <rect x="883" y="185" width="39" height="43"
+          rx="8" fill="#9ee8ff"
+          stroke="#f6dbac" stroke-width="7"/>
+        <text x="845" y="170" font-size="34"
+          text-anchor="middle">🎤</text>
+      </g>
+
+      <!-- Trees -->
+      <g filter="url(#soft-shadow)">
+        <g fill="#986a43">
+          <rect x="30" y="52" width="17" height="73" rx="6"/>
+          <rect x="330" y="31" width="15" height="72" rx="6"/>
+          <rect x="663" y="43" width="17" height="73" rx="6"/>
+          <rect x="960" y="47" width="17" height="75" rx="6"/>
+          <rect x="47" y="547" width="16" height="55" rx="6"/>
+          <rect x="629" y="550" width="16" height="54" rx="6"/>
+        </g>
+        <g fill="#369f50">
+          <circle cx="39" cy="42" r="46"/>
+          <circle cx="337" cy="30" r="44"/>
+          <circle cx="671" cy="35" r="46"/>
+          <circle cx="969" cy="38" r="48"/>
+          <circle cx="55" cy="535" r="43"/>
+          <circle cx="637" cy="540" r="43"/>
+        </g>
+        <g fill="#7ada66" opacity=".85">
+          <circle cx="22" cy="25" r="23"/>
+          <circle cx="321" cy="13" r="22"/>
+          <circle cx="653" cy="20" r="23"/>
+          <circle cx="953" cy="21" r="24"/>
+          <circle cx="40" cy="518" r="21"/>
+          <circle cx="620" cy="524" r="21"/>
+        </g>
+      </g>
+
+      <!-- Flowers -->
+      <g font-size="24">
+        <text x="40" y="357">🌼</text>
+        <text x="304" y="324">🌸</text>
+        <text x="358" y="565">🌷</text>
+        <text x="635" y="345">🌼</text>
+        <text x="710" y="580">🌸</text>
+        <text x="956" y="349">🌷</text>
+        <text x="533" y="585">🌼</text>
+      </g>
+
+      <!-- Grass tufts -->
+      <g stroke="#4bac49" stroke-width="4"
+         stroke-linecap="round" fill="none">
+        <path d="M270 265 l-8 -13 m8 13 l8 -15"/>
+        <path d="M640 270 l-8 -13 m8 13 l8 -15"/>
+        <path d="M950 455 l-8 -13 m8 13 l8 -15"/>
+        <path d="M380 600 l-8 -13 m8 13 l8 -15"/>
+      </g>
+    </svg>
+
+    <div class="level-name" id="label-1">
+      📚 Grammar
+      <small>语法关卡</small>
+    </div>
+    <div class="level-name" id="label-2">
+      ✏️ Spelling
+      <small>拼写关卡</small>
+    </div>
+    <div class="level-name" id="label-3">
+      🎤 Speaking
+      <small>口语关卡</small>
+    </div>
+
+    <button class="level selected"
+      data-level="1"
+      aria-label="Grammar checkpoint">
+      <span class="level-symbol">⭐</span>1
+    </button>
+
+    <button class="level locked"
+      data-level="2"
+      aria-label="Spelling checkpoint, locked">
+      <span class="level-symbol">🔒</span>2
+    </button>
+
+    <button class="level locked"
+      data-level="3"
+      aria-label="Speaking checkpoint, locked">
+      <span class="level-symbol">🔒</span>3
+    </button>
+
+    <div class="character" id="character">
+      <div class="avatar" id="character-avatar">🧑‍🚀</div>
+      <div class="character-name" id="character-name">
+        Explorer
+      </div>
+    </div>
+  </div>
+
+  <section class="controls">
+    <div>
+      <h2 id="checkpoint-title">📚 Grammar Challenge</h2>
+      <p id="checkpoint-description"
+         role="status" aria-live="polite">
+        点击第一关，开始语法学习。
+      </p>
+    </div>
+
+    <div class="actions">
+      <button class="action primary"
+        id="enter-level">Enter Grammar</button>
+
+      <button class="action demo"
+        id="demo-walk">▶ Demo Walk</button>
+
+      <button class="action"
+        id="back-start">↺ Back to Start</button>
+    </div>
+  </section>
+
+  <p class="notice">
+    Stage 23.3.2：Demo Walk 仅演示角色移动，
+    不代表 Grammar、Spelling 或 Speaking 已通关。
+    当前关卡锁定状态为预览；没有修改原有学习数据、
+    学生身份、星星或伙伴选择。
+  </p>
+</main>
+
+<script src="js/adventure-path.js"></script>
+</body>
+</html>

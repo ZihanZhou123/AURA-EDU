@@ -1,0 +1,915 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AURA EDU | Research Documentation Hub</title>
+<style>
+:root {
+  --navy:#17365d;
+  --teal:#218b83;
+  --bg:#f7fafc;
+  --text:#26354a;
+  --muted:#63748a;
+  --line:#e2e8f0;
+}
+* {box-sizing:border-box}
+html {scroll-behavior:smooth}
+body {
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.7;
+}
+.container {
+  max-width:1120px;
+  margin:auto;
+  padding:0 24px;
+}
+header {
+  background:white;
+  border-bottom:1px solid var(--line);
+}
+.nav {
+  min-height:76px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:15px;
+}
+.logo {
+  color:var(--navy);
+  font-size:23px;
+  font-weight:bold;
+  text-decoration:none;
+}
+nav {
+  display:flex;
+  flex-wrap:wrap;
+  gap:16px;
+}
+nav a {
+  color:var(--navy);
+  text-decoration:none;
+  font-size:14px;
+}
+nav a:hover {color:var(--teal)}
+.hero {
+  background:linear-gradient(135deg,#17365d,#245e78);
+  padding:80px 0;
+  color:white;
+}
+.hero h1 {
+  font-size:clamp(34px,5vw,50px);
+  line-height:1.2;
+  margin:12px 0 20px;
+}
+.hero p {
+  color:#e0eaf3;
+  max-width:800px;
+}
+.eyebrow {
+  color:var(--teal);
+  font-size:12px;
+  letter-spacing:2px;
+  font-weight:bold;
+  text-transform:uppercase;
+}
+.hero .eyebrow {color:#8de0d3}
+section {
+  padding:60px 0;
+  scroll-margin-top:20px;
+}
+h2 {color:var(--navy);margin:0 0 15px}
+h3 {color:var(--navy);margin:0 0 10px}
+p {color:var(--muted)}
+.grid {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:22px;
+}
+.card {
+  background:white;
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:28px;
+  display:flex;
+  flex-direction:column;
+}
+.card p {flex:1}
+.tag {
+  display:inline-block;
+  align-self:flex-start;
+  background:#e7f5f0;
+  color:#17645e;
+  padding:5px 12px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:bold;
+  margin-bottom:15px;
+}
+.tag.planned {
+  background:#fff3dc;
+  color:#946100;
+}
+.btn {
+  display:inline-block;
+  align-self:flex-start;
+  padding:12px 20px;
+  border-radius:9px;
+  background:var(--navy);
+  color:white;
+  text-decoration:none;
+  font-size:14px;
+  font-weight:bold;
+  border:0;
+  cursor:pointer;
+}
+.btn.teal {background:var(--teal)}
+.btn:hover {opacity:.88}
+.btn:focus-visible,
+nav a:focus-visible {
+  outline:3px solid #79b7eb;
+  outline-offset:3px;
+}
+.actions {
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-top:20px;
+}
+.soft {background:#edf4f7}
+.metrics {
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:16px;
+  margin-top:25px;
+}
+.metric {
+  background:white;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:20px;
+  text-align:center;
+}
+.metric strong {
+  display:block;
+  font-size:30px;
+  color:var(--navy);
+}
+.metric span {
+  color:var(--muted);
+  font-size:13px;
+}
+.notice {
+  background:#fff8e8;
+  border-left:4px solid #d4a345;
+  padding:18px;
+  border-radius:9px;
+  margin-top:25px;
+}
+.notice p {color:#775b25;margin:0}
+.flow {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:15px;
+  margin-top:25px;
+}
+.flow-item {
+  background:white;
+  border:1px solid var(--line);
+  padding:22px;
+  border-radius:12px;
+  text-align:center;
+}
+.flow-item strong {
+  display:block;
+  color:var(--navy);
+  margin-bottom:8px;
+}
+.flow-item span {
+  color:var(--muted);
+  font-size:13px;
+}
+.methodology-card {
+  border-top:5px solid var(--teal);
+  background:linear-gradient(180deg,#fff,#f3faf8);
+}
+.evaluation-card {
+  border-top:5px solid var(--navy);
+  background:linear-gradient(180deg,#fff,#f0f5fa);
+}
+.evidence-card {
+  border-top:5px solid #7464ad;
+  background:linear-gradient(180deg,#fff,#f6f4fc);
+}
+.scaffolding-card {
+  border-top:5px solid #218b83;
+  background:linear-gradient(180deg,#fff,#eaf7f4);
+}
+.methodology-topics {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+  margin:15px 0 22px;
+}
+.methodology-topic {
+  padding:12px;
+  border-radius:9px;
+  background:#eaf5f3;
+  color:var(--navy);
+  font-size:13px;
+  font-weight:bold;
+}
+.evidence-card .methodology-topic {
+  background:#efebf8;
+}
+.audit-note {
+  margin-top:18px;
+  padding:16px;
+  background:white;
+  border:1px solid var(--line);
+  border-radius:10px;
+}
+.audit-note strong {color:var(--navy)}
+.audit-note p {font-size:13px;margin:8px 0 0}
+footer {
+  background:var(--navy);
+  text-align:center;
+  padding:40px 0;
+}
+footer p {color:#e0eaf3}
+@media(max-width:800px) {
+  .grid,.metrics,.flow,.methodology-topics {
+    grid-template-columns:1fr;
+  }
+  .hero {padding:60px 0}
+  section {padding:45px 0}
+  .nav {padding:16px 0}
+}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="container nav">
+    <a class="logo" href="research.html">AURA EDU</a>
+    <nav aria-label="Research navigation">
+      <a href="research.html">Research Lab</a>
+      <a href="decision-explorer.html">Decision Explorer</a>
+      <a href="research-analytics.html">Analytics</a>
+      <a href="data-quality-dashboard.html">Data Quality</a>
+      <a href="research-methodology.html">Methodology</a>
+      <a href="prototype-evaluation.html">Evaluation</a>
+      <a href="evaluation-evidence-register.html">
+        Evidence Register
+      </a>
+      <a href="scaffolding-evidence-analysis.html">
+        Scaffolding Evidence
+      </a>
+      <a href="index.html">AURA Learn</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow">
+      Research Lab / Step 20.9.2
+    </div>
+    <h1>Research Documentation Hub</h1>
+    <p>
+      A structured entry point for exploring
+      AURA EDU's adaptive learning framework,
+      research methodology, learning analytics,
+      instructional scaffolding evidence,
+      data governance, prototype evaluation,
+      traceable test evidence and future
+      empirical research.
+    </p>
+    <p>
+      AURA EDU 研究文档中心：
+      集中展示自适应学习机制、研究方法、
+      教学支架证据、学习分析、数据质量、
+      原型评估、测试证据及未来实证研究计划。
+    </p>
+    <div class="actions">
+      <a class="btn teal" href="#resources">
+        Explore Documentation
+      </a>
+      <a class="btn"
+         href="research-methodology.html">
+        Research Methodology
+      </a>
+      <a class="btn"
+         href="prototype-evaluation.html">
+        Prototype Evaluation
+      </a>
+      <a class="btn"
+         href="evaluation-evidence-register.html">
+        Evidence Register
+      </a>
+      <a class="btn teal"
+         href="scaffolding-evidence-analysis.html">
+        Scaffolding Evidence
+      </a>
+      <a class="btn"
+         href="research.html">
+        Return to Research Lab
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="resources">
+  <div class="container">
+    <div class="eyebrow">01 / Research Resources</div>
+    <h2>Explore the Research System</h2>
+    <p>
+      Eight resources provide complementary
+      views of the AURA EDU research prototype.
+    </p>
+
+    <div class="grid">
+
+      <article class="card methodology-card">
+        <span class="tag">Available</span>
+        <h3>
+          Research Methodology &
+          Prototype Evaluation
+        </h3>
+        <p>
+          Explore the proposed Design and Development
+          Research approach, research questions,
+          dual-layer adaptive learning framework,
+          evaluation criteria and future empirical plan.
+        </p>
+        <p>
+          研究方法：研究设计、RQ1–RQ4、
+          双层自适应机制及未来研究计划。
+        </p>
+        <div class="methodology-topics">
+          <div class="methodology-topic">Research Design</div>
+          <div class="methodology-topic">Research Questions</div>
+          <div class="methodology-topic">Adaptive Framework</div>
+          <div class="methodology-topic">Evaluation Criteria</div>
+        </div>
+        <a class="btn teal"
+           href="research-methodology.html">
+          Open Research Methodology →
+        </a>
+      </article>
+
+      <article class="card evaluation-card">
+        <span class="tag">Available</span>
+        <h3>Prototype Evaluation Protocol</h3>
+        <p>
+          Review six evaluation dimensions,
+          developer-reported test cases,
+          read-only record inventory,
+          research evidence status and
+          future evaluation procedures.
+        </p>
+        <p>
+          原型评估方案：功能测试登记、
+          数据完整性、证据状态和
+          后续规范化评估流程。
+        </p>
+        <div class="methodology-topics">
+          <div class="methodology-topic">
+            Six Evaluation Dimensions
+          </div>
+          <div class="methodology-topic">
+            TC-001 to TC-010
+          </div>
+          <div class="methodology-topic">
+            Data Integrity
+          </div>
+          <div class="methodology-topic">
+            Evidence Status
+          </div>
+        </div>
+        <a class="btn teal"
+           href="prototype-evaluation.html">
+          Open Prototype Evaluation →
+        </a>
+      </article>
+
+      <article class="card evidence-card">
+        <span class="tag">Available · Step 19.14</span>
+        <h3>Evaluation Evidence Register</h3>
+        <p>
+          Record developer-reported test observations,
+          preserve failure and repair history,
+          filter evidence entries and copy structured
+          JSON for external backup.
+        </p>
+        <p>
+          评估证据登记系统：保存测试观察结果、
+          失败与修复历史，支持筛选和 JSON 复制。
+        </p>
+        <div class="methodology-topics">
+          <div class="methodology-topic">
+            Historical Evidence
+          </div>
+          <div class="methodology-topic">
+            New Evidence Entry
+          </div>
+          <div class="methodology-topic">
+            Evidence Register
+          </div>
+          <div class="methodology-topic">
+            JSON Copy & Backup
+          </div>
+        </div>
+        <a class="btn teal"
+           href="evaluation-evidence-register.html">
+          Open Evidence Register →
+        </a>
+      </article>
+
+      <!-- STEP 20.9.2 NEW RESOURCE -->
+      <article class="card scaffolding-card">
+        <span class="tag">Available · Step 20.9</span>
+        <h3>Scaffolding Evidence Analysis</h3>
+        <p>
+          Examine existing G1 learning sessions
+          and distinguish observed hint exposure,
+          question-level evidence, error patterns
+          and immediate independent performance.
+        </p>
+        <p>
+          教学支架证据分析：查看 H1/H2/H3 提示使用、
+          题目层级记录、错误模式和即时独立复测。
+          不将提示暴露直接认定为提示依赖。
+        </p>
+        <div class="methodology-topics">
+          <div class="methodology-topic">
+            Hint Exposure
+          </div>
+          <div class="methodology-topic">
+            Question-Level Evidence
+          </div>
+          <div class="methodology-topic">
+            Independent Reassessment
+          </div>
+          <div class="methodology-topic">
+            Evidence Interpretation
+          </div>
+        </div>
+        <a class="btn teal"
+           href="scaffolding-evidence-analysis.html">
+          Open Scaffolding Evidence Analysis →
+        </a>
+      </article>
+
+      <article class="card">
+        <span class="tag">Available</span>
+        <h3>Adaptive Decision Explorer</h3>
+        <p>
+          Explore proposed dual-layer adaptive
+          decisions, provisional mastery
+          classifications and explainable
+          recommendations.
+        </p>
+        <p>
+          自适应决策探索器：了解学习证据
+          如何影响教学支架与学习路径推荐。
+        </p>
+        <a class="btn"
+           href="decision-explorer.html">
+          Open Decision Explorer →
+        </a>
+      </article>
+
+      <article class="card">
+        <span class="tag">Available</span>
+        <h3>Research Analytics Dashboard</h3>
+        <p>
+          Explore simulated learning analytics
+          across grammar knowledge points
+          and assessment stages.
+        </p>
+        <p>
+          学习分析仪表板：展示模拟学习数据，
+          不将演示结果作为实证发现。
+        </p>
+        <a class="btn"
+           href="research-analytics.html">
+          Open Research Analytics →
+        </a>
+      </article>
+
+      <article class="card">
+        <span class="tag">Available</span>
+        <h3>Data Quality Dashboard</h3>
+        <p>
+          Inspect learning record structure,
+          identity consistency, historical
+          compatibility and research metadata.
+        </p>
+        <p>
+          数据质量仪表板：检查学习记录结构、
+          身份关联及历史数据兼容情况。
+        </p>
+        <a class="btn teal"
+           href="data-quality-dashboard.html">
+          Open Data Quality Dashboard →
+        </a>
+      </article>
+
+      <article class="card">
+        <span class="tag">Available</span>
+        <h3>Research Data Documentation</h3>
+        <p>
+          Review data provenance, data dictionaries,
+          identity binding, historical limitations,
+          reproducibility and research ethics.
+        </p>
+        <p>
+          研究数据文档：说明数据来源、字段含义、
+          身份关联机制及研究伦理。
+        </p>
+        <a class="btn teal"
+           href="research-data-documentation.html">
+          Open Research Documentation →
+        </a>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<section class="soft">
+  <div class="container">
+    <div class="eyebrow">
+      02 / Research Data Inventory
+    </div>
+    <h2>Local Prototype Data Overview</h2>
+    <p>
+      Counts are read from this browser's
+      localStorage. This page never modifies
+      learning records.
+    </p>
+
+    <div class="metrics">
+      <div class="metric">
+        <strong id="g1">—</strong>
+        <span>G1 Records</span>
+      </div>
+      <div class="metric">
+        <strong id="g2">—</strong>
+        <span>G2 Records</span>
+      </div>
+      <div class="metric">
+        <strong id="g3">—</strong>
+        <span>G3 Records</span>
+      </div>
+      <div class="metric">
+        <strong id="total">—</strong>
+        <span>Total Records</span>
+      </div>
+    </div>
+
+    <p id="inventory-status"
+       role="status"
+       aria-live="polite">
+      Checking local records...
+    </p>
+
+    <div class="audit-note">
+      <strong>Original Historical Baseline</strong>
+      <p>
+        The original documented baseline contained
+        G1=4, G2=3, G3=6, Total=13.
+        Later G1 development tests may increase
+        the current record count.
+        A higher count is not automatically an error.
+      </p>
+    </div>
+
+    <div class="audit-note">
+      <strong>Previous Data Quality Audit</strong>
+      <p>
+        The previously reported audit classified
+        4 records as PASS and 9 as REVIEW.
+        These are historical audit findings,
+        not a live recalculation.
+      </p>
+    </div>
+
+    <div class="notice">
+      <p>
+        <strong>Research Integrity Notice</strong>
+        Historical learning records are preserved
+        without automatic identity reassignment.
+        Local identity association is not
+        real-world authentication.
+        Record counts alone cannot prove
+        content-level integrity.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="eyebrow">03 / Research Workflow</div>
+    <h2>From Prototype to Empirical Research</h2>
+
+    <div class="flow">
+      <div class="flow-item">
+        <strong>01 — Design</strong>
+        <span>
+          Adaptive learning, instructional
+          scaffolding and assessment logic
+        </span>
+      </div>
+      <div class="flow-item">
+        <strong>02 — Prototype Evaluation</strong>
+        <span>
+          Functional testing, scaffolding evidence,
+          explainability and data quality
+        </span>
+      </div>
+      <div class="flow-item">
+        <strong>03 — Future Research</strong>
+        <span>
+          Ethical approval, recruitment,
+          empirical assessment and learning
+          outcomes analysis
+        </span>
+      </div>
+    </div>
+
+    <p>
+      Prototype testing and recorded evidence
+      support documentation of development.
+      Educational effectiveness has not
+      yet been established.
+    </p>
+
+    <div class="actions">
+      <a class="btn teal"
+         href="research-methodology.html">
+        Explore Methodology →
+      </a>
+      <a class="btn"
+         href="prototype-evaluation.html">
+        Explore Evaluation Protocol →
+      </a>
+      <a class="btn"
+         href="evaluation-evidence-register.html">
+        Explore Evidence Register →
+      </a>
+      <a class="btn teal"
+         href="scaffolding-evidence-analysis.html">
+        Explore Scaffolding Evidence →
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="soft">
+  <div class="container">
+    <div class="eyebrow">
+      04 / Future Documentation
+    </div>
+    <h2>Planned Research Materials</h2>
+    <div class="grid">
+      <article class="card">
+        <span class="tag planned">Planned</span>
+        <h3>Detailed Empirical Study Protocol</h3>
+        <p>
+          Participant recruitment, study design,
+          measurement instruments, data collection
+          and analysis planning.
+        </p>
+        <p>
+          后续细化样本招募、研究设计、
+          测量工具及数据分析程序。
+        </p>
+      </article>
+
+      <article class="card">
+        <span class="tag planned">Planned</span>
+        <h3>Independent Evaluation</h3>
+        <p>
+          Future expert review, learner usability
+          testing, instructional validation
+          and independently verified evidence.
+        </p>
+        <p>
+          未来开展专家评审、学习者可用性测试、
+          教学质量审查及独立验证。
+        </p>
+      </article>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <p>AURA EDU Research Documentation Hub</p>
+    <p>
+      Adaptive Learning · Learning Analytics ·
+      Educational Technology
+    </p>
+    <p>Research Prototype — Step 20.9.2</p>
+  </div>
+</footer>
+
+<script>
+(function() {
+  "use strict";
+
+  /*
+    AURA EDU STEP 20.9.2
+
+    Scaffolding Evidence Integration.
+
+    READ ONLY:
+    - No localStorage.setItem
+    - No localStorage.removeItem
+    - No localStorage.clear
+    - No learner identity reassignment
+    - No learning record mutation
+  */
+
+  const KEYS = {
+    G1:"aura_g1_learning_records_v1",
+    G2:"aura_g2_learning_records_v1",
+    G3:"aura_g3_learning_records_v1"
+  };
+
+  const BASELINE = {
+    G1:4,
+    G2:3,
+    G3:6
+  };
+
+  function inspect(key) {
+    try {
+      const raw = localStorage.getItem(key);
+
+      if (raw === null) {
+        return {
+          valid:true,
+          missing:true,
+          count:0
+        };
+      }
+
+      const value = JSON.parse(raw);
+
+      if (!Array.isArray(value)) {
+        return {
+          valid:false,
+          missing:false,
+          count:null
+        };
+      }
+
+      return {
+        valid:true,
+        missing:false,
+        count:value.length
+      };
+
+    } catch(error) {
+      console.error(
+        "[AURA Hub] Storage read error:",
+        error
+      );
+
+      return {
+        valid:false,
+        missing:false,
+        count:null
+      };
+    }
+  }
+
+  function render() {
+    const results = {
+      G1:inspect(KEYS.G1),
+      G2:inspect(KEYS.G2),
+      G3:inspect(KEYS.G3)
+    };
+
+    let total = 0;
+    let valid = true;
+    const missing = [];
+
+    ["G1","G2","G3"].forEach(function(id) {
+      const result = results[id];
+
+      document.getElementById(
+        id.toLowerCase()
+      ).textContent =
+        result.valid
+          ? String(result.count)
+          : "ERROR";
+
+      if (result.valid) {
+        total += result.count;
+      } else {
+        valid = false;
+      }
+
+      if (result.missing) {
+        missing.push(id);
+      }
+    });
+
+    const totalElement =
+      document.getElementById("total");
+
+    const status =
+      document.getElementById("inventory-status");
+
+    if (!valid) {
+      totalElement.textContent = "—";
+      status.textContent =
+        "ERROR: One or more record stores " +
+        "could not be read.";
+      status.style.color = "#b42318";
+      return;
+    }
+
+    totalElement.textContent = String(total);
+
+    if (missing.length) {
+      status.textContent =
+        "REVIEW: Missing storage keys: " +
+        missing.join(", ");
+      status.style.color = "#946100";
+      return;
+    }
+
+    const belowBaseline =
+      results.G1.count < BASELINE.G1 ||
+      results.G2.count < BASELINE.G2 ||
+      results.G3.count < BASELINE.G3;
+
+    const exactlyBaseline =
+      results.G1.count === BASELINE.G1 &&
+      results.G2.count === BASELINE.G2 &&
+      results.G3.count === BASELINE.G3;
+
+    if (belowBaseline) {
+      status.textContent =
+        "REVIEW: At least one module has fewer " +
+        "records than the original baseline. " +
+        "Inspect the storage before proceeding.";
+      status.style.color = "#946100";
+
+    } else if (exactlyBaseline) {
+      status.textContent =
+        "BASELINE MATCH: G1=4, G2=3, G3=6. " +
+        "Total=13. Original counts match.";
+      status.style.color = "#17645e";
+
+    } else {
+      status.textContent =
+        "CURRENT RECORDS: G1=" +
+        results.G1.count +
+        ", G2=" + results.G2.count +
+        ", G3=" + results.G3.count +
+        ", Total=" + total +
+        ". Counts include sessions added " +
+        "after the original 13-record baseline.";
+      status.style.color = "#17645e";
+    }
+
+    console.info(
+      "[AURA Hub] Read-only inventory:",
+      {
+        G1:results.G1.count,
+        G2:results.G2.count,
+        G3:results.G3.count,
+        total:total
+      }
+    );
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener(
+      "DOMContentLoaded",
+      render
+    );
+  } else {
+    render();
+  }
+})();
+</script>
+
+</body>
+</html>

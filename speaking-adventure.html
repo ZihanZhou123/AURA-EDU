@@ -1,0 +1,707 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1">
+  <title>AURA EDU | My Classroom Adventure</title>
+
+  <style>
+    :root {
+      --purple: #7458d8;
+      --deep: #302653;
+      --blue: #67baf2;
+      --cream: #fffaf0;
+      --green: #24976c;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont,
+        "Segoe UI", Arial, sans-serif;
+      background: linear-gradient(
+        145deg, #f0ebff, #e6f6ff, #fff5e9
+      );
+      color: var(--deep);
+      min-height: 100vh;
+    }
+
+    button, textarea { font: inherit; }
+
+    button {
+      cursor: pointer;
+      border: 0;
+      border-radius: 14px;
+      padding: 12px 17px;
+      font-weight: 700;
+      transition: transform .18s, background .18s;
+    }
+
+    button:hover:not(:disabled) {
+      transform: translateY(-2px);
+    }
+
+    button:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+    }
+
+    button:focus-visible, textarea:focus-visible {
+      outline: 3px solid #e1a946;
+      outline-offset: 3px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      padding: 16px 5%;
+      background: rgba(255,255,255,.85);
+      border-bottom: 1px solid #e3dff3;
+    }
+
+    .brand {
+      font-weight: 900;
+      color: var(--purple);
+      font-size: 21px;
+    }
+
+    .topbar a {
+      color: var(--deep);
+      text-decoration: none;
+      font-weight: 650;
+    }
+
+    main {
+      max-width: 1150px;
+      margin: 25px auto;
+      padding: 0 18px 40px;
+    }
+
+    .heading {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 18px;
+    }
+
+    h1 { margin: 4px 0; font-size: 30px; }
+
+    .eyebrow {
+      color: var(--purple);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 1px;
+    }
+
+    .pill {
+      background: white;
+      border: 1px solid #ddd6fa;
+      border-radius: 50px;
+      padding: 10px 15px;
+      font-size: 13px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.65fr)
+                             minmax(290px, 1fr);
+      gap: 20px;
+    }
+
+    .panel {
+      background: white;
+      border: 1px solid #e4ddf6;
+      border-radius: 24px;
+      box-shadow: 0 12px 35px rgba(70,52,124,.08);
+      overflow: hidden;
+    }
+
+    .scene {
+      min-height: 390px;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(
+        180deg, #b7e7ff 0%,
+        #e8f8ff 57%,
+        #d5b5f6 57%,
+        #ae8cdb 100%
+      );
+    }
+
+    .window {
+      position: absolute;
+      top: 40px;
+      left: 8%;
+      width: 160px;
+      height: 135px;
+      border: 10px solid #fff;
+      border-radius: 17px;
+      background: linear-gradient(
+        #82c9ff 65%, #b3e6a3 65%
+      );
+      box-shadow: 0 8px 15px #6586a32a;
+    }
+
+    .window::before {
+      content: "";
+      position: absolute;
+      width: 10px;
+      height: 100%;
+      left: 50%;
+      background: white;
+    }
+
+    .window::after {
+      content: "";
+      position: absolute;
+      height: 10px;
+      width: 100%;
+      top: 50%;
+      background: white;
+    }
+
+    .board {
+      position: absolute;
+      top: 35px;
+      right: 7%;
+      width: 43%;
+      height: 160px;
+      background: #467b78;
+      border: 11px solid #e5b778;
+      border-radius: 12px;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: 22px;
+      font-weight: 800;
+      transform: perspective(500px) rotateY(-5deg);
+      box-shadow: 0 12px 0 #9573c1;
+    }
+
+    .floor-line {
+      position: absolute;
+      bottom: 75px;
+      width: 100%;
+      border-top: 3px solid #9874ca;
+    }
+
+    .desk {
+      position: absolute;
+      bottom: 26px;
+      width: 135px;
+      height: 72px;
+      border-radius: 18px 18px 10px 10px;
+      background: linear-gradient(
+        145deg, #f5cb89, #d69d65
+      );
+      box-shadow: 0 13px 0 #ae7b9d;
+      transform: skewX(-7deg);
+    }
+
+    .desk.left { left: 7%; }
+    .desk.right { right: 6%; }
+
+    .character {
+      position: absolute;
+      bottom: 42px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      animation: float 3s ease-in-out infinite;
+      z-index: 2;
+    }
+
+    .character .head {
+      width: 118px;
+      height: 118px;
+      border-radius: 48% 48% 45% 45%;
+      background: #ffd4b4;
+      position: relative;
+      border: 5px solid #5b3d75;
+      box-shadow: inset -10px -8px #f3b99f;
+    }
+
+    .hair {
+      position: absolute;
+      top: -14px;
+      left: -8px;
+      width: 125px;
+      height: 51px;
+      border-radius: 65px 65px 24px 18px;
+      background: #51385d;
+      transform: rotate(-4deg);
+    }
+
+    .eye {
+      position: absolute;
+      top: 55px;
+      width: 10px;
+      height: 13px;
+      border-radius: 50%;
+      background: #38263d;
+      animation: blink 5s infinite;
+    }
+
+    .eye.left { left: 34px; }
+    .eye.right { right: 32px; }
+
+    .mouth {
+      position: absolute;
+      top: 78px;
+      left: 50px;
+      width: 18px;
+      height: 8px;
+      border-bottom: 3px solid #bd6580;
+      border-radius: 50%;
+    }
+
+    .character.talking .mouth {
+      animation: talking .25s infinite alternate;
+    }
+
+    .body {
+      width: 106px;
+      height: 105px;
+      background: linear-gradient(
+        135deg, #9770f4, #6546c5
+      );
+      border-radius: 34px 34px 15px 15px;
+      margin-top: -3px;
+      border: 5px solid #5d45a6;
+    }
+
+    .arm {
+      position: absolute;
+      width: 24px;
+      height: 76px;
+      background: #9270e8;
+      border-radius: 25px;
+      top: 117px;
+    }
+
+    .arm.left {
+      left: -8px;
+      transform: rotate(18deg);
+    }
+
+    .arm.right {
+      right: -7px;
+      transform-origin: top center;
+      animation: wave 2.6s ease-in-out infinite;
+    }
+
+    .feet {
+      display: flex;
+      gap: 35px;
+      margin-top: -3px;
+    }
+
+    .foot {
+      width: 25px;
+      height: 34px;
+      background: #46356c;
+      border-radius: 0 0 12px 12px;
+    }
+
+    .speech-bubble {
+      position: absolute;
+      top: 220px;
+      right: 5%;
+      width: 190px;
+      background: white;
+      border: 3px solid #d7c9ff;
+      border-radius: 20px;
+      padding: 14px;
+      box-shadow: 0 8px 20px #55447b22;
+      font-size: 14px;
+      font-weight: 700;
+      z-index: 3;
+    }
+
+    .scene-label {
+      position: absolute;
+      top: 12px;
+      left: 14px;
+      background: #ffffffd9;
+      padding: 7px 12px;
+      border-radius: 30px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .content { padding: 20px; }
+
+    .progress-track {
+      height: 12px;
+      background: #eee9fc;
+      border-radius: 30px;
+      overflow: hidden;
+      margin: 12px 0;
+    }
+
+    .progress-fill {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(
+        90deg, #7e61ec, #50c9a7
+      );
+      transition: width .4s;
+    }
+
+    .dialogue {
+      background: #f5f2ff;
+      border-radius: 18px;
+      padding: 17px;
+      margin: 15px 0;
+      line-height: 1.65;
+    }
+
+    .dialogue strong {
+      display: block;
+      margin-bottom: 5px;
+      color: #6146b6;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 92px;
+      resize: vertical;
+      padding: 13px;
+      border: 2px solid #ded5f6;
+      border-radius: 15px;
+      background: #fff;
+      color: var(--deep);
+    }
+
+    .actions {
+      display: flex;
+      gap: 9px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .primary {
+      background: var(--purple);
+      color: white;
+    }
+
+    .secondary {
+      background: #eee9ff;
+      color: #543ba5;
+    }
+
+    .success {
+      background: #e2f7ed;
+      color: #187552;
+    }
+
+    .side-content { padding: 20px; }
+
+    .side-content h2 {
+      font-size: 18px;
+      margin: 0 0 10px;
+    }
+
+    .teacher {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      background: #eef9ff;
+      border-radius: 18px;
+      padding: 15px;
+      margin: 14px 0;
+    }
+
+    .owl {
+      font-size: 55px;
+      animation: float 3.5s infinite;
+    }
+
+    .teacher-message {
+      background: #fff8df;
+      border: 1px solid #f1df9c;
+      padding: 14px;
+      border-radius: 15px;
+      margin-top: 12px;
+      line-height: 1.6;
+      white-space: pre-line;
+    }
+
+    .feedback {
+      min-height: 48px;
+      margin-top: 13px;
+      line-height: 1.5;
+      font-size: 14px;
+      color: #574878;
+    }
+
+    .mini-card {
+      border: 1px solid #e8e1f5;
+      border-radius: 14px;
+      padding: 13px;
+      margin-top: 12px;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .notice {
+      font-size: 12px;
+      color: #756d87;
+      line-height: 1.6;
+      margin-top: 15px;
+    }
+
+    [hidden] { display: none !important; }
+
+    @keyframes float {
+      0%, 100% { translate: 0 0; }
+      50% { translate: 0 -7px; }
+    }
+
+    @keyframes wave {
+      0%, 100% { transform: rotate(-18deg); }
+      50% { transform: rotate(-65deg); }
+    }
+
+    @keyframes blink {
+      0%, 93%, 100% { scale: 1 1; }
+      96% { scale: 1 .15; }
+    }
+
+    @keyframes talking {
+      from { height: 5px; }
+      to { height: 17px; background: #bd6580; }
+    }
+
+    @media (max-width: 800px) {
+      .layout { grid-template-columns: 1fr; }
+      .scene { min-height: 340px; }
+      .speech-bubble {
+        top: 190px;
+        right: 3%;
+        width: 145px;
+        font-size: 12px;
+      }
+      .board { font-size: 16px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="topbar">
+    <div class="brand">✦ AURA EDU</div>
+    <a href="index.html">← Back to Home</a>
+  </header>
+
+  <main>
+
+    <div class="heading">
+      <div>
+        <div class="eyebrow">
+          STAGE 22.4.1 · SPEAKING ADVENTURE
+        </div>
+        <h1>🏫 My Classroom</h1>
+        <div>
+          Mission 01 — Meet Your New Friend
+        </div>
+      </div>
+
+      <div class="pill">
+        🔓 G1 Speaking Preview
+      </div>
+    </div>
+
+    <div class="layout">
+
+      <section class="panel">
+
+        <div class="scene"
+             aria-label="Animated cartoon classroom">
+
+          <div class="window"></div>
+          <div class="board">
+            Welcome to Class!
+          </div>
+          <div class="floor-line"></div>
+
+          <div class="desk left"></div>
+          <div class="desk right"></div>
+
+          <div class="scene-label">
+            🌟 My Classroom
+          </div>
+
+          <div class="character"
+               id="mia-character"
+               aria-label="Mia, your conversation partner">
+            <div class="head">
+              <div class="hair"></div>
+              <div class="eye left"></div>
+              <div class="eye right"></div>
+              <div class="mouth"></div>
+            </div>
+
+            <div class="arm left"></div>
+            <div class="arm right"></div>
+            <div class="body"></div>
+
+            <div class="feet">
+              <div class="foot"></div>
+              <div class="foot"></div>
+            </div>
+          </div>
+
+          <div class="speech-bubble"
+               id="speech-bubble">
+            Hi! I'm Mia!
+          </div>
+
+        </div>
+
+        <div class="content">
+
+          <strong id="mission-step">
+            Step 1 of 4
+          </strong>
+
+          <div class="progress-track">
+            <div class="progress-fill"
+                 id="progress-fill"></div>
+          </div>
+
+          <div class="dialogue">
+            <strong>🎀 Mia · Conversation Partner</strong>
+            <div id="mia-dialogue"
+                 aria-live="polite">
+              Loading conversation...
+            </div>
+          </div>
+
+          <label for="student-answer">
+            <strong>Your answer / 你的回答</strong>
+          </label>
+
+          <textarea
+            id="student-answer"
+            placeholder="Type your English answer here..."
+          ></textarea>
+
+          <div class="actions">
+            <button class="primary"
+                    id="send-answer">
+              💬 Send Answer
+            </button>
+
+            <button class="secondary"
+                    id="replay-voice">
+              🔊 Listen Again
+            </button>
+
+            <button class="secondary"
+                    id="slow-voice">
+              🐢 Slow Speech
+            </button>
+
+            <button class="success"
+                    id="ask-help">
+              💡 Need Help?
+            </button>
+          </div>
+
+          <div class="feedback"
+               id="feedback"
+               role="status"
+               aria-live="polite">
+          </div>
+
+          <button class="secondary"
+                  id="restart-mission">
+            ↻ Restart Mission
+          </button>
+
+        </div>
+      </section>
+
+      <aside class="panel">
+        <div class="side-content">
+
+          <h2>🦉 Meet Ollie</h2>
+
+          <div class="teacher">
+            <div class="owl"
+                 aria-hidden="true">🦉</div>
+            <div>
+              <strong>Ollie · AI Teacher Preview</strong>
+              <div>
+                I'm here when you need help!
+              </div>
+            </div>
+          </div>
+
+          <div id="teacher-message"
+               class="teacher-message"
+               hidden
+               aria-live="polite">
+          </div>
+
+          <div class="mini-card">
+            <strong>📚 Grammar Connection</strong>
+            <div>G1 — Be Verb</div>
+            <div>I am / You are / He is / She is</div>
+          </div>
+
+          <div class="mini-card">
+            <strong>🎯 Learning Goal</strong>
+            <div id="learning-goal">
+              Introduce yourself using English.
+            </div>
+          </div>
+
+          <div class="mini-card">
+            <strong>📊 Session Progress</strong>
+            <div id="progress-summary">
+              Completed turns: 0 / 4
+            </div>
+            <div id="support-summary">
+              Supported turns: 0
+            </div>
+          </div>
+
+          <div class="notice">
+            Research prototype preview.
+            This page uses scripted dialogue and
+            limited grammar rules. It does not
+            use real AI, microphone recognition,
+            or verified G1 mastery data.
+            No existing learner records are changed.
+          </div>
+
+        </div>
+      </aside>
+
+    </div>
+  </main>
+
+  <script src="js/speaking-adventure.js"></script>
+
+</body>
+</html>

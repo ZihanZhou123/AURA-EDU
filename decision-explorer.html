@@ -1,0 +1,835 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AURA EDU | Adaptive Decision Explorer</title>
+
+  <style>
+    :root {
+      --navy: #17365d;
+      --teal: #218b83;
+      --background: #f8fafc;
+      --white: #ffffff;
+      --text: #26354a;
+      --muted: #64748b;
+      --border: #e2e8f0;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--background);
+      font-family: Arial, sans-serif;
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    header {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 18px 6%;
+    }
+
+    .navigation {
+      max-width: 1200px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: bold;
+      color: var(--navy);
+      text-decoration: none;
+    }
+
+    nav {
+      display: flex;
+      gap: 22px;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--text);
+      font-size: 14px;
+    }
+
+    nav a:hover {
+      color: var(--teal);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 45px 24px;
+    }
+
+    .eyebrow {
+      color: var(--teal);
+      font-size: 13px;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+
+    h1 {
+      font-size: clamp(32px, 5vw, 46px);
+      color: var(--navy);
+      margin: 12px 0;
+      line-height: 1.2;
+    }
+
+    h2 {
+      color: var(--navy);
+      font-size: 25px;
+      margin-top: 0;
+    }
+
+    h3 {
+      color: var(--navy);
+    }
+
+    p {
+      color: var(--muted);
+    }
+
+    .intro {
+      max-width: 800px;
+      margin-bottom: 35px;
+    }
+
+    .notice {
+      background: #eaf5f3;
+      border-left: 4px solid var(--teal);
+      padding: 16px 20px;
+      border-radius: 8px;
+      margin: 25px 0;
+      font-size: 14px;
+    }
+
+    .card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      margin-bottom: 24px;
+      box-shadow: 0 5px 20px rgba(23,54,93,.035);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 22px;
+    }
+
+    .grid.three {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .student-buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 12px 22px;
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      background: white;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    button:hover {
+      border-color: var(--teal);
+    }
+
+    button.active {
+      background: var(--navy);
+      color: white;
+      border-color: var(--navy);
+    }
+
+    .metric {
+      background: #f1f6f9;
+      border-radius: 12px;
+      padding: 22px;
+    }
+
+    .metric-label {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .metric-value {
+      color: var(--navy);
+      font-size: 29px;
+      font-weight: bold;
+      margin-top: 8px;
+    }
+
+    .progress {
+      width: 100%;
+      height: 12px;
+      background: #e2e8f0;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 14px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--teal);
+      width: 0%;
+      transition: width .35s ease;
+    }
+
+    .decision {
+      background: linear-gradient(135deg, #17365d, #245e78);
+      color: white;
+      border-radius: 16px;
+      padding: 30px;
+    }
+
+    .decision h2,
+    .decision p {
+      color: white;
+    }
+
+    .decision-label {
+      font-size: 13px;
+      opacity: .8;
+      letter-spacing: 1px;
+    }
+
+    .decision-value {
+      font-size: 28px;
+      font-weight: bold;
+      margin: 8px 0 22px;
+    }
+
+    .reason {
+      background: #f1f6f9;
+      border-left: 4px solid var(--teal);
+      border-radius: 8px;
+      padding: 15px 18px;
+      margin-bottom: 12px;
+    }
+
+    .reason strong {
+      color: var(--navy);
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 20px;
+      background: #e7f5f0;
+      color: #17645e;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .small {
+      font-size: 13px;
+    }
+
+    footer {
+      background: var(--navy);
+      text-align: center;
+      padding: 35px;
+      margin-top: 35px;
+    }
+
+    footer p {
+      color: #dce7f0;
+    }
+
+    @media (max-width: 800px) {
+      .grid,
+      .grid.three {
+        grid-template-columns: 1fr;
+      }
+
+      .container {
+        padding: 28px 18px;
+      }
+
+      .card {
+        padding: 22px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="navigation">
+    <a href="research.html" class="logo">AURA EDU</a>
+
+    <nav>
+      <a href="index.html">AURA Learn</a>
+      <a href="research.html">Research Lab</a>
+      <a href="#evidence">Learning Evidence</a>
+      <a href="#decision">Decision Model</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+
+  <div class="intro">
+    <div class="eyebrow">
+      AURA EDU RESEARCH LAB / INTERACTIVE DEMONSTRATION
+    </div>
+
+    <h1>Adaptive Decision Explorer</h1>
+
+    <p>
+      Explore how learning evidence can inform
+      transparent instructional recommendations
+      in a proposed dual-layer adaptive English
+      grammar learning system.
+    </p>
+  </div>
+
+  <div class="notice">
+    <strong>Research demonstration:</strong>
+    All learner profiles and performance records
+    are simulated. The decision rules below are
+    provisional design assumptions, not validated
+    measures of student mastery.
+  </div>
+
+  <!-- STUDENT SELECTOR -->
+  <section class="card">
+
+    <div class="eyebrow">STEP 01 / SELECT LEARNER</div>
+
+    <h2>Choose a Simulated Learner</h2>
+
+    <p>
+      Compare three illustrative learning profiles.
+      Each learner has different performance and
+      instructional support characteristics.
+    </p>
+
+    <div class="student-buttons">
+      <button
+        class="active"
+        data-student="A"
+        onclick="selectStudent('A')"
+      >
+        Student A
+      </button>
+
+      <button
+        data-student="B"
+        onclick="selectStudent('B')"
+      >
+        Student B
+      </button>
+
+      <button
+        data-student="C"
+        onclick="selectStudent('C')"
+      >
+        Student C
+      </button>
+    </div>
+
+    <p id="student-description" aria-live="polite"></p>
+
+  </section>
+
+  <!-- LEARNING EVIDENCE -->
+  <section id="evidence">
+
+    <div class="eyebrow">
+      STEP 02 / LEARNING ANALYTICS
+    </div>
+
+    <h2>Learning Evidence</h2>
+
+    <div class="grid three">
+
+      <div class="metric">
+        <div class="metric-label">
+          First-Attempt Accuracy
+        </div>
+        <div class="metric-value" id="accuracy-value">
+          —
+        </div>
+        <div class="progress">
+          <div class="progress-fill" id="accuracy-bar"></div>
+        </div>
+      </div>
+
+      <div class="metric">
+        <div class="metric-label">
+          Highest Hint Level Used
+        </div>
+        <div class="metric-value" id="hint-value">
+          —
+        </div>
+        <p class="small" id="hint-description"></p>
+      </div>
+
+      <div class="metric">
+        <div class="metric-label">
+          Immediate Independent Reassessment
+        </div>
+        <div class="metric-value" id="reassessment-value">
+          —
+        </div>
+        <div class="progress">
+          <div class="progress-fill" id="reassessment-bar"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="card" style="margin-top:22px">
+
+      <h3>Evidence Interpretation</h3>
+
+      <p id="evidence-interpretation"></p>
+
+      <span class="tag">
+        Simulated Evidence
+      </span>
+
+    </div>
+
+  </section>
+
+  <!-- DECISION MODEL -->
+  <section id="decision">
+
+    <div class="eyebrow">
+      STEP 03 / EBMM PROTOTYPE
+    </div>
+
+    <h2>Explainable Adaptive Decision</h2>
+
+    <div class="grid">
+
+      <div class="decision">
+
+        <div class="decision-label">
+          PROVISIONAL MASTERY STATE
+        </div>
+
+        <div class="decision-value" id="mastery-state">
+          —
+        </div>
+
+        <div class="decision-label">
+          RECOMMENDED LEARNING PATH
+        </div>
+
+        <div class="decision-value" id="learning-path">
+          —
+        </div>
+
+        <p id="decision-summary"></p>
+
+      </div>
+
+      <div class="card">
+
+        <h3>Why This Recommendation?</h3>
+
+        <div id="decision-reasons" aria-live="polite"></div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- INSTRUCTIONAL ROUTING -->
+  <section class="card">
+
+    <div class="eyebrow">
+      STEP 04 / INSTRUCTIONAL ROUTING
+    </div>
+
+    <h2>Recommended Next Learning Activity</h2>
+
+    <div class="grid">
+
+      <div>
+        <h3 id="next-activity-title">—</h3>
+        <p id="next-activity-description"></p>
+      </div>
+
+      <div>
+        <h3>Next Evidence to Collect</h3>
+        <p id="next-evidence"></p>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- METHODOLOGICAL TRANSPARENCY -->
+  <section class="card">
+
+    <div class="eyebrow">
+      RESEARCH TRANSPARENCY
+    </div>
+
+    <h2>How This Prototype Makes Decisions</h2>
+
+    <p>
+      The Evidence-Based Mastery Model (EBMM) is
+      a proposed research design, not an established
+      or psychometrically validated assessment instrument.
+    </p>
+
+    <p>
+      This demonstration uses transparent, provisional
+      rule-based thresholds to illustrate possible
+      instructional decisions.
+    </p>
+
+    <div class="grid three">
+
+      <div>
+        <h3>Foundation</h3>
+        <p>
+          Support learners showing substantial
+          difficulty in independent reassessment.
+        </p>
+      </div>
+
+      <div>
+        <h3>Guided</h3>
+        <p>
+          Provide targeted practice when evidence
+          suggests developing understanding.
+        </p>
+      </div>
+
+      <div>
+        <h3>Challenge</h3>
+        <p>
+          Provide more demanding tasks when
+          immediate independent performance is strong.
+        </p>
+      </div>
+
+    </div>
+
+    <div class="notice">
+      Immediate reassessment alone cannot establish
+      stable mastery. A delayed independent assessment
+      and additional evidence are required before
+      considering demonstrated mastery.
+    </div>
+
+  </section>
+
+</main>
+
+<footer>
+  <p>
+    AURA EDU Research Lab · Adaptive Decision Explorer
+  </p>
+  <p class="small">
+    Rule-Based Research Demonstration · Simulated Data ·
+    Not a Validated Educational Assessment
+  </p>
+</footer>
+
+<script>
+  /*
+    AURA EDU
+    ADAPTIVE DECISION EXPLORER
+
+    All data below are simulated.
+    Rules are provisional and illustrative.
+  */
+
+  const learners = {
+    A: {
+      description:
+        "Student A demonstrates strong independent performance.",
+      firstCorrect: 4,
+      firstTotal: 4,
+      highestHint: 0,
+      immediateCorrect: 4,
+      immediateTotal: 4
+    },
+
+    B: {
+      description:
+        "Student B demonstrates partial understanding and uses targeted hints.",
+      firstCorrect: 3,
+      firstTotal: 4,
+      highestHint: 2,
+      immediateCorrect: 3,
+      immediateTotal: 4
+    },
+
+    C: {
+      description:
+        "Student C demonstrates substantial difficulties and requires worked examples.",
+      firstCorrect: 1,
+      firstTotal: 4,
+      highestHint: 3,
+      immediateCorrect: 1,
+      immediateTotal: 4
+    }
+  };
+
+  function calculatePercentage(correct, total) {
+    if (total === 0) return 0;
+    return Math.round((correct / total) * 100);
+  }
+
+  function getHintLabel(level) {
+    if (level === 0) return "None";
+    return "H" + level;
+  }
+
+  function makeDecision(student) {
+
+    const accuracy = calculatePercentage(
+      student.firstCorrect,
+      student.firstTotal
+    );
+
+    const reassessment = calculatePercentage(
+      student.immediateCorrect,
+      student.immediateTotal
+    );
+
+    /*
+      These rules are illustrative.
+      They are not validated mastery cutoffs.
+    */
+
+    if (reassessment < 50) {
+      return {
+        mastery: "Needs Support",
+        path: "Foundation",
+        summary:
+          "The learner requires foundational instructional support.",
+        reasons: [
+          "Immediate independent reassessment is below the provisional 50% threshold.",
+          "The available evidence suggests substantial difficulty applying the target knowledge independently.",
+          "Additional guided examples and foundational practice are recommended."
+        ],
+        activity: "Foundation Grammar Practice",
+        activityDescription:
+          "Revisit the target grammar rule using worked examples, structured exercises and graduated hints.",
+        nextEvidence:
+          "Collect new independent responses after foundational practice. Examine error patterns and whether support dependence decreases."
+      };
+    }
+
+    if (
+      reassessment >= 75 &&
+      accuracy >= 75 &&
+      student.highestHint <= 1
+    ) {
+      return {
+        mastery: "Provisional Mastery",
+        path: "Challenge",
+        summary:
+          "Strong immediate performance supports more demanding learning activities, but stable mastery has not been established.",
+        reasons: [
+          "First-attempt accuracy meets the provisional 75% threshold.",
+          "Immediate independent reassessment meets the provisional 75% threshold.",
+          "The learner used no more than a first-level hint."
+        ],
+        activity: "Challenge Grammar Application",
+        activityDescription:
+          "Apply the grammar concept to unfamiliar sentences and more demanding contextual tasks.",
+        nextEvidence:
+          "Collect delayed independent reassessment results and additional transfer-task evidence before considering demonstrated mastery."
+      };
+    }
+
+    return {
+      mastery: "Developing",
+      path: "Guided",
+      summary:
+        "The learner shows partial evidence of understanding and may benefit from targeted practice.",
+      reasons: [
+        "Available evidence does not meet the provisional Challenge criteria.",
+        "Independent reassessment suggests some knowledge is present but further confirmation is needed.",
+        "Targeted feedback and additional independent tasks may help identify remaining difficulties."
+      ],
+      activity: "Guided Grammar Practice",
+      activityDescription:
+        "Provide targeted examples, graduated hints and new practice questions addressing the learner's errors.",
+      nextEvidence:
+        "Collect further first-attempt responses and independent reassessment data, including error categories."
+    };
+  }
+
+  function setText(id, value) {
+    document.getElementById(id).textContent = value;
+  }
+
+  function selectStudent(id) {
+
+    const student = learners[id];
+
+    if (!student) return;
+
+    const accuracy = calculatePercentage(
+      student.firstCorrect,
+      student.firstTotal
+    );
+
+    const reassessment = calculatePercentage(
+      student.immediateCorrect,
+      student.immediateTotal
+    );
+
+    const decision = makeDecision(student);
+
+    document.querySelectorAll("[data-student]").forEach(
+      button => {
+        const selected = button.dataset.student === id;
+        button.classList.toggle("active", selected);
+        button.setAttribute(
+          "aria-pressed",
+          String(selected)
+        );
+      }
+    );
+
+    setText(
+      "student-description",
+      student.description
+    );
+
+    setText(
+      "accuracy-value",
+      accuracy + "% (" +
+      student.firstCorrect + "/" +
+      student.firstTotal + ")"
+    );
+
+    setText(
+      "hint-value",
+      getHintLabel(student.highestHint)
+    );
+
+    const hintDescriptions = [
+      "No hints used.",
+      "Attention cue used.",
+      "Rule explanation used.",
+      "Worked example used."
+    ];
+
+    setText(
+      "hint-description",
+      hintDescriptions[student.highestHint]
+    );
+
+    setText(
+      "reassessment-value",
+      reassessment + "% (" +
+      student.immediateCorrect + "/" +
+      student.immediateTotal + ")"
+    );
+
+    document.getElementById(
+      "accuracy-bar"
+    ).style.width = accuracy + "%";
+
+    document.getElementById(
+      "reassessment-bar"
+    ).style.width = reassessment + "%";
+
+    setText(
+      "evidence-interpretation",
+      "The learner answered " +
+      student.firstCorrect + " of " +
+      student.firstTotal +
+      " initial questions correctly on the first attempt. " +
+      "The highest hint level used was " +
+      getHintLabel(student.highestHint) +
+      ". Immediate independent reassessment was " +
+      student.immediateCorrect + " of " +
+      student.immediateTotal +
+      ". These observations provide limited evidence " +
+      "and should not be treated as a validated mastery score."
+    );
+
+    setText(
+      "mastery-state",
+      decision.mastery
+    );
+
+    setText(
+      "learning-path",
+      decision.path
+    );
+
+    setText(
+      "decision-summary",
+      decision.summary
+    );
+
+    const reasonContainer =
+      document.getElementById("decision-reasons");
+
+    reasonContainer.innerHTML = "";
+
+    decision.reasons.forEach((reason, index) => {
+
+      const box = document.createElement("div");
+      box.className = "reason";
+
+      const heading = document.createElement("strong");
+      heading.textContent = "Evidence " + (index + 1);
+
+      const explanation = document.createElement("p");
+      explanation.textContent = reason;
+
+      box.appendChild(heading);
+      box.appendChild(explanation);
+
+      reasonContainer.appendChild(box);
+    });
+
+    setText(
+      "next-activity-title",
+      decision.activity
+    );
+
+    setText(
+      "next-activity-description",
+      decision.activityDescription
+    );
+
+    setText(
+      "next-evidence",
+      decision.nextEvidence
+    );
+  }
+
+  // Initialise the demonstration.
+  selectStudent("A");
+</script>
+
+</body>
+</html>

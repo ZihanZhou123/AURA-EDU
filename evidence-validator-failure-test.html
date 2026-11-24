@@ -1,0 +1,310 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1">
+
+  <title>AURA EDU — Validator Failure Boundary Test</title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      max-width: 850px;
+      margin: 40px auto;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: #243247;
+      background: #f7f9fc;
+    }
+
+    h1 { color: #254c79; }
+
+    .panel {
+      background: white;
+      padding: 22px;
+      margin: 18px 0;
+      border: 1px solid #d5dce5;
+      border-radius: 12px;
+    }
+
+    button {
+      padding: 12px 18px;
+      border: none;
+      border-radius: 8px;
+      background: #254c79;
+      color: white;
+      cursor: pointer;
+    }
+
+    .pass { color: #167044; }
+    .fail { color: #b42318; }
+
+    pre {
+      background: #f1f4f8;
+      padding: 16px;
+      border-radius: 8px;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      font-size: 13px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>AURA EDU — Failure Boundary Test</h1>
+
+  <p>Stage 25.3.5.5.3.2</p>
+
+  <div class="panel">
+    <h2>Test A — Session Retrieval Failure</h2>
+
+    <p>
+      A session appears in the session list,
+      but getSession returns SESSION_NOT_FOUND.
+    </p>
+
+    <button id="testA">Run Test A</button>
+    <div id="resultA"></div>
+  </div>
+
+  <div class="panel">
+    <h2>Test B — Session Listing Failure</h2>
+
+    <p>
+      listSessions returns a storage read error.
+    </p>
+
+    <button id="testB">Run Test B</button>
+    <div id="resultB"></div>
+  </div>
+
+  <div class="panel">
+    <h2>Test C — Missing Trace Service</h2>
+
+    <p>
+      Simulate an unavailable evidence trace service.
+    </p>
+
+    <button id="testC">Run Test C</button>
+    <div id="resultC"></div>
+  </div>
+
+  <script>
+    "use strict";
+
+    const LEARNER = "SYNTHETIC_LEARNER";
+    const SESSION = "MISSING_SESSION_001";
+
+    window.AuraLearnerIdentity = {
+      findLearner(id) {
+        return id === LEARNER
+          ? {
+              id: LEARNER,
+              name: "Synthetic Learner"
+            }
+          : null;
+      }
+    };
+
+    const mockTraceService = {
+      listSessions(learnerId, moduleId) {
+        if (moduleId === "G2") {
+          return {
+            ok: false,
+            error: "STORAGE_READ_ERROR"
+          };
+        }
+
+        return {
+          ok: true,
+          sessions: [
+            {
+              sessionId: SESSION,
+              complete: true
+            }
+          ]
+        };
+      },
+
+      getSession() {
+        return {
+          ok: false,
+          error: "SESSION_NOT_FOUND"
+        };
+      }
+    };
+
+    window.AuraTeacherEvidenceTrace = mockTraceService;
+
+    window.AuraTeacherEvidenceMapping = {
+      getSessionMapping() {
+        return {
+          ok: false,
+          error: "MAPPING_NOT_FOUND"
+        };
+      }
+    };
+  </script>
+
+  <script src="js/teacher-evidence-validator.js"></script>
+
+  <script>
+    "use strict";
+
+    function showResult(
+      containerId,
+      passed,
+      details
+    ) {
+      const container =
+        document.getElementById(containerId);
+
+      container.replaceChildren();
+
+      const heading =
+        document.createElement("h2");
+
+      heading.className =
+        passed ? "pass" : "fail";
+
+      heading.textContent =
+        passed ? "TEST PASS" : "TEST FAIL";
+
+      const pre = document.createElement("pre");
+
+      pre.textContent =
+        JSON.stringify(details, null, 2);
+
+      container.appendChild(heading);
+      container.appendChild(pre);
+    }
+
+    function runSafely(containerId, testFunction) {
+      try {
+        const validator =
+          window.AuraTeacherEvidenceValidator;
+
+        if (!validator) {
+          throw new Error(
+            "Validator script not loaded."
+          );
+        }
+
+        testFunction(validator);
+      } catch (error) {
+        showResult(containerId, false, {
+          error: error.message
+        });
+      }
+    }
+
+    /* ======================================
+       TEST A — SESSION RETRIEVAL FAILURE
+    ====================================== */
+
+    document.getElementById("testA")
+      .addEventListener("click", function () {
+        runSafely("resultA", function (validator) {
+          const result = validator.validateModule(
+            LEARNER,
+            "G1"
+          );
+
+          const sessions =
+            result.validatedSessions || [];
+
+          const failedSession = sessions.find(
+            item =>
+              item.ok === false &&
+              item.error === "SESSION_NOT_FOUND"
+          );
+
+          const passed =
+            result.ok === true &&
+            result.status === "WARNING" &&
+            result.sessionCount === 1 &&
+            sessions.length === 1 &&
+            Boolean(failedSession);
+
+          showResult("resultA", passed, {
+            expectedModuleStatus: "WARNING",
+            actualModuleStatus: result.status,
+            expectedSessionError: "SESSION_NOT_FOUND",
+            failedSessionDetected:
+              Boolean(failedSession),
+            sessionCount: result.sessionCount,
+            validatedSessions: sessions
+          });
+        });
+      });
+
+    /* ======================================
+       TEST B — SESSION LISTING FAILURE
+    ====================================== */
+
+    document.getElementById("testB")
+      .addEventListener("click", function () {
+        runSafely("resultB", function (validator) {
+          const result = validator.validateModule(
+            LEARNER,
+            "G2"
+          );
+
+          const passed =
+            result.ok === false &&
+            result.error === "STORAGE_READ_ERROR";
+
+          showResult("resultB", passed, {
+            expectedOk: false,
+            actualOk: result.ok,
+            expectedError: "STORAGE_READ_ERROR",
+            actualError: result.error
+          });
+        });
+      });
+
+    /* ======================================
+       TEST C — MISSING TRACE SERVICE
+    ====================================== */
+
+    document.getElementById("testC")
+      .addEventListener("click", function () {
+        runSafely("resultC", function (validator) {
+          const original =
+            window.AuraTeacherEvidenceTrace;
+
+          let result;
+
+          try {
+            window.AuraTeacherEvidenceTrace = null;
+
+            result = validator.validateModule(
+              LEARNER,
+              "G3"
+            );
+          } finally {
+            window.AuraTeacherEvidenceTrace =
+              original;
+          }
+
+          const passed =
+            result.ok === false &&
+            result.error ===
+              "TRACE_SERVICE_UNAVAILABLE";
+
+          showResult("resultC", passed, {
+            expectedOk: false,
+            actualOk: result.ok,
+            expectedError:
+              "TRACE_SERVICE_UNAVAILABLE",
+            actualError: result.error
+          });
+        });
+      });
+  </script>
+</body>
+</html>

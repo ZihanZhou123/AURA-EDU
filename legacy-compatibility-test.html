@@ -1,0 +1,375 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+  <title>
+    AURA EDU — Legacy Compatibility Test
+  </title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 30px 16px;
+      font-family: Arial, sans-serif;
+      background: #f3f6fc;
+      color: #24324b;
+    }
+
+    .container {
+      max-width: 950px;
+      margin: auto;
+      background: white;
+      border-radius: 18px;
+      padding: 30px;
+      box-shadow: 0 8px 30px #00000010;
+    }
+
+    h1 {
+      color: #2454a6;
+      margin-bottom: 8px;
+    }
+
+    h2 {
+      margin-top: 10px;
+    }
+
+    .subtitle {
+      color: #65748b;
+      line-height: 1.6;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns:
+        repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      margin: 24px 0;
+    }
+
+    .stat {
+      background: #edf3fc;
+      border-radius: 12px;
+      padding: 18px;
+      text-align: center;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 28px;
+      color: #2454a6;
+    }
+
+    .stat span {
+      font-size: 13px;
+      color: #53647b;
+    }
+
+    button {
+      padding: 13px 18px;
+      border: none;
+      border-radius: 9px;
+      background: #2454a6;
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
+      margin: 5px;
+    }
+
+    button:hover {
+      background: #173e81;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      margin-top: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    th, td {
+      border-bottom: 1px solid #e3e9f3;
+      padding: 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #edf3fc;
+    }
+
+    .pass {
+      color: #16803c;
+      font-weight: bold;
+    }
+
+    .review {
+      color: #b66a00;
+      font-weight: bold;
+    }
+
+    pre {
+      background: #f1f4f9;
+      padding: 16px;
+      border-radius: 10px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      font-size: 13px;
+    }
+
+    .notice {
+      padding: 14px;
+      background: #fff8e8;
+      border-radius: 10px;
+      margin: 20px 0;
+      line-height: 1.6;
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <main class="container">
+
+    <h1>AURA EDU</h1>
+
+    <h2>Step 19.7 — Legacy Compatibility</h2>
+
+    <p class="subtitle">
+      Historical Learning Records
+      Compatibility & Data Quality Analysis
+    </p>
+
+    <div class="notice">
+      Read-only analysis.
+      Original G1 / G2 / G3 records will not
+      be modified.
+      <br>
+      只读检查，不修改原始学习记录。
+    </div>
+
+    <div class="stats">
+
+      <div class="stat">
+        <strong id="total">—</strong>
+        <span>Total Records</span>
+      </div>
+
+      <div class="stat">
+        <strong id="current">—</strong>
+        <span>Current Format</span>
+      </div>
+
+      <div class="stat">
+        <strong id="legacy">—</strong>
+        <span>Legacy Format</span>
+      </div>
+
+      <div class="stat">
+        <strong id="passed">—</strong>
+        <span>Quality PASS</span>
+      </div>
+
+      <div class="stat">
+        <strong id="review">—</strong>
+        <span>Quality REVIEW</span>
+      </div>
+
+    </div>
+
+    <button id="analyzeBtn">
+      Run Compatibility Analysis
+    </button>
+
+    <button id="datasetBtn">
+      Preview Research Dataset
+    </button>
+
+    <button id="diagnosticBtn">
+      Run Console Diagnostic
+    </button>
+
+    <div id="status" aria-live="polite"></div>
+
+    <h3>Record Quality Report</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Module</th>
+            <th>Record</th>
+            <th>Format</th>
+            <th>Identity</th>
+            <th>Quality</th>
+            <th>Issues</th>
+          </tr>
+        </thead>
+
+        <tbody id="reportBody">
+          <tr>
+            <td colspan="6">
+              Click Run Compatibility Analysis.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Research Output Preview</h3>
+
+    <pre id="output">
+Waiting for analysis...
+    </pre>
+
+  </main>
+
+  <script src="js/legacy-record-compatibility.js"></script>
+
+  <script>
+    "use strict";
+
+    const $ = id => document.getElementById(id);
+
+    function setStatus(message) {
+      $("status").textContent = message;
+    }
+
+    function showStats(summary) {
+      $("total").textContent = summary.total;
+      $("current").textContent = summary.current;
+      $("legacy").textContent = summary.legacy;
+      $("passed").textContent = summary.passed;
+      $("review").textContent = summary.review;
+    }
+
+    function renderTable(report) {
+      const tbody = $("reportBody");
+
+      tbody.textContent = "";
+
+      report.forEach(function (item) {
+        const row = document.createElement("tr");
+
+        const values = [
+          item.module,
+          item.index,
+          item.format,
+          item.identityStatus,
+          item.qualityStatus,
+          item.issues.join(", ") || "-"
+        ];
+
+        values.forEach(function (value, index) {
+          const cell = document.createElement("td");
+
+          cell.textContent = String(value);
+
+          if (index === 4) {
+            cell.className =
+              value === "PASS" ? "pass" : "review";
+          }
+
+          row.appendChild(cell);
+        });
+
+        tbody.appendChild(row);
+      });
+    }
+
+    function runAnalysis() {
+      const result =
+        AuraLegacyCompatibility.analyze();
+
+      if (!result.ok) {
+        setStatus("Analysis failed.");
+        $("output").textContent =
+          JSON.stringify(result, null, 2);
+        return;
+      }
+
+      showStats(result.summary);
+      renderTable(result.report);
+
+      $("output").textContent =
+        JSON.stringify(
+          {
+            counts: result.counts,
+            profileCount: result.profileCount,
+            summary: result.summary,
+            readOnly: result.readOnly
+          },
+          null,
+          2
+        );
+
+      setStatus("Compatibility analysis completed.");
+    }
+
+    function previewDataset() {
+      const result =
+        AuraLegacyCompatibility.getResearchDataset();
+
+      $("output").textContent =
+        JSON.stringify(result, null, 2);
+
+      setStatus(
+        result.ok
+          ? "Research dataset preview ready."
+          : "Dataset preview failed."
+      );
+    }
+
+    function runDiagnostic() {
+      const result =
+        AuraLegacyCompatibility.diagnostic();
+
+      if (result.ok) {
+        showStats(result.summary);
+        renderTable(result.report);
+      }
+
+      setStatus(
+        result.ok
+          ? "Console diagnostic completed."
+          : "Console diagnostic failed."
+      );
+    }
+
+    $("analyzeBtn").addEventListener(
+      "click",
+      runAnalysis
+    );
+
+    $("datasetBtn").addEventListener(
+      "click",
+      previewDataset
+    );
+
+    $("diagnosticBtn").addEventListener(
+      "click",
+      runDiagnostic
+    );
+
+    window.addEventListener("DOMContentLoaded", function () {
+      runAnalysis();
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,159 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+  <title>AURA EDU — Identity Integration Test</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f7fb;
+      color: #17365d;
+      padding: 40px 20px;
+      margin: 0;
+    }
+
+    .container {
+      max-width: 760px;
+      margin: auto;
+    }
+
+    .card {
+      background: white;
+      padding: 28px;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+    }
+
+    h1 {
+      margin-top: 0;
+    }
+
+    .status {
+      padding: 15px;
+      background: #eef7f4;
+      border-radius: 10px;
+      margin: 18px 0;
+    }
+
+    button {
+      background: #218b83;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 20px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    pre {
+      white-space: pre-wrap;
+      word-break: break-word;
+      background: #f4f6fa;
+      padding: 18px;
+      border-radius: 10px;
+    }
+
+    a {
+      display: inline-block;
+      margin-top: 20px;
+      color: #17365d;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="card">
+
+      <h1>AURA EDU — Identity Integration</h1>
+
+      <p>
+        Stage 21.4.5 · Permanent Script Loading Test
+      </p>
+
+      <div class="status" id="status">
+        Checking identity service...
+      </div>
+
+      <button id="verify">
+        Verify Identity Connection
+      </button>
+
+      <h3>Connection Result</h3>
+
+      <pre id="result">Waiting...</pre>
+
+      <a href="index.html">
+        Return to AURA EDU Dashboard
+      </a>
+
+    </div>
+  </div>
+
+  <!-- Load identity service first -->
+  <script src="js/identity.js"></script>
+
+  <!-- Load bridge second -->
+  <script src="js/identity-bridge.js"></script>
+
+  <script>
+    "use strict";
+
+    function runIdentityTest() {
+      const statusElement =
+        document.getElementById("status");
+
+      const resultElement =
+        document.getElementById("result");
+
+      if (!window.AuraIdentityBridge) {
+        statusElement.textContent =
+          "FAILED: Identity Bridge unavailable.";
+
+        resultElement.textContent =
+          "Check js/identity-bridge.js";
+
+        return;
+      }
+
+      const result =
+        window.AuraIdentityBridge.verifyConnection();
+
+      statusElement.textContent =
+        result.ready && result.activeLearnerFound
+          ? "PASS: Identity Service connected."
+          : "CHECK: Identity connection incomplete.";
+
+      resultElement.textContent = JSON.stringify({
+        serviceLoaded:
+          Boolean(window.AuraLearnerIdentity),
+
+        bridgeLoaded:
+          Boolean(window.AuraIdentityBridge),
+
+        activeLearnerFound:
+          result.activeLearnerFound || false,
+
+        activeLearnerNickname:
+          result.activeLearnerNickname || null,
+
+        totalLearners:
+          result.totalLearners || 0
+
+      }, null, 2);
+    }
+
+    document.getElementById("verify")
+      .addEventListener("click", runIdentityTest);
+
+    runIdentityTest();
+  </script>
+
+</body>
+</html>

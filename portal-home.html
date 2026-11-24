@@ -1,0 +1,126 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width,initial-scale=1">
+<title>AURA EDU | Choose Your Portal</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:Arial,"PingFang SC",sans-serif;
+  background:linear-gradient(135deg,#f0eaff,#e8fbf3);
+  color:#35445c;
+}
+main{
+  max-width:1000px;
+  margin:auto;
+  padding:65px 20px;
+  text-align:center;
+}
+h1{
+  color:#7456cb;
+  font-size:46px;
+  margin:0;
+}
+.subtitle{
+  margin:12px 0 38px;
+  color:#66758b;
+}
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:24px;
+}
+.card{
+  background:white;
+  padding:35px 24px;
+  border-radius:25px;
+  box-shadow:0 12px 35px #524b7515;
+  border:2px solid transparent;
+  transition:.2s;
+}
+.card:hover{
+  transform:translateY(-5px);
+  border-color:#b9a7f5;
+}
+.emoji{font-size:65px}
+h2{margin:15px 0 8px}
+p{line-height:1.8}
+a.button{
+  display:block;
+  background:#7659d5;
+  color:white;
+  text-decoration:none;
+  padding:15px;
+  border-radius:14px;
+  font-weight:bold;
+  margin-top:22px;
+}
+.teacher a.button{background:#287e74}
+footer{
+  color:#758095;
+  margin-top:40px;
+  font-size:13px;
+}
+@media(max-width:650px){
+  .grid{grid-template-columns:1fr}
+  h1{font-size:36px}
+  main{padding-top:35px}
+}
+</style>
+</head>
+
+<body>
+<main>
+  <h1>✦ AURA EDU</h1>
+  <p class="subtitle">
+    AI-Supported Adaptive English Learning
+    <br>
+    选择你的学习或教学空间
+  </p>
+
+  <div class="grid">
+    <section class="card">
+      <div class="emoji">🦊🎮</div>
+      <h2>I'm a Student</h2>
+      <p>
+        开启英语冒险！<br>
+        Explore, Learn and Grow!
+      </p>
+      <a class="button"
+         href="student-portal.html">
+        Start My Adventure →
+      </a>
+    </section>
+
+    <section class="card teacher">
+      <div class="emoji">👩‍🏫🔐</div>
+      <h2>I'm a Teacher</h2>
+      <p>
+        查看学生学习证据<br>
+        Explore Learning Analytics
+      </p>
+      <a class="button"
+         href="teacher-login.html">
+        Teacher Demo Login →
+      </a>
+    </section>
+  </div>
+
+  <footer>
+    AURA EDU V2.2 · PhD Research Prototype
+    <br>
+    Teacher access uses demonstration-only
+    login, not secure authentication.
+    <br>
+    Use fictional or appropriately
+    anonymized student records only.
+  </footer>
+</main>
+</body>
+</html>

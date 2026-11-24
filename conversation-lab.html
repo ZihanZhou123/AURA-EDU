@@ -1,0 +1,514 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1">
+
+  <title>AURA EDU | Conversation Lab</title>
+
+  <style>
+    :root {
+      --bg: #f5f7fc;
+      --white: #ffffff;
+      --navy: #182d52;
+      --blue: #4169df;
+      --light-blue: #edf2ff;
+      --purple: #7754c8;
+      --green: #168365;
+      --border: #e1e6f0;
+      --muted: #65738a;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont,
+        "Segoe UI", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--navy);
+      line-height: 1.5;
+    }
+
+    header {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 5%;
+    }
+
+    .header-inner {
+      max-width: 1120px;
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      font-size: 23px;
+      font-weight: 800;
+    }
+
+    .brand span {
+      color: var(--blue);
+    }
+
+    .back-link {
+      color: var(--blue);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    main {
+      max-width: 1120px;
+      margin: 32px auto;
+      padding: 0 20px 50px;
+    }
+
+    h1 {
+      font-size: 32px;
+      margin: 8px 0;
+    }
+
+    h2 {
+      font-size: 20px;
+      margin-top: 0;
+    }
+
+    p {
+      color: var(--muted);
+    }
+
+    .eyebrow {
+      color: var(--blue);
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 1px;
+    }
+
+    .notice {
+      background: #fff8e9;
+      border: 1px solid #f0d99e;
+      padding: 14px 18px;
+      border-radius: 12px;
+      margin: 20px 0;
+      font-size: 14px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .panel {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: 0 4px 16px rgba(24,45,82,.04);
+    }
+
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .mode-buttons {
+      display: grid;
+      gap: 10px;
+    }
+
+    button {
+      font: inherit;
+      cursor: pointer;
+      border-radius: 11px;
+      padding: 11px 14px;
+      border: 1px solid var(--border);
+      background: var(--white);
+      color: var(--navy);
+    }
+
+    button:hover:not(:disabled) {
+      border-color: var(--blue);
+    }
+
+    button:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
+
+    .mode-button {
+      text-align: left;
+      font-weight: 700;
+    }
+
+    .mode-button.active {
+      background: var(--light-blue);
+      border-color: var(--blue);
+      color: var(--blue);
+    }
+
+    .primary {
+      background: var(--blue);
+      color: white;
+      border-color: var(--blue);
+    }
+
+    .teacher-button {
+      background: #f3edff;
+      color: var(--purple);
+      border-color: #d8c8fa;
+    }
+
+    .small {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .stat {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .chat-panel {
+      min-width: 0;
+    }
+
+    .chat-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .mode-label {
+      background: var(--light-blue);
+      color: var(--blue);
+      border-radius: 20px;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .chat {
+      height: 420px;
+      overflow-y: auto;
+      background: #fafbfe;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+      margin: 18px 0;
+    }
+
+    .message {
+      max-width: 86%;
+      margin-bottom: 15px;
+      padding: 12px 15px;
+      border-radius: 14px;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .message.partner {
+      background: var(--light-blue);
+      margin-right: auto;
+    }
+
+    .message.teacher {
+      background: #f2eaff;
+      margin-right: auto;
+    }
+
+    .message.student {
+      background: #e8f7f0;
+      margin-left: auto;
+    }
+
+    .message.system {
+      background: #f0f2f6;
+      margin: 12px auto;
+      text-align: center;
+      font-size: 13px;
+    }
+
+    .message strong {
+      display: block;
+      font-size: 12px;
+      margin-bottom: 5px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 85px;
+      resize: vertical;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 13px;
+      font: inherit;
+    }
+
+    textarea:focus {
+      outline: 2px solid #a8b9ff;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .status {
+      min-height: 24px;
+      font-size: 14px;
+      margin-top: 12px;
+      color: var(--muted);
+    }
+
+    .support-box {
+      background: #f8f5ff;
+      border: 1px solid #e0d5fa;
+      border-radius: 12px;
+      padding: 15px;
+      margin-top: 15px;
+    }
+
+    .support-box[hidden] {
+      display: none;
+    }
+
+    .support-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 760px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 27px;
+      }
+
+      .chat {
+        height: 360px;
+      }
+
+      .message {
+        max-width: 96%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="header-inner">
+      <div class="brand">
+        AURA <span>EDU</span>
+      </div>
+
+      <a class="back-link" href="index.html">
+        ← Back to AURA EDU
+      </a>
+    </div>
+  </header>
+
+  <main>
+
+    <div class="eyebrow">
+      STAGE 22 · RESEARCH PROTOTYPE
+    </div>
+
+    <h1>Conversation Lab</h1>
+
+    <p>
+      Practise English conversation with a partner
+      and receive adaptive teacher support.
+    </p>
+
+    <div class="notice">
+      <strong>Local Simulation / 本地模拟</strong>
+      <div>
+        This version uses predefined conversation rules.
+        It does not yet use a generative AI model.
+        Simulation data is not treated as learner
+        assessment evidence.
+      </div>
+    </div>
+
+    <div class="layout">
+
+      <aside class="sidebar">
+
+        <section class="panel">
+          <h2>Conversation Modes</h2>
+
+          <div class="mode-buttons">
+            <button
+              id="partner-mode"
+              class="mode-button active"
+              type="button">
+              💬 AI Conversation Partner
+            </button>
+
+            <button
+              id="teacher-mode"
+              class="mode-button"
+              type="button">
+              🎓 AI Teacher
+            </button>
+          </div>
+
+          <p class="small">
+            Partner: conversation practice.
+            Teacher: guided language support.
+          </p>
+        </section>
+
+        <section class="panel">
+          <h2>Learning Scenario</h2>
+
+          <label for="scenario-select">
+            Choose a topic
+          </label>
+
+          <select id="scenario-select">
+            <option value="weekend">
+              My Weekend
+            </option>
+          </select>
+
+          <div class="actions">
+            <button id="restart-conversation"
+                    type="button">
+              Restart Conversation
+            </button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>Session Overview</h2>
+
+          <div class="stat">
+            <span>Student turns</span>
+            <strong id="student-turns">0</strong>
+          </div>
+
+          <div class="stat">
+            <span>Help requests</span>
+            <strong id="help-count">0</strong>
+          </div>
+
+          <div class="stat">
+            <span>Supported turns</span>
+            <strong id="supported-turns">0</strong>
+          </div>
+
+          <p class="small">
+            Session-only simulation counters.
+            No existing learner records are changed.
+          </p>
+        </section>
+
+      </aside>
+
+      <section class="panel chat-panel">
+
+        <div class="chat-header">
+          <h2>My Weekend Conversation</h2>
+
+          <span id="current-mode"
+                class="mode-label">
+            PARTNER MODE
+          </span>
+        </div>
+
+        <div id="chat"
+             class="chat"
+             role="log"
+             aria-live="polite">
+        </div>
+
+        <label for="student-input">
+          Your response
+        </label>
+
+        <textarea
+          id="student-input"
+          placeholder="Type your English response here...">
+        </textarea>
+
+        <div class="actions">
+          <button id="send-message"
+                  class="primary"
+                  type="button">
+            Send Response
+          </button>
+
+          <button id="request-help"
+                  class="teacher-button"
+                  type="button">
+            Ask AI Teacher
+          </button>
+
+          <button id="listen-reply"
+                  type="button">
+            🔊 Listen Again
+          </button>
+        </div>
+
+        <div id="support-box"
+             class="support-box"
+             hidden>
+
+          <strong>Teacher Support Available</strong>
+
+          <p id="support-message"></p>
+
+          <div class="support-actions">
+            <button id="accept-support"
+                    class="teacher-button"
+                    type="button">
+              Yes, help me
+            </button>
+
+            <button id="decline-support"
+                    type="button">
+              I'll try again
+            </button>
+          </div>
+
+        </div>
+
+        <div id="status"
+             class="status"
+             role="status">
+        </div>
+
+      </section>
+
+    </div>
+
+  </main>
+
+  <script src="js/conversation-lab.js"></script>
+
+</body>
+</html>

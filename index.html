@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AURA EDU · 学生入口</title>
+  <link rel="stylesheet" href="css/learning.css">
+  <style>
+    body { min-height: 100dvh; display: grid; place-items: center; padding: 30px 18px; }
+    .entry { width: min(520px, 100%); background: white; border: 1px solid var(--line); border-radius: 26px; padding: 36px; box-shadow: var(--shadow); }
+    .entry h1 { font-size: 31px; }
+    .entry .primary { display: block; text-align: center; margin-top: 18px; }
+    .entry label { display: block; margin-top: 14px; font-weight: 600; }
+    .entry input, .entry select { width: 100%; padding: 10px; font: inherit; }
+    .entry-buddies { font-size: 28px; letter-spacing: 8px; margin-top: 25px; }
+    .entry-foot { display: flex; flex-wrap: wrap; gap: 12px 24px; border-top: 1px solid var(--line); padding-top: 18px; margin-top: 24px; font-size: 13px; }
+    @media (max-width: 500px) { .entry { padding: 26px; } }
+  </style>
+</head>
+<body>
+  <main class="entry">
+    <a class="brand" href="index.html">aura<span>EDU</span><small>每一步，都算进步。</small></a>
+    <div class="entry-buddies" aria-hidden="true">🦊 🦁 🐰 🐼</div>
+    <h1>你好，小小探索者。</h1>
+    <p class="muted">三至六年级 · 听说读写。各年级上下册第一单元可体验 AI 口语。</p>
+    <form id="startForm">
+      <label for="nickname">学习昵称</label>
+      <input id="nickname" list="savedNames" maxlength="24" required>
+      <datalist id="savedNames"></datalist>
+
+      <label for="grade">年级</label>
+      <select id="grade" required>
+        <option value="">请选择年级</option>
+        <option value="3">三年级</option>
+        <option value="4">四年级</option>
+        <option value="5">五年级</option>
+        <option value="6">六年级</option>
+      </select>
+
+      <label for="term">册次</label>
+      <select id="term" required>
+        <option value="">请选择上册或下册</option>
+        <option value="a">上册</option>
+        <option value="b">下册</option>
+      </select>
+
+      <button class="primary" type="submit">出发 →</button>
+      <p id="entryError" role="alert"></p>
+    </form>
+    <nav class="entry-foot" aria-label="作品展示与教师入口">
+      <a href="portfolio.html">博士申请作品展示</a>
+      <a href="teacher-login.html">教师登录</a>
+    </nav>
+  </main>
+  <script>
+    const profilesKey = 'aura_studio_profiles_v1';
+    const activeKey = 'aura_studio_active_v1';
+    const form = document.getElementById('startForm');
+    const nicknameField = document.getElementById('nickname');
+    const errorMessage = document.getElementById('entryError');
+
+    function readProfiles() {
+      const profiles = JSON.parse(localStorage.getItem(profilesKey) || '[]');
+      if (!Array.isArray(profiles) || profiles.some(profile =>
+        !profile || typeof profile.id !== 'string' || typeof profile.nickname !== 'string'
+      )) {
+        throw new Error('学习身份记录格式异常。');
+      }
+      return profiles;
+    }
+
+    try {
+      const options = readProfiles().map(profile => new Option(profile.nickname));
+      document.getElementById('savedNames').replaceChildren(...options);
+    } catch (error) {
+      errorMessage.textContent = error.message;
+    }
+
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      const nickname = nicknameField.value.trim();
+      const grade = Number(document.getElementById('grade').value);
+      const term = document.getElementById('term').value;
+
+      if (!nickname || ![3, 4, 5, 6].includes(grade) || !['a', 'b'].includes(term)) {
+        errorMessage.textContent = '请填写昵称，并选择年级和册次。';
+        return;
+      }
+
+      try {
+        const profiles = readProfiles();
+        let profile = profiles.find(item => item.nickname === nickname);
+        if (!profile) {
+          profile = {
+            id: window.crypto?.randomUUID?.() || Date.now() + '-' + Math.random().toString(36).slice(2),
+            nickname,
+            createdAt: new Date().toISOString()
+          };
+          profiles.push(profile);
+          localStorage.setItem(profilesKey, JSON.stringify(profiles));
+        }
+        localStorage.setItem(activeKey, JSON.stringify({ id: profile.id, grade, term }));
+        window.location.href = 'unit/';
+      } catch (error) {
+        errorMessage.textContent = '无法保存学习身份。' + error.message;
+      }
+    });
+  </script>
+</body>
+</html>

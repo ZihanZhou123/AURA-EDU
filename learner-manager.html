@@ -1,0 +1,671 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AURA EDU | Learner Manager</title>
+<style>
+:root{
+  --navy:#17365d;
+  --teal:#218b83;
+  --bg:#f5f8fc;
+  --line:#dfe7ee;
+  --muted:#64748b;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,"PingFang SC","Microsoft YaHei",sans-serif;
+  background:var(--bg);
+  color:#26354a;
+  line-height:1.7;
+}
+header{
+  background:white;
+  border-bottom:1px solid var(--line);
+}
+nav{
+  max-width:1100px;
+  margin:auto;
+  padding:18px 24px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:16px;
+}
+.logo{
+  color:var(--navy);
+  font-size:23px;
+  font-weight:800;
+  text-decoration:none;
+}
+.links{
+  display:flex;
+  gap:18px;
+  flex-wrap:wrap;
+}
+.links a{
+  color:var(--navy);
+  text-decoration:none;
+}
+.links a:hover{
+  color:var(--teal);
+}
+.links .map-link{
+  color:var(--teal);
+  font-weight:800;
+}
+main{
+  max-width:1100px;
+  margin:auto;
+  padding:35px 22px 75px;
+}
+h1,h2,h3{color:var(--navy)}
+h1{
+  font-size:clamp(30px,5vw,43px);
+  line-height:1.2;
+}
+p{color:var(--muted)}
+.hero{
+  padding:35px;
+  border-radius:20px;
+  background:linear-gradient(135deg,#17365d,#245e78);
+  margin-bottom:25px;
+}
+.hero h1,.hero p{color:white}
+.eyebrow{
+  color:var(--teal);
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:2px;
+}
+.hero .eyebrow{color:#bce9e2}
+.card{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:26px;
+  margin-bottom:20px;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:17px;
+}
+.field{
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+  margin:14px 0;
+}
+label{
+  font-weight:600;
+  color:var(--navy);
+}
+input,select{
+  width:100%;
+  font:inherit;
+  border:1px solid #cbd5e1;
+  border-radius:9px;
+  padding:11px 13px;
+  background:white;
+}
+button{
+  font:inherit;
+  cursor:pointer;
+  border-radius:9px;
+  padding:11px 17px;
+  background:white;
+  border:1px solid var(--line);
+  color:var(--navy);
+}
+button:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+}
+.btn{
+  background:var(--navy);
+  color:white;
+  border-color:var(--navy);
+}
+.btn.teal{
+  background:var(--teal);
+  border-color:var(--teal);
+}
+.buttons{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-top:16px;
+}
+.profile-card{
+  border:1px solid var(--line);
+  background:#f7fafc;
+  border-radius:13px;
+  padding:19px;
+}
+.profile-card.active{
+  border:2px solid var(--teal);
+  background:#edf8f5;
+}
+.profile-card h3{margin:10px 0}
+.tag{
+  display:inline-block;
+  border-radius:20px;
+  padding:5px 12px;
+  background:#e7f5f0;
+  color:#17645e;
+  font-size:12px;
+  font-weight:bold;
+}
+.notice{
+  background:#eaf5f3;
+  border-left:4px solid var(--teal);
+  border-radius:8px;
+  padding:18px;
+  margin:20px 0;
+}
+.small{font-size:13px}
+.empty{
+  padding:30px;
+  text-align:center;
+  color:var(--muted);
+}
+.navigation-card{
+  border-color:#b8dcd5;
+  background:#f5fcf9;
+}
+.navigation-card h2{
+  margin-top:0;
+}
+.navigation-status{
+  color:#17645e;
+  font-weight:600;
+}
+footer{
+  background:var(--navy);
+  padding:25px;
+  text-align:center;
+}
+footer p{color:#e0eaf3}
+@media(max-width:750px){
+  .grid{grid-template-columns:1fr}
+  .hero{padding:24px}
+}
+</style>
+</head>
+
+<body>
+<header>
+<nav>
+  <a class="logo" href="index.html">AURA EDU</a>
+  <div class="links">
+    <a href="index.html">AURA Learn</a>
+    <a href="adventure-mastery-map.html" class="map-link">
+      Adventure Map / 冒险地图
+    </a>
+    <a href="grammar-hub.html">Grammar Hub</a>
+    <a href="learner-dashboard.html">Learner Dashboard</a>
+    <a href="research.html">Research Lab</a>
+  </div>
+</nav>
+</header>
+
+<main>
+<section class="hero">
+  <div class="eyebrow">AURA EDU / LEARNER MANAGEMENT</div>
+  <h1>Learner Profile Manager</h1>
+  <p>本地学习者档案管理中心</p>
+  <p>
+    创建学习者、切换当前档案，并为后续学习记录
+    建立清晰的数据归属。
+  </p>
+</section>
+
+<div class="notice">
+  <strong>隐私说明：</strong>
+  请使用测试昵称，不要填写真实儿童姓名。
+  本页面的数据保存在当前浏览器中。
+  它不提供密码认证、服务器同步或访问权限隔离，
+  不适合直接用于真实未成年人研究数据管理。
+</div>
+
+<section class="card">
+  <h2>➕ 创建新学习者</h2>
+
+  <div class="grid">
+    <div class="field">
+      <label for="nickname">昵称 / Nickname</label>
+      <input
+        id="nickname"
+        maxlength="30"
+        placeholder="例如：Explorer A"
+      >
+    </div>
+
+    <div class="field">
+      <label for="age">年龄 / Age</label>
+      <select id="age">
+        <option value="">请选择</option>
+        <option value="10">10 岁</option>
+        <option value="11">11 岁</option>
+        <option value="12">12 岁</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="interest">兴趣 / Interest</label>
+      <select id="interest">
+        <option value="">请选择</option>
+        <option value="Stories">Stories · 故事</option>
+        <option value="Sports">Sports · 运动</option>
+        <option value="Animals">Animals · 动物</option>
+        <option value="Music">Music · 音乐</option>
+        <option value="Science">Science · 科学</option>
+        <option value="Games">Games · 游戏</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="buttons">
+    <button class="btn" id="create">
+      创建并切换到新学习者
+    </button>
+  </div>
+
+  <p class="small" id="create-status" aria-live="polite"></p>
+</section>
+
+<section class="card">
+  <h2>⭐ 当前学习者</h2>
+  <div id="active-profile"></div>
+
+  <div class="buttons">
+    <button id="clear-active">
+      取消当前选择
+    </button>
+
+    <button
+      class="btn teal"
+      data-link="adventure-mastery-map.html">
+      🗺️ 返回 Adventure Map
+    </button>
+
+    <button
+      class="btn"
+      data-link="learner-dashboard.html">
+      Learner Dashboard
+    </button>
+  </div>
+
+  <p class="small navigation-status" id="switch-status"
+     aria-live="polite"></p>
+</section>
+
+<section class="card">
+  <h2>👥 本地学习者列表</h2>
+  <p>
+    点击“切换到此学习者”，支持身份关联的学习模块
+    将读取这个本地学习者 ID。
+  </p>
+
+  <div class="grid" id="profile-list"></div>
+</section>
+
+<section class="card navigation-card">
+  <h2>🗺️ 继续学习 / Continue Learning</h2>
+  <p>
+    切换学生后，请返回 Adventure Map。
+    地图将根据当前学生的 Grammar 掌握情况，
+    显示 Spelling 等学习模块的解锁状态。
+  </p>
+
+  <div class="buttons">
+    <button
+      class="btn teal"
+      data-link="adventure-mastery-map.html">
+      Back to Adventure Map / 返回冒险地图
+    </button>
+
+    <button
+      class="btn"
+      data-link="learner-dashboard.html">
+      View Learner Dashboard
+    </button>
+  </div>
+</section>
+
+<section class="card">
+  <h2>📚 学习入口</h2>
+
+  <div class="buttons">
+    <button class="btn teal" data-link="grammar-g1.html">
+      开始 G1
+    </button>
+
+    <button class="btn teal" data-link="grammar-g2.html">
+      开始 G2
+    </button>
+
+    <button class="btn teal" data-link="grammar-g3.html">
+      开始 G3
+    </button>
+
+    <button class="btn" data-link="learner-dashboard.html">
+      Learner Dashboard
+    </button>
+
+    <button class="btn" data-link="adventure-mastery-map.html">
+      Adventure Map
+    </button>
+  </div>
+
+  <p class="small">
+    G1、G2、G3 已在此前阶段接入学习者身份服务。
+    请确保先选择当前学生，再进入学习模块。
+    学习记录仍以各模块实际保存的 learnerId 为准。
+  </p>
+</section>
+
+<div class="notice">
+  <strong>数据归属原则：</strong>
+  历史记录保持原样。
+  只有学习模块明确写入 learnerId 的会话，
+  才归属于对应的本地学习者。
+  不通过昵称、浏览器或学习时间猜测身份。
+</div>
+</main>
+
+<footer>
+  <p>AURA EDU · Learner Manager · Local Research Prototype</p>
+</footer>
+
+<script>
+"use strict";
+
+/* ===========================================
+   AURA EDU — LOCAL LEARNER MANAGER
+   STAGE 28.8.2C
+   Navigation Enhancement
+=========================================== */
+
+const PROFILES_KEY="aura_learner_profiles_v2";
+const ACTIVE_KEY="aura_active_learner_id_v2";
+
+const $=id=>document.getElementById(id);
+
+function readProfiles(){
+  try{
+    const data=JSON.parse(
+      localStorage.getItem(PROFILES_KEY)||"[]"
+    );
+    return Array.isArray(data)?data:[];
+  }catch(error){
+    console.warn("Cannot read learner profiles:",error);
+    return [];
+  }
+}
+
+function saveProfiles(profiles){
+  localStorage.setItem(
+    PROFILES_KEY,
+    JSON.stringify(profiles)
+  );
+}
+
+function getActiveId(){
+  return localStorage.getItem(ACTIVE_KEY);
+}
+
+function setActiveId(id){
+  localStorage.setItem(ACTIVE_KEY,id);
+}
+
+function createId(){
+  if(window.crypto&&crypto.randomUUID){
+    return "LEARNER-"+crypto.randomUUID();
+  }
+
+  return "LEARNER-"+Date.now()+"-"+
+    Math.random().toString(36).slice(2,10);
+}
+
+function createProfile(){
+  const nickname=$("nickname").value.trim();
+  const age=$("age").value;
+  const interest=$("interest").value;
+
+  if(!nickname||!age||!interest){
+    $("create-status").textContent=
+      "请填写昵称、年龄和兴趣。";
+    return;
+  }
+
+  const profiles=readProfiles();
+
+  const profile={
+    id:createId(),
+    nickname,
+    age,
+    interest,
+    createdAt:new Date().toISOString()
+  };
+
+  profiles.push(profile);
+
+  try{
+    saveProfiles(profiles);
+    setActiveId(profile.id);
+
+    $("nickname").value="";
+    $("age").value="";
+    $("interest").value="";
+
+    $("create-status").textContent=
+      "新学习者已创建，并设为当前学习者。";
+
+    $("switch-status").textContent=
+      "✓ 已选择 "+profile.nickname+
+      "。现在可以返回 Adventure Map。";
+
+    render();
+  }catch(error){
+    $("create-status").textContent=
+      "创建失败，请检查浏览器本地存储权限。";
+  }
+}
+
+function switchProfile(id){
+  const profile=readProfiles().find(x=>x.id===id);
+  if(!profile)return;
+
+  try{
+    setActiveId(id);
+    render();
+
+    $("switch-status").textContent=
+      "✓ 当前学生已切换为 "+profile.nickname+
+      "。点击“返回 Adventure Map”继续学习。";
+  }catch(error){
+    $("switch-status").textContent=
+      "切换失败，请检查浏览器本地存储权限。";
+  }
+}
+
+function clearActive(){
+  localStorage.removeItem(ACTIVE_KEY);
+  $("switch-status").textContent=
+    "已取消当前学生选择。请重新选择学生后继续学习。";
+  render();
+}
+
+function deleteProfile(id){
+  const profiles=readProfiles();
+  const profile=profiles.find(x=>x.id===id);
+  if(!profile)return;
+
+  const ok=confirm(
+    "确定删除本地档案 "+profile.nickname+" 吗？"+
+    "这不会自动删除任何学习会话记录。"
+  );
+
+  if(!ok)return;
+
+  try{
+    saveProfiles(profiles.filter(x=>x.id!==id));
+
+    if(getActiveId()===id){
+      localStorage.removeItem(ACTIVE_KEY);
+    }
+
+    render();
+  }catch(error){
+    alert("删除失败，请检查浏览器存储权限。");
+  }
+}
+
+function makeText(tag,text){
+  const element=document.createElement(tag);
+  element.textContent=text;
+  return element;
+}
+
+function renderActive(profiles,activeId){
+  const container=$("active-profile");
+  container.replaceChildren();
+
+  const active=profiles.find(x=>x.id===activeId);
+
+  if(!active){
+    container.appendChild(
+      makeText("p","当前没有选中的学习者。")
+    );
+    return;
+  }
+
+  const card=document.createElement("div");
+  card.className="profile-card active";
+
+  card.appendChild(
+    makeText("span","CURRENT LEARNER")
+  );
+
+  card.appendChild(
+    makeText("h3",active.nickname)
+  );
+
+  card.appendChild(
+    makeText(
+      "p",
+      "年龄："+active.age+
+      "；兴趣："+active.interest
+    )
+  );
+
+  card.appendChild(
+    makeText("p","本地 ID："+active.id)
+  );
+
+  container.appendChild(card);
+}
+
+function renderList(profiles,activeId){
+  const container=$("profile-list");
+  container.replaceChildren();
+
+  if(!profiles.length){
+    const empty=makeText(
+      "div",
+      "暂无学习者档案，请先创建一个测试档案。"
+    );
+    empty.className="empty";
+    container.appendChild(empty);
+    return;
+  }
+
+  profiles.forEach(profile=>{
+    const card=document.createElement("div");
+    card.className="profile-card";
+
+    if(profile.id===activeId){
+      card.classList.add("active");
+    }
+
+    const tag=makeText(
+      "span",
+      profile.id===activeId?"ACTIVE":"LOCAL PROFILE"
+    );
+    tag.className="tag";
+
+    card.appendChild(tag);
+    card.appendChild(makeText("h3",profile.nickname));
+
+    card.appendChild(
+      makeText(
+        "p",
+        "年龄："+profile.age+" · 兴趣："+profile.interest
+      )
+    );
+
+    const small=makeText("p",profile.id);
+    small.className="small";
+    small.style.overflowWrap="anywhere";
+    card.appendChild(small);
+
+    const actions=document.createElement("div");
+    actions.className="buttons";
+
+    const switchButton=document.createElement("button");
+    switchButton.className="btn teal";
+    switchButton.textContent=
+      profile.id===activeId
+        ?"当前学习者"
+        :"切换到此学习者";
+
+    switchButton.disabled=profile.id===activeId;
+
+    switchButton.addEventListener(
+      "click",
+      ()=>switchProfile(profile.id)
+    );
+
+    const deleteButton=document.createElement("button");
+    deleteButton.textContent="删除档案";
+
+    deleteButton.addEventListener(
+      "click",
+      ()=>deleteProfile(profile.id)
+    );
+
+    actions.append(switchButton,deleteButton);
+    card.appendChild(actions);
+
+    container.appendChild(card);
+  });
+}
+
+function render(){
+  const profiles=readProfiles();
+  const activeId=getActiveId();
+
+  renderActive(profiles,activeId);
+  renderList(profiles,activeId);
+}
+
+$("create").addEventListener("click",createProfile);
+$("clear-active").addEventListener("click",clearActive);
+
+document.querySelectorAll("[data-link]").forEach(button=>{
+  button.addEventListener("click",()=>{
+    window.location.href=button.dataset.link;
+  });
+});
+
+window.addEventListener("pageshow",render);
+
+render();
+</script>
+</body>
+</html>

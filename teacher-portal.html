@@ -1,0 +1,321 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width,initial-scale=1">
+
+<title>AURA EDU | Teacher Portal</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Arial,"PingFang SC",sans-serif;
+  background:#f4f7fb;
+  color:#34465e;
+  visibility:hidden;
+}
+
+header{
+  background:white;
+  border-bottom:1px solid #e1e6ef;
+  padding:19px 6%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+}
+
+.logo{
+  font-size:23px;
+  font-weight:900;
+  color:#7659d5;
+}
+
+.header-actions{
+  display:flex;
+  align-items:center;
+  gap:15px;
+}
+
+header a{
+  color:#66788e;
+  text-decoration:none;
+}
+
+.logout{
+  background:#7659d5;
+  color:white;
+  border:0;
+  border-radius:9px;
+  padding:11px 15px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+main{
+  max-width:1100px;
+  margin:auto;
+  padding:35px 20px 60px;
+}
+
+h1{margin-bottom:8px}
+
+.subtitle{
+  color:#718096;
+  line-height:1.7;
+}
+
+.notice{
+  background:#eaf1ff;
+  border-radius:14px;
+  padding:17px;
+  margin:25px 0;
+  line-height:1.8;
+}
+
+.overview{
+  background:white;
+  border:2px solid #c9bcf6;
+  border-radius:20px;
+  padding:26px;
+  margin-bottom:22px;
+}
+
+.overview h2{
+  margin:0 0 10px;
+}
+
+.overview p{
+  color:#718096;
+  line-height:1.8;
+}
+
+.overview a{
+  display:inline-block;
+  background:#287e74;
+  color:white;
+  padding:14px 22px;
+  border-radius:12px;
+  text-decoration:none;
+  font-weight:bold;
+  margin-top:10px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:18px;
+}
+
+.card{
+  background:white;
+  border:1px solid #e2e8f0;
+  border-radius:19px;
+  padding:24px;
+}
+
+.card .icon{
+  font-size:34px;
+}
+
+.card h3{
+  margin:13px 0 9px;
+}
+
+.card p{
+  color:#718096;
+  font-size:14px;
+  line-height:1.7;
+}
+
+.card a{
+  display:inline-block;
+  margin-top:12px;
+  padding:12px 16px;
+  background:#7659d5;
+  border-radius:10px;
+  color:white;
+  text-decoration:none;
+  font-weight:bold;
+}
+
+.note{
+  color:#748196;
+  font-size:13px;
+  line-height:1.8;
+  margin-top:25px;
+}
+
+@media(max-width:650px){
+  .grid{
+    grid-template-columns:1fr;
+  }
+
+  header{
+    flex-wrap:wrap;
+  }
+}
+</style>
+
+<script src="js/teacher-demo-auth.js"></script>
+
+<script>
+"use strict";
+
+if (
+  !window.AuraTeacherDemoAuth ||
+  !window.AuraTeacherDemoAuth.isLoggedIn()
+) {
+  window.location.replace("teacher-login.html");
+}
+</script>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">✦ AURA EDU</div>
+
+  <div class="header-actions">
+    <a href="teacher-demo-entry.html">
+      ← Teacher Home
+    </a>
+
+    <button
+      class="logout"
+      id="logoutButton"
+      type="button">
+      Log Out
+    </button>
+  </div>
+</header>
+
+<main>
+
+  <h1>Teacher Research Dashboard</h1>
+
+  <p class="subtitle">
+    教师教学分析与研究后台
+    <br>
+    Understand learners through evidence,
+    not just final scores.
+  </p>
+
+  <div class="notice">
+    <strong>Research Prototype</strong>
+    <br>
+    当前主线为五年级 V5 基础巩固样板；请从 Learning Journey Evidence 查看新版记录。旧版报告与新课程分开保留，不自动迁移通关资格。
+    请在相关报告中核对学生身份。
+    本阶段不修改任何历史记录。
+  </div>
+
+  <section class="overview">
+    <h2>👥 Learner Overview</h2>
+
+    <p>
+      选择学生，查看 Grammar 和 Spelling
+      已保存的学习记录。
+      <br>
+      Select a learner without changing
+      the active student identity.
+    </p>
+
+    <a href="teacher-learner-overview.html">
+      Open Learner Overview →
+    </a>
+  </section>
+
+  <section class="overview"><h2>PEP 单元口语证据</h2><p>查看学生的 AI 口语练习、测评和复测记录。</p><a href="unit/teacher.html">打开单元教师报告</a></section>
+  <section class="overview"><h2>🗺 Learning Journey Evidence</h2><p>五年级学习样板：首次作答、错点选题、支架、暂停恢复与独立复测。旧版数据保留，分开查看。</p><a href="teacher-kingdom-report.html">查看学习过程证据 →</a></section>
+  <section class="overview"><h2>📚 PEP Curriculum Review</h2><p>三至六年级八册课程来源核对：目录、教学依据与学生开放状态分别呈现。当前不授予任何 PEP 通关资格。</p><a href="pep-curriculum.html">查看 PEP 课程核对 →</a></section>
+<div class="grid">
+
+    <section class="card">
+      <div class="icon">🧭</div>
+      <h3>Spelling Progression</h3>
+      <p>
+        查看当前学生的学习阶段、
+        掌握度决策与下一步建议。
+      </p>
+      <a href="spelling-garden.html">
+        View Progression
+      </a>
+    </section>
+
+    <section class="card">
+      <div class="icon">📊</div>
+      <h3>Spelling Learning Analytics</h3>
+      <p>
+        查看拼写错误、提示使用情况、
+        逐题证据及独立复测表现。
+      </p>
+      <a href="spelling-analytics.html">
+        View Analytics
+      </a>
+    </section>
+
+    <section class="card">
+      <div class="icon">🧠</div>
+      <h3>Spelling Mastery Decision</h3>
+      <p>
+        查看基于规则的暂定掌握度、
+        学习建议及研究局限。
+      </p>
+      <a href="spelling-mastery.html">
+        View Mastery
+      </a>
+    </section>
+
+    <section class="card">
+      <div class="icon">🏫</div>
+      <h3>Grammar Research Evidence</h3>
+      <p>
+        查看已有 Grammar 学习证据、
+        G1/G2/G3 进度与掌握状态。
+      </p>
+      <a href="adventure-mastery-map.html">
+        View Grammar Evidence
+      </a>
+    </section>
+
+  </div>
+
+  <p class="note">
+    Teacher Portal is a research prototype.
+    <br>
+    Stage 25.2.3 adds read-only learner overview.
+    Detailed individual reports will follow.
+    <br>
+    Demo login is not secure authentication.
+    Use fictional or anonymized records only.
+  </p>
+
+</main>
+
+<script>
+"use strict";
+
+if (
+  window.AuraTeacherDemoAuth &&
+  window.AuraTeacherDemoAuth.isLoggedIn()
+) {
+  document.body.style.visibility = "visible";
+
+  document.getElementById(
+    "logoutButton"
+  ).addEventListener("click", function() {
+    window.AuraTeacherDemoAuth.logout();
+
+    window.location.replace(
+      "teacher-login.html"
+    );
+  });
+}
+</script>
+
+</body>
+</html>

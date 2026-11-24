@@ -1,0 +1,856 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AURA EDU | Learner-Linked Learning</title>
+<style>
+:root{
+  --navy:#17365d;
+  --teal:#218b83;
+  --bg:#f5f8fc;
+  --line:#dfe7ee;
+  --muted:#64748b;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--bg);
+  color:#26354a;
+  font-family:Arial,"PingFang SC",sans-serif;
+  line-height:1.65;
+}
+header{
+  background:white;
+  border-bottom:1px solid var(--line);
+}
+nav{
+  max-width:1150px;
+  margin:auto;
+  padding:18px 22px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:14px;
+}
+.logo{
+  color:var(--navy);
+  text-decoration:none;
+  font-weight:800;
+  font-size:23px;
+}
+.links{display:flex;gap:17px;flex-wrap:wrap}
+.links a{color:var(--navy);text-decoration:none}
+main{
+  max-width:1150px;
+  margin:auto;
+  padding:30px 20px 65px;
+}
+h1,h2,h3{color:var(--navy)}
+h1{font-size:clamp(29px,5vw,42px)}
+p{color:var(--muted)}
+.hero{
+  background:linear-gradient(135deg,#17365d,#245e78);
+  border-radius:18px;
+  padding:32px;
+  margin-bottom:22px;
+}
+.hero h1,.hero p{color:white}
+.eyebrow{
+  font-size:12px;
+  font-weight:bold;
+  letter-spacing:2px;
+  color:#bdeae3;
+}
+.card{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:15px;
+  padding:24px;
+  margin-bottom:20px;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:15px;
+}
+.module{
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:20px;
+  background:#f8fafc;
+}
+.tag{
+  display:inline-block;
+  background:#e7f5f0;
+  color:#17645e;
+  border-radius:20px;
+  padding:5px 12px;
+  font-size:12px;
+  font-weight:bold;
+}
+button{
+  font:inherit;
+  cursor:pointer;
+  padding:11px 17px;
+  border-radius:9px;
+  border:1px solid var(--line);
+  background:white;
+  color:var(--navy);
+}
+button:disabled{opacity:.45;cursor:not-allowed}
+.btn{background:var(--navy);color:white;border-color:var(--navy)}
+.btn.teal{background:var(--teal);border-color:var(--teal)}
+.buttons{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}
+.notice{
+  background:#eaf5f3;
+  border-left:4px solid var(--teal);
+  padding:17px;
+  border-radius:8px;
+  margin:20px 0;
+}
+.warning{
+  background:#fff7e9;
+  border-left:4px solid #c68629;
+  padding:17px;
+  border-radius:8px;
+  margin:20px 0;
+}
+.status{
+  background:#f0f6f9;
+  border-radius:10px;
+  padding:17px;
+  margin-top:16px;
+  white-space:pre-line;
+  overflow-wrap:anywhere;
+}
+.status.success{
+  background:#e7f5f0;
+  border:1px solid #a8d7ca;
+}
+.status.error{
+  background:#fff1ed;
+  border:1px solid #f1b8a8;
+}
+.small{font-size:13px}
+.hidden{display:none!important}
+iframe{
+  width:100%;
+  height:760px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:white;
+}
+table{width:100%;border-collapse:collapse}
+th,td{
+  padding:12px;
+  border-bottom:1px solid var(--line);
+  text-align:left;
+}
+th{color:var(--navy)}
+.table-wrap{overflow-x:auto}
+footer{
+  background:var(--navy);
+  padding:24px;
+  text-align:center;
+}
+footer p{color:#e0eaf3}
+@media(max-width:750px){
+  .grid{grid-template-columns:1fr}
+  iframe{height:680px}
+}
+</style>
+</head>
+
+<body>
+<header>
+<nav>
+  <a class="logo" href="index.html">AURA EDU</a>
+  <div class="links">
+    <a href="learner-manager.html">Learner Manager</a>
+    <a href="grammar-hub.html">Grammar Hub</a>
+    <a href="learner-dashboard.html">Dashboard</a>
+    <a href="research.html">Research Lab</a>
+  </div>
+</nav>
+</header>
+
+<main>
+<section class="hero">
+  <div class="eyebrow">AURA EDU / STEP 16 FIX</div>
+  <h1>Learner-Linked Learning</h1>
+  <p>学习者关联学习入口 · G1 / G2 / G3</p>
+  <p>
+    为新完成的语法学习会话关联当前本地学习者。
+  </p>
+</section>
+
+<div class="notice">
+  <strong>操作顺序：</strong>
+  ① 选择学习者 → ② 启动语法模块 →
+  ③ 在下方完成所有题目并看到最终结果 →
+  ④ 点击“检查并关联新记录”。
+</div>
+
+<section class="card">
+  <h2>👤 当前学习者</h2>
+  <div id="learner-info"></div>
+
+  <div class="buttons">
+    <button class="btn" id="refresh-learner">
+      刷新学习者
+    </button>
+    <button id="open-manager">
+      管理学习者档案
+    </button>
+  </div>
+</section>
+
+<section class="card">
+  <h2>选择学习模块</h2>
+
+  <div class="grid">
+    <div class="module">
+      <span class="tag">G1</span>
+      <h3>Verb to Be</h3>
+      <p>am / is / are</p>
+      <button class="btn teal" data-module="G1">
+        启动 G1
+      </button>
+    </div>
+
+    <div class="module">
+      <span class="tag">G2</span>
+      <h3>Subject–Verb Agreement</h3>
+      <p>主谓一致</p>
+      <button class="btn teal" data-module="G2">
+        启动 G2
+      </button>
+    </div>
+
+    <div class="module">
+      <span class="tag">G3</span>
+      <h3>Sentence Construction</h3>
+      <p>句子构建</p>
+      <button class="btn teal" data-module="G3">
+        启动 G3
+      </button>
+    </div>
+  </div>
+
+  <div class="status" id="launch-status" aria-live="polite">
+    尚未启动学习任务。
+  </div>
+</section>
+
+<section class="card hidden" id="learning-panel">
+  <h2 id="learning-title">学习任务</h2>
+
+  <p>
+    完成下方模块中的诊断、练习和即时独立复测，
+    直到出现最终学习结果。
+  </p>
+
+  <div class="buttons">
+    <button class="btn teal" id="check-record">
+      🔍 检查并关联新记录
+    </button>
+
+    <button id="finish-launch">
+      结束本次学习
+    </button>
+  </div>
+
+  <div class="status" id="record-status" aria-live="polite">
+    等待学习记录。
+  </div>
+
+  <p class="small">
+    如果还没有完成所有题目，点击检查会提示当前状态，
+    不会自动生成成绩。
+  </p>
+
+  <div style="margin-top:18px">
+    <iframe
+      id="learning-frame"
+      title="AURA EDU Grammar Learning Module"
+    ></iframe>
+  </div>
+</section>
+
+<section class="card">
+  <h2>📊 已关联的学习记录</h2>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>学习者</th>
+          <th>模块</th>
+          <th>完成时间</th>
+          <th>独立复测</th>
+          <th>学习路径</th>
+        </tr>
+      </thead>
+      <tbody id="linked-body"></tbody>
+    </table>
+  </div>
+</section>
+
+<div class="warning">
+  <strong>研究限制：</strong>
+  这是基于本地记录变化的原型关联机制，
+  不是正式身份认证。请只在当前嵌入页面完成一次任务，
+  不要同时在其他标签页进行 G1–G3 测试。
+  历史记录不会被自动分配给新学习者。
+</div>
+</main>
+
+<footer>
+  <p>AURA EDU · Learner-Linked Learning · Step 16</p>
+</footer>
+
+<script>
+"use strict";
+
+/* ==========================================
+   AURA EDU — STEP 16 REPAIRED
+   CONSERVATIVE RECORD ATTRIBUTION
+========================================== */
+
+const PROFILES_KEY="aura_learner_profiles_v2";
+const ACTIVE_KEY="aura_active_learner_id_v2";
+
+const MODULES={
+  G1:{
+    url:"grammar-g1.html",
+    key:"aura_g1_learning_records_v1"
+  },
+  G2:{
+    url:"grammar-g2.html",
+    key:"aura_g2_learning_records_v1"
+  },
+  G3:{
+    url:"grammar-g3.html",
+    key:"aura_g3_learning_records_v1"
+  }
+};
+
+const $=id=>document.getElementById(id);
+
+let launch=null;
+let monitor=null;
+
+function readJSON(key,fallback){
+  try{
+    const raw=localStorage.getItem(key);
+    return raw?JSON.parse(raw):fallback;
+  }catch(error){
+    console.warn("JSON read error:",key,error);
+    return fallback;
+  }
+}
+
+function readProfiles(){
+  const profiles=readJSON(PROFILES_KEY,[]);
+  return Array.isArray(profiles)?profiles:[];
+}
+
+function activeLearner(){
+  const id=localStorage.getItem(ACTIVE_KEY);
+  return readProfiles().find(p=>p.id===id)||null;
+}
+
+function readRecords(key){
+  const records=readJSON(key,[]);
+  return Array.isArray(records)?records:[];
+}
+
+function makeId(){
+  if(window.crypto&&crypto.randomUUID){
+    return crypto.randomUUID();
+  }
+  return "LAUNCH-"+Date.now()+"-"+
+    Math.random().toString(36).slice(2);
+}
+
+function setStatus(message,type="normal"){
+  const element=$("record-status");
+  element.textContent=message;
+  element.className="status";
+
+  if(type==="success"){
+    element.classList.add("success");
+  }else if(type==="error"){
+    element.classList.add("error");
+  }
+}
+
+function renderLearner(){
+  const learner=activeLearner();
+
+  $("learner-info").textContent=learner
+    ?learner.nickname+
+      " · "+learner.age+" 岁"+
+      " · "+learner.interest+
+      " · ID: "+learner.id
+    :"尚未选择学习者，请先打开 Learner Manager。";
+
+  document.querySelectorAll("[data-module]")
+    .forEach(button=>{
+      button.disabled=!learner||!!launch;
+    });
+}
+
+function startModule(moduleId){
+  if(launch){
+    alert("请先结束当前学习任务。");
+    return;
+  }
+
+  const learner=activeLearner();
+
+  if(!learner){
+    alert("请先选择学习者。");
+    return;
+  }
+
+  const module=MODULES[moduleId];
+  const baseline=readRecords(module.key);
+
+  launch={
+    id:makeId(),
+    moduleId,
+    learnerId:learner.id,
+    learnerNickname:learner.nickname,
+    baseline:baseline.map(r=>JSON.stringify(r)),
+    baselineCount:baseline.length,
+    linked:false,
+    startedAt:new Date().toISOString()
+  };
+
+  $("learning-title").textContent=
+    moduleId+" · Learning Session";
+
+  $("learning-panel").classList.remove("hidden");
+
+  $("launch-status").textContent=
+    "已为 "+learner.nickname+" 启动 "+moduleId+
+    "。启动前已有 "+baseline.length+" 条历史记录。";
+
+  setStatus(
+    "学习任务已启动。\n"+
+    "请完成全部题目，直到看到最终结果。\n"+
+    "完成后点击“检查并关联新记录”。"
+  );
+
+  $("learning-frame").src=module.url;
+
+  renderLearner();
+
+  $("learning-panel").scrollIntoView({
+    behavior:"smooth",
+    block:"start"
+  });
+
+  // Automatic observation is supplemental.
+  // Manual check always provides a visible response.
+  monitor=setInterval(()=>{
+    if(launch&&!launch.linked){
+      checkForNewRecords(false);
+    }
+  },2000);
+}
+
+function detectCandidates(records){
+  if(!launch)return [];
+
+  const baseline=launch.baseline.map(
+    item=>JSON.parse(item)
+  );
+
+  const oldIds=new Set(
+    baseline
+      .map(r=>r?.sessionId)
+      .filter(id=>id!==undefined&&id!==null)
+      .map(String)
+  );
+
+  // Match existing records without relying on timestamps.
+  // Index comparison is used only when old records remain
+  // unchanged in their original positions.
+  const prefixUnchanged=
+    records.length>=baseline.length &&
+    baseline.every((oldRecord,index)=>
+      JSON.stringify(records[index])===
+      JSON.stringify(oldRecord)
+    );
+
+  if(prefixUnchanged){
+    return records
+      .slice(baseline.length)
+      .filter(r=>r&&r.result&&r.completedAt);
+  }
+
+  // Fallback for storage arrays that were reordered:
+  // only uniquely identified, newly added sessions.
+  return records.filter(record=>{
+    if(!record||!record.result||!record.completedAt){
+      return false;
+    }
+
+    if(record.sessionId===undefined||
+       record.sessionId===null){
+      return false;
+    }
+
+    return !oldIds.has(String(record.sessionId));
+  });
+}
+
+function checkForNewRecords(manual=true){
+  if(!launch){
+    if(manual){
+      setStatus("请先启动 G1、G2 或 G3。","error");
+    }
+    return;
+  }
+
+  if(launch.linked){
+    if(manual){
+      setStatus(
+        "本次新学习会话已经关联成功。\n"+
+        "如需进行下一次学习，请结束本次任务后重新启动。",
+        "success"
+      );
+    }
+    return;
+  }
+
+  const module=MODULES[launch.moduleId];
+  const records=readRecords(module.key);
+
+  if(records.length===0){
+    if(manual){
+      setStatus(
+        "当前模块还没有保存完整学习记录。\n"+
+        "请确认已经完成诊断、练习和即时独立复测，"+
+        "并且已经出现最终结果。",
+        "error"
+      );
+    }
+    return;
+  }
+
+  const candidates=detectCandidates(records);
+
+  if(candidates.length===0){
+    if(manual){
+      setStatus(
+        "已经执行检查，但没有找到本次启动后新增的完整会话。\n"+
+        "模块："+launch.moduleId+"\n"+
+        "启动前记录数："+launch.baselineCount+"\n"+
+        "当前记录数："+records.length+"\n"+
+        "请先完成所有题目，直到出现最终结果。\n"+
+        "如果已经完成，请确认没有在新标签页中打开学习模块。",
+        "error"
+      );
+    }
+    return;
+  }
+
+  if(candidates.length!==1){
+    setStatus(
+      "检测到 "+candidates.length+" 条候选新会话。\n"+
+      "为了避免把其他测试者的数据归属错误，"+
+      "系统不会自动关联多条记录。\n"+
+      "请结束任务后单独重新测试。",
+      "error"
+    );
+    return;
+  }
+
+  const candidate=candidates[0];
+
+  if(candidate.learnerId){
+    setStatus(
+      "新会话已经包含 learnerId，"+
+      "系统不会覆盖已有身份归属。",
+      "error"
+    );
+    return;
+  }
+
+  const learner=readProfiles().find(
+    p=>p.id===launch.learnerId
+  );
+
+  if(!learner){
+    setStatus(
+      "原学习者档案已被删除，无法完成关联。",
+      "error"
+    );
+    return;
+  }
+
+  // Confirm the active learner was not changed
+  // during this learning launch.
+  if(activeLearner()?.id!==launch.learnerId){
+    setStatus(
+      "学习过程中当前学习者发生变化。\n"+
+      "为避免错误归属，本次不会自动关联。",
+      "error"
+    );
+    return;
+  }
+
+  // Use a unique session ID when available.
+  // Otherwise only allow append-only, unchanged-prefix arrays.
+  const candidateId=candidate.sessionId;
+  const baselineCount=launch.baselineCount;
+
+  const prefixUnchanged=
+    records.length>=baselineCount &&
+    launch.baseline.every(
+      (old,index)=>JSON.stringify(records[index])===old
+    );
+
+  let targetIndex=-1;
+
+  if(candidateId!==undefined&&candidateId!==null){
+    const matches=records
+      .map((r,i)=>String(r?.sessionId)===String(candidateId)?i:-1)
+      .filter(i=>i>=0);
+
+    if(matches.length===1){
+      targetIndex=matches[0];
+    }
+  }else if(
+    prefixUnchanged &&
+    records.length===baselineCount+1
+  ){
+    targetIndex=baselineCount;
+  }
+
+  if(targetIndex<0){
+    setStatus(
+      "发现新记录，但无法唯一确定其保存位置。\n"+
+      "为了保护数据，系统没有修改这条记录。",
+      "error"
+    );
+    return;
+  }
+
+  const updated=records.slice();
+
+  updated[targetIndex]={
+    ...updated[targetIndex],
+    learnerId:launch.learnerId,
+    learnerLink:{
+      method:"portal-observed",
+      launchId:launch.id,
+      linkedAt:new Date().toISOString(),
+      confidence:"prototype-only",
+      note:"Local portal attribution; not authenticated."
+    }
+  };
+
+  try{
+    localStorage.setItem(
+      module.key,
+      JSON.stringify(updated)
+    );
+
+    const verified=readRecords(module.key)[targetIndex];
+
+    if(
+      verified?.learnerId!==launch.learnerId ||
+      verified?.learnerLink?.launchId!==launch.id
+    ){
+      throw new Error("保存后的身份信息未通过验证");
+    }
+
+    launch.linked=true;
+    stopMonitor();
+
+    setStatus(
+      "关联成功！\n"+
+      "学习者："+learner.nickname+"\n"+
+      "模块："+launch.moduleId+"\n"+
+      "本地学习者 ID："+learner.id+"\n"+
+      "历史记录未被自动归属。\n"+
+      "现在可以点击“结束本次学习”。",
+      "success"
+    );
+
+    renderLinkedRecords();
+
+  }catch(error){
+    setStatus(
+      "写入关联信息失败："+error.message,
+      "error"
+    );
+  }
+}
+
+function stopMonitor(){
+  if(monitor!==null){
+    clearInterval(monitor);
+    monitor=null;
+  }
+}
+
+function finishLaunch(){
+  if(!launch)return;
+
+  checkForNewRecords(true);
+
+  // Do not silently discard an unlinked run.
+  if(!launch.linked){
+    const confirmed=confirm(
+      "本次学习记录尚未关联成功。\n"+
+      "确定结束本次任务吗？"
+    );
+    if(!confirmed)return;
+  }
+
+  stopMonitor();
+  launch=null;
+
+  $("learning-frame").src="about:blank";
+  $("learning-panel").classList.add("hidden");
+
+  $("launch-status").textContent=
+    "本次学习入口已结束，可以启动下一次学习。";
+
+  renderLearner();
+  renderLinkedRecords();
+}
+
+function formatDate(value){
+  const date=new Date(value);
+  return Number.isNaN(date.getTime())
+    ?"—":date.toLocaleString("zh-CN");
+}
+
+function formatScore(record){
+  const result=record.result?.reassessment;
+
+  if(
+    result &&
+    Number.isFinite(result.correct) &&
+    Number.isFinite(result.total)
+  ){
+    return result.correct+" / "+result.total;
+  }
+
+  const records=Array.isArray(record.records)
+    ?record.records.filter(r=>r.stage==="reassessment")
+    :[];
+
+  if(records.length){
+    const correct=records.filter(
+      r=>r.firstAttemptCorrect===true
+    ).length;
+
+    return correct+" / "+records.length;
+  }
+
+  return "—";
+}
+
+function renderLinkedRecords(){
+  const body=$("linked-body");
+  body.replaceChildren();
+
+  const profiles=readProfiles();
+  const rows=[];
+
+  Object.entries(MODULES).forEach(([id,module])=>{
+    readRecords(module.key).forEach(record=>{
+      if(
+        record?.result &&
+        record?.completedAt &&
+        record?.learnerId &&
+        record?.learnerLink?.method==="portal-observed"
+      ){
+        rows.push({...record,moduleId:id});
+      }
+    });
+  });
+
+  rows.sort(
+    (a,b)=>Date.parse(b.completedAt)-Date.parse(a.completedAt)
+  );
+
+  if(!rows.length){
+    const tr=document.createElement("tr");
+    const td=document.createElement("td");
+    td.colSpan=5;
+    td.textContent="暂无已关联的完整学习会话。";
+    tr.appendChild(td);
+    body.appendChild(tr);
+    return;
+  }
+
+  rows.forEach(record=>{
+    const profile=profiles.find(
+      p=>p.id===record.learnerId
+    );
+
+    const values=[
+      profile?.nickname||"已删除的档案",
+      record.moduleId,
+      formatDate(record.completedAt),
+      formatScore(record),
+      record.result?.recommendedPath||"—"
+    ];
+
+    const tr=document.createElement("tr");
+
+    values.forEach(value=>{
+      const td=document.createElement("td");
+      td.textContent=value;
+      tr.appendChild(td);
+    });
+
+    body.appendChild(tr);
+  });
+}
+
+$("refresh-learner").addEventListener(
+  "click",renderLearner
+);
+
+$("open-manager").addEventListener("click",()=>{
+  window.location.href="learner-manager.html";
+});
+
+document.querySelectorAll("[data-module]").forEach(button=>{
+  button.addEventListener("click",()=>{
+    startModule(button.dataset.module);
+  });
+});
+
+$("check-record").addEventListener("click",()=>{
+  checkForNewRecords(true);
+});
+
+$("finish-launch").addEventListener(
+  "click",finishLaunch
+);
+
+window.addEventListener("pageshow",()=>{
+  renderLearner();
+  renderLinkedRecords();
+});
+
+window.addEventListener("beforeunload",stopMonitor);
+
+renderLearner();
+renderLinkedRecords();
+</script>
+</body>
+</html>

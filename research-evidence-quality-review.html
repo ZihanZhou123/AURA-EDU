@@ -1,0 +1,993 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AURA EDU | Research Evidence Quality Review</title>
+<style>
+:root {
+  --navy:#17365d;
+  --teal:#218b83;
+  --ink:#26354a;
+  --muted:#63748a;
+  --line:#e2e8f0;
+  --bg:#f7fafc;
+}
+* {box-sizing:border-box}
+body {
+  margin:0;
+  font-family:Arial,sans-serif;
+  line-height:1.65;
+  background:var(--bg);
+  color:var(--ink);
+}
+.container {max-width:1180px;margin:auto;padding:0 22px}
+header {background:white;border-bottom:1px solid var(--line)}
+nav {
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:16px;
+  padding:20px 0;
+}
+nav a {color:var(--navy);text-decoration:none;font-size:14px}
+nav a:hover {color:var(--teal)}
+.logo {font-size:22px;font-weight:bold;margin-right:auto}
+.hero {
+  background:linear-gradient(135deg,#17365d,#245e78);
+  padding:60px 0;
+}
+.hero h1 {color:white;font-size:clamp(30px,4vw,46px);line-height:1.2}
+.hero p {color:#e0eaf3;max-width:900px}
+.eyebrow {
+  color:var(--teal);
+  font-size:12px;
+  letter-spacing:2px;
+  font-weight:bold;
+}
+.hero .eyebrow {color:#8de0d3}
+section {padding:44px 0}
+.soft {background:#edf4f7}
+h2,h3 {color:var(--navy)}
+p {color:var(--muted)}
+.grid {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:18px;
+}
+.metrics {
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:14px;
+  margin:20px 0;
+}
+.card,.metric {
+  background:white;
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:22px;
+}
+.featured {border-top:5px solid var(--teal)}
+.metric strong {
+  display:block;
+  font-size:27px;
+  color:var(--navy);
+}
+.metric span {font-size:13px;color:var(--muted)}
+label {display:block;font-weight:bold;color:var(--navy);margin-bottom:8px}
+select,button {
+  font:inherit;
+  padding:12px 15px;
+  border-radius:9px;
+}
+select {
+  width:100%;
+  background:white;
+  color:var(--ink);
+  border:1px solid var(--line);
+}
+button {
+  background:var(--navy);
+  border:1px solid var(--navy);
+  color:white;
+  cursor:pointer;
+}
+button:hover {opacity:.9}
+button:focus-visible,select:focus-visible,a:focus-visible {
+  outline:3px solid #78b7eb;
+  outline-offset:3px;
+}
+.actions {display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+.table-wrap {overflow-x:auto}
+table {width:100%;min-width:850px;border-collapse:collapse}
+th,td {
+  padding:12px;
+  border-bottom:1px solid var(--line);
+  text-align:left;
+  vertical-align:top;
+  font-size:13px;
+}
+th {background:#edf4f7;color:var(--navy)}
+tbody tr:hover {background:#f8fafc}
+.notice {
+  background:#fff8e8;
+  border-left:4px solid #d4a345;
+  border-radius:9px;
+  padding:17px;
+  margin-top:20px;
+}
+.notice p {margin:0;color:#775b25}
+.detail {padding:14px 0;border-bottom:1px solid var(--line)}
+.detail:last-child {border-bottom:0}
+.detail strong {display:block;color:var(--navy)}
+.detail span {display:block;color:var(--muted);font-size:14px}
+.status {
+  display:inline-block;
+  border-radius:20px;
+  padding:5px 11px;
+  font-size:12px;
+  font-weight:bold;
+  background:#e7f5f0;
+  color:#17645e;
+}
+.status.review {background:#fff3dc;color:#946100}
+pre {
+  background:#10243b;
+  color:#e9f2f9;
+  border-radius:10px;
+  padding:18px;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+  max-height:380px;
+  overflow:auto;
+  font-size:12px;
+}
+.small {font-size:13px}
+footer {background:var(--navy);padding:30px;text-align:center}
+footer p {color:#e0eaf3}
+@media(max-width:850px) {
+  .grid,.metrics {grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+<header>
+<div class="container">
+<nav aria-label="Research navigation">
+  <a class="logo" href="research.html">AURA EDU</a>
+  <a href="research.html">Research Lab</a>
+  <a href="research-documentation-hub.html">Documentation Hub</a>
+  <a href="scaffolding-process-evidence-matrix.html">Evidence Matrix</a>
+  <a href="question-level-scaffolding-analysis.html">Question Analysis</a>
+  <a href="index.html">AURA Learn</a>
+</nav>
+</div>
+</header>
+
+<main>
+
+<section class="hero">
+<div class="container">
+  <div class="eyebrow">STEP 20.10.5 / FINAL RESEARCH ANALYTICS REVIEW</div>
+  <h1>Research Evidence Quality & Interpretation</h1>
+  <p>
+    A transparent review of recorded learning evidence,
+    metric definitions, data completeness, provenance,
+    interpretation boundaries and future research requirements.
+  </p>
+  <p>
+    研究证据质量审查：检查学习记录、指标定义、
+    数据完整性、来源可信度与研究结论的适用范围。
+  </p>
+</div>
+</section>
+
+<section>
+<div class="container">
+  <div class="eyebrow">01 / STORAGE INTEGRITY</div>
+  <h2>Historical Record Inventory</h2>
+  <div class="metrics">
+    <div class="metric"><strong id="g1-count">—</strong><span>G1 Records</span></div>
+    <div class="metric"><strong id="g2-count">—</strong><span>G2 Records</span></div>
+    <div class="metric"><strong id="g3-count">—</strong><span>G3 Records</span></div>
+    <div class="metric"><strong id="total-count">—</strong><span>Total Records</span></div>
+  </div>
+  <p id="storage-status" role="status"></p>
+  <div class="notice">
+    <p>
+      Original development baseline: G1=4, G2=3, G3=6,
+      total=13. Later test sessions may increase these values.
+      This page never changes or deletes historical records.
+    </p>
+  </div>
+</div>
+</section>
+
+<section class="soft">
+<div class="container">
+  <div class="eyebrow">02 / EVIDENCE COVERAGE</div>
+  <h2>G1 Evidence Completeness</h2>
+  <p>
+    These counts represent stored sessions with recognised
+    fields. They do not represent unique students.
+  </p>
+  <div class="metrics">
+    <div class="metric">
+      <strong id="schema-count">—</strong>
+      <span>Recognised G1 Sessions</span>
+    </div>
+    <div class="metric">
+      <strong id="practice-count">—</strong>
+      <span>Sessions with Practice Records</span>
+    </div>
+    <div class="metric">
+      <strong id="retest-count">—</strong>
+      <span>Sessions with Retest Percentage</span>
+    </div>
+    <div class="metric">
+      <strong id="complete-count">—</strong>
+      <span>Sessions with Complete Mapped Fields</span>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Session-Level Data Quality</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Session</th>
+            <th>Schema</th>
+            <th>Practice Questions</th>
+            <th>First Attempts</th>
+            <th>Hint Records</th>
+            <th>Retest</th>
+            <th>Coverage Status</th>
+          </tr>
+        </thead>
+        <tbody id="quality-table">
+          <tr><td colspan="7">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="small" id="quality-note"></p>
+  </div>
+</div>
+</section>
+
+<section>
+<div class="container">
+  <div class="eyebrow">03 / METRIC DEFINITIONS</div>
+  <h2>Learning Analytics Measurement Dictionary</h2>
+  <div class="card">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Indicator</th>
+            <th>Operational Definition</th>
+            <th>Interpretation Boundary</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Diagnostic Performance</td>
+            <td>Stored diagnostic percentage.</td>
+            <td>Initial performance within the recorded assessment.</td>
+          </tr>
+          <tr>
+            <td>First-Attempt Accuracy</td>
+            <td>Correct first attempts / practice questions with known first-attempt status.</td>
+            <td>Not equivalent to final practice accuracy.</td>
+          </tr>
+          <tr>
+            <td>Revision Frequency</td>
+            <td>Questions with more than one recorded attempt / questions with attempt arrays.</td>
+            <td>Multiple attempts do not independently prove reflection.</td>
+          </tr>
+          <tr>
+            <td>Hint Exposure</td>
+            <td>Questions with highestHintUsed above zero / questions with recognised hint values.</td>
+            <td>Recorded hint level is not a complete hint-click event log.</td>
+          </tr>
+          <tr>
+            <td>Error Entries</td>
+            <td>Number of recorded errorCodes entries.</td>
+            <td>Not a count of unique misconceptions.</td>
+          </tr>
+          <tr>
+            <td>Immediate Independent Reassessment</td>
+            <td>Stored reassessment percentage.</td>
+            <td>Immediate performance does not verify durable mastery.</td>
+          </tr>
+          <tr>
+            <td>Mastery State</td>
+            <td>Stored rule-based classification.</td>
+            <td>Not an independently validated learning outcome.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</section>
+
+<section class="soft">
+<div class="container">
+  <div class="eyebrow">04 / PROVENANCE</div>
+  <h2>Development Data vs Research Participant Data</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>Current Prototype Evidence</h3>
+      <p>
+        Local development and testing records demonstrate
+        that the prototype can collect and analyse learning
+        process information.
+      </p>
+      <p>
+        These records must not automatically be presented
+        as real participant findings.
+      </p>
+    </div>
+    <div class="card">
+      <h3>Future Empirical Evidence</h3>
+      <p>
+        A formal study requires documented recruitment,
+        appropriate consent and ethics approval,
+        verified participant provenance, a research
+        protocol and appropriate outcome measurement.
+      </p>
+    </div>
+  </div>
+  <div class="notice">
+    <p>
+      Historical records without verified provenance
+      remain unverified. A stored label alone does not
+      authenticate a participant or establish consent.
+    </p>
+  </div>
+</div>
+</section>
+
+<section>
+<div class="container">
+  <div class="eyebrow">05 / SESSION AUDIT</div>
+  <h2>Inspect a G1 Session</h2>
+  <div class="card featured">
+    <label for="session-select">Select Historical G1 Session</label>
+    <select id="session-select">
+      <option value="">Loading...</option>
+    </select>
+
+    <div class="grid">
+      <div>
+        <div class="detail">
+          <strong>Data Structure</strong>
+          <span id="session-schema">Not available</span>
+        </div>
+        <div class="detail">
+          <strong>Practice Coverage</strong>
+          <span id="session-coverage">Not available</span>
+        </div>
+        <div class="detail">
+          <strong>Immediate Reassessment</strong>
+          <span id="session-retest">Not available</span>
+        </div>
+      </div>
+      <div>
+        <div class="detail">
+          <strong>Recorded Decision</strong>
+          <span id="session-decision">Not available</span>
+        </div>
+        <div class="detail">
+          <strong>Research Data Provenance</strong>
+          <span id="session-provenance">Unverified</span>
+        </div>
+        <div class="detail">
+          <strong>Evidence Interpretation</strong>
+          <span id="session-interpretation">Not available</span>
+        </div>
+      </div>
+    </div>
+
+    <h3>Original Stored JSON</h3>
+    <pre id="record-preview">No session selected.</pre>
+
+    <div class="actions">
+      <button type="button" id="copy-record">
+        Copy Selected Record JSON
+      </button>
+      <button type="button" id="refresh">
+        Refresh Evidence
+      </button>
+    </div>
+    <p id="action-status" role="status"></p>
+  </div>
+</div>
+</section>
+
+<section class="soft">
+<div class="container">
+  <div class="eyebrow">06 / INTERPRETATION FRAMEWORK</div>
+  <h2>Evidence and Research Claims</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>Supported by Prototype Logs</h3>
+      <p>
+        The system can record selected learning
+        events and generate descriptive analyses
+        of practice, hints, errors and immediate
+        reassessment when the relevant fields exist.
+      </p>
+      <span class="status">Descriptive Evidence</span>
+    </div>
+    <div class="card">
+      <h3>Not Yet Established</h3>
+      <p>
+        The logs do not demonstrate that scaffolding
+        caused learning gains, that students became
+        independent, or that improvements persisted
+        over time.
+      </p>
+      <span class="status review">Requires Empirical Validation</span>
+    </div>
+  </div>
+</div>
+</section>
+
+<section>
+<div class="container">
+  <div class="eyebrow">07 / FUTURE STUDY DESIGN</div>
+  <h2>Research Validation Roadmap</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>Research Questions</h3>
+      <p>
+        How do learners with different initial
+        grammar difficulties interact with
+        differentiated scaffolding?
+      </p>
+      <p>
+        How are hint exposure, revision patterns
+        and independent assessment performance
+        associated?
+      </p>
+    </div>
+    <div class="card">
+      <h3>Evaluation Requirements</h3>
+      <p>
+        Establish appropriate recruitment,
+        ethics and consent procedures,
+        baseline assessment, validated outcomes,
+        independent and delayed reassessment,
+        and a justified analysis plan.
+      </p>
+    </div>
+  </div>
+</div>
+</section>
+
+<section class="soft">
+<div class="container">
+  <div class="eyebrow">08 / FINAL REVIEW</div>
+  <h2>Research Analytics Completion Boundary</h2>
+  <div class="card featured">
+    <h3>Prototype Readiness Statement</h3>
+    <p>
+      The AURA EDU research analytics prototype
+      provides an inspectable framework for
+      learning-process recording, adaptive decision
+      explanation and descriptive evidence review.
+    </p>
+    <p>
+      Functional testing can establish whether
+      these prototype components work as intended.
+      It does not establish educational effectiveness.
+    </p>
+    <p>
+      After technical verification, development
+      should focus on end-to-end integration,
+      usability, privacy safeguards and PhD
+      portfolio presentation rather than adding
+      further standalone analytics pages.
+    </p>
+  </div>
+</div>
+</section>
+
+</main>
+
+<footer>
+<p>AURA EDU · Research Evidence Quality Review · Step 20.10.5</p>
+</footer>
+
+<script>
+(function(){
+"use strict";
+
+/*
+ AURA EDU STEP 20.10.5
+ READ-ONLY EVIDENCE QUALITY REVIEW
+
+ This page never writes to localStorage.
+*/
+
+const KEYS={
+ G1:"aura_g1_learning_records_v1",
+ G2:"aura_g2_learning_records_v1",
+ G3:"aura_g3_learning_records_v1"
+};
+
+const BASELINE={G1:4,G2:3,G3:6};
+const $=id=>document.getElementById(id);
+
+let records=[];
+let audits=[];
+let selected=null;
+
+function isObject(v){
+ return v!==null &&
+ typeof v==="object" &&
+ !Array.isArray(v);
+}
+
+function path(v,name){
+ let current=v;
+ for(const part of name.split(".")){
+  if(!isObject(current) ||
+   !Object.prototype.hasOwnProperty.call(current,part)){
+   return undefined;
+  }
+  current=current[part];
+ }
+ return current;
+}
+
+function firstField(v,names){
+ for(const name of names){
+  const value=path(v,name);
+  if(value!==undefined && value!==null && value!==""){
+   return {name,value};
+  }
+ }
+ return null;
+}
+
+function readStore(key){
+ try{
+  const raw=localStorage.getItem(key);
+
+  if(raw===null){
+   return {valid:true,missing:true,items:[]};
+  }
+
+  const parsed=JSON.parse(raw);
+
+  if(!Array.isArray(parsed)){
+   return {valid:false,missing:false,items:[]};
+  }
+
+  return {valid:true,missing:false,items:parsed};
+ }catch(error){
+  console.error("[AURA Evidence Review]",error);
+  return {valid:false,missing:false,items:[]};
+ }
+}
+
+function looksLikeSession(v){
+ if(!isObject(v))return false;
+
+ const hasResult=isObject(v.result) &&
+  ["diagnostic","practice","reassessment"]
+  .some(stage=>isObject(v.result[stage]));
+
+ const hasRecords=Array.isArray(v.records) &&
+  v.records.some(item=>
+   isObject(item) &&
+   ["diagnostic","practice","reassessment"]
+   .includes(item.stage)
+  );
+
+ return hasResult || hasRecords;
+}
+
+function resolve(original){
+ const candidates=[
+  ["root",original],
+  ["session",path(original,"session")],
+  ["data",path(original,"data")],
+  ["learningSession",path(original,"learningSession")],
+  ["sessionData",path(original,"sessionData")],
+  ["payload",path(original,"payload")],
+  ["data.session",path(original,"data.session")],
+  ["payload.session",path(original,"payload.session")]
+ ];
+
+ for(const [name,value] of candidates){
+  if(looksLikeSession(value)){
+   return {name,value};
+  }
+ }
+ return null;
+}
+
+function parsePercent(value){
+ if(typeof value==="number"){
+  return Number.isFinite(value) &&
+   value>=0 && value<=100 ? value:null;
+ }
+
+ if(typeof value==="string"){
+  const clean=value.trim().replace(/%$/,"");
+
+  if(!/^\d+(?:\.\d+)?$/.test(clean))return null;
+
+  const n=Number(clean);
+  return Number.isFinite(n) && n>=0 && n<=100?n:null;
+ }
+
+ return null;
+}
+
+function reassessment(session){
+ const item=firstField(session,[
+  "result.reassessment.percent",
+  "result.reassessment.percentage",
+  "reassessment.percent",
+  "reassessmentPercentage"
+ ]);
+
+ return item?parsePercent(item.value):null;
+}
+
+function audit(original,index){
+ const resolved=resolve(original);
+
+ const output={
+  index,
+  recognised:!!resolved,
+  schema:resolved?resolved.name:"Unrecognised",
+  practice:0,
+  firstKnown:0,
+  hintsKnown:0,
+  attemptsKnown:0,
+  errorsKnown:0,
+  retest:null,
+  complete:false,
+  session:resolved?resolved.value:null
+ };
+
+ if(!resolved)return output;
+
+ const session=resolved.value;
+ output.retest=reassessment(session);
+
+ if(!Array.isArray(session.records))return output;
+
+ const questions=session.records.filter(item=>
+  isObject(item) && item.stage==="practice"
+ );
+
+ output.practice=questions.length;
+
+ for(const q of questions){
+  if(typeof q.firstAttemptCorrect==="boolean"){
+   output.firstKnown++;
+  }
+
+  if(Array.isArray(q.attempts)){
+   output.attemptsKnown++;
+  }
+
+  const hint=q.highestHintUsed;
+  if(
+   (Number.isInteger(hint) && hint>=0 && hint<=3) ||
+   (typeof hint==="string" &&
+    /^(?:[0-3]|H[0-3]|NONE|NO HINT|NO HINTS)$/i
+    .test(hint.trim()))
+  ){
+   output.hintsKnown++;
+  }
+
+  if(Array.isArray(q.errorCodes)){
+   output.errorsKnown++;
+  }
+ }
+
+ output.complete=
+  output.practice>0 &&
+  output.firstKnown===output.practice &&
+  output.hintsKnown===output.practice &&
+  output.attemptsKnown===output.practice &&
+  output.errorsKnown===output.practice &&
+  output.retest!==null;
+
+ return output;
+}
+
+function inventory(){
+ let total=0;
+ let valid=true;
+ let belowBaseline=false;
+ const missing=[];
+
+ for(const id of ["G1","G2","G3"]){
+  const result=readStore(KEYS[id]);
+
+  if(!result.valid){
+   valid=false;
+   $(id.toLowerCase()+"-count").textContent="ERROR";
+  }else{
+   const count=result.items.length;
+   total+=count;
+   $(id.toLowerCase()+"-count").textContent=String(count);
+   if(count<BASELINE[id])belowBaseline=true;
+  }
+
+  if(result.missing)missing.push(id);
+ }
+
+ $("total-count").textContent=valid?String(total):"—";
+
+ let status="Current records: "+total+". Read-only.";
+
+ if(!valid){
+  status="ERROR: Some storage keys could not be read.";
+ }else if(missing.length){
+  status="REVIEW: Missing storage keys: "+missing.join(", ");
+ }else if(belowBaseline){
+  status="REVIEW: Some counts are below the original baseline.";
+ }
+
+ $("storage-status").textContent=status;
+}
+
+function makeCell(row,value){
+ const cell=row.insertCell();
+ cell.textContent=String(value);
+}
+
+function renderQuality(){
+ $("schema-count").textContent=
+  audits.filter(a=>a.recognised).length;
+
+ $("practice-count").textContent=
+  audits.filter(a=>a.practice>0).length;
+
+ $("retest-count").textContent=
+  audits.filter(a=>a.retest!==null).length;
+
+ $("complete-count").textContent=
+  audits.filter(a=>a.complete).length;
+
+ const body=$("quality-table");
+ body.replaceChildren();
+
+ if(!audits.length){
+  const row=body.insertRow();
+  const cell=row.insertCell();
+  cell.colSpan=7;
+  cell.textContent="No G1 records available.";
+ }
+
+ for(const item of audits){
+  const row=body.insertRow();
+
+  makeCell(row,"G1 Session "+(item.index+1));
+  makeCell(row,item.schema);
+  makeCell(row,item.recognised?item.practice:"N/A");
+  makeCell(row,item.practice
+   ? item.firstKnown+"/"+item.practice
+   : "N/A");
+  makeCell(row,item.practice
+   ? item.hintsKnown+"/"+item.practice
+   : "N/A");
+  makeCell(row,item.retest===null
+   ? "N/A"
+   : item.retest+"%");
+  makeCell(row,item.complete
+   ? "Complete mapped fields"
+   : "Incomplete / unavailable");
+ }
+
+ $("quality-note").textContent=
+  "Complete mapped fields requires known first attempts, "+
+  "hint levels, attempt arrays and error-code arrays "+
+  "for every recognised practice question, plus a "+
+  "reassessment percentage. It is not a validity score.";
+}
+
+function provenance(original,session){
+ const names=[
+  "provenance.type",
+  "provenance.sourceType",
+  "dataProvenance.type",
+  "dataProvenance.sourceType",
+  "dataSourceType"
+ ];
+
+ const item=firstField(original,names) ||
+  firstField(session,names);
+
+ if(!item || typeof item.value!=="string" ||
+    !item.value.trim()){
+  return "Unverified — no recognised provenance label";
+ }
+
+ return "Recorded label: "+item.value.trim()+
+  " (not independently authenticated)";
+}
+
+function renderSelected(){
+ const value=$("session-select").value;
+
+ if(value===""){
+  selected=null;
+  $("session-schema").textContent="Not available";
+  $("session-coverage").textContent="Not available";
+  $("session-retest").textContent="Not available";
+  $("session-decision").textContent="Not available";
+  $("session-provenance").textContent="Unverified";
+  $("session-interpretation").textContent="Not available";
+  $("record-preview").textContent="No session selected.";
+  return;
+ }
+
+ const index=Number(value);
+ const item=audits[index];
+
+ if(!item){
+  selected=null;
+  return;
+ }
+
+ selected=records[index];
+
+ $("session-schema").textContent=item.schema;
+
+ $("session-coverage").textContent=
+  item.practice+
+  " practice questions; first-attempt fields "+
+  item.firstKnown+"/"+item.practice+
+  "; hint fields "+item.hintsKnown+"/"+item.practice+
+  "; attempts "+item.attemptsKnown+"/"+item.practice+
+  "; errors "+item.errorsKnown+"/"+item.practice+".";
+
+ $("session-retest").textContent=
+  item.retest===null
+   ? "Not available"
+   : item.retest+"% immediate reassessment";
+
+ const session=item.session;
+
+ const mastery=session?firstField(session,[
+  "result.masteryState","masteryState"
+ ]):null;
+
+ const recommended=session?firstField(session,[
+  "result.recommendedPath","recommendedPath"
+ ]):null;
+
+ const parts=[];
+
+ if(mastery)parts.push("Mastery: "+String(mastery.value));
+ if(recommended)parts.push("Path: "+String(recommended.value));
+
+ $("session-decision").textContent=
+  parts.length?parts.join(" | "):"Not available";
+
+ $("session-provenance").textContent=
+  session
+   ? provenance(selected,session)
+   : "Unverified";
+
+ $("session-interpretation").textContent=
+  item.complete
+   ? "Mapped process fields are complete. "+
+     "This does not establish causal effectiveness "+
+     "or long-term mastery."
+   : "Some recognised evidence fields are missing. "+
+     "Missing fields must not be treated as zero "+
+     "or unsuccessful learning.";
+
+ $("record-preview").textContent=
+  JSON.stringify(selected,null,2);
+}
+
+function populate(){
+ const select=$("session-select");
+ select.replaceChildren();
+
+ for(let i=0;i<records.length;i++){
+  const option=document.createElement("option");
+  option.value=String(i);
+  option.textContent="G1 Session "+(i+1);
+  select.appendChild(option);
+ }
+
+ if(records.length){
+  select.value=String(records.length-1);
+ }
+
+ renderSelected();
+}
+
+async function copyJSON(){
+ if(selected===null){
+  $("action-status").textContent="No session selected.";
+  return;
+ }
+
+ const json=JSON.stringify(selected,null,2);
+
+ try{
+  if(!navigator.clipboard || !window.isSecureContext){
+   throw new Error("Clipboard unavailable");
+  }
+
+  await navigator.clipboard.writeText(json);
+  $("action-status").textContent="JSON copied successfully.";
+ }catch(error){
+  const area=document.createElement("textarea");
+  area.value=json;
+  area.style.position="fixed";
+  area.style.left="-9999px";
+  document.body.appendChild(area);
+  area.select();
+
+  let copied=false;
+
+  try{
+   copied=document.execCommand("copy");
+  }catch(e){
+   copied=false;
+  }
+
+  area.remove();
+
+  $("action-status").textContent=copied
+   ? "JSON copied successfully."
+   : "Automatic copy unavailable. "+
+     "Select and copy the JSON displayed above.";
+ }
+}
+
+function refresh(){
+ inventory();
+
+ const store=readStore(KEYS.G1);
+
+ records=store.valid?store.items:[];
+ audits=records.map(audit);
+
+ renderQuality();
+ populate();
+
+ $("action-status").textContent=store.valid
+  ? "Evidence refreshed. Historical records unchanged."
+  : "ERROR: G1 records could not be read.";
+}
+
+function init(){
+ $("session-select").addEventListener("change",renderSelected);
+ $("refresh").addEventListener("click",refresh);
+ $("copy-record").addEventListener("click",copyJSON);
+
+ refresh();
+
+ console.info(
+  "[AURA EDU] Step 20.10.5 ready. Read-only."
+ );
+}
+
+if(document.readyState==="loading"){
+ document.addEventListener("DOMContentLoaded",init);
+}else{
+ init();
+}
+
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1489 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AURA EDU | G1 Verb to Be</title>
+<style>
+:root{
+  --navy:#17365d;--teal:#218b83;--bg:#f8fafc;
+  --text:#26354a;--muted:#64748b;--border:#e2e8f0;
+  --green:#16794b;--red:#bb4040
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:Arial,"PingFang SC",sans-serif;line-height:1.65
+}
+header{background:white;border-bottom:1px solid var(--border)}
+.nav{
+  max-width:1100px;margin:auto;padding:18px 24px;
+  display:flex;justify-content:space-between;
+  align-items:center;gap:16px;flex-wrap:wrap
+}
+.logo{color:var(--navy);font-size:22px;font-weight:bold;text-decoration:none}
+nav{display:flex;gap:18px;flex-wrap:wrap}
+nav a{color:var(--text);text-decoration:none}
+main{max-width:1000px;margin:auto;padding:36px 22px 70px}
+h1,h2,h3{color:var(--navy)}
+h1{font-size:clamp(30px,5vw,43px)}
+p{color:var(--muted)}
+.card{
+  background:white;padding:27px;margin:22px 0;
+  border:1px solid var(--border);border-radius:16px
+}
+.eyebrow{
+  color:var(--teal);font-size:12px;
+  font-weight:bold;letter-spacing:2px
+}
+.notice{
+  background:#eaf5f3;padding:16px 20px;
+  border-left:4px solid var(--teal);
+  border-radius:9px;margin:18px 0
+}
+.warning{
+  background:#fff1ee;border-left:4px solid var(--red);
+  border-radius:9px;padding:16px;margin:15px 0;color:#943f35
+}
+.grid{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:16px
+}
+.grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.rule,.metric{
+  background:#f0f6f8;border-radius:12px;padding:18px
+}
+.metric strong{
+  display:block;font-size:27px;color:var(--navy)
+}
+.metric span{font-size:13px;color:var(--muted)}
+.buttons{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}
+button{
+  border:1px solid var(--navy);border-radius:9px;
+  background:var(--navy);color:white;padding:12px 18px;
+  cursor:pointer;font:inherit
+}
+button.secondary{background:white;color:var(--navy)}
+button.teal{background:var(--teal);border-color:var(--teal)}
+button:disabled{opacity:.5;cursor:not-allowed}
+button:focus-visible,a:focus-visible{
+  outline:3px solid #79b7eb;outline-offset:3px
+}
+.options{display:grid;gap:12px;margin:23px 0}
+.option{
+  background:white;border:2px solid var(--border);
+  color:var(--navy);font-size:19px;
+  font-weight:bold;text-align:left
+}
+.option.selected{background:#eaf5f3;border-color:var(--teal)}
+.question{
+  font-size:27px;font-weight:bold;
+  color:var(--navy);margin:23px 0
+}
+.feedback{
+  background:#f0f6f8;border-radius:10px;
+  padding:16px;margin:16px 0
+}
+.feedback.good{background:#e8f7ee;color:var(--green)}
+.feedback.bad{background:#fff0f0;color:var(--red)}
+.hint{
+  background:#fff7e9;border-left:4px solid #bd741e;
+  border-radius:8px;padding:16px;margin:16px 0
+}
+.progress{
+  height:12px;background:#e2e8f0;
+  border-radius:12px;overflow:hidden
+}
+.fill{
+  height:100%;width:0%;background:var(--teal);
+  transition:width .2s
+}
+.identity-panel{
+  background:#eef5fb;border:1px solid #d5e6f3;
+  padding:17px 20px;border-radius:12px;margin:20px 0
+}
+.identity-panel strong{color:var(--navy)}
+.identity-id{
+  font-family:monospace;font-size:12px;overflow-wrap:anywhere
+}
+.result-path{
+  background:linear-gradient(135deg,#17365d,#245e78);
+  color:white;padding:25px;border-radius:15px;margin:22px 0
+}
+.result-path h2,.result-path h3,.result-path p{color:white}
+.hidden{display:none!important}
+.explain-card{
+  border:1px solid #cbdfe6;border-radius:14px;
+  padding:22px;background:#f5fafb;margin:22px 0
+}
+.decision-row{
+  display:flex;justify-content:space-between;
+  align-items:center;gap:12px;
+  padding:13px 0;border-bottom:1px solid var(--border)
+}
+.decision-row:last-child{border-bottom:0}
+.decision-row span{color:var(--text)}
+.status{
+  display:inline-block;padding:4px 10px;
+  border-radius:20px;font-size:12px;font-weight:bold
+}
+.status.pass{background:#e0f3e9;color:#176445}
+.status.fail{background:#fff0e4;color:#9b521c}
+.status.na{background:#e8edf4;color:#566579}
+.evidence-highlight{
+  background:#e8f7ee;border-left:4px solid var(--green);
+  padding:16px;border-radius:9px;margin:16px 0
+}
+.evidence-highlight strong{color:var(--green)}
+.small{font-size:13px;color:var(--muted)}
+footer{
+  background:var(--navy);color:white;
+  padding:28px;text-align:center
+}
+footer p{color:#e0eaf3}
+@media(max-width:700px){
+  .grid,.grid.three{grid-template-columns:1fr}
+  .card{padding:19px}
+  .question{font-size:23px}
+  .decision-row{align-items:flex-start;flex-direction:column}
+}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="nav">
+    <a class="logo" href="index.html">AURA EDU</a>
+    <nav>
+      <a href="index.html">AURA Learn</a>
+      <a href="research.html">Research Lab</a>
+      <a href="grammar-hub.html">Grammar Hub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="eyebrow">
+    AURA EDU / STEP 20.6 / EXPLAINABLE MASTERY
+  </div>
+  <h1>G1 — Verb to Be</h1>
+  <p>
+    学习 am、is、are 的用法。通过独立诊断、
+    分层提示练习及即时独立复测，观察语法学习表现。
+  </p>
+
+  <div class="notice">
+    <strong>Research Prototype：</strong>
+    本模块记录浏览器中的学习交互。
+    自适应决策基于尚未经过实证验证的预设规则，
+    不代表已经证实长期掌握。
+    请使用学习者昵称，不要输入儿童真实姓名。
+  </div>
+
+  <div class="identity-panel">
+    <strong>当前学习者 / Active Learner</strong>
+    <p id="learner-name">正在检查学习者身份...</p>
+    <div class="identity-id" id="learner-id"></div>
+    <p id="session-id"></p>
+  </div>
+
+  <div id="identity-warning"
+       class="warning hidden" role="alert"></div>
+
+  <section id="intro" class="card">
+    <h2>Welcome to Your Grammar Mission!</h2>
+
+    <div class="grid three">
+      <div class="rule">
+        <strong>AM</strong>
+        <p>I am happy.</p>
+      </div>
+      <div class="rule">
+        <strong>IS</strong>
+        <p>She is a student.</p>
+      </div>
+      <div class="rule">
+        <strong>ARE</strong>
+        <p>They are friends.</p>
+      </div>
+    </div>
+
+    <h3>学习流程</h3>
+    <div class="grid three">
+      <div class="rule">
+        <strong>01 · Diagnostic</strong>
+        <p>4 道独立诊断题，不提供提示。</p>
+      </div>
+      <div class="rule">
+        <strong>02 · Adaptive Practice</strong>
+        <p>4 道练习题，提供 H1/H2/H3 提示。</p>
+      </div>
+      <div class="rule">
+        <strong>03 · Reassessment</strong>
+        <p>4 道独立复测题，无提示、不可重试。</p>
+      </div>
+    </div>
+
+    <div class="buttons">
+      <button id="start-btn">开始 G1 学习任务 →</button>
+    </div>
+  </section>
+
+  <section id="learning" class="hidden">
+    <div class="card">
+      <div class="eyebrow" id="stage-label"></div>
+      <h2 id="stage-title"></h2>
+      <p id="stage-description"></p>
+      <p id="question-count"></p>
+
+      <div class="progress">
+        <div class="fill" id="progress-fill"></div>
+      </div>
+
+      <div class="question" id="question-text"></div>
+      <div class="options" id="option-list"></div>
+      <div id="feedback" class="feedback" role="status"></div>
+
+      <div id="hint-panel" class="hidden">
+        <div class="buttons">
+          <button id="hint-btn" class="secondary">
+            💡 获取提示
+          </button>
+        </div>
+        <div id="hint-box" class="hint hidden"></div>
+        <p id="hint-counter"></p>
+      </div>
+
+      <div class="buttons">
+        <button id="submit-btn">检查答案</button>
+        <button id="next-btn" class="teal hidden">
+          下一题 →
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section id="transition" class="card hidden">
+    <div class="eyebrow" id="transition-tag"></div>
+    <h2 id="transition-title"></h2>
+    <p id="transition-description"></p>
+
+    <div class="grid">
+      <div class="metric">
+        <strong id="transition-score">—</strong>
+        <span>首次正确题数</span>
+      </div>
+      <div class="metric">
+        <strong id="transition-hint">—</strong>
+        <span>最高提示等级</span>
+      </div>
+    </div>
+
+    <div class="buttons">
+      <button id="continue-btn">继续 →</button>
+    </div>
+  </section>
+
+  <section id="results" class="hidden">
+    <div class="card">
+      <div class="eyebrow">LEARNING EVIDENCE</div>
+      <h2>G1 学习报告</h2>
+
+      <div class="grid three">
+        <div class="metric">
+          <strong id="result-diagnostic">—</strong>
+          <span>诊断首次正确率</span>
+        </div>
+        <div class="metric">
+          <strong id="result-practice">—</strong>
+          <span>练习首次正确率</span>
+        </div>
+        <div class="metric">
+          <strong id="result-reassessment">—</strong>
+          <span>独立复测正确率</span>
+        </div>
+      </div>
+
+      <div class="result-path">
+        <h3>Provisional Learning State</h3>
+        <h2 id="mastery-state">—</h2>
+
+        <h3>Recommended Learning Path</h3>
+        <h2 id="recommended-path">—</h2>
+        <p id="path-explanation"></p>
+      </div>
+
+      <div class="explain-card">
+        <div class="eyebrow">
+          STEP 20.6 / DECISION EXPLANATION
+        </div>
+        <h2>Why This Learning Path?</h2>
+        <p>
+          系统为什么推荐这个学习路径？
+          以下逐项展示实际使用的决策条件。
+        </p>
+        <div id="decision-checks"></div>
+        <p id="decision-reason"></p>
+        <p class="small" id="decision-rule-version"></p>
+      </div>
+
+      <div class="evidence-highlight">
+        <strong>Immediate Independent Performance</strong>
+        <p id="immediate-performance"></p>
+        <p id="durable-mastery-status"></p>
+      </div>
+
+      <h3>Instructional Support</h3>
+      <p id="support-summary"></p>
+
+      <h3>Independent Learning Evidence</h3>
+      <p id="independence-summary"></p>
+
+      <h3>Observed Error Patterns</h3>
+      <ul id="error-patterns"></ul>
+
+      <h3>Recommended Next Activity</h3>
+      <p id="next-activity"></p>
+
+      <div class="notice">
+        Immediate reassessment is not evidence of
+        durable mastery. A delayed independent
+        reassessment is still required.
+      </div>
+
+      <div id="save-status"
+           class="notice" role="status"></div>
+
+      <div class="buttons">
+        <button id="export-btn" class="teal" disabled>
+          导出 JSON 学习记录
+        </button>
+
+        <button id="copy-json-btn"
+                class="secondary" disabled>
+          复制 JSON 学习记录
+        </button>
+
+        <button id="retry-save-btn"
+                class="secondary hidden">
+          重新尝试保存
+        </button>
+
+        <button id="restart-btn" class="secondary">
+          开始新学习会话
+        </button>
+      </div>
+      <p id="export-status"
+         role="status" class="small"></p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>AURA EDU · G1 · Explainable Learning Decision</p>
+  <p>Browser-Local Research Prototype · Not Authentication</p>
+</footer>
+
+<script src="js/learner-identity.js"></script>
+
+<script>
+"use strict";
+
+/*
+  AURA EDU STEP 20.6
+
+  Keep:
+  - Existing G1 storage key
+  - Existing record structure
+  - Identity-bound sessions
+  - Diagnostic / Practice / Reassessment
+  - H1 / H2 / H3
+  - Existing mastery thresholds
+
+  Add:
+  - Explainable decision conditions
+  - Separate immediate performance
+  - Explicit durable mastery limitation
+  - Additive metadata on new sessions
+  - JSON copy fallback
+
+  Never overwrite historical records.
+*/
+
+const STORAGE_KEY = "aura_g1_learning_records_v1";
+const DECISION_RULE_VERSION = "G1-RULE-1.0-EXPLAINED";
+
+const QUESTIONS = {
+  diagnostic:[
+    {
+      id:"G1-D01",
+      text:"I ___ eleven years old.",
+      answer:"am",
+      explanation:"We use 'am' with 'I'."
+    },
+    {
+      id:"G1-D02",
+      text:"She ___ my best friend.",
+      answer:"is",
+      explanation:"We use 'is' with 'she'."
+    },
+    {
+      id:"G1-D03",
+      text:"They ___ in the classroom.",
+      answer:"are",
+      explanation:"We use 'are' with 'they'."
+    },
+    {
+      id:"G1-D04",
+      text:"The cat ___ under the table.",
+      answer:"is",
+      explanation:"A singular subject takes 'is'."
+    }
+  ],
+  practice:[
+    {
+      id:"G1-P01",
+      text:"My brother ___ very kind.",
+      answer:"is",
+      hint1:"Look at the subject: My brother.",
+      hint2:"My brother refers to one person.",
+      hint3:"Example: My sister is friendly.",
+      explanation:"A singular subject uses 'is'."
+    },
+    {
+      id:"G1-P02",
+      text:"We ___ ready for school.",
+      answer:"are",
+      hint1:"Look at the subject: We.",
+      hint2:"The subject 'we' uses 'are'.",
+      hint3:"Example: We are happy.",
+      explanation:"We use 'are' with 'we'."
+    },
+    {
+      id:"G1-P03",
+      text:"I ___ excited about the trip.",
+      answer:"am",
+      hint1:"Look at the subject before the blank.",
+      hint2:"The subject 'I' uses 'am'.",
+      hint3:"Example: I am ready.",
+      explanation:"We use 'am' with 'I'."
+    },
+    {
+      id:"G1-P04",
+      text:"The books ___ on the desk.",
+      answer:"are",
+      hint1:"Is 'the books' singular or plural?",
+      hint2:"Plural nouns normally use 'are'.",
+      hint3:"Example: The pencils are on the table.",
+      explanation:"Plural subjects use 'are'."
+    }
+  ],
+  reassessment:[
+    {
+      id:"G1-R01",
+      text:"My parents ___ at home.",
+      answer:"are",
+      explanation:"My parents is plural."
+    },
+    {
+      id:"G1-R02",
+      text:"I ___ a primary school student.",
+      answer:"am",
+      explanation:"I takes 'am'."
+    },
+    {
+      id:"G1-R03",
+      text:"He ___ good at English.",
+      answer:"is",
+      explanation:"He takes 'is'."
+    },
+    {
+      id:"G1-R04",
+      text:"You ___ my new classmate.",
+      answer:"are",
+      explanation:"You takes 'are'."
+    }
+  ]
+};
+
+const $ = id => document.getElementById(id);
+
+function show(id){
+  $(id).classList.remove("hidden");
+}
+
+function hide(id){
+  $(id).classList.add("hidden");
+}
+
+function setText(id,value){
+  $(id).textContent = value;
+}
+
+function percent(correct,total){
+  return total ? Math.round(correct/total*100) : 0;
+}
+
+function identityService(){
+  return window.AuraLearnerIdentity || null;
+}
+
+let session = null;
+let savedRecord = null;
+let stage = "diagnostic";
+let questionIndex = 0;
+let selectedAnswer = null;
+let attempts = 0;
+let hintLevel = 0;
+let highestHintLevel = 0;
+let questionCompleted = false;
+let currentRecord = null;
+
+function learnerLabel(learner){
+  return (
+    learner.nickname ||
+    learner.name ||
+    learner.displayName ||
+    learner.learnerName ||
+    learner.id
+  );
+}
+
+function updateIdentityDisplay(){
+  const identity = identityService();
+
+  if(!identity){
+    setText("learner-name","Identity Service 未加载");
+    setText("learner-id","");
+    return;
+  }
+
+  const learner = identity.getActiveLearner();
+
+  if(!learner){
+    setText("learner-name","尚未选择学习者");
+    setText("learner-id","");
+  }else{
+    setText("learner-name",learnerLabel(learner));
+    setText(
+      "learner-id",
+      "Active Learner ID: " + learner.id
+    );
+  }
+
+  if(session){
+    setText(
+      "session-id",
+      "Bound Session: " + session.sessionId +
+      " | Bound Learner: " + session.learnerId
+    );
+  }else{
+    setText("session-id","");
+  }
+}
+
+function identityWarning(message){
+  setText("identity-warning",message);
+  show("identity-warning");
+}
+
+function clearIdentityWarning(){
+  hide("identity-warning");
+  setText("identity-warning","");
+}
+
+function validateIdentity(){
+  const identity = identityService();
+
+  if(!identity){
+    identityWarning(
+      "Identity Service 无法使用，请检查脚本路径。"
+    );
+    return false;
+  }
+
+  if(!session){
+    identityWarning("学习会话不存在。");
+    return false;
+  }
+
+  const result = identity.validateSessionIdentity(session);
+
+  if(!result.ok){
+    identityWarning(
+      result.message || "学习者身份验证失败。"
+    );
+    return false;
+  }
+
+  clearIdentityWarning();
+  return true;
+}
+
+function startSession(){
+  const identity = identityService();
+
+  if(!identity){
+    identityWarning(
+      "无法找到 AuraLearnerIdentity。" +
+      "请检查 js/learner-identity.js。"
+    );
+    return;
+  }
+
+  const started = identity.startSession("G1");
+
+  if(!started.ok){
+    identityWarning(started.message);
+    return;
+  }
+
+  session = {
+    ...started.session,
+    knowledgePoint:"Verb to Be",
+    records:[],
+    result:null
+  };
+
+  savedRecord = null;
+  stage = "diagnostic";
+  questionIndex = 0;
+  highestHintLevel = 0;
+
+  $("export-btn").disabled = true;
+  $("copy-json-btn").disabled = true;
+  setText("export-status","");
+  setText("save-status","");
+  hide("retry-save-btn");
+
+  clearIdentityWarning();
+  updateIdentityDisplay();
+
+  hide("intro");
+  hide("transition");
+  hide("results");
+  show("learning");
+
+  loadQuestion();
+}
+
+function loadQuestion(){
+  if(!validateIdentity()) return;
+
+  const q = QUESTIONS[stage][questionIndex];
+
+  selectedAnswer = null;
+  attempts = 0;
+  hintLevel = 0;
+  questionCompleted = false;
+
+  currentRecord = {
+    questionId:q.id,
+    stage:stage,
+    knowledgePoint:"G1",
+    firstAttemptCorrect:null,
+    attempts:[],
+    highestHintUsed:0,
+    completedCorrectly:false,
+    errorCodes:[],
+    startedAt:new Date().toISOString(),
+    completedAt:null
+  };
+
+  const titles = {
+    diagnostic:[
+      "STAGE 01 / DIAGNOSTIC",
+      "Independent Diagnostic",
+      "独立完成，不提供提示，不允许重试。"
+    ],
+    practice:[
+      "STAGE 02 / ADAPTIVE PRACTICE",
+      "Adaptive Practice",
+      "先独立尝试，可以使用 H1–H3 提示。"
+    ],
+    reassessment:[
+      "STAGE 03 / REASSESSMENT",
+      "Independent Reassessment",
+      "独立完成新题，无提示、不可重试。"
+    ]
+  };
+
+  const info = titles[stage];
+
+  setText("stage-label",info[0]);
+  setText("stage-title",info[1]);
+  setText("stage-description",info[2]);
+
+  setText(
+    "question-count",
+    "Question " + (questionIndex+1) +
+    " / " + QUESTIONS[stage].length
+  );
+
+  $("progress-fill").style.width =
+    questionIndex/QUESTIONS[stage].length*100+"%";
+
+  setText("question-text",q.text);
+
+  const list = $("option-list");
+  list.replaceChildren();
+
+  ["am","is","are"].forEach(answer=>{
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "option";
+    button.textContent = answer;
+
+    button.addEventListener("click",()=>{
+      chooseAnswer(answer);
+    });
+
+    list.appendChild(button);
+  });
+
+  feedback("请选择答案。","");
+
+  hide("hint-box");
+  setText("hint-box","");
+  setText("hint-counter","Hints used: 0 / 3");
+
+  if(stage === "practice"){
+    show("hint-panel");
+    $("hint-btn").disabled = false;
+  }else{
+    hide("hint-panel");
+  }
+
+  show("submit-btn");
+  hide("next-btn");
+  $("submit-btn").disabled = true;
+}
+
+function chooseAnswer(answer){
+  if(!validateIdentity()) return;
+  if(questionCompleted) return;
+
+  selectedAnswer = answer;
+
+  document.querySelectorAll(".option").forEach(button=>{
+    button.classList.toggle(
+      "selected",
+      button.textContent === answer
+    );
+  });
+
+  $("submit-btn").disabled = false;
+}
+
+function feedback(message,type){
+  const box = $("feedback");
+  box.textContent = message;
+  box.className = "feedback";
+
+  if(type){
+    box.classList.add(type);
+  }
+}
+
+function checkAnswer(){
+  if(!validateIdentity()) return;
+
+  if(
+    questionCompleted ||
+    !selectedAnswer ||
+    !currentRecord
+  ){
+    return;
+  }
+
+  const q = QUESTIONS[stage][questionIndex];
+  const correct = selectedAnswer === q.answer;
+
+  attempts++;
+
+  currentRecord.attempts.push({
+    attemptNumber:attempts,
+    selectedAnswer:selectedAnswer,
+    correct:correct,
+    hintLevelAtAttempt:hintLevel,
+    timestamp:new Date().toISOString()
+  });
+
+  if(attempts === 1){
+    currentRecord.firstAttemptCorrect = correct;
+  }
+
+  if(!correct){
+    currentRecord.errorCodes.push({
+      code:"E01",
+      label:"Be Verb Selection",
+      selected:selectedAnswer,
+      expected:q.answer
+    });
+  }
+
+  if(correct){
+    currentRecord.completedCorrectly = true;
+    feedback("Correct! "+q.explanation,"good");
+    finishQuestion();
+    return;
+  }
+
+  if(stage !== "practice"){
+    feedback("Not quite. "+q.explanation,"bad");
+    finishQuestion();
+    return;
+  }
+
+  if(attempts >= 3){
+    feedback("已尝试三次。"+q.explanation,"bad");
+    finishQuestion();
+    return;
+  }
+
+  feedback(
+    "答案还不正确。观察句子的主语，可以使用提示。",
+    "bad"
+  );
+
+  selectedAnswer = null;
+  $("submit-btn").disabled = true;
+
+  document.querySelectorAll(".option").forEach(button=>{
+    button.classList.remove("selected");
+  });
+}
+
+function getHint(){
+  if(!validateIdentity()) return;
+
+  if(
+    stage !== "practice" ||
+    questionCompleted ||
+    hintLevel >= 3
+  ){
+    return;
+  }
+
+  hintLevel++;
+
+  highestHintLevel = Math.max(
+    highestHintLevel,
+    hintLevel
+  );
+
+  currentRecord.highestHintUsed = hintLevel;
+
+  const q = QUESTIONS[stage][questionIndex];
+
+  setText(
+    "hint-box",
+    "Hint "+hintLevel+"："+q["hint"+hintLevel]
+  );
+
+  setText(
+    "hint-counter",
+    "Hints used: "+hintLevel+" / 3"
+  );
+
+  show("hint-box");
+
+  if(hintLevel === 3){
+    $("hint-btn").disabled = true;
+  }
+}
+
+function finishQuestion(){
+  questionCompleted = true;
+
+  currentRecord.completedAt =
+    new Date().toISOString();
+
+  session.records.push(currentRecord);
+
+  hide("submit-btn");
+  show("next-btn");
+
+  $("hint-btn").disabled = true;
+
+  document.querySelectorAll(".option").forEach(button=>{
+    button.disabled = true;
+  });
+
+  const isLast =
+    questionIndex === QUESTIONS[stage].length-1;
+
+  setText(
+    "next-btn",
+    isLast ? "完成本阶段 →" : "下一题 →"
+  );
+
+  $("progress-fill").style.width =
+    (questionIndex+1)/
+    QUESTIONS[stage].length*100+"%";
+}
+
+function nextQuestion(){
+  if(!validateIdentity()) return;
+  if(!questionCompleted) return;
+
+  questionIndex++;
+
+  if(questionIndex < QUESTIONS[stage].length){
+    loadQuestion();
+  }else{
+    finishStage();
+  }
+}
+
+function stageRecords(name){
+  return session.records.filter(
+    item=>item.stage === name
+  );
+}
+
+function score(name){
+  const records = stageRecords(name);
+
+  const correct = records.filter(
+    item=>item.firstAttemptCorrect === true
+  ).length;
+
+  return {
+    correct:correct,
+    total:records.length,
+    percent:percent(correct,records.length)
+  };
+}
+
+function finishStage(){
+  if(!validateIdentity()) return;
+
+  hide("learning");
+
+  if(stage === "reassessment"){
+    showResults();
+    return;
+  }
+
+  show("transition");
+
+  const result = score(stage);
+
+  setText(
+    "transition-score",
+    result.correct+" / "+result.total
+  );
+
+  setText(
+    "transition-hint",
+    highestHintLevel
+      ? "H"+highestHintLevel
+      : "None"
+  );
+
+  if(stage === "diagnostic"){
+    setText("transition-tag","DIAGNOSTIC COMPLETED");
+    setText("transition-title","诊断完成！");
+    setText(
+      "transition-description",
+      "接下来进入分层提示练习。"
+    );
+    setText(
+      "continue-btn",
+      "开始自适应练习 →"
+    );
+  }else{
+    setText("transition-tag","PRACTICE COMPLETED");
+    setText(
+      "transition-title",
+      "准备好独立复测了吗？"
+    );
+    setText(
+      "transition-description",
+      "接下来完成四道新题，不提供提示。"
+    );
+    setText(
+      "continue-btn",
+      "开始独立复测 →"
+    );
+  }
+}
+
+function continueStage(){
+  if(!validateIdentity()) return;
+
+  if(stage === "diagnostic"){
+    stage = "practice";
+  }else if(stage === "practice"){
+    stage = "reassessment";
+  }else{
+    return;
+  }
+
+  questionIndex = 0;
+
+  hide("transition");
+  show("learning");
+  loadQuestion();
+}
+
+/*
+  Decision logic is unchanged.
+
+  Additional explanations must describe
+  the actual conditions, not invent
+  a new scoring model.
+*/
+function learningDecision(){
+  const diagnostic = score("diagnostic");
+  const reassessment = score("reassessment");
+
+  const hintDependent =
+    stageRecords("practice").some(
+      item=>item.highestHintUsed >= 2
+    );
+
+  const checks = [
+    {
+      id:"diagnostic-threshold",
+      label:"Diagnostic ≥ 75%",
+      passed:diagnostic.percent >= 75,
+      observed:diagnostic.percent+"%"
+    },
+    {
+      id:"reassessment-threshold",
+      label:"Independent Reassessment ≥ 75%",
+      passed:reassessment.percent >= 75,
+      observed:reassessment.percent+"%"
+    },
+    {
+      id:"hint-threshold",
+      label:"Highest Hint Level ≤ H1",
+      passed:highestHintLevel <= 1,
+      observed:highestHintLevel
+        ? "H"+highestHintLevel
+        : "None"
+    },
+    {
+      id:"hint-dependency",
+      label:"No H2/H3 Practice Dependency",
+      passed:!hintDependent,
+      observed:hintDependent ? "Detected" : "None"
+    }
+  ];
+
+  let decision;
+
+  if(reassessment.percent < 50){
+    decision = {
+      mastery:"Needs Support",
+      path:"Foundation",
+      explanation:
+        "独立复测表现提示需要进一步基础支持。",
+      next:"复习 am/is/are，完成更多基础题。",
+      reason:
+        "独立复测低于 50%，触发 Foundation 路径。"
+    };
+  }else if(
+    diagnostic.percent >= 75 &&
+    reassessment.percent >= 75 &&
+    highestHintLevel <= 1 &&
+    !hintDependent
+  ){
+    decision = {
+      mastery:"Provisional Mastery",
+      path:"Challenge",
+      explanation:
+        "当前表现较好，但不能证明长期掌握。",
+      next:"尝试更复杂句型，并安排延迟复测。",
+      reason:
+        "全部四项暂定掌握条件均满足，" +
+        "推荐 Challenge。长期掌握仍未验证。"
+    };
+  }else{
+    const failed = checks
+      .filter(item=>!item.passed)
+      .map(item=>item.label);
+
+    decision = {
+      mastery:"Developing",
+      path:"Guided",
+      explanation:
+        "已有部分独立作答能力，建议继续巩固。",
+      next:"针对错误知识点继续练习。",
+      reason:
+        "暂定掌握条件尚未全部满足：" +
+        failed.join("；") +
+        "。这不等于独立复测失败。"
+    };
+  }
+
+  return {
+    ...decision,
+    checks:checks,
+    ruleVersion:DECISION_RULE_VERSION,
+    immediateIndependentPerformance:{
+      correct:reassessment.correct,
+      total:reassessment.total,
+      percent:reassessment.percent,
+      status:
+        reassessment.percent === 100
+          ? "All immediate retest items correct"
+          : reassessment.percent >= 75
+            ? "Strong immediate retest performance"
+            : reassessment.percent >= 50
+              ? "Partial immediate retest performance"
+              : "Further support indicated"
+    },
+    durableMastery:"Not yet verified"
+  };
+}
+
+function errorSummary(){
+  const selections = {am:0,is:0,are:0};
+  let totalErrors = 0;
+
+  session.records.forEach(record=>{
+    record.errorCodes.forEach(error=>{
+      totalErrors++;
+
+      if(
+        Object.prototype.hasOwnProperty.call(
+          selections,error.selected
+        )
+      ){
+        selections[error.selected]++;
+      }
+    });
+  });
+
+  return {totalErrors,selections};
+}
+
+function renderDecisionExplanation(decision){
+  const container = $("decision-checks");
+  container.replaceChildren();
+
+  decision.checks.forEach(check=>{
+    const row = document.createElement("div");
+    row.className = "decision-row";
+
+    const label = document.createElement("span");
+    label.textContent =
+      check.label+"（实际："+check.observed+"）";
+
+    const status = document.createElement("strong");
+    status.className =
+      "status "+(check.passed ? "pass" : "fail");
+
+    status.textContent =
+      check.passed ? "MET" : "NOT MET";
+
+    row.appendChild(label);
+    row.appendChild(status);
+    container.appendChild(row);
+  });
+
+  setText("decision-reason",decision.reason);
+
+  setText(
+    "decision-rule-version",
+    "Decision Rule: "+decision.ruleVersion+
+    " · Rule thresholds unchanged"
+  );
+
+  const immediate =
+    decision.immediateIndependentPerformance;
+
+  setText(
+    "immediate-performance",
+    "即时独立复测："+immediate.correct+
+    " / "+immediate.total+
+    "（"+immediate.percent+"%）。"+
+    "这是当前题组的独立表现，" +
+    "与综合学习路径分类分别呈现。"
+  );
+
+  setText(
+    "durable-mastery-status",
+    "Durable Mastery: Not yet verified. " +
+    "需要未来的延迟独立复测。"
+  );
+}
+
+function showResults(){
+  hide("learning");
+  hide("transition");
+  show("results");
+
+  const d = score("diagnostic");
+  const p = score("practice");
+  const r = score("reassessment");
+
+  const decision = learningDecision();
+  const errors = errorSummary();
+
+  setText("result-diagnostic",d.percent+"%");
+  setText("result-practice",p.percent+"%");
+  setText("result-reassessment",r.percent+"%");
+
+  setText("mastery-state",decision.mastery);
+  setText("recommended-path",decision.path);
+  setText("path-explanation",decision.explanation);
+  setText("next-activity",decision.next);
+
+  renderDecisionExplanation(decision);
+
+  const practice = stageRecords("practice");
+
+  const assisted = practice.filter(
+    item=>item.highestHintUsed > 0
+  ).length;
+
+  setText(
+    "support-summary",
+    assisted+" / "+practice.length+
+    " 道练习题使用了提示。最高等级："+ 
+    (highestHintLevel
+      ? "H"+highestHintLevel
+      : "None")
+  );
+
+  setText(
+    "independence-summary",
+    "独立复测首次答对 "+
+    r.correct+" / "+r.total+" 道题。"
+  );
+
+  const errorList = $("error-patterns");
+  errorList.replaceChildren();
+
+  if(!errors.totalErrors){
+    const li = document.createElement("li");
+    li.textContent = "没有记录到错误选择。";
+    errorList.appendChild(li);
+  }else{
+    ["am","is","are"].forEach(answer=>{
+      if(!errors.selections[answer]) return;
+
+      const li = document.createElement("li");
+      li.textContent =
+        "错误使用 "+answer+"："+ 
+        errors.selections[answer]+" 次";
+      errorList.appendChild(li);
+    });
+  }
+
+  if(!session.completedAt){
+    session.completedAt = new Date().toISOString();
+  }
+
+  session.result = {
+    diagnostic:d,
+    practice:p,
+    reassessment:r,
+    highestHintLevel:highestHintLevel,
+    masteryState:decision.mastery,
+    recommendedPath:decision.path,
+    errorSummary:errors,
+    delayedReassessment:"Not yet completed",
+
+    // New additive research metadata.
+    decisionExplanation:{
+      ruleVersion:decision.ruleVersion,
+      checks:decision.checks,
+      reason:decision.reason,
+      immediateIndependentPerformance:
+        decision.immediateIndependentPerformance,
+      durableMastery:decision.durableMastery
+    }
+  };
+
+  saveCompletedSession();
+}
+
+function saveCompletedSession(){
+  if(savedRecord) return;
+
+  if(!validateIdentity()){
+    setText(
+      "save-status",
+      "未保存：学习者身份发生变化，" +
+      "请恢复原学习者后重试。"
+    );
+    show("retry-save-btn");
+    return;
+  }
+
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+
+    if(raw !== null){
+      const existing = JSON.parse(raw);
+
+      if(!Array.isArray(existing)){
+        throw new Error(
+          "Existing store is not an array."
+        );
+      }
+    }
+  }catch(error){
+    setText(
+      "save-status",
+      "未保存：现有学习记录格式异常，" +
+      "已保护原数据。"
+    );
+    show("retry-save-btn");
+    return;
+  }
+
+  const identity = identityService();
+
+  const result = identity.saveCompletedSession(
+    session,
+    session,
+    STORAGE_KEY
+  );
+
+  if(!result.ok){
+    setText(
+      "save-status",
+      "保存失败："+result.error+
+      " — "+result.message
+    );
+    show("retry-save-btn");
+    return;
+  }
+
+  savedRecord = result.record;
+
+  setText(
+    "save-status",
+    "学习记录已成功保存并绑定至 Learner ID："+ 
+    savedRecord.learnerId
+  );
+
+  $("export-btn").disabled = false;
+  $("copy-json-btn").disabled = false;
+  hide("retry-save-btn");
+}
+
+function exportJSON(){
+  if(!savedRecord){
+    setText("export-status","请先保存学习记录。");
+    return;
+  }
+
+  try{
+    const blob = new Blob(
+      [JSON.stringify(savedRecord,null,2)],
+      {type:"application/json;charset=utf-8"}
+    );
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download =
+      "AURA_G1_"+savedRecord.sessionId+".json";
+
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    // Delay revocation for browser compatibility.
+    setTimeout(()=>{
+      URL.revokeObjectURL(url);
+    },60000);
+
+    setText(
+      "export-status",
+      "已请求浏览器下载 JSON。请检查下载文件，" +
+      "不要仅凭按钮点击判断导出成功。"
+    );
+  }catch(error){
+    setText(
+      "export-status",
+      "导出失败："+error.message
+    );
+  }
+}
+
+async function copyJSON(){
+  if(!savedRecord){
+    setText("export-status","请先保存学习记录。");
+    return;
+  }
+
+  try{
+    const json = JSON.stringify(
+      savedRecord,null,2
+    );
+
+    if(
+      !navigator.clipboard ||
+      !navigator.clipboard.writeText
+    ){
+      throw new Error("Clipboard API unavailable.");
+    }
+
+    await navigator.clipboard.writeText(json);
+
+    setText(
+      "export-status",
+      "JSON 已复制到剪贴板。" +
+      "请粘贴到文本编辑器核对内容。"
+    );
+  }catch(error){
+    setText(
+      "export-status",
+      "复制失败："+error.message
+    );
+  }
+}
+
+$("start-btn").addEventListener("click",startSession);
+$("submit-btn").addEventListener("click",checkAnswer);
+$("hint-btn").addEventListener("click",getHint);
+$("next-btn").addEventListener("click",nextQuestion);
+$("continue-btn").addEventListener("click",continueStage);
+$("export-btn").addEventListener("click",exportJSON);
+$("copy-json-btn").addEventListener("click",copyJSON);
+$("retry-save-btn").addEventListener(
+  "click",saveCompletedSession
+);
+$("restart-btn").addEventListener(
+  "click",startSession
+);
+
+window.addEventListener("storage",event=>{
+  if(
+    event.key === "aura_active_learner_id_v2" ||
+    event.key === "aura_learner_profiles_v2"
+  ){
+    updateIdentityDisplay();
+
+    if(session && !savedRecord){
+      validateIdentity();
+    }
+  }
+});
+
+window.addEventListener("focus",()=>{
+  updateIdentityDisplay();
+
+  if(session && !savedRecord){
+    validateIdentity();
+  }
+});
+
+updateIdentityDisplay();
+
+console.info(
+  "[AURA EDU] G1 Step 20.6 Explainable Mastery ready."
+);
+</script>
+</body>
+</html>

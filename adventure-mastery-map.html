@@ -1,0 +1,296 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+  <title>AURA EDU | Mastery Adventure Map</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      font-family:
+        Arial,
+        "PingFang SC",
+        "Microsoft YaHei",
+        sans-serif;
+      background: #eaf7ef;
+      color: #17365d;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 12px 20px;
+      background: #ffffff;
+      border-bottom: 2px solid #d3eadb;
+    }
+
+    .brand {
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .topbar a {
+      color: #176d65;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .status {
+      padding: 9px 20px;
+      background: #f1faf4;
+      font-size: 13px;
+      color: #456b59;
+      border-bottom: 1px solid #d3eadb;
+    }
+
+    .status.error {
+      background: #fff0f0;
+      color: #a33333;
+    }
+
+    .map-frame {
+      display: block;
+      width: 100%;
+      height: calc(100vh - 100px);
+      min-height: 600px;
+      border: 0;
+      background: #eaf7ef;
+    }
+
+    @media (max-width: 700px) {
+      .topbar {
+        padding: 12px;
+      }
+
+      .map-frame {
+        height: calc(100vh - 115px);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="topbar">
+    <div class="brand">
+      🌿 AURA EDU · Adventure Journey
+    </div>
+
+    <nav>
+      <a href="learner-manager.html">
+        切换学生 / Learner Manager
+      </a>
+    </nav>
+  </header>
+
+  <div
+    id="status"
+    class="status"
+    role="status"
+    aria-live="polite"
+  >
+    正在加载冒险地图与学习证据...
+  </div>
+
+  <iframe
+    id="adventure-frame"
+    class="map-frame"
+    src="adventure-path.html"
+    title="AURA EDU Adventure Map"
+  ></iframe>
+
+  <script>
+    "use strict";
+
+    (function () {
+
+      const frame = document.getElementById(
+        "adventure-frame"
+      );
+
+      const status = document.getElementById(
+        "status"
+      );
+
+      function setStatus(message, error) {
+        status.textContent = message;
+
+        status.classList.toggle(
+          "error",
+          Boolean(error)
+        );
+      }
+
+      function loadScript(doc, path) {
+        return new Promise(function (resolve, reject) {
+
+          const script = doc.createElement("script");
+
+          script.src = path;
+
+          script.onload = resolve;
+
+          script.onerror = function () {
+            reject(
+              new Error("无法加载脚本：" + path)
+            );
+          };
+
+          doc.head.appendChild(script);
+        });
+      }
+
+      async function initializeMap() {
+        try {
+          const mapWindow = frame.contentWindow;
+          const mapDocument = frame.contentDocument;
+
+          if (
+            !mapWindow ||
+            !mapDocument ||
+            !mapDocument.body
+          ) {
+            throw new Error("无法访问地图页面");
+          }
+
+          // 1. Grammar unlock evidence
+          if (!mapWindow.AuraGrammarUnlock) {
+            await loadScript(
+              mapDocument,
+              "js/grammar-unlock.js"
+            );
+          }
+
+          // 2. Original mastery panel
+          if (!mapWindow.AuraAdventureMastery) {
+            await loadScript(
+              mapDocument,
+              "js/adventure-mastery.js"
+            );
+          }
+
+          // 3. Existing Spelling mastery model
+          if (!mapWindow.AuraSpellingMastery) {
+            await loadScript(
+              mapDocument,
+              "js/spelling-mastery.js"
+            );
+          }
+
+          // 4. New Speaking progression bridge
+          if (!mapWindow.AuraSpeakingUnlock) {
+            await loadScript(
+              mapDocument,
+              "js/speaking-unlock-bridge.js"
+            );
+          }
+
+          const panel = mapDocument.getElementById(
+            "aura-mastery-panel"
+          );
+
+          if (!panel) {
+            throw new Error("掌握度面板未生成");
+          }
+
+          const grammarReport =
+            mapWindow.AuraGrammarUnlock.evaluateGrammar();
+
+          const speakingReport =
+            mapWindow.AuraSpeakingUnlock.refresh();
+
+          // Refresh the existing map's learner state.
+          if (
+            mapWindow.AuraAdventureMap &&
+            typeof mapWindow.AuraAdventureMap.refresh ===
+              "function"
+          ) {
+            mapWindow.AuraAdventureMap.refresh();
+
+            // Original map refresh may redraw
+            // checkpoint visuals. Apply Speaking
+            // status again afterwards.
+            mapWindow.AuraSpeakingUnlock.refresh();
+          }
+
+          setStatus(
+            "✓ 学习证据已连接 · Learner: " +
+            (
+              grammarReport.learnerId ||
+              "尚未选择学生"
+            ) +
+            " · Grammar: " +
+            grammarReport.status +
+            " · Speaking: " +
+            (
+              speakingReport.speakingEligible
+                ? "UNLOCKED"
+                : "LOCKED"
+            ),
+            false
+          );
+
+          console.info(
+            "[AURA EDU] Mastery map ready",
+            {
+              grammar: grammarReport,
+              speaking: speakingReport
+            }
+          );
+
+        } catch (error) {
+          console.error(
+            "[AURA EDU] Map integration:",
+            error
+          );
+
+          setStatus(
+            "地图已打开，但学习证据接入失败：" +
+            error.message,
+            true
+          );
+        }
+      }
+
+      frame.addEventListener(
+        "load",
+        initializeMap
+      );
+
+      window.addEventListener("pageshow", function () {
+        try {
+          const mapWindow = frame.contentWindow;
+
+          if (
+            mapWindow &&
+            mapWindow.AuraSpeakingUnlock
+          ) {
+            mapWindow.AuraSpeakingUnlock.refresh();
+          }
+        } catch (error) {
+          console.warn(
+            "[AURA EDU] Page refresh:",
+            error
+          );
+        }
+      });
+
+    })();
+  </script>
+
+</body>
+</html>

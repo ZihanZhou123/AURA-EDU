@@ -1,0 +1,1963 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AURA EDU | G3 Sentence Construction</title>
+<style>
+:root{
+  --navy:#17365d;
+  --teal:#218b83;
+  --bg:#f5f8fc;
+  --muted:#64748b;
+  --line:#dfe7ee;
+  --red:#b43c3c;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--bg);
+  color:#26354a;
+  font-family:Arial,"PingFang SC",sans-serif;
+  line-height:1.7;
+}
+header{
+  background:white;
+  border-bottom:1px solid var(--line);
+}
+nav{
+  max-width:1050px;
+  margin:auto;
+  padding:18px 22px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  flex-wrap:wrap;
+}
+nav a{
+  color:var(--navy);
+  text-decoration:none;
+}
+.logo{font-weight:800;font-size:22px}
+.links{display:flex;gap:17px;flex-wrap:wrap}
+main{
+  max-width:1000px;
+  margin:auto;
+  padding:35px 20px 70px;
+}
+h1,h2,h3{color:var(--navy)}
+h1{
+  font-size:clamp(29px,5vw,43px);
+  line-height:1.2;
+}
+p{color:var(--muted)}
+.card{
+  background:white;
+  padding:27px;
+  border:1px solid var(--line);
+  border-radius:16px;
+  margin:22px 0;
+}
+.eyebrow{
+  color:var(--teal);
+  font-size:12px;
+  font-weight:bold;
+  letter-spacing:2px;
+}
+.tag{
+  display:inline-block;
+  background:#e7f5f0;
+  color:#17645e;
+  padding:5px 12px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:bold;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:16px;
+}
+.grid.three{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+}
+.rule{
+  background:#f1f6f9;
+  padding:18px;
+  border-radius:12px;
+}
+.rule strong{color:var(--navy)}
+.notice{
+  background:#eaf5f3;
+  padding:17px;
+  border-left:4px solid var(--teal);
+  border-radius:8px;
+  margin:20px 0;
+}
+.warning{
+  background:#fff0f0;
+  padding:17px;
+  border-left:4px solid var(--red);
+  border-radius:8px;
+  margin:20px 0;
+  color:#963a3a;
+}
+.success{
+  background:#e8f7ee;
+  padding:17px;
+  border-left:4px solid #176c43;
+  border-radius:8px;
+  margin:20px 0;
+}
+button{
+  font:inherit;
+  cursor:pointer;
+  padding:11px 18px;
+  border-radius:9px;
+  background:white;
+  border:1px solid var(--line);
+  color:var(--navy);
+}
+button:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+}
+.btn{
+  background:var(--navy);
+  color:white;
+  border-color:var(--navy);
+}
+.btn.teal{
+  background:var(--teal);
+  border-color:var(--teal);
+}
+.btn.secondary{
+  background:white;
+  color:var(--navy);
+}
+.buttons{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-top:20px;
+}
+.hidden{display:none!important}
+.progress{
+  height:12px;
+  border-radius:12px;
+  overflow:hidden;
+  background:#e2e8f0;
+  margin:20px 0;
+}
+.fill{
+  height:100%;
+  width:0;
+  background:var(--teal);
+  transition:width .25s;
+}
+.question{
+  font-size:23px;
+  font-weight:bold;
+  color:var(--navy);
+  margin:20px 0;
+}
+.word-bank,.answer-area{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  min-height:65px;
+  padding:15px;
+  border-radius:12px;
+  border:2px dashed #c9d8e4;
+  margin:12px 0;
+  align-items:center;
+}
+.answer-area{
+  background:#f0f8f6;
+  border-color:#8ac9bc;
+}
+.word{
+  background:white;
+  border:1px solid #b8ccd9;
+  border-radius:8px;
+  padding:9px 14px;
+}
+.word:hover:not(:disabled){
+  background:#e7f5f0;
+}
+.feedback{
+  padding:16px;
+  background:#f1f6f9;
+  border-radius:10px;
+  margin-top:16px;
+  min-height:55px;
+}
+.feedback.success{
+  background:#e8f7ee;
+  color:#176c43;
+}
+.feedback.error{
+  background:#fff0f0;
+  color:#b43c3c;
+}
+.hint{
+  padding:16px;
+  background:#fff7e9;
+  border-left:4px solid #c68629;
+  border-radius:8px;
+  margin-top:15px;
+}
+.metric{
+  padding:19px;
+  background:#f0f6f8;
+  border-radius:12px;
+}
+.metric strong{
+  display:block;
+  color:var(--navy);
+  font-size:28px;
+}
+.metric span{
+  font-size:13px;
+  color:var(--muted);
+}
+.result-path{
+  background:linear-gradient(135deg,#17365d,#245e78);
+  padding:27px;
+  border-radius:16px;
+  margin:20px 0;
+}
+.result-path h3,.result-path p{
+  color:white;
+}
+.result-path strong{
+  font-size:28px;
+  color:white;
+}
+.small{font-size:13px}
+.identity-id{
+  font-family:monospace;
+  overflow-wrap:anywhere;
+}
+footer{
+  background:var(--navy);
+  padding:25px;
+  text-align:center;
+}
+footer p{color:#e0eaf3}
+
+/* SESSION IDENTITY LOCK */
+.lock-overlay{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  background:rgba(15,30,49,.86);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+}
+.lock-dialog{
+  width:100%;
+  max-width:560px;
+  background:white;
+  border-radius:18px;
+  padding:30px;
+  box-shadow:0 18px 60px rgba(0,0,0,.25);
+}
+.lock-dialog h2{
+  margin-top:0;
+  color:#a33232;
+}
+.lock-dialog p{
+  color:#344256;
+}
+.lock-detail{
+  background:#f1f5f9;
+  padding:15px;
+  border-radius:10px;
+  margin:15px 0;
+  overflow-wrap:anywhere;
+}
+.lock-detail strong{
+  color:var(--navy);
+}
+.lock-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:20px;
+}
+body.session-locked{
+  overflow:hidden;
+}
+body.session-locked main,
+body.session-locked header{
+  pointer-events:none;
+}
+.lock-overlay button{
+  pointer-events:auto;
+}
+.lock-state{
+  font-weight:bold;
+  color:#a33232;
+}
+@media(max-width:700px){
+  .grid,.grid.three{
+    grid-template-columns:1fr;
+  }
+  .card{padding:19px}
+  .lock-dialog{padding:22px}
+}
+</style>
+</head>
+<body>
+
+<header>
+<nav>
+  <a href="index.html" class="logo">AURA EDU</a>
+  <div class="links">
+    <a href="grammar-hub.html">Grammar Hub</a>
+    <a href="grammar-g1.html">G1</a>
+    <a href="grammar-g2.html">G2</a>
+    <a href="research.html">Research Lab</a>
+  </div>
+</nav>
+</header>
+
+<main>
+<div class="eyebrow">
+  AURA EDU / STAGE 21.3.3M
+</div>
+
+<h1>G3 — Simple Sentence Construction</h1>
+<p>
+  简单句构建 · 把词语组成正确的英语句子
+</p>
+
+<div class="notice">
+  <strong>学习说明：</strong>
+  点击词块，将它们按正确顺序组成句子。
+  点击已经选中的词块可以将其放回词库。
+  本模块评估预设句子的词序，不进行开放式写作评分。
+</div>
+
+<section class="card">
+  <h2>当前学习者 / Active Learner</h2>
+  <p id="learner-name">
+    正在检查学生身份...
+  </p>
+  <p class="small identity-id" id="learner-id"></p>
+  <p class="small identity-id" id="session-id"></p>
+  <p id="session-state" class="small"></p>
+
+  <div id="identity-warning"
+       class="warning hidden"
+       role="alert"></div>
+
+  <div class="buttons">
+    <a href="learner-manager.html">
+      前往 Learner Manager
+    </a>
+  </div>
+</section>
+
+<section class="card" id="intro">
+  <span class="tag">GRAMMAR MISSION G3</span>
+  <h2>📖 句子构建微课</h2>
+
+  <p>
+    英语简单陈述句常使用
+    <strong>Subject + Verb + Object</strong>
+    （主语 + 动词 + 宾语）。
+    有些句子使用主语、系动词和表语。
+  </p>
+
+  <div class="grid three">
+    <div class="rule">
+      <strong>Subject · 主语</strong>
+      <p>The girl</p>
+      <p>谁在做这件事？</p>
+    </div>
+    <div class="rule">
+      <strong>Verb · 动词</strong>
+      <p>reads</p>
+      <p>做什么？</p>
+    </div>
+    <div class="rule">
+      <strong>Object · 宾语</strong>
+      <p>books</p>
+      <p>动作涉及什么？</p>
+    </div>
+  </div>
+
+  <div class="notice">
+    <strong>完整例句：</strong>
+    The girl + reads + books.
+    <p>注意：不是每个英语句子都必须有宾语。</p>
+  </div>
+
+  <h3>学习流程</h3>
+
+  <div class="grid three">
+    <div class="rule">
+      <strong>01 · Diagnostic</strong>
+      <p>4 道独立词序诊断题。</p>
+    </div>
+    <div class="rule">
+      <strong>02 · Adaptive Practice</strong>
+      <p>6 道词块排序题，提供三层提示。</p>
+    </div>
+    <div class="rule">
+      <strong>03 · Reassessment</strong>
+      <p>4 道新题，独立完成。</p>
+    </div>
+  </div>
+
+  <div class="buttons">
+    <button class="btn" id="start">
+      开始 G3 学习任务 →
+    </button>
+  </div>
+</section>
+
+<section class="card hidden" id="learning">
+  <div class="eyebrow" id="stage-label"></div>
+  <h2 id="stage-title"></h2>
+  <p id="stage-description"></p>
+  <p class="small" id="count"></p>
+
+  <div class="progress">
+    <div class="fill" id="fill"></div>
+  </div>
+
+  <div class="question" id="question"></div>
+
+  <h3>词库 / Word Bank</h3>
+  <div class="word-bank" id="word-bank"></div>
+
+  <h3>你的句子 / Your Sentence</h3>
+  <div class="answer-area" id="answer-area"></div>
+
+  <div class="buttons">
+    <button class="btn secondary" id="reset-answer">
+      清空本题排列
+    </button>
+  </div>
+
+  <div class="feedback"
+       id="feedback"
+       aria-live="polite">
+    点击词块开始组句。
+  </div>
+
+  <div id="hint-panel" class="hidden">
+    <div class="buttons">
+      <button class="btn secondary" id="hint-btn">
+        💡 获取提示
+      </button>
+    </div>
+    <div class="hint hidden" id="hint-box"></div>
+    <p id="hint-count"></p>
+  </div>
+
+  <div class="buttons">
+    <button class="btn" id="check" disabled>
+      检查句子
+    </button>
+    <button class="btn teal hidden" id="next">
+      下一题 →
+    </button>
+  </div>
+</section>
+
+<section class="card hidden" id="transition">
+  <span class="tag" id="transition-tag"></span>
+  <h2 id="transition-title"></h2>
+  <p id="transition-description"></p>
+
+  <div class="grid">
+    <div class="metric">
+      <strong id="transition-score">—</strong>
+      <span>首次正确数</span>
+    </div>
+    <div class="metric">
+      <strong id="transition-hint">—</strong>
+      <span>最高提示等级</span>
+    </div>
+  </div>
+
+  <div class="buttons">
+    <button class="btn" id="continue">
+      继续 →
+    </button>
+  </div>
+</section>
+
+<section class="hidden" id="results">
+  <div class="card">
+    <span class="tag">G3 COMPLETED</span>
+    <h2>🎉 G3 学习报告</h2>
+
+    <div class="grid three">
+      <div class="metric">
+        <strong id="diagnostic-result">—</strong>
+        <span>诊断首次正确率</span>
+      </div>
+      <div class="metric">
+        <strong id="practice-result">—</strong>
+        <span>练习首次正确率</span>
+      </div>
+      <div class="metric">
+        <strong id="reassessment-result">—</strong>
+        <span>即时独立复测正确率</span>
+      </div>
+    </div>
+
+    <div class="result-path">
+      <h3>Provisional Learning State</h3>
+      <strong id="mastery">—</strong>
+      <h3>Recommended Learning Path</h3>
+      <strong id="path">—</strong>
+      <p id="explanation"></p>
+    </div>
+
+    <div class="card">
+      <h3>提示依赖</h3>
+      <p id="support"></p>
+      <h3>独立作答表现</h3>
+      <p id="independence"></p>
+    </div>
+
+    <div class="card">
+      <h3>词序错误记录</h3>
+      <ul id="errors"></ul>
+    </div>
+
+    <div class="card">
+      <h3>下一步学习建议</h3>
+      <p id="recommendation"></p>
+      <p>
+        本模块使用预设规则推荐学习路径。
+        延迟独立复测尚未实施，
+        即时复测不能证明长期掌握。
+      </p>
+    </div>
+
+    <div id="save-status"
+         class="notice"
+         role="status"
+         aria-live="polite">
+      正在检查保存状态...
+    </div>
+
+    <div class="buttons">
+      <button class="btn teal"
+              id="export" disabled>
+        导出 JSON 学习记录
+      </button>
+      <button class="btn secondary"
+              id="copy-json" disabled>
+        Copy JSON
+      </button>
+      <button class="btn secondary hidden"
+              id="retry-save">
+        重新尝试保存
+      </button>
+      <button class="btn secondary" id="restart">
+        重新开始
+      </button>
+      <button class="btn secondary" id="back-hub">
+        返回 Grammar Hub
+      </button>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- SESSION LOCK OVERLAY -->
+<div id="lock-overlay"
+     class="lock-overlay hidden"
+     role="dialog"
+     aria-modal="true"
+     aria-labelledby="lock-title">
+
+  <div class="lock-dialog">
+    <div class="eyebrow">
+      AURA EDU / IDENTITY PROTECTION
+    </div>
+
+    <h2 id="lock-title">
+      🔒 学习会话已暂停
+    </h2>
+
+    <p>
+      当前学生与本次学习会话绑定的学生不一致。
+      为避免不同学生的答题数据混合，
+      本次学习已暂停。
+    </p>
+
+    <div class="lock-detail">
+      <p>
+        <strong>会话绑定学生：</strong>
+        <span id="lock-bound">—</span>
+      </p>
+      <p>
+        <strong>当前选择学生：</strong>
+        <span id="lock-active">—</span>
+      </p>
+      <p class="small identity-id">
+        <strong>Session ID：</strong>
+        <span id="lock-session">—</span>
+      </p>
+    </div>
+
+    <p>
+      原有题目、词块排列、提示等级和答题进度
+      已保留在当前页面中。
+    </p>
+
+    <p class="lock-state">
+      请切换回原学习者，才能继续操作。
+    </p>
+
+    <div class="lock-actions">
+      <button class="btn"
+              id="check-identity">
+        检查是否已恢复身份
+      </button>
+      <button class="btn secondary"
+              id="open-manager">
+        打开 Learner Manager
+      </button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>AURA EDU · G3 Sentence Construction</p>
+  <p>
+    Identity-Bound Research Prototype · Browser-Local Records
+  </p>
+</footer>
+
+<script src="js/learner-identity.js"></script>
+<script>
+"use strict";
+
+const KEY="aura_g3_learning_records_v1";
+
+const BANK={
+ diagnostic:[
+  {
+    id:"G3-D01",
+    prompt:"把词语排列成正确的英语句子。",
+    words:["books.","reads","The girl"],
+    answer:["The girl","reads","books."],
+    type:"SVO"
+  },
+  {
+    id:"G3-D02",
+    prompt:"排列句子：我喜欢苹果。",
+    words:["apples.","I","like"],
+    answer:["I","like","apples."],
+    type:"SVO"
+  },
+  {
+    id:"G3-D03",
+    prompt:"排列句子：她很开心。",
+    words:["happy.","is","She"],
+    answer:["She","is","happy."],
+    type:"SVC"
+  },
+  {
+    id:"G3-D04",
+    prompt:"排列句子：他们踢足球。",
+    words:["football.","They","play"],
+    answer:["They","play","football."],
+    type:"SVO"
+  }
+ ],
+ practice:[
+  {
+    id:"G3-P01",
+    prompt:"排列句子：这个男孩喜欢音乐。",
+    words:["music.","likes","The boy"],
+    answer:["The boy","likes","music."],
+    type:"SVO",
+    hints:[
+      "先找出主语：谁喜欢音乐？",
+      "主语 The boy 应该放在句子开头。",
+      "正确结构是 The boy + likes + music."
+    ]
+  },
+  {
+    id:"G3-P02",
+    prompt:"排列句子：我们每天读书。",
+    words:["every day.","read","We","books"],
+    answer:["We","read","books","every day."],
+    type:"SVO+Time",
+    hints:[
+      "先找出主语 We。",
+      "一般陈述句中，主语 We 后面接动词 read。",
+      "结构：We + read + books + every day."
+    ]
+  },
+  {
+    id:"G3-P03",
+    prompt:"排列句子：我的妹妹是一名学生。",
+    words:["a student.","My sister","is"],
+    answer:["My sister","is","a student."],
+    type:"SVC",
+    hints:[
+      "My sister 是主语。",
+      "主语后面接 is，然后说明她的身份。",
+      "结构：My sister + is + a student."
+    ]
+  },
+  {
+    id:"G3-P04",
+    prompt:"排列句子：他们在学校学习英语。",
+    words:["English","at school.","They","study"],
+    answer:["They","study","English","at school."],
+    type:"SVO+Place",
+    hints:[
+      "谁在学习？先找到主语。",
+      "They 后面接 study，再接 English。",
+      "结构：They + study + English + at school."
+    ]
+  },
+  {
+    id:"G3-P05",
+    prompt:"排列句子：那只猫睡在沙发上。",
+    words:["on the sofa.","sleeps","The cat"],
+    answer:["The cat","sleeps","on the sofa."],
+    type:"SV+Place",
+    hints:[
+      "先找到主语 The cat。",
+      "The cat 后面接动词 sleeps。",
+      "结构：The cat + sleeps + on the sofa."
+    ]
+  },
+  {
+    id:"G3-P06",
+    prompt:"排列句子：她每天早上喝牛奶。",
+    words:["milk","She","every morning.","drinks"],
+    answer:["She","drinks","milk","every morning."],
+    type:"SVO+Time",
+    hints:[
+      "先找到主语 She。",
+      "She 后面接 drinks，然后是 milk。",
+      "结构：She + drinks + milk + every morning."
+    ]
+  }
+ ],
+ reassessment:[
+  {
+    id:"G3-R01",
+    prompt:"排列新句子：我的哥哥踢足球。",
+    words:["football.","My brother","plays"],
+    answer:["My brother","plays","football."],
+    type:"SVO"
+  },
+  {
+    id:"G3-R02",
+    prompt:"排列新句子：我们很开心。",
+    words:["happy.","We","are"],
+    answer:["We","are","happy."],
+    type:"SVC"
+  },
+  {
+    id:"G3-R03",
+    prompt:"排列新句子：孩子们在公园里跑步。",
+    words:["in the park.","run","The children"],
+    answer:["The children","run","in the park."],
+    type:"SV+Place"
+  },
+  {
+    id:"G3-R04",
+    prompt:"排列新句子：她每天读英语。",
+    words:["English","every day.","She","reads"],
+    answer:["She","reads","English","every day."],
+    type:"SVO+Time"
+  }
+ ]
+};
+
+const $=id=>document.getElementById(id);
+
+const show=id=>$(id).classList.remove("hidden");
+const hide=id=>$(id).classList.add("hidden");
+const set=(id,value)=>$(id).textContent=value;
+
+const percentage=(a,b)=>
+  b?Math.round(a/b*100):0;
+
+let stage="diagnostic";
+let index=0;
+let selected=[];
+let attempts=0;
+let hintLevel=0;
+let highestHint=0;
+let completed=false;
+let currentRecord=null;
+let session=null;
+let savedRecord=null;
+let currentWords=[];
+
+let identityLocked=false;
+let lockedSince=null;
+let identityEvents=[];
+
+/* =========================================
+   IDENTITY SERVICE
+========================================= */
+
+function identity(){
+  return window.AuraLearnerIdentity||null;
+}
+
+function learnerLabel(learner){
+  if(!learner)return "Unknown";
+  return learner.nickname||
+    learner.name||
+    learner.displayName||
+    learner.learnerName||
+    learner.id;
+}
+
+function getProfiles(){
+  try{
+    const raw=JSON.parse(
+      localStorage.getItem("aura_learner_profiles_v2")||"[]"
+    );
+    return Array.isArray(raw)?raw:[];
+  }catch(error){
+    return [];
+  }
+}
+
+function labelById(id){
+  const profile=getProfiles().find(
+    item=>item.id===id
+  );
+  return profile?learnerLabel(profile):id;
+}
+
+function getActiveId(){
+  const service=identity();
+  if(!service)return null;
+  const learner=service.getActiveLearner();
+  return learner?learner.id:null;
+}
+
+function hasSession(){
+  return Boolean(session&&session.sessionId);
+}
+
+function isIdentityValid(){
+  if(!hasSession())return true;
+  const activeId=getActiveId();
+  return Boolean(
+    activeId&&activeId===session.learnerId
+  );
+}
+
+/* =========================================
+   IDENTITY LOCK
+========================================= */
+
+function recordIdentityEvent(type,activeId){
+  if(!hasSession())return;
+
+  identityEvents.push({
+    type,
+    boundLearnerId:session.learnerId,
+    activeLearnerId:activeId,
+    timestamp:new Date().toISOString()
+  });
+}
+
+function lockSession(activeId){
+  if(!hasSession())return;
+
+  if(!identityLocked){
+    identityLocked=true;
+    lockedSince=new Date().toISOString();
+    recordIdentityEvent(
+      "IDENTITY_MISMATCH_PAUSE",
+      activeId
+    );
+  }
+
+  set("lock-bound",
+    labelById(session.learnerId)+
+    " ("+session.learnerId+")"
+  );
+
+  set("lock-active",
+    activeId?
+      labelById(activeId)+" ("+activeId+")":
+      "No active learner"
+  );
+
+  set("lock-session",session.sessionId);
+
+  show("lock-overlay");
+  document.body.classList.add("session-locked");
+
+  set("session-state",
+    "🔒 Session Paused — Identity Mismatch"
+  );
+
+  showWarning(
+    "当前学生与会话绑定学生不同，学习已暂停。"
+  );
+}
+
+function unlockSession(activeId){
+  if(!identityLocked)return;
+
+  identityLocked=false;
+
+  recordIdentityEvent(
+    "IDENTITY_RESTORED_RESUME",
+    activeId
+  );
+
+  lockedSince=null;
+
+  hide("lock-overlay");
+  document.body.classList.remove("session-locked");
+
+  set("session-state",
+    "Session Active — Identity Verified"
+  );
+
+  clearWarning();
+}
+
+function refreshIdentityLock(){
+  updateIdentity();
+
+  if(!hasSession()){
+    identityLocked=false;
+    hide("lock-overlay");
+    document.body.classList.remove("session-locked");
+    return true;
+  }
+
+  const activeId=getActiveId();
+
+  if(!activeId||activeId!==session.learnerId){
+    lockSession(activeId);
+    return false;
+  }
+
+  unlockSession(activeId);
+  return true;
+}
+
+/*
+ Every learning action must pass this guard.
+
+ The check reads the current identity again
+ immediately before performing the action.
+*/
+
+function guardSession(){
+  if(!hasSession())return false;
+  return refreshIdentityLock();
+}
+
+function updateIdentity(){
+  const service=identity();
+
+  if(!service){
+    set("learner-name",
+      "Identity Service 未加载"
+    );
+    set("learner-id","");
+    set("session-id","");
+    return;
+  }
+
+  const learner=service.getActiveLearner();
+
+  set("learner-name",
+    learner?learnerLabel(learner):
+    "尚未选择学习者"
+  );
+
+  set("learner-id",
+    learner?
+      "Active Learner ID: "+learner.id:
+      ""
+  );
+
+  set("session-id",
+    session?
+      "Bound Session: "+session.sessionId+
+      " | Bound Learner: "+session.learnerId:
+      ""
+  );
+
+  if(session&&!identityLocked){
+    set("session-state",
+      "Session Active — Identity Verified"
+    );
+  }
+}
+
+function showWarning(message){
+  set("identity-warning",message);
+  show("identity-warning");
+}
+
+function clearWarning(){
+  hide("identity-warning");
+  set("identity-warning","");
+}
+
+/* =========================================
+   SESSION START
+========================================= */
+
+function start(){
+  /*
+   Do not replace an existing unfinished
+   session if its identity is mismatched.
+  */
+  if(hasSession()&&!guardSession()){
+    return;
+  }
+
+  const service=identity();
+
+  if(!service){
+    showWarning(
+      "Identity Service 未加载，不能开始。"
+    );
+    return;
+  }
+
+  const created=service.startSession("G3");
+
+  if(!created.ok){
+    showWarning(
+      created.message||
+      "无法创建 G3 学习会话。"
+    );
+    updateIdentity();
+    return;
+  }
+
+  session={
+    ...created.session,
+    topic:"Simple Sentence Construction",
+    records:[],
+    result:null
+  };
+
+  savedRecord=null;
+  identityEvents=[];
+  identityLocked=false;
+  lockedSince=null;
+
+  stage="diagnostic";
+  index=0;
+  highestHint=0;
+
+  clearWarning();
+  updateIdentity();
+
+  hide("intro");
+  hide("results");
+  hide("transition");
+  show("learning");
+
+  $("export").disabled=true;
+  $("copy-json").disabled=true;
+  hide("retry-save");
+
+  refreshIdentityLock();
+  load();
+}
+
+/* =========================================
+   QUESTION HELPERS
+========================================= */
+
+function shuffle(items){
+  const result=items.slice();
+
+  for(let i=result.length-1;i>0;i--){
+    const j=Math.floor(
+      Math.random()*(i+1)
+    );
+    [result[i],result[j]]=[
+      result[j],result[i]
+    ];
+  }
+
+  return result;
+}
+
+function load(){
+  if(!guardSession())return;
+
+  const q=BANK[stage][index];
+
+  selected=[];
+  attempts=0;
+  hintLevel=0;
+  completed=false;
+
+  currentRecord={
+    questionId:q.id,
+    stage,
+    structure:q.type,
+    firstAttemptCorrect:null,
+    attempts:[],
+    highestHintUsed:0,
+    completedCorrectly:false,
+    errors:[],
+    startedAt:new Date().toISOString(),
+    completedAt:null
+  };
+
+  const titles={
+    diagnostic:[
+      "STAGE 01 / DIAGNOSTIC",
+      "独立诊断测试",
+      "请独立排列句子。本阶段没有提示，也不能重试。"
+    ],
+    practice:[
+      "STAGE 02 / ADAPTIVE PRACTICE",
+      "自适应词序练习",
+      "先独立尝试，遇到困难时可以使用三层提示。"
+    ],
+    reassessment:[
+      "STAGE 03 / REASSESSMENT",
+      "即时独立复测",
+      "请排列四道新句子。本阶段没有提示，也不能重试。"
+    ]
+  };
+
+  const info=titles[stage];
+
+  set("stage-label",info[0]);
+  set("stage-title",info[1]);
+  set("stage-description",info[2]);
+  set("count",
+    "Question "+(index+1)+
+    " / "+BANK[stage].length
+  );
+  set("question",q.prompt);
+
+  $("fill").style.width=
+    index/BANK[stage].length*100+"%";
+
+  currentWords=shuffle(q.words).map(
+    (text,i)=>({id:i,text})
+  );
+
+  currentRecord.wordOrder=
+    currentWords.map(w=>w.text);
+
+  renderWords();
+
+  setFeedback(
+    "点击词块，将它们组成完整句子。",
+    ""
+  );
+
+  hide("hint-box");
+  set("hint-box","");
+  set("hint-count","提示使用：0 / 3");
+
+  if(stage==="practice"){
+    show("hint-panel");
+    $("hint-btn").disabled=false;
+  }else{
+    hide("hint-panel");
+  }
+
+  show("check");
+  hide("next");
+
+  $("check").disabled=true;
+  $("reset-answer").disabled=false;
+}
+
+function renderWords(){
+  const bank=$("word-bank");
+  const area=$("answer-area");
+
+  bank.replaceChildren();
+  area.replaceChildren();
+
+  currentWords.forEach(word=>{
+    if(selected.includes(word.id))return;
+
+    const button=document.createElement("button");
+    button.className="word";
+    button.textContent=word.text;
+    button.type="button";
+    button.disabled=completed;
+
+    button.addEventListener("click",()=>{
+      if(!guardSession())return;
+      if(completed)return;
+
+      selected.push(word.id);
+      renderWords();
+    });
+
+    bank.appendChild(button);
+  });
+
+  selected.forEach(id=>{
+    const word=currentWords.find(
+      w=>w.id===id
+    );
+
+    if(!word)return;
+
+    const button=document.createElement("button");
+    button.className="word";
+    button.textContent=word.text;
+    button.type="button";
+    button.disabled=completed;
+
+    button.addEventListener("click",()=>{
+      if(!guardSession())return;
+      if(completed)return;
+
+      selected=selected.filter(x=>x!==id);
+      renderWords();
+    });
+
+    area.appendChild(button);
+  });
+
+  $("check").disabled=
+    completed||
+    selected.length!==currentWords.length;
+}
+
+function selectedSentence(){
+  return selected.map(id=>{
+    const word=currentWords.find(
+      w=>w.id===id
+    );
+    return word?word.text:"";
+  });
+}
+
+function setFeedback(message,type){
+  const box=$("feedback");
+  box.textContent=message;
+  box.className="feedback";
+
+  if(type)box.classList.add(type);
+}
+
+/* =========================================
+   HINT SYSTEM
+========================================= */
+
+function hint(){
+  if(!guardSession())return;
+
+  if(stage!=="practice"||
+     completed||
+     hintLevel>=3){
+    return;
+  }
+
+  hintLevel++;
+  highestHint=Math.max(
+    highestHint,hintLevel
+  );
+
+  currentRecord.highestHintUsed=hintLevel;
+
+  const q=BANK[stage][index];
+
+  set("hint-box",
+    "Hint "+hintLevel+"："+
+    q.hints[hintLevel-1]
+  );
+
+  set("hint-count",
+    "提示使用："+hintLevel+" / 3"
+  );
+
+  show("hint-box");
+
+  if(hintLevel===3){
+    $("hint-btn").disabled=true;
+  }
+}
+
+/* =========================================
+   ANSWER CHECK
+========================================= */
+
+function check(){
+  if(!guardSession())return;
+
+  if(completed||
+     selected.length!==currentWords.length){
+    return;
+  }
+
+  const q=BANK[stage][index];
+  const actual=selectedSentence();
+
+  const correct=
+    actual.join(" ")===
+    q.answer.join(" ");
+
+  attempts++;
+
+  currentRecord.attempts.push({
+    attemptNumber:attempts,
+    selectedWords:actual.slice(),
+    correct,
+    hintLevelAtAttempt:hintLevel,
+    timestamp:new Date().toISOString()
+  });
+
+  if(attempts===1){
+    currentRecord.firstAttemptCorrect=correct;
+  }
+
+  if(!correct){
+    currentRecord.errors.push({
+      code:"G3-WORD-ORDER",
+      structure:q.type,
+      selectedSentence:actual.join(" "),
+      expectedSentence:q.answer.join(" ")
+    });
+  }
+
+  if(correct){
+    currentRecord.completedCorrectly=true;
+
+    setFeedback(
+      "回答正确！"+q.answer.join(" "),
+      "success"
+    );
+
+    finishQuestion();
+    return;
+  }
+
+  if(stage!=="practice"){
+    setFeedback(
+      "这道题没有答对。正确句子："+q.answer.join(" "),
+      "error"
+    );
+    finishQuestion();
+    return;
+  }
+
+  if(attempts>=3){
+    setFeedback(
+      "已尝试三次。正确句子："+q.answer.join(" "),
+      "error"
+    );
+    finishQuestion();
+    return;
+  }
+
+  setFeedback(
+    "词序还不正确。想一想：谁？做什么？其他信息放在哪里？",
+    "error"
+  );
+}
+
+function finishQuestion(){
+  if(!guardSession())return;
+
+  completed=true;
+
+  currentRecord.completedAt=
+    new Date().toISOString();
+
+  session.records.push(currentRecord);
+
+  hide("check");
+  show("next");
+
+  $("hint-btn").disabled=true;
+  $("reset-answer").disabled=true;
+
+  renderWords();
+
+  $("fill").style.width=
+    (index+1)/BANK[stage].length*100+"%";
+
+  const last=
+    index===BANK[stage].length-1;
+
+  set("next",
+    last?"完成本阶段 →":"下一题 →"
+  );
+}
+
+function next(){
+  if(!guardSession())return;
+  if(!completed)return;
+
+  index++;
+
+  if(index<BANK[stage].length){
+    load();
+  }else{
+    finishStage();
+  }
+}
+
+/* =========================================
+   SCORING
+========================================= */
+
+function stageRecords(name){
+  return session.records.filter(
+    x=>x.stage===name
+  );
+}
+
+function score(name){
+  const records=stageRecords(name);
+
+  const correct=records.filter(
+    x=>x.firstAttemptCorrect===true
+  ).length;
+
+  return {
+    correct,
+    total:records.length,
+    percent:percentage(
+      correct,records.length
+    )
+  };
+}
+
+function finishStage(){
+  if(!guardSession())return;
+
+  hide("learning");
+
+  if(stage==="reassessment"){
+    results();
+    return;
+  }
+
+  show("transition");
+
+  const s=score(stage);
+
+  set("transition-score",
+    s.correct+" / "+s.total
+  );
+
+  set("transition-hint",
+    highestHint?"H"+highestHint:"None"
+  );
+
+  if(stage==="diagnostic"){
+    set("transition-tag",
+      "DIAGNOSTIC COMPLETED"
+    );
+
+    set("transition-title",
+      "诊断完成！"
+    );
+
+    set("transition-description",
+      "你首次答对 "+s.correct+
+      " / "+s.total+
+      " 道题。接下来可以通过三层提示练习句子构建。"
+    );
+
+    set("continue",
+      "开始自适应练习 →"
+    );
+  }else{
+    set("transition-tag",
+      "PRACTICE COMPLETED"
+    );
+
+    set("transition-title",
+      "准备好独立复测了吗？"
+    );
+
+    set("transition-description",
+      "接下来是四道新句子，没有提示，也不能重试。"
+    );
+
+    set("continue",
+      "开始独立复测 →"
+    );
+  }
+}
+
+function continueStage(){
+  if(!guardSession())return;
+
+  hide("transition");
+
+  stage=
+    stage==="diagnostic"?
+      "practice":"reassessment";
+
+  index=0;
+
+  show("learning");
+  load();
+}
+
+/* =========================================
+   LEARNING DECISION
+========================================= */
+
+function decide(){
+  const d=score("diagnostic");
+  const r=score("reassessment");
+
+  const highSupport=
+    stageRecords("practice").some(
+      x=>x.highestHintUsed>=2
+    );
+
+  if(r.percent<50){
+    return {
+      mastery:"Needs Support",
+      path:"Foundation",
+      explanation:
+        "即时独立复测中词序错误较多，建议继续学习基础句子结构。",
+      next:
+        "复习主语、动词、宾语的作用，使用简单词块进行更多练习。"
+    };
+  }
+
+  if(d.percent>=75&&
+     r.percent>=75&&
+     highestHint<=1&&
+     !highSupport){
+    return {
+      mastery:"Provisional Mastery",
+      path:"Challenge",
+      explanation:
+        "诊断和即时独立复测表现较好，且提示依赖较少，但不能据此证明长期掌握。",
+      next:
+        "尝试更复杂的句子结构和独立写句，并在未来完成延迟复测。"
+    };
+  }
+
+  return {
+    mastery:"Developing",
+    path:"Guided",
+    explanation:
+      "你已表现出部分句子构建能力，建议继续通过引导练习巩固。",
+    next:
+      "针对错误较多的句型进行练习，再尝试新的独立句子构建任务。"
+  };
+}
+
+function summarizeErrors(){
+  const groups={};
+  let total=0;
+
+  session.records.forEach(record=>{
+    record.errors.forEach(error=>{
+      total++;
+      groups[error.structure]=
+        (groups[error.structure]||0)+1;
+    });
+  });
+
+  return {total,groups};
+}
+
+/* =========================================
+   RESULTS
+========================================= */
+
+function results(){
+  if(!guardSession())return;
+
+  hide("learning");
+  hide("transition");
+  show("results");
+
+  const d=score("diagnostic");
+  const p=score("practice");
+  const r=score("reassessment");
+
+  const decision=decide();
+  const errors=summarizeErrors();
+
+  set("diagnostic-result",d.percent+"%");
+  set("practice-result",p.percent+"%");
+  set("reassessment-result",r.percent+"%");
+
+  set("mastery",decision.mastery);
+  set("path",decision.path);
+  set("explanation",decision.explanation);
+  set("recommendation",decision.next);
+
+  const practice=stageRecords("practice");
+
+  const hintQuestions=practice.filter(
+    x=>x.highestHintUsed>0
+  ).length;
+
+  set("support",
+    practice.length+
+    " 道练习题中有 "+
+    hintQuestions+
+    " 道使用了提示。最高提示等级："+(
+      highestHint?"H"+highestHint:"None"
+    )+"。"
+  );
+
+  set("independence",
+    "即时独立复测首次答对 "+
+    r.correct+" / "+r.total+" 道题。"
+  );
+
+  const list=$("errors");
+  list.replaceChildren();
+
+  if(errors.total===0){
+    const li=document.createElement("li");
+    li.textContent="没有记录到错误词序。";
+    list.appendChild(li);
+  }else{
+    Object.entries(errors.groups).forEach(
+      ([type,count])=>{
+        const li=document.createElement("li");
+        li.textContent=
+          "句型 "+type+
+          "：记录到 "+count+
+          " 次错误排列。";
+        list.appendChild(li);
+      }
+    );
+  }
+
+  session.completedAt=
+    new Date().toISOString();
+
+  session.result={
+    diagnostic:d,
+    practice:p,
+    reassessment:r,
+    highestHintLevel:highestHint,
+    masteryState:decision.mastery,
+    recommendedPath:decision.path,
+    decisionExplanation:decision.explanation,
+    errorSummary:errors,
+    delayedReassessment:"Not implemented"
+  };
+
+  save();
+}
+
+/* =========================================
+   SAVE PROTECTION
+========================================= */
+
+function save(){
+  if(!session||!session.result)return;
+
+  if(!guardSession()){
+    saveError(
+      "当前学生与会话绑定学生不同，不能保存。"
+    );
+    return;
+  }
+
+  const service=identity();
+
+  if(!service){
+    saveError(
+      "Identity Service 未加载。"
+    );
+    return;
+  }
+
+  if(savedRecord){
+    saveSuccess(
+      "本次学习会话已保存，无需重复保存。"
+    );
+    return;
+  }
+
+  /*
+   Copy the completed session with its
+   identity pause/resume event history.
+
+   Existing historical records are not
+   modified or reassigned.
+  */
+
+  const recordToSave={
+    ...session,
+    identityEvents:identityEvents.slice()
+  };
+
+  const result=service.saveCompletedSession(
+    recordToSave,
+    recordToSave,
+    KEY
+  );
+
+  if(!result.ok){
+    saveError(
+      result.message||
+      result.error||
+      "保存失败。"
+    );
+    updateIdentity();
+    return;
+  }
+
+  savedRecord=result.record;
+  session=savedRecord;
+
+  saveSuccess(
+    "学习记录已成功保存，并绑定至原学生身份。"
+  );
+
+  updateIdentity();
+}
+
+function saveSuccess(message){
+  const box=$("save-status");
+  box.className="success";
+  box.textContent=message;
+
+  hide("retry-save");
+
+  $("export").disabled=false;
+  $("copy-json").disabled=false;
+}
+
+function saveError(message){
+  const box=$("save-status");
+  box.className="warning";
+  box.textContent="保存失败："+message;
+
+  show("retry-save");
+
+  $("export").disabled=true;
+  $("copy-json").disabled=true;
+}
+
+/* =========================================
+   JSON EXPORT
+========================================= */
+
+function exportJSON(){
+  if(!guardSession())return;
+  if(!savedRecord)return;
+
+  const blob=new Blob(
+    [JSON.stringify(savedRecord,null,2)],
+    {type:"application/json"}
+  );
+
+  const url=URL.createObjectURL(blob);
+  const link=document.createElement("a");
+
+  link.href=url;
+  link.download=
+    "AURA_G3_"+savedRecord.sessionId+".json";
+
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+
+  setTimeout(
+    ()=>URL.revokeObjectURL(url),
+    1000
+  );
+}
+
+async function copyJSON(){
+  if(!guardSession())return;
+  if(!savedRecord)return;
+
+  const value=JSON.stringify(
+    savedRecord,null,2
+  );
+
+  try{
+    await navigator.clipboard.writeText(value);
+    alert("JSON 已复制到剪贴板。");
+  }catch(error){
+    const area=document.createElement("textarea");
+    area.value=value;
+    area.style.position="fixed";
+    area.style.top="10px";
+    area.style.left="10px";
+    area.style.width="90%";
+    area.style.height="200px";
+
+    document.body.appendChild(area);
+    area.focus();
+    area.select();
+
+    alert(
+      "请按 Command + C 复制 JSON，然后关闭此提示。"
+    );
+
+    area.remove();
+  }
+}
+
+/* =========================================
+   BUTTON EVENTS
+========================================= */
+
+$("start").addEventListener(
+  "click",start
+);
+
+$("hint-btn").addEventListener(
+  "click",hint
+);
+
+$("check").addEventListener(
+  "click",check
+);
+
+$("next").addEventListener(
+  "click",next
+);
+
+$("continue").addEventListener(
+  "click",continueStage
+);
+
+$("export").addEventListener(
+  "click",exportJSON
+);
+
+$("copy-json").addEventListener(
+  "click",copyJSON
+);
+
+$("retry-save").addEventListener(
+  "click",save
+);
+
+$("restart").addEventListener(
+  "click",()=>{
+    if(!guardSession())return;
+    start();
+  }
+);
+
+$("reset-answer").addEventListener(
+  "click",()=>{
+    if(!guardSession())return;
+    if(completed)return;
+
+    selected=[];
+    renderWords();
+  }
+);
+
+$("back-hub").addEventListener(
+  "click",()=>{
+    if(!guardSession())return;
+    window.location.href="grammar-hub.html";
+  }
+);
+
+/* =========================================
+   LOCK CONTROLS
+========================================= */
+
+$("check-identity").addEventListener(
+  "click",refreshIdentityLock
+);
+
+$("open-manager").addEventListener(
+  "click",()=>{
+    window.open(
+      "learner-manager.html",
+      "_blank"
+    );
+  }
+);
+
+/* =========================================
+   CROSS-TAB IDENTITY MONITORING
+========================================= */
+
+window.addEventListener(
+  "storage",
+  event=>{
+    if(
+      event.key==="aura_active_learner_id_v2"||
+      event.key==="aura_learner_profiles_v2"||
+      event.key===null
+    ){
+      refreshIdentityLock();
+    }
+  }
+);
+
+window.addEventListener(
+  "focus",
+  refreshIdentityLock
+);
+
+window.addEventListener(
+  "pageshow",
+  refreshIdentityLock
+);
+
+document.addEventListener(
+  "visibilitychange",
+  ()=>{
+    if(!document.hidden){
+      refreshIdentityLock();
+    }
+  }
+);
+
+/*
+ A lightweight check protects against
+ same-tab identity changes that do not
+ trigger the storage event.
+*/
+
+setInterval(
+  refreshIdentityLock,
+  500
+);
+
+/* =========================================
+   INITIALIZATION
+========================================= */
+
+updateIdentity();
+refreshIdentityLock();
+
+console.log(
+  "[AURA G3] Session Identity Lock ready."
+);
+</script>
+</body>
+</html>

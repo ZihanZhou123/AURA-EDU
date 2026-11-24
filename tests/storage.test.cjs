@@ -1,0 +1,11 @@
+const vm=require('vm'),fs=require('fs'),assert=require('node:assert/strict');
+const map=new Map([['aura_active_learner_id_v2','a']]);let fail=false;
+const env={console,crypto:require('crypto').webcrypto,navigator:{},localStorage:{getItem:k=>map.get(k)||null,setItem:(k,v)=>{if(fail)throw Error('quota');map.set(k,v);}}};env.window=env;vm.createContext(env);for(const f of ['learning-content','learning-engine','learning-storage'])vm.runInContext(fs.readFileSync(__dirname+'/../js/'+f+'.js','utf8'),env);
+const S=env.AuraLearningStore;
+(async()=>{let count=0;const pass=name=>{count++;console.log('PASS '+name)};
+ const fresh=S.read('a');assert.equal(fresh.revision,0);const state=await S.update('a',0,d=>{d.partner='Luna'});assert.equal(state.revision,1);assert.equal(S.read('a').partner,'Luna');pass('preferences persist with revision');
+ await assert.rejects(()=>S.update('a',0,d=>d.partner='Mia'),/另一个标签/);assert.equal(S.read('a').partner,'Luna');pass('stale tab cannot overwrite newer state');
+ const before=map.get(S.PREFIX+'a');fail=true;await assert.rejects(()=>S.update('a',1,d=>d.partner='Finn'),/quota/);assert.equal(map.get(S.PREFIX+'a'),before);fail=false;pass('quota failure preserves prior stored evidence');
+ map.set('aura_active_learner_id_v2','b');await assert.rejects(()=>S.update('a',1,d=>d.partner='Finn'),/身份/);assert.equal(S.read('a').partner,'Luna');pass('identity change prevents cross-learner write');
+ const bad='{invalid';map.set(S.PREFIX+'b',bad);assert.throws(()=>S.read('b'));assert.equal(map.get(S.PREFIX+'b'),bad);pass('corrupt records are not silently overwritten');
+ console.log('ALL '+count+' STORAGE TESTS PASSED');})();

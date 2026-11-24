@@ -1,0 +1,1215 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>AURA EDU | Research Analytics</title>
+
+  <style>
+    :root {
+      --navy: #17365d;
+      --teal: #218b83;
+      --bg: #f8fafc;
+      --white: #ffffff;
+      --text: #26354a;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --blue: #5384c4;
+      --orange: #df9b45;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+    }
+
+    header {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .nav {
+      max-width: 1200px;
+      margin: auto;
+      padding: 18px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .logo {
+      color: var(--navy);
+      text-decoration: none;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    nav a {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    nav a:hover {
+      color: var(--teal);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 40px 24px 70px;
+    }
+
+    .eyebrow {
+      color: var(--teal);
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      color: var(--navy);
+      font-size: clamp(32px, 5vw, 46px);
+      line-height: 1.2;
+      margin: 14px 0;
+    }
+
+    h2 {
+      color: var(--navy);
+      font-size: 25px;
+      margin: 0 0 15px;
+    }
+
+    h3 {
+      color: var(--navy);
+      margin: 0 0 12px;
+    }
+
+    p {
+      color: var(--muted);
+    }
+
+    .intro {
+      max-width: 850px;
+      margin-bottom: 30px;
+    }
+
+    .notice {
+      background: #eaf5f3;
+      border-left: 4px solid var(--teal);
+      padding: 16px 20px;
+      border-radius: 8px;
+      margin: 22px 0;
+      font-size: 14px;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 26px;
+      margin-bottom: 22px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .grid.three {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .grid.four {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .metric {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px;
+    }
+
+    .metric-label {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .metric-value {
+      color: var(--navy);
+      font-size: 30px;
+      font-weight: bold;
+      margin-top: 9px;
+    }
+
+    .metric-note {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 8px;
+    }
+
+    .filters {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      align-items: flex-end;
+    }
+
+    .filter {
+      flex: 1;
+      min-width: 180px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      font: inherit;
+      background: white;
+    }
+
+    .chart-row {
+      margin: 20px 0;
+    }
+
+    .chart-label {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    .bar-track {
+      background: #e8edf3;
+      border-radius: 8px;
+      height: 15px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 8px;
+      transition: width .35s ease;
+    }
+
+    .bar-fill.initial {
+      background: var(--blue);
+    }
+
+    .bar-fill.immediate {
+      background: var(--teal);
+    }
+
+    .bar-fill.delayed {
+      background: var(--orange);
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      margin: 15px 0;
+      font-size: 13px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 3px;
+    }
+
+    .dot.initial {
+      background: var(--blue);
+    }
+
+    .dot.immediate {
+      background: var(--teal);
+    }
+
+    .dot.delayed {
+      background: var(--orange);
+    }
+
+    .stage {
+      margin-bottom: 22px;
+    }
+
+    .stage-title {
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: var(--navy);
+    }
+
+    .stage-detail {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .path-box {
+      background: linear-gradient(
+        135deg,
+        #17365d,
+        #245e78
+      );
+      color: white;
+      padding: 28px;
+      border-radius: 15px;
+    }
+
+    .path-box h3,
+    .path-box p {
+      color: white;
+    }
+
+    .path-name {
+      font-size: 30px;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+
+    .evidence-list {
+      padding-left: 20px;
+      color: var(--muted);
+    }
+
+    .evidence-list li {
+      margin-bottom: 12px;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 20px;
+      background: #e7f5f0;
+      color: #17645e;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 650px;
+    }
+
+    th,
+    td {
+      text-align: left;
+      padding: 13px 12px;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+
+    th {
+      color: var(--navy);
+      background: #f1f6f9;
+    }
+
+    .button {
+      display: inline-block;
+      background: var(--navy);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 9px;
+      text-decoration: none;
+      border: none;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .button:hover {
+      background: var(--teal);
+    }
+
+    .small {
+      font-size: 13px;
+    }
+
+    footer {
+      background: var(--navy);
+      padding: 35px 20px;
+      text-align: center;
+    }
+
+    footer p {
+      color: #e0eaf3;
+    }
+
+    @media (max-width: 900px) {
+      .grid.four,
+      .grid.three {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 650px) {
+      .grid,
+      .grid.four,
+      .grid.three {
+        grid-template-columns: 1fr;
+      }
+
+      .container {
+        padding: 28px 18px 50px;
+      }
+
+      .card {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="nav">
+    <a class="logo" href="research.html">
+      AURA EDU
+    </a>
+
+    <nav>
+      <a href="index.html">AURA Learn</a>
+      <a href="research.html">Research Lab</a>
+      <a href="decision-explorer.html">
+        Decision Explorer
+      </a>
+      <a href="#dashboard">Dashboard</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container" id="dashboard">
+
+  <div class="intro">
+    <div class="eyebrow">
+      AURA EDU / RESEARCH ANALYTICS
+    </div>
+
+    <h1>Learning Analytics Dashboard</h1>
+
+    <p>
+      Exploring grammar learning evidence,
+      instructional support and independent
+      reassessment within a proposed adaptive
+      learning research framework.
+    </p>
+  </div>
+
+  <div class="notice">
+    <strong>Simulated Research Data:</strong>
+    All learner records shown here are fictional
+    demonstration data. The dashboard does not
+    contain real student observations or empirical
+    research findings.
+  </div>
+
+  <!-- FILTERS -->
+  <section class="card">
+
+    <h2>Explore Learning Evidence</h2>
+
+    <div class="filters">
+
+      <div class="filter">
+        <label for="learner-select">
+          Select Learner
+        </label>
+
+        <select id="learner-select">
+          <option value="A">Student A</option>
+          <option value="B">Student B</option>
+          <option value="C">Student C</option>
+        </select>
+      </div>
+
+      <div class="filter">
+        <label for="grammar-select">
+          Grammar Knowledge Point
+        </label>
+
+        <select id="grammar-select">
+          <option value="G1">G1 — Verb to Be</option>
+          <option value="G2">
+            G2 — Subject–Verb Agreement
+          </option>
+          <option value="G3">
+            G3 — Sentence Construction
+          </option>
+        </select>
+      </div>
+
+    </div>
+
+    <p class="small">
+      Select a simulated learner and grammar knowledge
+      point to update the dashboard.
+    </p>
+
+  </section>
+
+
+  <!-- SUMMARY METRICS -->
+  <section>
+
+    <div class="grid four">
+
+      <div class="metric">
+        <div class="metric-label">
+          First-Attempt Accuracy
+        </div>
+        <div class="metric-value" id="initial-metric">
+          —
+        </div>
+        <div class="metric-note">
+          Initial independent responses
+        </div>
+      </div>
+
+      <div class="metric">
+        <div class="metric-label">
+          Immediate Reassessment
+        </div>
+        <div class="metric-value" id="immediate-metric">
+          —
+        </div>
+        <div class="metric-note">
+          New questions without hints
+        </div>
+      </div>
+
+      <div class="metric">
+        <div class="metric-label">
+          Delayed Reassessment
+        </div>
+        <div class="metric-value" id="delayed-metric">
+          —
+        </div>
+        <div class="metric-note">
+          Illustrative seven-day interval
+        </div>
+      </div>
+
+      <div class="metric">
+        <div class="metric-label">
+          Highest Hint Level
+        </div>
+        <div class="metric-value" id="hint-metric">
+          —
+        </div>
+        <div class="metric-note">
+          Support used during practice
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- PERFORMANCE COMPARISON -->
+  <section class="card">
+
+    <div class="eyebrow">
+      01 / PERFORMANCE COMPARISON
+    </div>
+
+    <h2>Grammar Performance Across Stages</h2>
+
+    <div class="legend">
+      <div class="legend-item">
+        <span class="dot initial"></span>
+        Initial
+      </div>
+
+      <div class="legend-item">
+        <span class="dot immediate"></span>
+        Immediate
+      </div>
+
+      <div class="legend-item">
+        <span class="dot delayed"></span>
+        Delayed
+      </div>
+    </div>
+
+    <div id="performance-chart"></div>
+
+    <p class="small">
+      Each assessment stage contains four simulated
+      independent items. These small samples are
+      insufficient to establish reliable mastery.
+    </p>
+
+  </section>
+
+
+  <!-- KNOWLEDGE POINT COMPARISON -->
+  <section class="card">
+
+    <div class="eyebrow">
+      02 / KNOWLEDGE-LEVEL EVIDENCE
+    </div>
+
+    <h2>Performance Across G1, G2 and G3</h2>
+
+    <div id="knowledge-chart"></div>
+
+    <p class="small">
+      Bars show immediate independent reassessment
+      accuracy for the selected simulated learner.
+    </p>
+
+  </section>
+
+
+  <!-- REASSESSMENT -->
+  <section class="card">
+
+    <div class="eyebrow">
+      03 / TWO-STAGE REASSESSMENT
+    </div>
+
+    <h2>Independent Application and Retention</h2>
+
+    <div class="grid">
+
+      <div>
+
+        <div class="stage">
+          <div class="stage-title">
+            Immediate Reassessment
+          </div>
+
+          <div class="stage-detail" id="immediate-detail">
+            —
+          </div>
+        </div>
+
+        <div class="stage">
+          <div class="stage-title">
+            Delayed Reassessment
+          </div>
+
+          <div class="stage-detail" id="delayed-detail">
+            —
+          </div>
+        </div>
+
+      </div>
+
+      <div class="path-box">
+
+        <h3>Evidence Interpretation</h3>
+
+        <p id="reassessment-interpretation"></p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ADAPTIVE DECISION -->
+  <section class="card">
+
+    <div class="eyebrow">
+      04 / EXPLAINABLE ADAPTATION
+    </div>
+
+    <h2>Instructional Recommendation</h2>
+
+    <div class="grid">
+
+      <div class="path-box">
+
+        <div class="small">
+          PROVISIONAL LEARNING PATH
+        </div>
+
+        <div class="path-name" id="learning-path">
+          —
+        </div>
+
+        <p id="path-description"></p>
+
+      </div>
+
+      <div>
+
+        <h3>Decision Evidence</h3>
+
+        <ul
+          class="evidence-list"
+          id="decision-evidence"
+        ></ul>
+
+      </div>
+
+    </div>
+
+    <p class="small">
+      These recommendations are generated by
+      illustrative, rule-based thresholds. They are
+      not validated classifications of learner ability.
+    </p>
+
+  </section>
+
+
+  <!-- RESEARCH DATA TABLE -->
+  <section class="card">
+
+    <div class="eyebrow">
+      05 / TRANSPARENT DATA
+    </div>
+
+    <h2>Simulated Assessment Records</h2>
+
+    <div class="table-wrap">
+
+      <table>
+        <thead>
+          <tr>
+            <th>Grammar</th>
+            <th>Initial</th>
+            <th>Immediate</th>
+            <th>Delayed</th>
+            <th>Hint</th>
+          </tr>
+        </thead>
+
+        <tbody id="data-table"></tbody>
+      </table>
+
+    </div>
+
+    <p class="small">
+      Scores represent correct answers out of four
+      fictional items at each assessment stage.
+      Hint level refers to practice support,
+      not hints during independent assessments.
+    </p>
+
+  </section>
+
+
+  <!-- RESEARCH LIMITATIONS -->
+  <section class="card">
+
+    <div class="eyebrow">
+      RESEARCH TRANSPARENCY
+    </div>
+
+    <h2>Methodological Limitations</h2>
+
+    <p>
+      This dashboard demonstrates the structure
+      of a proposed learning analytics system.
+      It is not a report of completed student research.
+    </p>
+
+    <p>
+      Four items per knowledge point and assessment
+      stage provide only limited evidence.
+      Formal mastery claims would require
+      a validated assessment design,
+      additional observations and appropriate
+      reliability analysis.
+    </p>
+
+    <p>
+      The seven-day delayed reassessment interval
+      is a proposed design choice rather than
+      an empirically established optimal interval.
+    </p>
+
+    <span class="tag">
+      Prototype Research Demonstration
+    </span>
+
+    <div style="margin-top:24px">
+      <a
+        href="decision-explorer.html"
+        class="button"
+      >
+        Open Decision Explorer →
+      </a>
+    </div>
+
+  </section>
+
+</main>
+
+
+<footer>
+  <p>
+    AURA EDU Research Lab · Learning Analytics Dashboard
+  </p>
+
+  <p class="small">
+    Simulated Data · Transparent Rules ·
+    No Empirical Effectiveness Claims
+  </p>
+</footer>
+
+
+<script>
+  /*
+    AURA EDU RESEARCH ANALYTICS
+
+    All records are simulated.
+    No real student information is used.
+
+    Each assessment stage has 4 fictional items.
+  */
+
+  const grammarNames = {
+    G1: "Verb to Be",
+    G2: "Subject–Verb Agreement",
+    G3: "Sentence Construction"
+  };
+
+  /*
+    Record structure:
+    initial: correct first-attempt responses
+    immediate: correct independent reassessment
+    delayed: correct delayed independent reassessment
+    hint: highest practice hint used
+  */
+
+  const simulatedData = {
+
+    A: {
+      G1: {
+        initial: 4,
+        immediate: 4,
+        delayed: 4,
+        hint: 0
+      },
+
+      G2: {
+        initial: 3,
+        immediate: 4,
+        delayed: 3,
+        hint: 1
+      },
+
+      G3: {
+        initial: 3,
+        immediate: 3,
+        delayed: 3,
+        hint: 1
+      }
+    },
+
+    B: {
+      G1: {
+        initial: 3,
+        immediate: 3,
+        delayed: 2,
+        hint: 2
+      },
+
+      G2: {
+        initial: 2,
+        immediate: 3,
+        delayed: 2,
+        hint: 2
+      },
+
+      G3: {
+        initial: 2,
+        immediate: 2,
+        delayed: 2,
+        hint: 3
+      }
+    },
+
+    C: {
+      G1: {
+        initial: 1,
+        immediate: 1,
+        delayed: 1,
+        hint: 3
+      },
+
+      G2: {
+        initial: 1,
+        immediate: 2,
+        delayed: 1,
+        hint: 3
+      },
+
+      G3: {
+        initial: 0,
+        immediate: 1,
+        delayed: 0,
+        hint: 3
+      }
+    }
+
+  };
+
+
+  function percentage(correct) {
+    return Math.round((correct / 4) * 100);
+  }
+
+
+  function setText(id, value) {
+    document.getElementById(id).textContent = value;
+  }
+
+
+  function createBar(label, value, type) {
+
+    const row = document.createElement("div");
+    row.className = "chart-row";
+
+    const heading = document.createElement("div");
+    heading.className = "chart-label";
+
+    const name = document.createElement("span");
+    name.textContent = label;
+
+    const amount = document.createElement("strong");
+    amount.textContent = value + "%";
+
+    heading.appendChild(name);
+    heading.appendChild(amount);
+
+    const track = document.createElement("div");
+    track.className = "bar-track";
+
+    const fill = document.createElement("div");
+    fill.className = "bar-fill " + type;
+    fill.style.width = value + "%";
+
+    track.appendChild(fill);
+
+    row.appendChild(heading);
+    row.appendChild(track);
+
+    return row;
+  }
+
+
+  function getRecommendation(record) {
+
+    /*
+      Provisional thresholds only.
+      This is not a validated EBMM classifier.
+    */
+
+    if (record.immediate <= 1) {
+      return {
+        path: "Foundation",
+        description:
+          "Prioritise worked examples, structured practice and foundational support.",
+        reasons: [
+          "Immediate independent reassessment is below 50%.",
+          "The learner may need additional support with this grammar concept.",
+          "Collect further independent responses after foundational practice."
+        ]
+      };
+    }
+
+    if (
+      record.initial >= 3 &&
+      record.immediate >= 3 &&
+      record.delayed >= 3 &&
+      record.hint <= 1
+    ) {
+      return {
+        path: "Challenge",
+        description:
+          "Offer more demanding grammar tasks while continuing to collect independent evidence.",
+        reasons: [
+          "Initial performance is at least 75%.",
+          "Immediate and delayed independent reassessments are both at least 75%.",
+          "Practice support did not exceed Hint Level 1.",
+          "This remains an illustrative recommendation, not demonstrated mastery."
+        ]
+      };
+    }
+
+    return {
+      path: "Guided",
+      description:
+        "Provide targeted practice, feedback and further independent reassessment.",
+      reasons: [
+        "Available evidence does not meet the provisional Challenge criteria.",
+        "Performance may be developing or inconsistent across assessment stages.",
+        "Further practice and independent evidence are recommended."
+      ]
+    };
+  }
+
+
+  function updateDashboard() {
+
+    const learner = document.getElementById(
+      "learner-select"
+    ).value;
+
+    const grammar = document.getElementById(
+      "grammar-select"
+    ).value;
+
+    const record = simulatedData[learner][grammar];
+
+    const initial = percentage(record.initial);
+    const immediate = percentage(record.immediate);
+    const delayed = percentage(record.delayed);
+
+    // Summary metrics
+
+    setText(
+      "initial-metric",
+      initial + "%"
+    );
+
+    setText(
+      "immediate-metric",
+      immediate + "%"
+    );
+
+    setText(
+      "delayed-metric",
+      delayed + "%"
+    );
+
+    setText(
+      "hint-metric",
+      record.hint === 0
+        ? "None"
+        : "H" + record.hint
+    );
+
+
+    // Performance chart
+
+    const performanceChart =
+      document.getElementById("performance-chart");
+
+    performanceChart.innerHTML = "";
+
+    performanceChart.appendChild(
+      createBar(
+        "Initial Independent Performance",
+        initial,
+        "initial"
+      )
+    );
+
+    performanceChart.appendChild(
+      createBar(
+        "Immediate Independent Reassessment",
+        immediate,
+        "immediate"
+      )
+    );
+
+    performanceChart.appendChild(
+      createBar(
+        "Delayed Independent Reassessment",
+        delayed,
+        "delayed"
+      )
+    );
+
+
+    // Knowledge point comparison
+
+    const knowledgeChart =
+      document.getElementById("knowledge-chart");
+
+    knowledgeChart.innerHTML = "";
+
+    ["G1", "G2", "G3"].forEach(code => {
+
+      const value = percentage(
+        simulatedData[learner][code].immediate
+      );
+
+      knowledgeChart.appendChild(
+        createBar(
+          code + " — " + grammarNames[code],
+          value,
+          "immediate"
+        )
+      );
+
+    });
+
+
+    // Reassessment
+
+    setText(
+      "immediate-detail",
+      record.immediate +
+      " out of 4 new independent questions answered correctly."
+    );
+
+    setText(
+      "delayed-detail",
+      record.delayed +
+      " out of 4 simulated delayed independent questions answered correctly."
+    );
+
+    let interpretation = "";
+
+    if (record.delayed < record.immediate) {
+      interpretation =
+        "The simulated delayed score is lower than the immediate score. This pattern suggests a need to investigate retention, but four items are insufficient for a reliable conclusion.";
+    } else if (record.delayed === record.immediate) {
+      interpretation =
+        "The simulated immediate and delayed scores are equal. This is a descriptive observation and does not establish stable mastery.";
+    } else {
+      interpretation =
+        "The simulated delayed score is higher than the immediate score. Additional observations would be required to interpret this difference.";
+    }
+
+    setText(
+      "reassessment-interpretation",
+      interpretation
+    );
+
+
+    // Adaptive recommendation
+
+    const recommendation =
+      getRecommendation(record);
+
+    setText(
+      "learning-path",
+      recommendation.path
+    );
+
+    setText(
+      "path-description",
+      recommendation.description
+    );
+
+    const evidenceList =
+      document.getElementById("decision-evidence");
+
+    evidenceList.innerHTML = "";
+
+    recommendation.reasons.forEach(reason => {
+
+      const item = document.createElement("li");
+      item.textContent = reason;
+      evidenceList.appendChild(item);
+
+    });
+
+
+    // Transparent data table
+
+    const table = document.getElementById(
+      "data-table"
+    );
+
+    table.innerHTML = "";
+
+    ["G1", "G2", "G3"].forEach(code => {
+
+      const data = simulatedData[learner][code];
+
+      const row = document.createElement("tr");
+
+      const values = [
+        code + " — " + grammarNames[code],
+        data.initial + "/4",
+        data.immediate + "/4",
+        data.delayed + "/4",
+        data.hint === 0
+          ? "None"
+          : "H" + data.hint
+      ];
+
+      values.forEach(value => {
+
+        const cell = document.createElement("td");
+        cell.textContent = value;
+        row.appendChild(cell);
+
+      });
+
+      table.appendChild(row);
+
+    });
+
+  }
+
+
+  // Update when filters change
+
+  document.getElementById(
+    "learner-select"
+  ).addEventListener(
+    "change",
+    updateDashboard
+  );
+
+  document.getElementById(
+    "grammar-select"
+  ).addEventListener(
+    "change",
+    updateDashboard
+  );
+
+
+  // Initialise dashboard
+
+  updateDashboard();
+
+</script>
+
+</body>
+</html>

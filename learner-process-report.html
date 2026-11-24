@@ -1,0 +1,917 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AURA EDU | Learner Process Report</title>
+<style>
+:root{
+  --navy:#17365d;
+  --teal:#16877f;
+  --bg:#f4f7fb;
+  --line:#dce5ef;
+  --muted:#63758a;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,"PingFang SC",sans-serif;
+  background:var(--bg);
+  color:#25354a;
+  line-height:1.6;
+}
+header{
+  background:white;
+  border-bottom:1px solid var(--line);
+}
+nav{
+  max-width:1100px;
+  margin:auto;
+  padding:18px 20px;
+  display:flex;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:15px;
+}
+nav a{color:var(--navy);text-decoration:none}
+.logo{font-size:22px;font-weight:bold}
+.links{display:flex;gap:16px;flex-wrap:wrap}
+main{
+  max-width:1100px;
+  margin:auto;
+  padding:35px 20px 70px;
+}
+h1,h2,h3{color:var(--navy)}
+h1{font-size:clamp(28px,4vw,40px)}
+p{color:var(--muted)}
+.eyebrow{
+  color:var(--teal);
+  font-size:12px;
+  font-weight:bold;
+  letter-spacing:2px;
+}
+.card{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:15px;
+  padding:24px;
+  margin:20px 0;
+}
+.controls{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+button,select{
+  padding:10px 15px;
+  border:1px solid var(--line);
+  border-radius:9px;
+  font:inherit;
+  background:white;
+  color:var(--navy);
+}
+button{cursor:pointer}
+button:hover{background:#edf5f3}
+.primary{background:var(--navy);color:white}
+.primary:hover{background:#24517e}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:14px;
+}
+.metric{
+  background:#f0f5f8;
+  padding:18px;
+  border-radius:12px;
+}
+.metric strong{
+  display:block;
+  font-size:27px;
+  color:var(--navy);
+}
+.metric span{font-size:12px;color:var(--muted)}
+.table-wrap{overflow-x:auto}
+table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:14px;
+}
+th,td{
+  padding:12px;
+  text-align:left;
+  border-bottom:1px solid var(--line);
+  vertical-align:top;
+}
+th{background:#f3f7fa;color:var(--navy)}
+.notice{
+  padding:16px;
+  background:#eaf5f3;
+  border-left:4px solid var(--teal);
+  border-radius:8px;
+}
+.warning{
+  padding:16px;
+  background:#fff5e9;
+  border-left:4px solid #c58b39;
+  border-radius:8px;
+}
+.module{
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:20px;
+  margin:16px 0;
+}
+.module h3{margin-top:0}
+.tag{
+  display:inline-block;
+  background:#e7f5f0;
+  color:#17665f;
+  border-radius:20px;
+  padding:4px 10px;
+  font-size:12px;
+}
+.small{font-size:12px;color:var(--muted)}
+.bar{
+  height:10px;
+  background:#e4ebf1;
+  border-radius:20px;
+  overflow:hidden;
+  margin-top:6px;
+}
+.fill{height:100%;background:var(--teal)}
+footer{
+  background:var(--navy);
+  text-align:center;
+  padding:25px;
+  color:white;
+}
+footer p{color:#e0eaf3}
+@media(max-width:750px){
+  .grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:420px){
+  .grid{grid-template-columns:1fr}
+}
+@media print{
+  header,.controls button,footer{display:none}
+  body{background:white}
+  .card{break-inside:avoid}
+  main{padding:10px}
+}
+</style>
+</head>
+<body>
+
+<header>
+<nav>
+  <a class="logo" href="index.html">AURA EDU</a>
+  <div class="links">
+    <a href="research.html">Research Lab</a>
+    <a href="learner-evidence.html">Learner Evidence</a>
+    <a href="question-level-analytics.html">Question Analytics</a>
+    <a href="learner-manager.html">Learner Manager</a>
+  </div>
+</nav>
+</header>
+
+<main>
+<div class="eyebrow">
+  RESEARCH LAB / STAGE 21.4.3
+</div>
+
+<h1>Learner Process Report</h1>
+<p>
+  学生个人学习过程报告 · G1 / G2 / G3
+</p>
+
+<div class="notice">
+  <strong>Descriptive Research Evidence</strong>
+  <p>
+    本报告基于当前浏览器保存的原型学习记录。
+    仅纳入与现有学生档案匹配的会话。
+    不会修改、删除或重新归属任何数据。
+  </p>
+</div>
+
+<section class="card">
+  <h2>01 · Select Learner</h2>
+  <div class="controls">
+    <label for="learner">学生：</label>
+    <select id="learner"></select>
+    <button class="primary" id="refresh">
+      Refresh Report
+    </button>
+    <button id="copy">
+      Copy Report JSON
+    </button>
+    <button id="print">
+      Print / Save as PDF
+    </button>
+  </div>
+  <p id="status" class="small"></p>
+</section>
+
+<section class="card">
+  <h2>02 · Learner Overview</h2>
+  <h3 id="learner-name">—</h3>
+  <div class="grid">
+    <div class="metric">
+      <strong id="session-count">—</strong>
+      <span>Learning Sessions</span>
+    </div>
+    <div class="metric">
+      <strong id="question-count">—</strong>
+      <span>Question Records</span>
+    </div>
+    <div class="metric">
+      <strong id="first-rate">—</strong>
+      <span>First-Attempt Accuracy</span>
+    </div>
+    <div class="metric">
+      <strong id="hint-rate">—</strong>
+      <span>Hint Exposure Rate</span>
+    </div>
+  </div>
+</section>
+
+<section class="card">
+  <h2>03 · Module Learning Profile</h2>
+  <p>
+    每个模块分别展示诊断、练习和即时独立复测，
+    以及题目级学习过程指标。
+  </p>
+  <div id="modules"></div>
+</section>
+
+<section class="card">
+  <h2>04 · Assessment Comparison</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Module</th>
+          <th>Paired Sessions</th>
+          <th>Diagnostic</th>
+          <th>Immediate Reassessment</th>
+          <th>Difference</th>
+        </tr>
+      </thead>
+      <tbody id="assessment-body"></tbody>
+    </table>
+  </div>
+  <p class="small">
+    Difference 为同一会话即时复测与诊断百分比的
+    平均差值，单位为百分点。它不是因果学习增益。
+  </p>
+</section>
+
+<section class="card">
+  <h2>05 · Error Evidence</h2>
+  <p>
+    汇总保存的错误代码。不同模块的代码不一定具有
+    相同含义，因此分别统计。
+  </p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Module</th>
+          <th>Error Code</th>
+          <th>Occurrences</th>
+        </tr>
+      </thead>
+      <tbody id="errors-body"></tbody>
+    </table>
+  </div>
+</section>
+
+<section class="card">
+  <h2>06 · Research Interpretation</h2>
+  <div id="interpretation"></div>
+  <div class="warning">
+    <strong>Research Limitations</strong>
+    <p>
+      本报告中的学生 ID 匹配不等于实际答题者身份认证。
+      部分历史记录可能早于身份锁定功能。
+    </p>
+    <p>
+      同一学生的多次会话和题目并非独立研究参与者。
+      提示暴露不等于提示依赖；即时复测不等于长期保持。
+      延迟独立复测尚未实施。
+    </p>
+    <p>
+      本报告不能单独证明教学支架的因果效果，
+      也不能替代正式的实证研究和伦理审查。
+    </p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <strong>AURA EDU Research Lab</strong>
+  <p>Learner Process Evidence · Read-Only Report</p>
+</footer>
+
+<script>
+"use strict";
+
+const KEYS={
+  G1:"aura_g1_learning_records_v1",
+  G2:"aura_g2_learning_records_v1",
+  G3:"aura_g3_learning_records_v1"
+};
+
+const PROFILE_KEY="aura_learner_profiles_v2";
+const MODULES=["G1","G2","G3"];
+
+const $=id=>document.getElementById(id);
+
+let profiles=[];
+let sessions=[];
+let selected="";
+let warnings=[];
+
+function readArray(key){
+  try{
+    const value=JSON.parse(
+      localStorage.getItem(key)||"[]"
+    );
+    if(Array.isArray(value))return value;
+    warnings.push(key+": not an array");
+  }catch(error){
+    warnings.push(key+": "+error.message);
+  }
+  return [];
+}
+
+function validNumber(value){
+  return typeof value==="number"&&
+    Number.isFinite(value);
+}
+
+function validPercent(value){
+  return validNumber(value)&&
+    value>=0&&value<=100;
+}
+
+function average(values){
+  const valid=values.filter(validNumber);
+  if(!valid.length)return null;
+  return valid.reduce((a,b)=>a+b,0)/valid.length;
+}
+
+function percent(a,b){
+  return b>0?a/b*100:null;
+}
+
+function fmt(value){
+  return validNumber(value)?
+    value.toFixed(1)+"%":"N/A";
+}
+
+function fmtDiff(value){
+  return validNumber(value)?
+    (value>0?"+":"")+value.toFixed(1)+" pp":
+    "N/A";
+}
+
+function nameOf(profile){
+  return profile.nickname||
+    profile.name||
+    profile.displayName||
+    profile.learnerName||
+    profile.id;
+}
+
+function load(){
+  warnings=[];
+
+  profiles=readArray(PROFILE_KEY).filter(
+    p=>p&&typeof p.id==="string"
+  );
+
+  const ids=new Set(profiles.map(p=>p.id));
+  sessions=[];
+
+  MODULES.forEach(module=>{
+    readArray(KEYS[module]).forEach(record=>{
+      if(
+        record&&
+        ids.has(record.learnerId)
+      ){
+        sessions.push({module,record});
+      }
+    });
+  });
+}
+
+function updateOptions(){
+  const select=$("learner");
+  select.replaceChildren();
+
+  profiles.forEach(profile=>{
+    const option=document.createElement("option");
+    option.value=profile.id;
+    option.textContent=nameOf(profile);
+    select.appendChild(option);
+  });
+
+  if(!profiles.some(p=>p.id===selected)){
+    const active=localStorage.getItem(
+      "aura_active_learner_id_v2"
+    );
+
+    selected=profiles.some(p=>p.id===active)?
+      active:(profiles[0]?.id||"");
+  }
+
+  select.value=selected;
+}
+
+function chosen(){
+  return sessions.filter(
+    item=>item.record.learnerId===selected
+  );
+}
+
+function moduleItems(module){
+  return chosen().filter(
+    item=>item.module===module
+  );
+}
+
+function questions(module){
+  return moduleItems(module).flatMap(item=>
+    Array.isArray(item.record.records)?
+      item.record.records.filter(
+        q=>q&&typeof q==="object"
+      ):[]
+  );
+}
+
+function firstValues(qs){
+  return qs.map(q=>q.firstAttemptCorrect).filter(
+    v=>typeof v==="boolean"
+  );
+}
+
+function hintValues(qs){
+  return qs.map(q=>q.highestHintUsed).filter(
+    validNumber
+  );
+}
+
+function stageScore(record,stage){
+  const value=record.result?.[stage]?.percent;
+  return validPercent(value)?value:null;
+}
+
+function stageAverage(items,stage){
+  return average(
+    items.map(item=>stageScore(item.record,stage))
+  );
+}
+
+function paired(module){
+  return moduleItems(module).map(item=>({
+    diagnostic:stageScore(item.record,"diagnostic"),
+    reassessment:stageScore(
+      item.record,"reassessment"
+    )
+  })).filter(p=>
+    p.diagnostic!==null&&
+    p.reassessment!==null
+  );
+}
+
+function errorLabels(question,module){
+  const source=module==="G1"?
+    question.errorCodes:question.errors;
+
+  if(!Array.isArray(source))return [];
+
+  return source.map(value=>{
+    if(typeof value==="string")return value.trim();
+    if(validNumber(value))return String(value);
+
+    if(value&&typeof value==="object"){
+      const code=value.code??
+        value.errorCode??value.type;
+
+      if(typeof code==="string"||
+         validNumber(code)){
+        return String(code);
+      }
+
+      return "[Unclassified object]";
+    }
+
+    return "[Unknown]";
+  }).filter(Boolean);
+}
+
+function errorCounts(module){
+  const counts={};
+
+  questions(module).forEach(q=>{
+    errorLabels(q,module).forEach(code=>{
+      counts[code]=(counts[code]||0)+1;
+    });
+  });
+
+  return counts;
+}
+
+function cell(value){
+  const td=document.createElement("td");
+  td.textContent=String(value);
+  return td;
+}
+
+function addRow(body,values){
+  const tr=document.createElement("tr");
+  values.forEach(v=>tr.appendChild(cell(v)));
+  body.appendChild(tr);
+}
+
+function element(tag,text,className){
+  const node=document.createElement(tag);
+  if(text!==undefined)node.textContent=String(text);
+  if(className)node.className=className;
+  return node;
+}
+
+function moduleSummary(module){
+  const items=moduleItems(module);
+  const qs=questions(module);
+  const first=firstValues(qs);
+  const hints=hintValues(qs);
+  const pairs=paired(module);
+
+  const hintDistribution=[0,0,0,0];
+  let other=0;
+
+  qs.forEach(q=>{
+    const level=q.highestHintUsed;
+
+    if(
+      Number.isInteger(level)&&
+      level>=0&&level<=3
+    ){
+      hintDistribution[level]++;
+    }else{
+      other++;
+    }
+  });
+
+  return {
+    module,
+    sessions:items.length,
+    questions:qs.length,
+    firstMeasured:first.length,
+    firstCorrect:first.filter(Boolean).length,
+    firstAccuracy:percent(
+      first.filter(Boolean).length,
+      first.length
+    ),
+    hintMeasured:hints.length,
+    hintExposure:percent(
+      hints.filter(v=>v>0).length,
+      hints.length
+    ),
+    hintDistribution,
+    otherHintValues:other,
+    diagnosticMean:stageAverage(items,"diagnostic"),
+    practiceMean:stageAverage(items,"practice"),
+    reassessmentMean:stageAverage(
+      items,"reassessment"
+    ),
+    pairedSessions:pairs.length,
+    pairedDiagnosticMean:average(
+      pairs.map(p=>p.diagnostic)
+    ),
+    pairedReassessmentMean:average(
+      pairs.map(p=>p.reassessment)
+    ),
+    pairedDifference:average(
+      pairs.map(
+        p=>p.reassessment-p.diagnostic
+      )
+    ),
+    errorCounts:errorCounts(module)
+  };
+}
+
+function reportData(){
+  const modules=MODULES.map(moduleSummary);
+  const allQuestions=modules.reduce(
+    (sum,m)=>sum+m.questions,0
+  );
+  const allFirst=modules.reduce(
+    (sum,m)=>sum+m.firstMeasured,0
+  );
+  const correct=modules.reduce(
+    (sum,m)=>sum+m.firstCorrect,0
+  );
+
+  const hintCount=modules.reduce(
+    (sum,m)=>sum+m.hintMeasured,0
+  );
+
+  const exposed=modules.reduce(
+    (sum,m)=>sum+
+      m.hintDistribution[1]+
+      m.hintDistribution[2]+
+      m.hintDistribution[3],0
+  );
+
+  const profile=profiles.find(p=>p.id===selected);
+
+  return {
+    project:"AURA EDU",
+    reportType:"Learner Process Report",
+    generatedAt:new Date().toISOString(),
+    learnerId:selected||null,
+    learnerName:profile?nameOf(profile):null,
+    dataMode:"Browser-Local Matched Sessions",
+    sessions:chosen().length,
+    questionRecords:allQuestions,
+    firstAttemptAccuracy:percent(correct,allFirst),
+    hintExposureRate:percent(exposed,hintCount),
+    modules,
+    limitations:[
+      "Learner ID matching is not respondent authentication.",
+      "Historical records may predate identity locking.",
+      "Repeated sessions and questions are clustered.",
+      "Hint exposure does not establish dependency.",
+      "Immediate reassessment is not delayed retention.",
+      "Descriptive results do not establish causality."
+    ]
+  };
+}
+
+function renderOverview(report){
+  $("learner-name").textContent=
+    report.learnerName||"No Learner Selected";
+
+  $("session-count").textContent=report.sessions;
+  $("question-count").textContent=report.questionRecords;
+  $("first-rate").textContent=fmt(
+    report.firstAttemptAccuracy
+  );
+  $("hint-rate").textContent=fmt(
+    report.hintExposureRate
+  );
+}
+
+function addMetric(container,label,value){
+  const metric=element("div",undefined,"metric");
+  metric.appendChild(element("strong",value));
+  metric.appendChild(element("span",label));
+  container.appendChild(metric);
+}
+
+function renderModules(report){
+  const container=$("modules");
+  container.replaceChildren();
+
+  report.modules.forEach(m=>{
+    const section=element("div",undefined,"module");
+
+    section.appendChild(
+      element("h3",m.module+" · Learning Evidence")
+    );
+
+    section.appendChild(
+      element("span",
+        m.sessions+" sessions · "+
+        m.questions+" question records",
+        "tag"
+      )
+    );
+
+    const grid=element("div",undefined,"grid");
+    grid.style.marginTop="16px";
+
+    addMetric(grid,"First-Attempt Accuracy",
+      fmt(m.firstAccuracy)
+    );
+
+    addMetric(grid,"Hint Exposure Rate",
+      fmt(m.hintExposure)
+    );
+
+    addMetric(grid,"Diagnostic Mean",
+      fmt(m.diagnosticMean)
+    );
+
+    addMetric(grid,"Immediate Reassessment Mean",
+      fmt(m.reassessmentMean)
+    );
+
+    section.appendChild(grid);
+
+    section.appendChild(
+      element("p",
+        "Practice Mean: "+fmt(m.practiceMean)
+      )
+    );
+
+    section.appendChild(
+      element("p",
+        "Hint distribution: "+
+        m.hintDistribution.map(
+          (n,i)=>"H"+i+"="+n
+        ).join(" · ")+
+        " · Other/Missing="+m.otherHintValues
+      )
+    );
+
+    section.appendChild(
+      element("p",
+        "First-attempt measured: "+
+        m.firstMeasured+" / "+m.questions+
+        " · Hint measured: "+
+        m.hintMeasured+" / "+m.questions,
+        "small"
+      )
+    );
+
+    if(m.sessions===0){
+      section.appendChild(
+        element("p",
+          "当前学生在此模块没有匹配的会话记录。"
+        )
+      );
+    }
+
+    container.appendChild(section);
+  });
+}
+
+function renderAssessment(report){
+  const body=$("assessment-body");
+  body.replaceChildren();
+
+  report.modules.forEach(m=>{
+    addRow(body,[
+      m.module,
+      m.pairedSessions,
+      fmt(m.pairedDiagnosticMean),
+      fmt(m.pairedReassessmentMean),
+      fmtDiff(m.pairedDifference)
+    ]);
+  });
+}
+
+function renderErrors(report){
+  const body=$("errors-body");
+  body.replaceChildren();
+
+  report.modules.forEach(m=>{
+    const entries=Object.entries(m.errorCounts)
+      .sort((a,b)=>b[1]-a[1]);
+
+    if(!entries.length){
+      addRow(body,[m.module,"No recorded codes",0]);
+    }else{
+      entries.forEach(([code,count])=>{
+        addRow(body,[m.module,code,count]);
+      });
+    }
+  });
+}
+
+function renderInterpretation(report){
+  const container=$("interpretation");
+  container.replaceChildren();
+
+  const available=report.modules.filter(
+    m=>m.sessions>0
+  );
+
+  container.appendChild(
+    element("p",
+      "当前学习者在 "+available.length+
+      " 个语法模块中拥有匹配记录，"+
+      "共 "+report.sessions+" 个学习会话、"+
+      report.questionRecords+" 条题目级记录。"
+    )
+  );
+
+  container.appendChild(
+    element("p",
+      "首次作答正确率："+fmt(
+        report.firstAttemptAccuracy
+      )+"；提示暴露率："+fmt(
+        report.hintExposureRate
+      )+"。这些指标描述已记录的学习行为，"+
+      "不能单独用于判断学习能力或提示依赖。"
+    )
+  );
+
+  report.modules.forEach(m=>{
+    if(m.pairedSessions===0)return;
+
+    container.appendChild(
+      element("p",
+        m.module+"：在 "+m.pairedSessions+
+        " 个具有成对成绩的会话中，"+
+        "即时独立复测与诊断的平均差值为 "+
+        fmtDiff(m.pairedDifference)+
+        "。这一差值仅用于描述性比较。"
+      )
+    );
+  });
+}
+
+function render(){
+  const report=reportData();
+
+  renderOverview(report);
+  renderModules(report);
+  renderAssessment(report);
+  renderErrors(report);
+  renderInterpretation(report);
+
+  $("status").textContent=
+    "Report refreshed: "+
+    new Date().toLocaleString()+
+    " | Read-only"+
+    (warnings.length?
+      " | Warnings: "+warnings.join("; "):
+      "");
+}
+
+function refresh(){
+  load();
+  updateOptions();
+  render();
+}
+
+async function copyReport(){
+  const output=JSON.stringify(
+    reportData(),null,2
+  );
+
+  try{
+    await navigator.clipboard.writeText(output);
+    alert("Learner Process Report JSON 已复制。");
+  }catch(error){
+    const area=document.createElement("textarea");
+    area.value=output;
+    area.style.position="fixed";
+    area.style.left="5%";
+    area.style.top="10%";
+    area.style.width="90%";
+    area.style.height="65%";
+    area.style.zIndex="1000";
+
+    document.body.appendChild(area);
+    area.focus();
+    area.select();
+
+    const copied=document.execCommand("copy");
+    area.remove();
+
+    alert(copied?
+      "Report JSON 已复制。":
+      "复制失败，请检查 Safari 剪贴板权限。"
+    );
+  }
+}
+
+$("learner").addEventListener("change",event=>{
+  selected=event.target.value;
+  render();
+});
+
+$("refresh").addEventListener("click",refresh);
+$("copy").addEventListener("click",copyReport);
+
+$("print").addEventListener("click",()=>{
+  window.print();
+});
+
+window.addEventListener("storage",event=>{
+  if(
+    event.key===null||
+    event.key===PROFILE_KEY||
+    event.key==="aura_active_learner_id_v2"||
+    Object.values(KEYS).includes(event.key)
+  ){
+    refresh();
+  }
+});
+
+refresh();
+
+console.info(
+  "[AURA EDU] Stage 21.4.3 Learner Process Report ready."
+);
+</script>
+
+</body>
+</html>

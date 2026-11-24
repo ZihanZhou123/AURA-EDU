@@ -1,0 +1,502 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AURA EDU | Identity Integration Test</title>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:#f5f8fc;
+  font-family:Arial,"PingFang SC",sans-serif;
+  color:#26354a;
+  line-height:1.7;
+}
+header{
+  background:#17365d;
+  padding:35px 22px;
+  color:white;
+}
+header h1{
+  max-width:950px;
+  margin:0 auto 8px;
+}
+header p{
+  max-width:950px;
+  margin:auto;
+  color:#e0eaf3;
+}
+main{
+  max-width:950px;
+  margin:auto;
+  padding:28px 20px 60px;
+}
+.card{
+  background:white;
+  border:1px solid #dfe7ee;
+  border-radius:15px;
+  padding:24px;
+  margin-bottom:20px;
+}
+h2{color:#17365d}
+button{
+  padding:12px 18px;
+  border:0;
+  border-radius:9px;
+  background:#17365d;
+  color:white;
+  cursor:pointer;
+  margin:5px 8px 5px 0;
+  font:inherit;
+}
+button.secondary{background:#218b83}
+button:disabled{opacity:.5;cursor:not-allowed}
+pre{
+  background:#eef3f8;
+  padding:18px;
+  border-radius:10px;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+  font-size:13px;
+}
+.status{
+  padding:15px;
+  background:#eaf5f3;
+  border-radius:9px;
+  margin-top:15px;
+}
+a{color:#176d73}
+</style>
+</head>
+
+<body>
+<header>
+  <h1>AURA EDU · Identity Integration Test</h1>
+  <p>Step 18 — 学习者身份与会话绑定测试</p>
+</header>
+
+<main>
+
+<section class="card">
+  <h2>1. 当前学习者</h2>
+  <div id="learner-info"></div>
+
+  <button id="refresh">
+    刷新当前学习者
+  </button>
+
+  <p>
+    <a href="learner-manager.html">
+      打开 Learner Manager
+    </a>
+  </p>
+</section>
+
+<section class="card">
+  <h2>2. 创建测试会话</h2>
+
+  <button data-module="G1">创建 G1 会话</button>
+  <button data-module="G2">创建 G2 会话</button>
+  <button data-module="G3">创建 G3 会话</button>
+
+  <pre id="session-output">
+尚未创建测试会话。
+  </pre>
+</section>
+
+<section class="card">
+  <h2>3. 验证学习者身份</h2>
+
+  <button id="validate" class="secondary">
+    验证当前会话
+  </button>
+
+  <pre id="validation-output">
+等待验证。
+  </pre>
+</section>
+
+<section class="card">
+  <h2>4. 模拟完成学习</h2>
+
+  <button id="complete" class="secondary">
+    生成模拟学习结果
+  </button>
+
+  <pre id="completion-output">
+等待生成。
+  </pre>
+
+  <div class="status">
+    这里的结果只是身份绑定测试数据。
+    不代表真实答题成绩，也不会保存到正式学习记录。
+  </div>
+</section>
+
+<section class="card">
+  <h2>5. 系统检查</h2>
+
+  <button id="run-tests">
+    运行身份服务自检
+  </button>
+
+  <pre id="test-output">
+等待测试。
+  </pre>
+</section>
+
+</main>
+
+<script src="js/learner-identity.js"></script>
+
+<script>
+"use strict";
+
+const $=id=>document.getElementById(id);
+
+let currentSession=null;
+
+function show(id,data){
+  $(id).textContent=JSON.stringify(data,null,2);
+}
+
+function refreshLearner(){
+  const service=window.AuraLearnerIdentity;
+
+  if(!service){
+    $("learner-info").textContent=
+      "身份服务未加载，请检查 JS 文件路径。";
+    return;
+  }
+
+  const learner=service.getActiveLearner();
+
+  $("learner-info").textContent=learner
+    ?learner.nickname+
+      " · "+learner.age+" 岁"+
+      " · ID: "+learner.id
+    :"没有选中的学习者，请先到 Learner Manager 选择。";
+}
+
+function createSession(moduleId){
+  const service=window.AuraLearnerIdentity;
+
+  const result=service.startSession(moduleId);
+
+  currentSession=result.ok
+    ?result.session
+    :null;
+
+  show("session-output",result);
+
+  $("validation-output").textContent="等待验证。";
+  $("completion-output").textContent="等待生成。";
+}
+
+function validateSession(){
+  if(!currentSession){
+    show("validation-output",{
+      ok:false,
+      message:"请先创建一个测试会话。"
+    });
+    return;
+  }
+
+  show(
+    "validation-output",
+    AuraLearnerIdentity.validateSessionIdentity(
+      currentSession
+    )
+  );
+}
+
+function completeSession(){
+  if(!currentSession){
+    show("completion-output",{
+      ok:false,
+      message:"请先创建测试会话。"
+    });
+    return;
+  }
+
+  const mockResult={
+    result:{
+      diagnostic:{
+        correct:3,
+        total:4
+      },
+      practice:{
+        correct:5,
+        total:6
+      },
+      reassessment:{
+        correct:4,
+        total:4
+      },
+      recommendedPath:"Challenge"
+    },
+    records:[],
+    testOnly:true
+  };
+
+  const result=AuraLearnerIdentity.attachIdentity(
+    currentSession,
+    mockResult
+  );
+
+  show("completion-output",result);
+}
+
+function runTests(){
+  const service=window.AuraLearnerIdentity;
+  const results=[];
+
+  function check(name,condition){
+    results.push({
+      test:name,
+      passed:!!condition
+    });
+  }
+
+  check(
+    "身份服务加载",
+    !!service
+  );
+
+  if(!service){
+    show("test-output",results);
+    return;
+  }
+
+  const learner=service.getActiveLearner();
+
+  check(
+    "当前学习者存在",
+    !!learner
+  );
+
+  if(!learner){
+    show("test-output",results);
+    return;
+  }
+
+  const started=service.startSession("G1");
+
+  check(
+    "G1 会话创建成功",
+    started.ok
+  );
+
+  if(!started.ok){
+    show("test-output",results);
+    return;
+  }
+
+  check(
+    "会话绑定正确的 learnerId",
+    started.session.learnerId===learner.id
+  );
+
+  check(
+    "会话生成唯一 sessionId",
+    typeof started.session.sessionId==="string" &&
+    started.session.sessionId.length>0
+  );
+
+  const validated=service.validateSessionIdentity(
+    started.session
+  );
+
+  check(
+    "会话身份验证通过",
+    validated.ok
+  );
+
+  const attached=service.attachIdentity(
+    started.session,
+    {
+      result:{
+        diagnostic:{correct:3,total:4},
+        reassessment:{correct:4,total:4}
+      },
+      records:[],
+      testOnly:true
+    }
+  );
+
+  check(
+    "模拟结果保留 learnerId",
+    attached.ok &&
+    attached.record.learnerId===learner.id
+  );
+
+  const conflict=service.attachIdentity(
+    started.session,
+    {
+      learnerId:"DIFFERENT-LEARNER",
+      result:{},
+      testOnly:true
+    }
+  );
+
+  check(
+    "阻止不同 learnerId 覆盖",
+    conflict.ok===false &&
+    conflict.error==="IDENTITY_CONFLICT"
+  );
+
+  const unsupported=service.startSession("G9");
+
+  // G9 is intentionally invalid.
+  // The service should reject it.
+}
+
+function safeRunTests(){
+  try{
+    runTests();
+
+    // runTests checks invalid modules separately
+    // because validateModule throws an exception.
+
+  }catch(error){
+    const current=$("test-output").textContent;
+
+    $("test-output").textContent=
+      current+"\n测试异常："+error.message;
+  }
+}
+
+document.querySelectorAll("[data-module]")
+  .forEach(button=>{
+    button.addEventListener("click",()=>{
+      createSession(button.dataset.module);
+    });
+  });
+
+$("refresh").addEventListener(
+  "click",
+  refreshLearner
+);
+
+$("validate").addEventListener(
+  "click",
+  validateSession
+);
+
+$("complete").addEventListener(
+  "click",
+  completeSession
+);
+
+$("run-tests").addEventListener("click",()=>{
+  const service=window.AuraLearnerIdentity;
+
+  if(!service){
+    show("test-output",{
+      ok:false,
+      message:"身份服务未加载。"
+    });
+    return;
+  }
+
+  const learner=service.getActiveLearner();
+
+  if(!learner){
+    show("test-output",{
+      ok:false,
+      message:"请先选择学习者。"
+    });
+    return;
+  }
+
+  const checks=[];
+
+  function check(name,condition){
+    checks.push({
+      name,
+      passed:!!condition
+    });
+  }
+
+  const started=service.startSession("G1");
+
+  check("创建 G1 会话",started.ok);
+
+  if(started.ok){
+    check(
+      "正确绑定 learnerId",
+      started.session.learnerId===learner.id
+    );
+
+    check(
+      "生成 sessionId",
+      !!started.session.sessionId
+    );
+
+    check(
+      "身份验证成功",
+      service.validateSessionIdentity(
+        started.session
+      ).ok
+    );
+
+    const attached=service.attachIdentity(
+      started.session,
+      {
+        result:{},
+        records:[],
+        testOnly:true
+      }
+    );
+
+    check(
+      "模拟结果保留身份",
+      attached.ok &&
+      attached.record.learnerId===learner.id
+    );
+
+    const conflict=service.attachIdentity(
+      started.session,
+      {
+        learnerId:"WRONG-LEARNER",
+        result:{}
+      }
+    );
+
+    check(
+      "拒绝身份冲突",
+      !conflict.ok &&
+      conflict.error==="IDENTITY_CONFLICT"
+    );
+  }
+
+  let invalidRejected=false;
+
+  try{
+    service.startSession("G9");
+  }catch(error){
+    invalidRejected=true;
+  }
+
+  check(
+    "拒绝不支持的模块",
+    invalidRejected
+  );
+
+  const passed=checks.filter(x=>x.passed).length;
+
+  show("test-output",{
+    passed,
+    total:checks.length,
+    allPassed:passed===checks.length,
+    checks,
+    note:"未写入正式 G1–G3 学习记录"
+  });
+});
+
+refreshLearner();
+</script>
+</body>
+</html>

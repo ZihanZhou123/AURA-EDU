@@ -1,0 +1,829 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AURA EDU | Prototype Evaluation Protocol</title>
+<style>
+:root{
+  --navy:#17365d;--teal:#218b83;
+  --bg:#f7fafc;--text:#26354a;
+  --muted:#63748a;--line:#e2e8f0
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:Arial,sans-serif;line-height:1.7
+}
+.container{max-width:1150px;margin:auto;padding:0 24px}
+header{background:white;border-bottom:1px solid var(--line)}
+.nav{
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:15px;padding:18px 0
+}
+.logo{
+  font-size:22px;font-weight:bold;
+  color:var(--navy);text-decoration:none
+}
+nav{display:flex;flex-wrap:wrap;gap:16px}
+nav a{color:var(--navy);text-decoration:none;font-size:14px}
+nav a:hover{color:var(--teal)}
+.hero{
+  padding:75px 0;color:white;
+  background:linear-gradient(135deg,#17365d,#245e78)
+}
+.hero h1{font-size:clamp(32px,5vw,49px);line-height:1.2}
+.hero p{color:#e0eaf3}
+.eyebrow{
+  color:var(--teal);font-size:12px;font-weight:bold;
+  letter-spacing:2px;text-transform:uppercase
+}
+.hero .eyebrow{color:#8de0d3}
+section{padding:60px 0;scroll-margin-top:25px}
+h2,h3{color:var(--navy)}
+p{color:var(--muted)}
+.soft{background:#edf4f7}
+.grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:20px
+}
+.card{
+  background:white;border:1px solid var(--line);
+  border-radius:14px;padding:25px;margin-bottom:18px
+}
+.card h3{margin-top:0}
+.tag{
+  display:inline-block;border-radius:20px;padding:5px 12px;
+  font-size:12px;font-weight:bold;
+  background:#e7f5f0;color:#17645e
+}
+.tag.planned{background:#fff3dc;color:#946100}
+.metrics{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:15px;margin:25px 0
+}
+.metric{
+  background:white;border:1px solid var(--line);
+  border-radius:12px;padding:22px;text-align:center
+}
+.metric strong{
+  display:block;font-size:32px;color:var(--navy)
+}
+.metric span{color:var(--muted);font-size:13px}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;background:white}
+th,td{
+  padding:13px;border:1px solid var(--line);
+  text-align:left;vertical-align:top;font-size:13px
+}
+th{color:var(--navy);background:#edf4f7}
+.notice{
+  background:#fff8e8;border-left:4px solid #d4a345;
+  border-radius:8px;padding:18px;margin:22px 0
+}
+.notice p{color:#775b25;margin:0}
+.info{
+  background:#edf4f7;border-left:4px solid var(--teal);
+  border-radius:8px;padding:18px;margin:22px 0
+}
+.info p{margin:0}
+.btn{
+  display:inline-block;background:var(--navy);color:white;
+  text-decoration:none;border:0;border-radius:9px;
+  padding:12px 20px;font:inherit;cursor:pointer
+}
+.btn.teal{background:var(--teal)}
+.btn:hover{opacity:.88}
+.btn:focus-visible,nav a:focus-visible{
+  outline:3px solid #79b7eb;outline-offset:3px
+}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
+.status{font-size:14px;font-weight:bold}
+.status.ok{color:#17645e}
+.status.review{color:#946100}
+.status.error{color:#b42318}
+.steps{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:15px
+}
+.step{
+  background:white;padding:20px;border:1px solid var(--line);
+  border-top:4px solid var(--teal);border-radius:12px
+}
+.step strong{display:block;color:var(--navy)}
+.step span{font-size:13px;color:var(--muted)}
+.refresh-panel{
+  background:white;border:1px solid var(--line);
+  border-radius:12px;padding:22px;margin:20px 0
+}
+.refresh-panel button{min-width:190px}
+.refresh-details{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:15px;margin-top:18px
+}
+.refresh-detail{
+  background:#edf4f7;padding:15px;border-radius:9px
+}
+.refresh-detail strong{display:block;color:var(--navy)}
+.refresh-detail span{font-size:13px;color:var(--muted)}
+footer{
+  background:var(--navy);text-align:center;padding:35px 0
+}
+footer p{color:white}
+@media(max-width:800px){
+  .grid,.metrics,.steps,.refresh-details{
+    grid-template-columns:1fr
+  }
+  section{padding:42px 0}
+  .hero{padding:55px 0}
+}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="container nav">
+    <a class="logo" href="research.html">AURA EDU</a>
+    <nav aria-label="Research navigation">
+      <a href="research.html">Research Lab</a>
+      <a href="research-documentation-hub.html">
+        Documentation Hub
+      </a>
+      <a href="research-methodology.html">Methodology</a>
+      <a href="data-quality-dashboard.html">Data Quality</a>
+      <a href="#test-cases">Test Cases</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow">Research Lab / Step 19.13</div>
+    <h1>Prototype Evaluation Protocol</h1>
+    <p>
+      A structured framework for documenting functional
+      verification, data integrity, adaptive decision
+      explainability and future educational evaluation.
+    </p>
+    <p>
+      AURA EDU 原型评估方案：规范记录功能测试、
+      数据完整性、自适应决策可解释性，以及未来
+      教学效果评估的实施要求。
+    </p>
+    <div class="actions">
+      <a class="btn teal" href="#framework">
+        Evaluation Framework
+      </a>
+      <a class="btn" href="#test-cases">
+        Test Case Register
+      </a>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="eyebrow">01 / Evaluation Purpose</div>
+    <h2>Why Evaluate the Prototype?</h2>
+    <div class="card">
+      <h3>Evaluation Objective</h3>
+      <p>
+        The objective is to assess whether AURA EDU operates
+        according to specified functional and research-data
+        requirements.
+      </p>
+      <p>
+        评估目标是检查系统是否符合预定功能与
+        研究数据管理要求，为后续专家评审和
+        真实学习者研究建立评价基础。
+      </p>
+      <p>
+        Functional verification, usability evaluation
+        and educational effectiveness are distinct
+        forms of evidence.
+      </p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <strong>01 — Verify</strong>
+        <span>Functionality and data integrity</span>
+      </div>
+      <div class="step">
+        <strong>02 — Review</strong>
+        <span>Instructional quality and usability</span>
+      </div>
+      <div class="step">
+        <strong>03 — Investigate</strong>
+        <span>Future empirical learning outcomes</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="framework" class="soft">
+  <div class="container">
+    <div class="eyebrow">02 / Evaluation Framework</div>
+    <h2>Six Evaluation Dimensions</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>1. Functional Correctness</h3>
+        <p>
+          Navigation, grammar module interactions,
+          learner switching and dashboard operation.
+        </p>
+        <p>功能正确性：页面导航、模块交互和功能操作。</p>
+      </div>
+      <div class="card">
+        <h3>2. Data Integrity</h3>
+        <p>
+          Record preservation, storage readability
+          and backup inspection.
+        </p>
+        <p>数据完整性：记录保存、读取与备份检查。</p>
+      </div>
+      <div class="card">
+        <h3>3. Identity Consistency</h3>
+        <p>
+          Learner-session association, identity
+          binding and legacy classification.
+        </p>
+        <p>身份一致性：学习者关联与历史记录分类。</p>
+      </div>
+      <div class="card">
+        <h3>4. Explainability</h3>
+        <p>
+          Trace adaptive recommendations to
+          evidence and decision rules.
+        </p>
+        <p>可解释性：说明学习路径推荐依据。</p>
+      </div>
+      <div class="card">
+        <h3>5. Usability</h3>
+        <p>
+          Task clarity, accessibility, navigation
+          and learner experience.
+        </p>
+        <p>可用性：操作清晰度与学习体验。</p>
+        <span class="tag planned">Further evaluation</span>
+      </div>
+      <div class="card">
+        <h3>6. Instructional Quality</h3>
+        <p>
+          Curriculum alignment, feedback relevance,
+          graduated hints and independent practice.
+        </p>
+        <p>教学质量：课程匹配、提示、反馈与独立练习。</p>
+        <span class="tag planned">Expert review planned</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="test-cases">
+  <div class="container">
+    <div class="eyebrow">03 / Test Case Register</div>
+    <h2>Previously Reported Functional Tests</h2>
+    <p>
+      Selected developer-reported manual tests
+      reconstructed from previous AURA EDU
+      development stages.
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Test ID</th>
+            <th>Component</th>
+            <th>Procedure</th>
+            <th>Expected Result</th>
+            <th>Reported Observation</th>
+            <th>Evidence Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>TC-001</td>
+            <td>Research Lab</td>
+            <td>Open research.html</td>
+            <td>Homepage loads</td>
+            <td>Homepage reported working</td>
+            <td>Manual PASS</td>
+          </tr>
+          <tr>
+            <td>TC-002</td>
+            <td>Simulated Learner Demo</td>
+            <td>Switch Student A/B/C</td>
+            <td>Display updates correctly</td>
+            <td>All switches reported working</td>
+            <td>Manual PASS</td>
+          </tr>
+          <tr>
+            <td>TC-003</td>
+            <td>Decision Explorer</td>
+            <td>Open decision explorer</td>
+            <td>Page loads</td>
+            <td>Page reported working</td>
+            <td>Manual PASS</td>
+          </tr>
+          <tr>
+            <td>TC-004</td>
+            <td>Research Analytics</td>
+            <td>Open analytics dashboard</td>
+            <td>Page loads</td>
+            <td>Dashboard reported working</td>
+            <td>Manual PASS</td>
+          </tr>
+          <tr>
+            <td>TC-005</td>
+            <td>Data Quality</td>
+            <td>Open quality dashboard</td>
+            <td>Dashboard loads</td>
+            <td>Dashboard reported working</td>
+            <td>Manual PASS</td>
+          </tr>
+          <tr>
+            <td>TC-006</td>
+            <td>Data Documentation</td>
+            <td>Open documentation page</td>
+            <td>Page and descriptions appear</td>
+            <td>Page and descriptions reported working</td>
+            <td>Manual PASS</td>
+          </tr>
+          <tr>
+            <td>TC-007</td>
+            <td>Methodology</td>
+            <td>Open methodology page</td>
+            <td>RQ1–RQ4 and evaluation framework appear</td>
+            <td>Content reported visible</td>
+            <td>Manual PASS</td>
+          </tr>
+          <tr>
+            <td>TC-008</td>
+            <td>Documentation Hub</td>
+            <td>Open five research resource links</td>
+            <td>All linked pages open</td>
+            <td>All links reported working</td>
+            <td>Manual PASS</td>
+          </tr>
+          <tr>
+            <td>TC-009</td>
+            <td>Learning Records</td>
+            <td>Read G1/G2/G3 record counts</td>
+            <td>Existing records remain available</td>
+            <td>G1=4, G2=3, G3=6 reported</td>
+            <td>Manual PASS</td>
+          </tr>
+          <tr>
+            <td>TC-010</td>
+            <td>Grammar Modules</td>
+            <td>Check G1/G2/G3 original functionality</td>
+            <td>Modules remain usable</td>
+            <td>All modules reported working</td>
+            <td>Manual PASS</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="info">
+      <p>
+        <strong>Evidence provenance:</strong>
+        Entries are reconstructed from reported
+        outcomes. Detailed timestamps, screenshots,
+        logs and independent verification are
+        not yet attached.
+      </p>
+    </div>
+    <div class="notice">
+      <p>
+        These selected cases are not a comprehensive
+        regression suite or proof of educational
+        effectiveness. The current Refresh Inventory
+        fix requires its own retest.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section id="data-integrity" class="soft">
+  <div class="container">
+    <div class="eyebrow">04 / Data Integrity Check</div>
+    <h2>Read-Only Local Inventory</h2>
+    <p>
+      The inventory reads current localStorage
+      counts without modifying learning records.
+    </p>
+    <div class="metrics">
+      <div class="metric">
+        <strong id="g1-count">—</strong>
+        <span>G1 Records</span>
+      </div>
+      <div class="metric">
+        <strong id="g2-count">—</strong>
+        <span>G2 Records</span>
+      </div>
+      <div class="metric">
+        <strong id="g3-count">—</strong>
+        <span>G3 Records</span>
+      </div>
+      <div class="metric">
+        <strong id="total-count">—</strong>
+        <span>Total Records</span>
+      </div>
+    </div>
+
+    <div class="refresh-panel">
+      <h3>Inventory Refresh Test</h3>
+      <button class="btn teal"
+              type="button"
+              id="refresh-button">
+        Refresh Inventory
+      </button>
+      <p id="refresh-message"
+         role="status"
+         aria-live="polite">
+        Waiting for manual refresh.
+      </p>
+      <div class="refresh-details">
+        <div class="refresh-detail">
+          <strong id="refresh-count">0</strong>
+          <span>Manual Refresh Count</span>
+        </div>
+        <div class="refresh-detail">
+          <strong id="refresh-time">Not yet</strong>
+          <span>Last Manual Refresh</span>
+        </div>
+      </div>
+    </div>
+
+    <p id="inventory-status"
+       role="status"
+       aria-live="polite">
+      Checking local records...
+    </p>
+
+    <div class="card">
+      <h3>Historical Quality Audit</h3>
+      <p>
+        Previous audit:
+        <strong>4 PASS / 9 REVIEW</strong>
+        across 13 historical records.
+      </p>
+      <p>
+        REVIEW records are preserved and must not
+        be assigned to learners without supporting
+        identity evidence.
+      </p>
+      <p>
+        This is a previously reported audit,
+        not a live classification.
+      </p>
+      <div class="actions">
+        <a class="btn"
+           href="data-quality-dashboard.html">
+          Open Data Quality Dashboard →
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="eyebrow">05 / Research Evidence Status</div>
+    <h2>What the Evidence Can Support</h2>
+    <div class="grid">
+      <div class="card">
+        <span class="tag">Reported</span>
+        <h3>Functional Verification</h3>
+        <p>
+          Multiple developer manual tests
+          have been reported as successful.
+        </p>
+        <p>
+          指定条件下的功能已由开发者
+          报告正常运行。
+        </p>
+      </div>
+      <div class="card">
+        <span class="tag">Demonstration</span>
+        <h3>Simulated Learning Analytics</h3>
+        <p>
+          Student A/B/C demonstrations illustrate
+          intended adaptive learning logic.
+        </p>
+        <p>模拟演示不代表真实学生实验结果。</p>
+      </div>
+      <div class="card">
+        <span class="tag planned">Planned</span>
+        <h3>Expert Evaluation</h3>
+        <p>
+          Future educator review of instructional
+          appropriateness and decision explanations.
+        </p>
+      </div>
+      <div class="card">
+        <span class="tag planned">Planned</span>
+        <h3>Empirical Learning Study</h3>
+        <p>
+          Future ethically approved investigation
+          of independent grammar application,
+          retention and learner experience.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="soft">
+  <div class="container">
+    <div class="eyebrow">06 / Future Evaluation Protocol</div>
+    <h2>Standardised Test Documentation</h2>
+    <p>
+      Future evaluation should document the
+      following information before interpretation.
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Field</th><th>Purpose</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Test ID</td>
+            <td>Unique evaluation identifier</td>
+          </tr>
+          <tr>
+            <td>Version / Environment</td>
+            <td>Browser, device and test conditions</td>
+          </tr>
+          <tr>
+            <td>Test Objective</td>
+            <td>What the test aims to verify</td>
+          </tr>
+          <tr>
+            <td>Procedure</td>
+            <td>Reproducible test steps</td>
+          </tr>
+          <tr>
+            <td>Expected Result</td>
+            <td>Predefined acceptance criterion</td>
+          </tr>
+          <tr>
+            <td>Observed Result</td>
+            <td>What actually occurred</td>
+          </tr>
+          <tr>
+            <td>Evidence Reference</td>
+            <td>Screenshot, log or supporting record</td>
+          </tr>
+          <tr>
+            <td>Evaluation Decision</td>
+            <td>PASS, FAIL, REVIEW or NOT TESTED</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="notice">
+      <p>
+        Define acceptance criteria before testing,
+        record failures and successes, and distinguish
+        developer tests from independent evaluations.
+      </p>
+    </div>
+    <div class="actions">
+      <a class="btn teal"
+         href="research-methodology.html">
+        Research Methodology →
+      </a>
+      <a class="btn"
+         href="research-documentation-hub.html">
+        Documentation Hub →
+      </a>
+      <a class="btn" href="research.html">
+        Research Lab →
+      </a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <p>AURA EDU Research Lab</p>
+    <p>Prototype Evaluation Protocol</p>
+    <p>Step 19.13 — Refresh Fix</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /*
+    AURA EDU — STEP 19.13 REFRESH FIX
+
+    READ ONLY.
+    Never writes, removes or reassigns records.
+  */
+
+  const KEYS = {
+    G1:"aura_g1_learning_records_v1",
+    G2:"aura_g2_learning_records_v1",
+    G3:"aura_g3_learning_records_v1"
+  };
+
+  let manualRefreshCount = 0;
+
+  function inspect(key){
+    try {
+      const raw = localStorage.getItem(key);
+
+      if(raw === null){
+        return {
+          valid:true,
+          missing:true,
+          count:0
+        };
+      }
+
+      const value = JSON.parse(raw);
+
+      if(!Array.isArray(value)){
+        return {
+          valid:false,
+          missing:false,
+          count:null
+        };
+      }
+
+      return {
+        valid:true,
+        missing:false,
+        count:value.length
+      };
+
+    }catch(error){
+      console.error(
+        "[AURA Evaluation] Read error:",
+        error
+      );
+
+      return {
+        valid:false,
+        missing:false,
+        count:null
+      };
+    }
+  }
+
+  function renderInventory(isManual){
+    const results = {
+      G1:inspect(KEYS.G1),
+      G2:inspect(KEYS.G2),
+      G3:inspect(KEYS.G3)
+    };
+
+    let total = 0;
+    let valid = true;
+    const missing = [];
+
+    ["G1","G2","G3"].forEach(function(id){
+      const result = results[id];
+
+      document.getElementById(
+        id.toLowerCase()+"-count"
+      ).textContent = result.valid
+        ? String(result.count)
+        : "ERROR";
+
+      if(!result.valid){
+        valid = false;
+      }else{
+        total += result.count;
+      }
+
+      if(result.missing){
+        missing.push(id);
+      }
+    });
+
+    const totalElement =
+      document.getElementById("total-count");
+
+    const status =
+      document.getElementById("inventory-status");
+
+    if(!valid){
+      totalElement.textContent = "—";
+      status.className = "status error";
+      status.textContent =
+        "ERROR: One or more record stores " +
+        "could not be read.";
+
+    }else{
+      totalElement.textContent = String(total);
+
+      if(missing.length){
+        status.className = "status review";
+        status.textContent =
+          "REVIEW: Missing keys: " +
+          missing.join(", ");
+
+      }else if(
+        results.G1.count === 4 &&
+        results.G2.count === 3 &&
+        results.G3.count === 6
+      ){
+        status.className = "status ok";
+        status.textContent =
+          "MATCH: 4/3/6 baseline confirmed. " +
+          "Counts only; content not verified.";
+
+      }else{
+        status.className = "status review";
+        status.textContent =
+          "REVIEW: Counts differ from the " +
+          "previous baseline. Do not delete " +
+          "or alter records.";
+      }
+    }
+
+    if(isManual){
+      manualRefreshCount += 1;
+
+      const time =
+        new Date().toLocaleTimeString();
+
+      document.getElementById(
+        "refresh-count"
+      ).textContent =
+        String(manualRefreshCount);
+
+      document.getElementById(
+        "refresh-time"
+      ).textContent = time;
+
+      const message =
+        document.getElementById(
+          "refresh-message"
+        );
+
+      message.textContent =
+        "Refresh completed #" +
+        manualRefreshCount +
+        " at " + time +
+        ". Inventory read again.";
+
+      message.className = "status ok";
+
+      console.info(
+        "[AURA Evaluation] Manual refresh:",
+        manualRefreshCount,
+        results
+      );
+    }
+
+    return results;
+  }
+
+  function initialise(){
+    const button =
+      document.getElementById(
+        "refresh-button"
+      );
+
+    if(!button){
+      console.error(
+        "[AURA Evaluation] Refresh button missing."
+      );
+      return;
+    }
+
+    button.addEventListener(
+      "click",
+      function(){
+        renderInventory(true);
+      }
+    );
+
+    renderInventory(false);
+
+    console.info(
+      "[AURA Evaluation] Refresh handler ready."
+    );
+  }
+
+  if(document.readyState === "loading"){
+    document.addEventListener(
+      "DOMContentLoaded",
+      initialise
+    );
+  }else{
+    initialise();
+  }
+
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,820 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+  <title>AURA EDU | Data Quality Dashboard</title>
+
+  <style>
+    :root {
+      --blue: #2454a6;
+      --blue-dark: #173e81;
+      --dark: #20314e;
+      --muted: #66758d;
+      --bg: #f3f6fc;
+      --line: #e1e8f2;
+      --green: #16803c;
+      --amber: #a96700;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family:
+        -apple-system, BlinkMacSystemFont,
+        "Segoe UI", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--dark);
+    }
+
+    .container {
+      max-width: 1150px;
+      margin: auto;
+      padding: 32px 20px 60px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      color: var(--blue);
+    }
+
+    h2 {
+      font-size: 19px;
+      margin-top: 0;
+    }
+
+    p {
+      line-height: 1.7;
+    }
+
+    .subtitle {
+      color: var(--muted);
+    }
+
+    .notice {
+      background: #fff8e9;
+      padding: 16px;
+      border-radius: 12px;
+      margin: 22px 0;
+      line-height: 1.7;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns:
+        repeat(auto-fit, minmax(160px, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .stat {
+      background: white;
+      padding: 22px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 32px;
+      color: var(--blue);
+      margin-bottom: 8px;
+    }
+
+    .stat span {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns:
+        repeat(auto-fit, minmax(290px, 1fr));
+      gap: 18px;
+    }
+
+    .panel {
+      background: white;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      margin-bottom: 18px;
+    }
+
+    .bar-row {
+      margin: 18px 0;
+    }
+
+    .bar-label {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    .track {
+      height: 14px;
+      background: #e9eef7;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .fill {
+      height: 100%;
+      background: var(--blue);
+      border-radius: 20px;
+    }
+
+    .quality-bar {
+      display: flex;
+      height: 26px;
+      overflow: hidden;
+      border-radius: 20px;
+      background: #e9eef7;
+      margin: 24px 0 12px;
+    }
+
+    .quality-pass {
+      background: var(--green);
+    }
+
+    .quality-review {
+      background: #e4a13b;
+    }
+
+    .legend {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      font-size: 14px;
+    }
+
+    .legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .dot {
+      display: inline-block;
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+    }
+
+    .green {
+      background: var(--green);
+    }
+
+    .amber {
+      background: #e4a13b;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 20px 0;
+    }
+
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 12px 20px;
+      border: 2px solid var(--blue);
+      border-radius: 10px;
+      background: var(--blue);
+      color: #ffffff;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      transition: background 0.15s ease;
+    }
+
+    .action-btn:hover {
+      background: var(--blue-dark);
+      border-color: var(--blue-dark);
+    }
+
+    .action-btn:focus-visible {
+      outline: 3px solid #91b8ff;
+      outline-offset: 3px;
+    }
+
+    .action-btn:active {
+      transform: translateY(1px);
+    }
+
+    .action-btn.secondary {
+      background: #ffffff;
+      color: var(--blue);
+    }
+
+    .action-btn.secondary:hover {
+      background: #edf3ff;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 12px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+
+    th {
+      background: #f2f6fc;
+    }
+
+    .pass {
+      color: var(--green);
+      font-weight: bold;
+    }
+
+    .review {
+      color: var(--amber);
+      font-weight: bold;
+    }
+
+    .status {
+      padding: 12px;
+      background: #eef4fc;
+      border-radius: 9px;
+      color: var(--blue);
+      margin: 14px 0;
+      line-height: 1.6;
+    }
+
+    .status.error {
+      background: #fff0ee;
+      color: #b42318;
+    }
+
+    .metadata-box {
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      background: #f2f6fc;
+      padding: 18px;
+      border-radius: 10px;
+      font-size: 13px;
+      line-height: 1.6;
+      max-height: 520px;
+      overflow-y: auto;
+    }
+
+    .footer {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 25px;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px 12px;
+      }
+
+      .panel {
+        padding: 16px;
+      }
+
+      .action-btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<main class="container">
+
+  <header>
+    <h1>AURA EDU</h1>
+    <h2>Learning Analytics Data Quality Dashboard</h2>
+
+    <p class="subtitle">
+      Research Lab · Step 19.8.1
+      <br>
+      学习记录质量、身份关联与历史数据兼容性分析
+    </p>
+  </header>
+
+  <div class="notice">
+    <strong>Research Data Notice</strong>
+    <br>
+    This dashboard provides local data quality checks,
+    not verified learner authentication.
+    <br>
+    本页面只读分析，不修改学习记录。
+    REVIEW 表示需要检查，不代表数据必须删除。
+  </div>
+
+  <section class="stats">
+
+    <div class="stat">
+      <strong id="total">—</strong>
+      <span>Total Learning Records</span>
+    </div>
+
+    <div class="stat">
+      <strong id="passed">—</strong>
+      <span>Quality PASS</span>
+    </div>
+
+    <div class="stat">
+      <strong id="review">—</strong>
+      <span>Quality REVIEW</span>
+    </div>
+
+    <div class="stat">
+      <strong id="profiles">—</strong>
+      <span>Learner Profiles</span>
+    </div>
+
+    <div class="stat">
+      <strong id="legacy">—</strong>
+      <span>Legacy Records</span>
+    </div>
+
+  </section>
+
+  <div class="grid">
+
+    <section class="panel">
+      <h2>Module Distribution</h2>
+      <p class="subtitle">
+        G1 / G2 / G3 学习记录分布
+      </p>
+      <div id="moduleChart"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Quality Classification</h2>
+
+      <div class="quality-bar">
+        <div id="passBar" class="quality-pass"></div>
+        <div id="reviewBar" class="quality-review"></div>
+      </div>
+
+      <div class="legend">
+        <span>
+          <i class="dot green"></i>
+          <span id="passLabel">PASS</span>
+        </span>
+
+        <span>
+          <i class="dot amber"></i>
+          <span id="reviewLabel">REVIEW</span>
+        </span>
+      </div>
+    </section>
+
+  </div>
+
+  <section class="panel">
+    <h2>Record Quality Report</h2>
+
+    <div class="actions">
+
+      <button
+        type="button"
+        class="action-btn"
+        id="refreshBtn">
+        Refresh Analysis
+      </button>
+
+      <button
+        type="button"
+        class="action-btn"
+        id="previewBtn">
+        Preview Research Metadata
+      </button>
+
+    </div>
+
+    <p id="status"
+       class="status"
+       role="status"
+       aria-live="polite">
+      Waiting for analysis...
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Module</th>
+            <th>Record</th>
+            <th>Format</th>
+            <th>Identity</th>
+            <th>Quality</th>
+            <th>Issues</th>
+          </tr>
+        </thead>
+
+        <tbody id="reportBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Research Interpretation</h2>
+
+    <p id="interpretation">
+      Waiting for analysis...
+    </p>
+  </section>
+
+  <section class="panel" id="metadataSection">
+    <h2>Research Metadata Preview</h2>
+
+    <p class="subtitle">
+      Data quality metadata only.
+      No learner names or original answers.
+    </p>
+
+    <div class="actions">
+      <button
+        type="button"
+        class="action-btn secondary"
+        id="copyBtn">
+        Copy JSON
+      </button>
+    </div>
+
+    <p id="metadataStatus"
+       class="status"
+       role="status"
+       aria-live="polite">
+      Click Preview Research Metadata above.
+    </p>
+
+    <pre id="metadata"
+         class="metadata-box">Waiting for preview...</pre>
+  </section>
+
+  <p class="footer">
+    AURA EDU Research Lab · Data Quality Dashboard
+    <br>
+    Local prototype · No authentication ·
+    Original learning records preserved.
+  </p>
+
+</main>
+
+<script src="js/legacy-record-compatibility.js"></script>
+
+<script>
+(function () {
+  "use strict";
+
+  const $ = id => document.getElementById(id);
+
+  let latestMetadata = "";
+
+  function setText(id, value) {
+    $(id).textContent = String(value);
+  }
+
+  function setStatus(message, error = false) {
+    $("status").textContent = message;
+    $("status").className =
+      error ? "status error" : "status";
+  }
+
+  function setMetadataStatus(message, error = false) {
+    $("metadataStatus").textContent = message;
+    $("metadataStatus").className =
+      error ? "status error" : "status";
+  }
+
+  function getService() {
+    const service = window.AuraLegacyCompatibility;
+
+    if (!service) {
+      throw new Error(
+        "Legacy Compatibility Service not loaded."
+      );
+    }
+
+    return service;
+  }
+
+  function renderModules(counts) {
+    const container = $("moduleChart");
+    container.textContent = "";
+
+    const max = Math.max(
+      1,
+      counts.G1 || 0,
+      counts.G2 || 0,
+      counts.G3 || 0
+    );
+
+    ["G1", "G2", "G3"].forEach(function (module) {
+      const count = counts[module] || 0;
+
+      const row = document.createElement("div");
+      row.className = "bar-row";
+
+      const label = document.createElement("div");
+      label.className = "bar-label";
+
+      const name = document.createElement("span");
+      name.textContent = module;
+
+      const value = document.createElement("strong");
+      value.textContent = count;
+
+      label.append(name, value);
+
+      const track = document.createElement("div");
+      track.className = "track";
+
+      const fill = document.createElement("div");
+      fill.className = "fill";
+      fill.style.width =
+        (count / max * 100) + "%";
+
+      track.appendChild(fill);
+      row.append(label, track);
+      container.appendChild(row);
+    });
+  }
+
+  function renderQuality(summary) {
+    const total = summary.total || 0;
+
+    const passPercent = total
+      ? summary.passed / total * 100
+      : 0;
+
+    const reviewPercent = total
+      ? summary.review / total * 100
+      : 0;
+
+    $("passBar").style.width =
+      passPercent + "%";
+
+    $("reviewBar").style.width =
+      reviewPercent + "%";
+
+    setText(
+      "passLabel",
+      "PASS " + summary.passed +
+      " (" + passPercent.toFixed(1) + "%)"
+    );
+
+    setText(
+      "reviewLabel",
+      "REVIEW " + summary.review +
+      " (" + reviewPercent.toFixed(1) + "%)"
+    );
+  }
+
+  function renderTable(report) {
+    const tbody = $("reportBody");
+    tbody.textContent = "";
+
+    report.forEach(function (item) {
+      const tr = document.createElement("tr");
+
+      const values = [
+        item.module,
+        item.index,
+        item.format,
+        item.identityStatus,
+        item.qualityStatus,
+        item.issues.join(", ") || "-"
+      ];
+
+      values.forEach(function (value, index) {
+        const td = document.createElement("td");
+        td.textContent = String(value);
+
+        if (index === 4) {
+          td.className =
+            value === "PASS" ? "pass" : "review";
+        }
+
+        tr.appendChild(td);
+      });
+
+      tbody.appendChild(tr);
+    });
+  }
+
+  function renderInterpretation(result) {
+    const s = result.summary;
+
+    $("interpretation").textContent =
+      "本次分析共读取 " + s.total +
+      " 条学习记录。其中 " + s.current +
+      " 条采用当前结构，" + s.legacy +
+      " 条采用历史结构。质量检查 PASS：" +
+      s.passed + " 条；REVIEW：" +
+      s.review + " 条。本地身份关联状态为 " +
+      "LOCALLY_BOUND 的记录有 " +
+      s.locallyBound +
+      " 条。这些结果只反映本地数据结构和关联质量，" +
+      "不代表真实身份认证或学习效果证明。" +
+      "原始学习记录未被修改。";
+  }
+
+  function refresh() {
+    try {
+      const result = getService().analyze();
+
+      if (!result.ok) {
+        throw new Error(
+          result.error || "Analysis failed."
+        );
+      }
+
+      const s = result.summary;
+
+      setText("total", s.total);
+      setText("passed", s.passed);
+      setText("review", s.review);
+      setText("profiles", result.profileCount);
+      setText("legacy", s.legacy);
+
+      renderModules(result.counts);
+      renderQuality(s);
+      renderTable(result.report);
+      renderInterpretation(result);
+
+      setStatus(
+        "Analysis completed. " +
+        s.total + " records checked. " +
+        "Original records unchanged."
+      );
+
+    } catch (error) {
+      console.error(
+        "[AURA Dashboard] Refresh error:",
+        error
+      );
+
+      setStatus(error.message, true);
+    }
+  }
+
+  function preview() {
+    setMetadataStatus(
+      "Preview button clicked. Loading metadata..."
+    );
+
+    try {
+      const service = getService();
+
+      const result = service.getResearchDataset();
+
+      if (!result.ok) {
+        throw new Error(
+          result.error || "Metadata unavailable."
+        );
+      }
+
+      if (!Array.isArray(result.dataset)) {
+        throw new Error(
+          "Invalid research dataset."
+        );
+      }
+
+      latestMetadata =
+        JSON.stringify(result, null, 2);
+
+      $("metadata").textContent =
+        latestMetadata;
+
+      setMetadataStatus(
+        "Preview ready: " +
+        result.dataset.length +
+        " records. Original data unchanged."
+      );
+
+      $("metadataSection").scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+
+      console.info(
+        "[AURA Dashboard] Metadata preview ready:",
+        result.dataset.length
+      );
+
+    } catch (error) {
+      console.error(
+        "[AURA Dashboard] Preview error:",
+        error
+      );
+
+      setMetadataStatus(error.message, true);
+    }
+  }
+
+  async function copyMetadata() {
+    if (!latestMetadata) {
+      setMetadataStatus(
+        "Please preview metadata before copying.",
+        true
+      );
+      return;
+    }
+
+    try {
+      if (
+        !navigator.clipboard ||
+        typeof navigator.clipboard.writeText !==
+        "function"
+      ) {
+        throw new Error(
+          "Clipboard API unavailable."
+        );
+      }
+
+      await navigator.clipboard.writeText(
+        latestMetadata
+      );
+
+      setMetadataStatus(
+        "JSON copied successfully."
+      );
+
+    } catch (error) {
+      console.error(
+        "[AURA Dashboard] Copy error:",
+        error
+      );
+
+      setMetadataStatus(
+        "Copy failed. Please select and copy " +
+        "the JSON text manually.",
+        true
+      );
+    }
+  }
+
+  function initialize() {
+    $("refreshBtn").addEventListener(
+      "click",
+      refresh
+    );
+
+    $("previewBtn").addEventListener(
+      "click",
+      preview
+    );
+
+    $("copyBtn").addEventListener(
+      "click",
+      copyMetadata
+    );
+
+    refresh();
+
+    console.info(
+      "[AURA EDU] Data Quality Dashboard ready."
+    );
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener(
+      "DOMContentLoaded",
+      initialize
+    );
+  } else {
+    initialize();
+  }
+
+})();
+</script>
+
+</body>
+</html>

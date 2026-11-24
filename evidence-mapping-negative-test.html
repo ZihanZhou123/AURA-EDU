@@ -1,0 +1,540 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1">
+
+  <title>AURA EDU — Evidence Mapping Negative Test</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 20px;
+      color: #243247;
+      line-height: 1.6;
+      background: #f7f9fc;
+    }
+
+    h1 {
+      color: #254c79;
+    }
+
+    .panel {
+      background: white;
+      border: 1px solid #d5dce5;
+      border-radius: 12px;
+      padding: 22px;
+      margin: 20px 0;
+    }
+
+    button {
+      padding: 12px 18px;
+      margin: 8px 8px 8px 0;
+      border: none;
+      border-radius: 8px;
+      background: #254c79;
+      color: white;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    button:hover {
+      background: #173653;
+    }
+
+    .pass {
+      color: #167044;
+    }
+
+    .fail {
+      color: #b42318;
+    }
+
+    pre {
+      background: #f1f4f8;
+      padding: 16px;
+      border-radius: 8px;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      font-size: 13px;
+    }
+
+    .notice {
+      background: #edf3fb;
+      padding: 14px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>AURA EDU — Negative Case Validation</h1>
+
+  <p>
+    Stage 25.3.5.5.2.2
+  </p>
+
+  <div class="panel">
+    <h2>Research Safety</h2>
+
+    <p class="notice">
+      Synthetic evidence only.
+      No real learner records are accessed.
+      No localStorage data is modified.
+    </p>
+  </div>
+
+  <div class="panel">
+    <h2>Test A — Evidence Reference Mismatch</h2>
+
+    <p>
+      Recorded question: G1 / Q1
+    </p>
+
+    <p>
+      Incorrect mapping reference: G1 / Q999
+    </p>
+
+    <button id="testMapping">
+      Run Mapping Mismatch Test
+    </button>
+
+    <div id="mappingResult"></div>
+  </div>
+
+  <div class="panel">
+    <h2>Test B — Insufficient Evidence</h2>
+
+    <p>
+      Simulate a learner with no recorded G2 sessions.
+    </p>
+
+    <button id="testEmpty">
+      Run Insufficient Evidence Test
+    </button>
+
+    <div id="emptyResult"></div>
+  </div>
+
+  <script>
+    "use strict";
+
+    /* ======================================
+       SYNTHETIC TEST IDENTIFIERS
+    ====================================== */
+
+    const TEST_LEARNER =
+      "SYNTHETIC_LEARNER_ONLY";
+
+    const TEST_SESSION =
+      "SYNTHETIC_SESSION_001";
+
+    /* ======================================
+       MOCK IDENTITY SERVICE
+    ====================================== */
+
+    window.AuraLearnerIdentity = {
+      findLearner(id) {
+        if (id === TEST_LEARNER) {
+          return {
+            id: TEST_LEARNER,
+            name: "Synthetic Learner"
+          };
+        }
+
+        return null;
+      }
+    };
+
+    /* ======================================
+       SYNTHETIC QUESTION
+    ====================================== */
+
+    function makeQuestion(stage) {
+      return {
+        questionId: "Q1",
+        stage: stage,
+        knowledgePoint: "Verb to Be",
+
+        firstAttemptCorrect: true,
+        completedCorrectly: true,
+
+        attemptCount: 1,
+        highestHintUsed: 0,
+
+        startedAt: "2026-01-01T10:00:00",
+        completedAt: "2026-01-01T10:01:00",
+
+        attempts: [
+          {
+            attemptNumber: 1,
+            selectedAnswer: "is",
+            correct: true,
+            hintLevelAtAttempt: 0,
+            timestamp: "2026-01-01T10:00:30"
+          }
+        ],
+
+        errors: []
+      };
+    }
+
+    /* ======================================
+       SYNTHETIC SESSION TRACE
+    ====================================== */
+
+    function makeTrace() {
+      const stages = {};
+
+      [
+        "diagnostic",
+        "practice",
+        "reassessment"
+      ].forEach(stage => {
+        stages[stage] = {
+          questions: [
+            makeQuestion(stage)
+          ]
+        };
+      });
+
+      return {
+        learnerId: TEST_LEARNER,
+        moduleId: "G1",
+        sessionId: TEST_SESSION,
+
+        complete: true,
+        questionCount: 3,
+
+        startedAt: "2026-01-01T10:00:00",
+        completedAt: "2026-01-01T10:05:00",
+
+        stages: stages
+      };
+    }
+
+    const syntheticTrace = makeTrace();
+
+    /* ======================================
+       MOCK EVIDENCE TRACE SERVICE
+    ====================================== */
+
+    window.AuraTeacherEvidenceTrace = {
+      getSession(learnerId, moduleId, sessionId) {
+        if (
+          learnerId !== TEST_LEARNER ||
+          moduleId !== "G1" ||
+          sessionId !== TEST_SESSION
+        ) {
+          return {
+            ok: false,
+            error: "SESSION_NOT_FOUND"
+          };
+        }
+
+        return {
+          ok: true,
+          trace: syntheticTrace
+        };
+      },
+
+      listSessions(learnerId, moduleId) {
+        if (moduleId === "G2") {
+          return {
+            ok: true,
+            sessions: []
+          };
+        }
+
+        if (
+          learnerId === TEST_LEARNER &&
+          moduleId === "G1"
+        ) {
+          return {
+            ok: true,
+            sessions: [
+              {
+                sessionId: TEST_SESSION,
+                complete: true,
+                completedAt: "2026-01-01T10:05:00"
+              }
+            ]
+          };
+        }
+
+        return {
+          ok: true,
+          sessions: []
+        };
+      }
+    };
+
+    /* ======================================
+       SYNTHETIC MAPPING
+       INTENTIONALLY WRONG QUESTION ID
+    ====================================== */
+
+    function makeIncorrectMapping() {
+      return {
+        questionId: "Q999",
+        stage: "diagnostic",
+        priority: "LOW",
+
+        evidenceReference: {
+          moduleId: "G1",
+          sessionId: TEST_SESSION,
+          stage: "diagnostic",
+          questionId: "Q999"
+        },
+
+        observedEvidence: {
+          firstAttemptCorrect: true,
+          highestHintUsed: 0,
+          attemptCount: 1
+        },
+
+        interpretation:
+          "Synthetic rule-based interpretation.",
+
+        teachingSupport:
+          "Synthetic scaffolding recommendation.",
+
+        independentValidation:
+          "Synthetic independent reassessment."
+      };
+    }
+
+    /* ======================================
+       MOCK EVIDENCE MAPPING SERVICE
+    ====================================== */
+
+    window.AuraTeacherEvidenceMapping = {
+      getSessionMapping(
+        learnerId,
+        moduleId,
+        sessionId
+      ) {
+        if (
+          learnerId !== TEST_LEARNER ||
+          moduleId !== "G1" ||
+          sessionId !== TEST_SESSION
+        ) {
+          return {
+            ok: false,
+            error: "MAPPING_NOT_FOUND"
+          };
+        }
+
+        return {
+          ok: true,
+          learnerId: TEST_LEARNER,
+          moduleId: "G1",
+          sessionId: TEST_SESSION,
+
+          mappingCount: 1,
+
+          mappings: [
+            makeIncorrectMapping()
+          ]
+        };
+      }
+    };
+
+  </script>
+
+  <!-- Load the real validator under test -->
+  <script src="js/teacher-evidence-validator.js"></script>
+
+  <script>
+    "use strict";
+
+    /* ======================================
+       DISPLAY TEST RESULT
+    ====================================== */
+
+    function showResult(
+      containerId,
+      passed,
+      title,
+      data
+    ) {
+      const container =
+        document.getElementById(containerId);
+
+      container.replaceChildren();
+
+      const heading =
+        document.createElement("h3");
+
+      heading.className =
+        passed ? "pass" : "fail";
+
+      heading.textContent =
+        (passed ? "TEST PASS — " : "TEST FAIL — ") +
+        title;
+
+      const details =
+        document.createElement("pre");
+
+      details.textContent =
+        JSON.stringify(data, null, 2);
+
+      container.appendChild(heading);
+      container.appendChild(details);
+    }
+
+    function showError(containerId, error) {
+      showResult(
+        containerId,
+        false,
+        "Unexpected JavaScript error",
+        {
+          error: error.message
+        }
+      );
+    }
+
+    /* ======================================
+       TEST A
+       EVIDENCE REFERENCE MISMATCH
+    ====================================== */
+
+    document.getElementById("testMapping")
+      .addEventListener("click", function () {
+        try {
+          const validator =
+            window.AuraTeacherEvidenceValidator;
+
+          if (!validator) {
+            throw new Error(
+              "Validator script not loaded."
+            );
+          }
+
+          const result =
+            validator.validateSession(
+              TEST_LEARNER,
+              "G1",
+              TEST_SESSION
+            );
+
+          const checks =
+            Array.isArray(result.checks)
+              ? result.checks
+              : [];
+
+          const mismatch =
+            checks.find(item =>
+              item.id ===
+                "EVIDENCE_REFERENCE_MISMATCH" &&
+              item.status === "WARNING"
+            );
+
+          const passed =
+            result.ok === true &&
+            result.summary &&
+            result.summary.status === "WARNING" &&
+            Boolean(mismatch);
+
+          showResult(
+            "mappingResult",
+            passed,
+            "Incorrect mapping reference detected",
+            {
+              expectedStatus: "WARNING",
+
+              actualStatus:
+                result.summary
+                  ? result.summary.status
+                  : "Unavailable",
+
+              expectedCheck:
+                "EVIDENCE_REFERENCE_MISMATCH",
+
+              mismatchDetected:
+                Boolean(mismatch),
+
+              warnings: checks.filter(
+                item => item.status === "WARNING"
+              )
+            }
+          );
+
+        } catch (error) {
+          showError("mappingResult", error);
+        }
+      });
+
+    /* ======================================
+       TEST B
+       INSUFFICIENT EVIDENCE
+    ====================================== */
+
+    document.getElementById("testEmpty")
+      .addEventListener("click", function () {
+        try {
+          const validator =
+            window.AuraTeacherEvidenceValidator;
+
+          if (!validator) {
+            throw new Error(
+              "Validator script not loaded."
+            );
+          }
+
+          const result =
+            validator.validateModule(
+              TEST_LEARNER,
+              "G2"
+            );
+
+          const passed =
+            result.ok === true &&
+            result.status ===
+              "INSUFFICIENT_EVIDENCE" &&
+            result.sessionCount === 0 &&
+            Array.isArray(
+              result.validatedSessions
+            ) &&
+            result.validatedSessions.length === 0;
+
+          showResult(
+            "emptyResult",
+            passed,
+            "Empty session evidence handled correctly",
+            {
+              expectedStatus:
+                "INSUFFICIENT_EVIDENCE",
+
+              actualStatus:
+                result.status,
+
+              sessionCount:
+                result.sessionCount,
+
+              validatedSessions:
+                result.validatedSessions,
+
+              ok:
+                result.ok
+            }
+          );
+
+        } catch (error) {
+          showError("emptyResult", error);
+        }
+      });
+
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,303 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1">
+  <title>AURA EDU — Module Aggregation Test</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      max-width: 880px;
+      margin: 40px auto;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: #243247;
+      background: #f7f9fc;
+    }
+    h1 { color: #254c79; }
+    .panel {
+      background: white;
+      padding: 22px;
+      border: 1px solid #d5dce5;
+      border-radius: 12px;
+      margin: 18px 0;
+    }
+    button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      background: #254c79;
+      color: white;
+      cursor: pointer;
+    }
+    .pass { color: #167044; }
+    .fail { color: #b42318; }
+    pre {
+      padding: 15px;
+      background: #f1f4f8;
+      border-radius: 8px;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+  </style>
+</head>
+<body>
+  <h1>AURA EDU — Module Aggregation Test</h1>
+  <p>Stage 25.3.5.5.3.1</p>
+
+  <div class="panel">
+    <h2>Test A — Mixed Session Results</h2>
+    <p>G1 contains two valid sessions and one warning session.</p>
+    <button id="testA">Run Test A</button>
+    <div id="resultA"></div>
+  </div>
+
+  <div class="panel">
+    <h2>Test B — All Sessions Valid</h2>
+    <p>G2 contains two valid sessions.</p>
+    <button id="testB">Run Test B</button>
+    <div id="resultB"></div>
+  </div>
+
+  <script>
+    "use strict";
+
+    const LEARNER = "SYNTHETIC_LEARNER";
+    const STAGES = [
+      "diagnostic",
+      "practice",
+      "reassessment"
+    ];
+
+    window.AuraLearnerIdentity = {
+      findLearner(id) {
+        return id === LEARNER
+          ? { id, name: "Synthetic Learner" }
+          : null;
+      }
+    };
+
+    function createQuestion(stage) {
+      return {
+        questionId: "Q1",
+        stage: stage,
+        firstAttemptCorrect: true,
+        completedCorrectly: true,
+        attemptCount: 1,
+        highestHintUsed: 0,
+        attempts: [{
+          attemptNumber: 1,
+          selectedAnswer: "is",
+          correct: true,
+          hintLevelAtAttempt: 0
+        }],
+        errors: []
+      };
+    }
+
+    function createSession(moduleId, sessionId, warning) {
+      const stages = {};
+
+      STAGES.forEach(stage => {
+        stages[stage] = {
+          questions: [createQuestion(stage)]
+        };
+      });
+
+      if (warning) {
+        stages.diagnostic.questions[0].questionId = "";
+      }
+
+      return {
+        learnerId: LEARNER,
+        moduleId,
+        sessionId,
+        complete: true,
+        questionCount: 3,
+        stages
+      };
+    }
+
+    const records = {
+      G1: [
+        createSession("G1", "G1_PASS_1", false),
+        createSession("G1", "G1_PASS_2", false),
+        createSession("G1", "G1_WARNING_3", true)
+      ],
+      G2: [
+        createSession("G2", "G2_PASS_1", false),
+        createSession("G2", "G2_PASS_2", false)
+      ]
+    };
+
+    window.AuraTeacherEvidenceTrace = {
+      listSessions(learnerId, moduleId) {
+        return {
+          ok: true,
+          sessions: (records[moduleId] || []).map(
+            session => ({
+              sessionId: session.sessionId,
+              complete: true
+            })
+          )
+        };
+      },
+
+      getSession(learnerId, moduleId, sessionId) {
+        const session = (records[moduleId] || []).find(
+          item => item.sessionId === sessionId
+        );
+
+        return session
+          ? { ok: true, trace: session }
+          : { ok: false, error: "SESSION_NOT_FOUND" };
+      }
+    };
+
+    window.AuraTeacherEvidenceMapping = {
+      getSessionMapping(learnerId, moduleId, sessionId) {
+        const session = (records[moduleId] || []).find(
+          item => item.sessionId === sessionId
+        );
+
+        if (!session) {
+          return {
+            ok: false,
+            error: "MAPPING_NOT_FOUND"
+          };
+        }
+
+        const mappings = [];
+
+        STAGES.forEach(stage => {
+          const question = session.stages[stage].questions[0];
+
+          mappings.push({
+            questionId: question.questionId,
+            stage,
+            priority: "LOW",
+            evidenceReference: {
+              moduleId,
+              sessionId,
+              stage,
+              questionId: question.questionId
+            },
+            observedEvidence: {
+              firstAttemptCorrect:
+                question.firstAttemptCorrect,
+              highestHintUsed:
+                question.highestHintUsed,
+              attemptCount:
+                question.attemptCount
+            },
+            interpretation: "Synthetic interpretation.",
+            teachingSupport: "Synthetic teaching support.",
+            independentValidation:
+              "Synthetic independent assessment."
+          });
+        });
+
+        return {
+          ok: true,
+          mappingCount: mappings.length,
+          mappings
+        };
+      }
+    };
+  </script>
+
+  <script src="js/teacher-evidence-validator.js"></script>
+
+  <script>
+    "use strict";
+
+    function display(containerId, passed, result) {
+      const container = document.getElementById(containerId);
+      container.replaceChildren();
+
+      const heading = document.createElement("h2");
+      heading.className = passed ? "pass" : "fail";
+      heading.textContent = passed
+        ? "TEST PASS"
+        : "TEST FAIL";
+
+      const pre = document.createElement("pre");
+      pre.textContent = JSON.stringify(result, null, 2);
+
+      container.appendChild(heading);
+      container.appendChild(pre);
+    }
+
+    function runTest(moduleId, expected, containerId) {
+      try {
+        const validator =
+          window.AuraTeacherEvidenceValidator;
+
+        if (!validator) {
+          throw new Error("Validator unavailable.");
+        }
+
+        const result = validator.validateModule(
+          LEARNER,
+          moduleId
+        );
+
+        const sessionStatuses =
+          (result.validatedSessions || []).map(item => ({
+            sessionId: item.sessionId,
+            status: item.summary
+              ? item.summary.status
+              : "UNAVAILABLE",
+            warningCount: item.summary
+              ? item.summary.warning
+              : null
+          }));
+
+        const expectedCount = moduleId === "G1" ? 3 : 2;
+
+        const expectedWarnings =
+          moduleId === "G1" ? 1 : 0;
+
+        const actualWarnings = sessionStatuses.filter(
+          item => item.status === "WARNING"
+        ).length;
+
+        const passed =
+          result.ok === true &&
+          result.status === expected &&
+          result.sessionCount === expectedCount &&
+          sessionStatuses.length === expectedCount &&
+          actualWarnings === expectedWarnings;
+
+        display(containerId, passed, {
+          expectedModuleStatus: expected,
+          actualModuleStatus: result.status,
+          expectedSessions: expectedCount,
+          actualSessions: result.sessionCount,
+          expectedWarningSessions: expectedWarnings,
+          actualWarningSessions: actualWarnings,
+          sessionStatuses
+        });
+
+      } catch (error) {
+        display(containerId, false, {
+          error: error.message
+        });
+      }
+    }
+
+    document.getElementById("testA")
+      .addEventListener("click", function () {
+        runTest("G1", "WARNING", "resultA");
+      });
+
+    document.getElementById("testB")
+      .addEventListener("click", function () {
+        runTest("G2", "PASS", "resultB");
+      });
+  </script>
+</body>
+</html>

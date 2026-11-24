@@ -1,0 +1,3430 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>AURA EDU | Individual Learner Report</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, "PingFang SC", sans-serif;
+  background: #f4f7fb;
+  color: #34465e;
+  line-height: 1.65;
+  visibility: hidden;
+}
+
+header {
+  background: #fff;
+  border-bottom: 1px solid #e1e6ef;
+  padding: 18px 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.logo {
+  color: #7659d5;
+  font-size: 23px;
+  font-weight: 900;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+a {
+  color: #7659d5;
+  text-decoration: none;
+}
+
+button, select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.primary, .logout {
+  background: #7659d5;
+  color: #fff;
+  border: 0;
+  border-radius: 10px;
+  padding: 11px 16px;
+  font-weight: bold;
+}
+
+main {
+  max-width: 1120px;
+  margin: auto;
+  padding: 35px 20px 70px;
+}
+
+.subtitle, .muted {
+  color: #728197;
+}
+
+.panel {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  padding: 23px;
+  margin-top: 20px;
+}
+
+.panel h2 {
+  margin-top: 0;
+  font-size: 20px;
+}
+
+.toolbar, .trace-selector {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 13px;
+}
+
+select {
+  padding: 12px;
+  border: 1px solid #ccd5e2;
+  border-radius: 10px;
+  min-width: 230px;
+  max-width: 100%;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.stat {
+  background: #f4f6fb;
+  border-radius: 13px;
+  padding: 19px;
+  min-width: 0;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: #728197;
+}
+
+.stat-value {
+  font-size: 25px;
+  font-weight: 900;
+  color: #6653bd;
+  margin-top: 10px;
+  overflow-wrap: anywhere;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+th, td {
+  text-align: left;
+  padding: 12px;
+  border-bottom: 1px solid #e5eaf1;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+}
+
+th {
+  background: #f5f7fb;
+}
+
+.notice, .warning {
+  border-radius: 12px;
+  padding: 16px;
+  margin: 12px 0;
+}
+
+.notice {
+  background: #edf2ff;
+}
+
+.warning {
+  background: #fff4e8;
+}
+
+.recommendation, .mapping-card {
+  border: 1px solid #ded7f6;
+  border-radius: 16px;
+  background: #fbfaff;
+  padding: 20px;
+  margin: 16px 0;
+}
+
+.recommendation h3, .mapping-card h3 {
+  margin-top: 0;
+  color: #6653bd;
+}
+
+.recommendation-part, .mapping-step {
+  background: #fff;
+  border: 1px solid #e8e3f5;
+  border-radius: 12px;
+  padding: 15px;
+  margin-top: 12px;
+}
+
+.recommendation-part h4, .mapping-step h4 {
+  margin: 0 0 8px;
+}
+
+.recommendation-part p, .mapping-step p {
+  margin: 0;
+}
+
+.recommendation-part ul {
+  margin: 0;
+  padding-left: 22px;
+}
+
+.tag {
+  display: inline-block;
+  background: #eee9ff;
+  color: #6653bd;
+  border-radius: 20px;
+  padding: 5px 11px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.tag.missing {
+  background: #edf0f4;
+  color: #65758a;
+}
+
+.trace-module, .mapping-module {
+  border: 1px solid #e0e5ef;
+  border-radius: 15px;
+  padding: 18px;
+  margin-top: 17px;
+}
+
+.trace-stage {
+  border-top: 1px solid #e6eaf1;
+  margin-top: 20px;
+  padding-top: 16px;
+}
+
+.trace-question {
+  border: 1px solid #e4e9f1;
+  border-radius: 12px;
+  margin: 12px 0;
+  background: #fcfdff;
+}
+
+.trace-question summary,
+.mapping-card summary {
+  cursor: pointer;
+  padding: 15px;
+  font-weight: bold;
+}
+
+.trace-body {
+  padding: 0 15px 16px;
+}
+
+.trace-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin: 10px 0;
+}
+
+.trace-chip {
+  background: #f0edfb;
+  color: #5e4caa;
+  border-radius: 20px;
+  padding: 5px 10px;
+  font-size: 12px;
+}
+
+.mapping-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.mapping-body {
+  padding: 0 18px 18px;
+}
+
+.mapping-step h4 {
+  color: #6653bd;
+}
+
+.mapping-arrow {
+  text-align: center;
+  color: #7659d5;
+  font-size: 22px;
+  margin: 5px;
+}
+
+.mapping-priority {
+  font-size: 12px;
+  font-weight: bold;
+  margin-left: 8px;
+}
+
+.priority-high {
+  color: #b45309;
+}
+
+.priority-moderate {
+  color: #7659d5;
+}
+
+.priority-low {
+  color: #27755a;
+}
+
+.small {
+  font-size: 13px;
+}
+
+@media(max-width: 850px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media(max-width: 500px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+
+<script src="js/teacher-demo-auth.js"></script>
+<script src="js/learner-identity.js"></script>
+<script src="js/spelling-mastery.js"></script>
+<script src="js/teacher-recommendations.js"></script>
+<script src="js/teacher-evidence-trace.js"></script>
+<script src="js/teacher-evidence-mapping.js"></script>
+<script src="js/teacher-evidence-validator.js"></script>
+
+<script>
+if (
+  !window.AuraTeacherDemoAuth ||
+  !window.AuraTeacherDemoAuth.isLoggedIn()
+) {
+  window.location.replace("teacher-login.html");
+}
+</script>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">✦ AURA EDU</div>
+
+  <nav>
+    <a href="teacher-learner-overview.html">
+      ← Learner Overview
+    </a>
+
+    <button
+      id="logout"
+      class="logout"
+      type="button"
+    >
+      Log Out
+    </button>
+  </nav>
+</header>
+
+<main>
+  <h1>Individual Learner Report</h1>
+
+  <p class="subtitle">
+    学生个人学习报告 · Grammar · Spelling ·
+    Adaptive Teaching Recommendations ·
+    Question-Level Evidence ·
+    Evidence-to-Recommendation Mapping ·
+    Research Evidence Integrity Validation
+  </p>
+
+  <section class="panel">
+    <h2>Select Learner / 选择学生</h2>
+
+    <div class="toolbar">
+      <select
+        id="learnerSelect"
+        aria-label="Select learner"
+      ></select>
+
+      <button
+        id="refresh"
+        class="primary"
+        type="button"
+      >
+        Refresh Report
+      </button>
+    </div>
+
+    <p id="identityStatus" class="muted"></p>
+  </section>
+
+  <div id="report"></div>
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  const auth = window.AuraTeacherDemoAuth;
+  const identity = window.AuraLearnerIdentity;
+  const mastery = window.AuraSpellingMastery;
+  const recommendations = window.AuraTeacherRecommendations;
+  const evidenceTrace = window.AuraTeacherEvidenceTrace;
+  const evidenceMapping = window.AuraTeacherEvidenceMapping;
+  const evidenceValidator = window.AuraTeacherEvidenceValidator;
+
+  if (!auth || !auth.isLoggedIn()) {
+    return;
+  }
+
+  document.body.style.visibility = "visible";
+
+  const GRAMMAR_MODULES = [
+    {
+      id: "G1",
+      title: "Verb to Be",
+      key: "aura_g1_learning_records_v1"
+    },
+    {
+      id: "G2",
+      title: "Subject–Verb Agreement",
+      key: "aura_g2_learning_records_v1"
+    },
+    {
+      id: "G3",
+      title: "Sentence Construction",
+      key: "aura_g3_learning_records_v1"
+    }
+  ];
+
+  const SPELLING_KEYS = {
+    diagnostic: "aura_spelling_diagnostic_records_v1",
+    practice: "aura_spelling_practice_records_v1",
+    reassessment: "aura_spelling_reassessment_records_v1"
+  };
+
+  const STAGE_LABELS = {
+    diagnostic: "Diagnostic / 诊断",
+    practice: "Adaptive Practice / 自适应练习",
+    reassessment: "Independent Reassessment / 独立复测"
+  };
+
+  const select = document.getElementById("learnerSelect");
+  const report = document.getElementById("report");
+  const identityStatus = document.getElementById("identityStatus");
+
+  /* ========================================
+     SAFE DOM HELPERS
+  ======================================== */
+
+  function el(tag, value, className) {
+    const node = document.createElement(tag);
+
+    if (value !== undefined && value !== null) {
+      node.textContent = String(value);
+    }
+
+    if (className) {
+      node.className = className;
+    }
+
+    return node;
+  }
+
+  function paragraph(parent, value, className) {
+    parent.appendChild(el("p", value, className));
+  }
+
+  function section(title) {
+    const panel = el("section", "", "panel");
+    panel.appendChild(el("h2", title));
+    report.appendChild(panel);
+    return panel;
+  }
+
+  function stat(container, label, value) {
+    const item = el("div", "", "stat");
+
+    item.appendChild(
+      el("div", label, "stat-label")
+    );
+
+    item.appendChild(
+      el("div", value, "stat-value")
+    );
+
+    container.appendChild(item);
+  }
+
+  function makeTable(parent, headings, rows) {
+    const wrap = el("div", "", "table-wrap");
+    const table = el("table");
+    const thead = el("thead");
+    const headRow = el("tr");
+
+    headings.forEach(heading => {
+      headRow.appendChild(el("th", heading));
+    });
+
+    thead.appendChild(headRow);
+    table.appendChild(thead);
+
+    const tbody = el("tbody");
+
+    rows.forEach(values => {
+      const row = el("tr");
+
+      values.forEach(value => {
+        row.appendChild(el("td", displayValue(value)));
+      });
+
+      tbody.appendChild(row);
+    });
+
+    table.appendChild(tbody);
+    wrap.appendChild(table);
+    parent.appendChild(wrap);
+  }
+
+  function displayValue(value) {
+    if (value === null || value === undefined) {
+      return "Not recorded";
+    }
+
+    if (typeof value === "boolean") {
+      return value ? "Correct" : "Incorrect";
+    }
+
+    if (typeof value === "object") {
+      try {
+        return JSON.stringify(value);
+      } catch (error) {
+        return "Unserializable value";
+      }
+    }
+
+    return String(value);
+  }
+
+  function displayName(profile) {
+    return (
+      profile.nickname ||
+      profile.name ||
+      profile.displayName ||
+      profile.learnerName ||
+      profile.id
+    );
+  }
+
+  function readRecords(key) {
+    const raw = localStorage.getItem(key);
+
+    if (raw === null) {
+      return {
+        ok: true,
+        records: []
+      };
+    }
+
+    try {
+      const records = JSON.parse(raw);
+
+      if (!Array.isArray(records)) {
+        return {
+          ok: false,
+          records: [],
+          error: "Stored value is not an array."
+        };
+      }
+
+      return {
+        ok: true,
+        records
+      };
+    } catch (error) {
+      return {
+        ok: false,
+        records: [],
+        error: error.message
+      };
+    }
+  }
+
+  function learnerRecords(key, learnerId) {
+    const loaded = readRecords(key);
+
+    if (!loaded.ok) {
+      return loaded;
+    }
+
+    return {
+      ok: true,
+      records: loaded.records.filter(item =>
+        item &&
+        String(item.learnerId) === String(learnerId)
+      )
+    };
+  }
+
+  function latestRecord(records) {
+    if (!records.length) {
+      return null;
+    }
+
+    return [...records].sort((a, b) => {
+      const aTime = Date.parse(
+        a.completedAt || a.startedAt || ""
+      ) || 0;
+
+      const bTime = Date.parse(
+        b.completedAt || b.startedAt || ""
+      ) || 0;
+
+      return bTime - aTime;
+    })[0];
+  }
+
+  function scoreText(value) {
+    if (
+      !value ||
+      !Number.isFinite(value.correct) ||
+      !Number.isFinite(value.total)
+    ) {
+      return "No Evidence";
+    }
+
+    const percent = Number.isFinite(value.percent)
+      ? value.percent
+      : value.total > 0
+        ? Math.round(value.correct / value.total * 100)
+        : null;
+
+    return (
+      value.correct + "/" + value.total +
+      (percent === null ? "" : " (" + percent + "%)")
+    );
+  }
+
+  function stageScore(records, stage) {
+    if (!Array.isArray(records)) {
+      return null;
+    }
+
+    const items = records.filter(
+      item => item && item.stage === stage
+    );
+
+    if (
+      !items.length ||
+      !items.every(
+        item => typeof item.firstAttemptCorrect === "boolean"
+      )
+    ) {
+      return null;
+    }
+
+    const correct = items.filter(
+      item => item.firstAttemptCorrect === true
+    ).length;
+
+    return {
+      correct,
+      total: items.length,
+      percent: Math.round(correct / items.length * 100)
+    };
+  }
+
+  function grammarScore(session, stage) {
+    const stored =
+      session.result && session.result[stage];
+
+    if (
+      stored &&
+      Number.isFinite(stored.correct) &&
+      Number.isFinite(stored.total)
+    ) {
+      return stored;
+    }
+
+    return stageScore(session.records, stage);
+  }
+
+  function countErrors(records, moduleId) {
+    const counts = {};
+
+    records.forEach(record => {
+      if (!record) return;
+
+      const errors = moduleId === "G1"
+        ? record.errorCodes
+        : record.errors;
+
+      if (!Array.isArray(errors)) return;
+
+      errors.forEach(error => {
+        const code = typeof error === "string"
+          ? error
+          : error && (error.code || error.label);
+
+        if (!code) return;
+
+        counts[code] = (counts[code] || 0) + 1;
+      });
+    });
+
+    return counts;
+  }
+
+  function errorRows(counts) {
+    const entries = Object.entries(counts);
+
+    return entries.length
+      ? entries.map(([code, count]) => [code, count])
+      : [["No recorded errors", "0"]];
+  }
+  /* ========================================
+     GRAMMAR LEARNING REPORT
+  ======================================== */
+
+  function renderGrammarModule(module, learnerId) {
+    const panel = section(
+      "📘 " + module.id + " — " + module.title
+    );
+
+    const loaded = learnerRecords(module.key, learnerId);
+
+    if (!loaded.ok) {
+      paragraph(
+        panel,
+        "Record read error: " + loaded.error,
+        "warning"
+      );
+      return;
+    }
+
+    const sessions = loaded.records.filter(
+      item => item && typeof item === "object"
+    );
+
+    paragraph(
+      panel,
+      "Stored sessions for this learner: " + sessions.length,
+      "muted"
+    );
+
+    if (!sessions.length) {
+      paragraph(
+        panel,
+        "No Evidence — 当前学生没有已保存的学习记录。",
+        "notice"
+      );
+      return;
+    }
+
+    const completed = sessions.filter(session =>
+      session.result &&
+      Array.isArray(session.records) &&
+      ["diagnostic", "practice", "reassessment"]
+        .every(stage =>
+          session.records.some(
+            record => record && record.stage === stage
+          )
+        )
+    );
+
+    const session = latestRecord(completed);
+
+    if (!session) {
+      paragraph(
+        panel,
+        "存在历史记录，但没有完整的三个学习阶段。",
+        "warning"
+      );
+      return;
+    }
+
+    paragraph(
+      panel,
+      "Latest complete session: " +
+      (session.completedAt || "Completion time unavailable"),
+      "muted"
+    );
+
+    const scores = el("div", "", "grid");
+
+    stat(
+      scores,
+      "Diagnostic",
+      scoreText(grammarScore(session, "diagnostic"))
+    );
+
+    stat(
+      scores,
+      "Adaptive Practice",
+      scoreText(grammarScore(session, "practice"))
+    );
+
+    stat(
+      scores,
+      "Independent Reassessment",
+      scoreText(grammarScore(session, "reassessment"))
+    );
+
+    const practiceRecords = session.records.filter(
+      item => item.stage === "practice"
+    );
+
+    const highestHint =
+      Number.isFinite(session.result.highestHintLevel)
+        ? session.result.highestHintLevel
+        : practiceRecords.length &&
+          practiceRecords.every(
+            item => Number.isFinite(item.highestHintUsed)
+          )
+          ? Math.max(
+              ...practiceRecords.map(
+                item => item.highestHintUsed
+              )
+            )
+          : null;
+
+    stat(
+      scores,
+      "Highest Hint Level",
+      highestHint === null ? "No Evidence" : "H" + highestHint
+    );
+
+    panel.appendChild(scores);
+
+    paragraph(
+      panel,
+      "Provisional Learning State: " +
+      (session.result.masteryState || "Not recorded")
+    );
+
+    paragraph(
+      panel,
+      "Recommended Learning Path: " +
+      (session.result.recommendedPath || "Not recorded")
+    );
+
+    const knownHints = practiceRecords.every(
+      item => Number.isFinite(item.highestHintUsed)
+    );
+
+    paragraph(
+      panel,
+      "Practice questions using hints: " +
+      (knownHints
+        ? practiceRecords.filter(
+            item => item.highestHintUsed > 0
+          ).length + "/" + practiceRecords.length
+        : "No Evidence")
+    );
+
+    const diagnostic = grammarScore(session, "diagnostic");
+    const reassessment =
+      grammarScore(session, "reassessment");
+
+    if (
+      diagnostic &&
+      reassessment &&
+      diagnostic.total > 0 &&
+      reassessment.total > 0
+    ) {
+      const before = Number.isFinite(diagnostic.percent)
+        ? diagnostic.percent
+        : Math.round(diagnostic.correct / diagnostic.total * 100);
+
+      const after = Number.isFinite(reassessment.percent)
+        ? reassessment.percent
+        : Math.round(reassessment.correct / reassessment.total * 100);
+
+      const difference = after - before;
+
+      paragraph(
+        panel,
+        "Diagnostic → Independent Reassessment: " +
+        (difference > 0 ? "+" : "") +
+        difference + " percentage points"
+      );
+    }
+
+    panel.appendChild(
+      el("h3", "Observed Error Patterns")
+    );
+
+    makeTable(
+      panel,
+      ["Error Code", "Recorded Occurrences"],
+      errorRows(countErrors(session.records, module.id))
+    );
+
+    const explanation = session.result.decisionExplanation;
+
+    if (explanation && typeof explanation === "object") {
+      panel.appendChild(
+        el("h3", "Explainable Learning Decision")
+      );
+
+      if (Array.isArray(explanation.checks)) {
+        makeTable(
+          panel,
+          ["Decision Condition", "Observed", "Result"],
+          explanation.checks.map(check => [
+            check.label || check.id || "Condition",
+            check.observed ?? "—",
+            check.passed === true
+              ? "MET"
+              : check.passed === false
+                ? "NOT MET"
+                : "Not recorded"
+          ])
+        );
+      }
+
+      if (explanation.reason) {
+        paragraph(panel, explanation.reason);
+      }
+    } else if (typeof explanation === "string") {
+      paragraph(panel, explanation);
+    }
+
+    paragraph(
+      panel,
+      "Research limitation: Immediate reassessment " +
+      "does not establish durable mastery.",
+      "notice"
+    );
+
+    makeTable(
+      panel,
+      ["Evidence", "Value"],
+      [
+        ["Module", module.id],
+        ["Session ID", session.sessionId || "Unavailable"],
+        ["Learner ID", session.learnerId],
+        ["Recorded Questions", session.records.length],
+        ["Completed At", session.completedAt || "Unavailable"]
+      ]
+    );
+  }
+
+  /* ========================================
+     SPELLING REPORT
+  ======================================== */
+
+  function spellingErrorSummary(records) {
+    const counts = {};
+
+    records.forEach(item => {
+      if (item.correct === true) return;
+
+      const code =
+        item.spellingErrorCode ||
+        item.errorCode ||
+        "SP99";
+
+      counts[code] = (counts[code] || 0) + 1;
+    });
+
+    return counts;
+  }
+
+  function readSpellingSession(key, learnerId, sessionId) {
+    const loaded = learnerRecords(key, learnerId);
+
+    if (!loaded.ok) {
+      throw new Error("Invalid storage format: " + key);
+    }
+
+    return loaded.records.find(
+      item => item.sessionId === sessionId
+    ) || null;
+  }
+
+  function renderSpelling(learnerId) {
+    const overview = section("🔤 Spelling Overview");
+
+    if (!mastery || typeof mastery.evaluate !== "function") {
+      paragraph(
+        overview,
+        "Spelling Mastery Model is unavailable.",
+        "warning"
+      );
+      return;
+    }
+
+    let decision;
+
+    try {
+      decision = mastery.evaluate(learnerId);
+    } catch (error) {
+      paragraph(
+        overview,
+        "Spelling evaluation error: " + error.message,
+        "warning"
+      );
+      return;
+    }
+
+    if (!decision || !decision.ok) {
+      paragraph(
+        overview,
+        "Evidence Status: " +
+        (decision && decision.status
+          ? decision.status
+          : "No Evidence"),
+        "warning"
+      );
+
+      paragraph(
+        overview,
+        decision && decision.explanation
+          ? decision.explanation
+          : "Insufficient linked Spelling evidence."
+      );
+
+      return;
+    }
+
+    const scores = decision.scores || {};
+    const grid = el("div", "", "grid");
+
+    stat(grid, "Diagnostic", scoreText(scores.diagnostic));
+
+    stat(
+      grid,
+      "Independent Reassessment",
+      scoreText(scores.reassessment)
+    );
+
+    stat(
+      grid,
+      "Word Spelling",
+      scoreText(scores.wordSpelling)
+    );
+
+    stat(
+      grid,
+      "Sentence Application",
+      scoreText(scores.sentenceApplication)
+    );
+
+    overview.appendChild(grid);
+
+    if (Number.isFinite(scores.percentagePointDifference)) {
+      paragraph(
+        overview,
+        "Diagnostic → Reassessment difference: " +
+        scores.percentagePointDifference +
+        " percentage points"
+      );
+    }
+
+    const masteryPanel = section(
+      "🧠 Spelling Mastery Decision"
+    );
+
+    paragraph(
+      masteryPanel,
+      "Decision: " + (decision.decision || "Not recorded")
+    );
+
+    paragraph(
+      masteryPanel,
+      "Recommended Path: " +
+      (decision.recommendedPath || "Not recorded")
+    );
+
+    paragraph(
+      masteryPanel,
+      decision.explanation || ""
+    );
+
+    paragraph(
+      masteryPanel,
+      "This is a provisional, rule-based decision, " +
+      "not verified long-term mastery.",
+      "notice"
+    );
+
+    let diagnostic;
+    let practice;
+    let reassessment;
+
+    try {
+      const sessions = decision.sessions || {};
+
+      diagnostic = readSpellingSession(
+        SPELLING_KEYS.diagnostic,
+        learnerId,
+        sessions.diagnosticSessionId
+      );
+
+      practice = readSpellingSession(
+        SPELLING_KEYS.practice,
+        learnerId,
+        sessions.practiceSessionId
+      );
+
+      reassessment = readSpellingSession(
+        SPELLING_KEYS.reassessment,
+        learnerId,
+        sessions.reassessmentSessionId
+      );
+    } catch (error) {
+      paragraph(
+        section("Spelling Record Read Error"),
+        error.message,
+        "warning"
+      );
+      return;
+    }
+
+    if (
+      !diagnostic ||
+      !practice ||
+      !reassessment ||
+      !Array.isArray(diagnostic.records) ||
+      !Array.isArray(practice.records) ||
+      !Array.isArray(reassessment.records)
+    ) {
+      paragraph(
+        section("Spelling Linked Evidence"),
+        "Matching session records could not be loaded.",
+        "warning"
+      );
+      return;
+    }
+
+    const summary = decision.practice || {};
+    const scaffolding = section("🪜 Adaptive Scaffolding");
+    const practiceGrid = el("div", "", "grid");
+
+    stat(
+      practiceGrid,
+      "Practiced Questions",
+      summary.total ?? "—"
+    );
+
+    stat(
+      practiceGrid,
+      "Total Attempts",
+      summary.totalAttempts ?? "—"
+    );
+
+    stat(
+      practiceGrid,
+      "Questions Using Hints",
+      summary.questionsUsingHints ?? "—"
+    );
+
+    stat(
+      practiceGrid,
+      "Highest Hint Level",
+      summary.highestHintLevel == null
+        ? "—"
+        : "H" + summary.highestHintLevel
+    );
+
+    scaffolding.appendChild(practiceGrid);
+
+    paragraph(
+      scaffolding,
+      "First-attempt correct: " +
+      (summary.firstAttemptCorrect ?? "—") +
+      " | Eventually correct: " +
+      (summary.eventuallyCorrect ?? "—")
+    );
+
+    const errors = section("🔍 Spelling Error Analysis");
+
+    paragraph(errors, "Diagnostic Errors");
+
+    makeTable(
+      errors,
+      ["Error Code", "Count"],
+      errorRows(spellingErrorSummary(diagnostic.records))
+    );
+
+    paragraph(errors, "Independent Reassessment Errors");
+
+    makeTable(
+      errors,
+      ["Error Code", "Count"],
+      errorRows(spellingErrorSummary(reassessment.records))
+    );
+
+    const attemptErrors = {};
+
+    practice.records.forEach(record => {
+      if (!Array.isArray(record.attempts)) return;
+
+      record.attempts.forEach(attempt => {
+        if (attempt.correct === true) return;
+
+        const code =
+          attempt.spellingErrorCode ||
+          attempt.errorCode ||
+          "SP99";
+
+        attemptErrors[code] =
+          (attemptErrors[code] || 0) + 1;
+      });
+    });
+
+    paragraph(errors, "Practice Attempt Errors");
+
+    makeTable(
+      errors,
+      ["Error Code", "Count"],
+      errorRows(attemptErrors)
+    );
+
+    const diagnosticMap = new Map();
+
+    diagnostic.records.forEach(record => {
+      diagnosticMap.set(
+        record.wordId + "|" + record.taskType,
+        record
+      );
+    });
+
+    const practiceMap = new Map();
+
+    practice.records.forEach(record => {
+      practiceMap.set(
+        record.wordId + "|" + record.taskType,
+        record
+      );
+    });
+
+    const questionRows = reassessment.records.map(record => {
+      const key = record.wordId + "|" + record.taskType;
+
+      const initial = diagnosticMap.get(key);
+      const guided = practiceMap.get(key);
+
+      const before = initial
+        ? (initial.correct ? "Correct" : "Incorrect")
+        : "No Evidence";
+
+      const after = record.correct
+        ? "Correct"
+        : "Incorrect";
+
+      let transition = "Unchanged";
+
+      if (initial) {
+        if (!initial.correct && record.correct) {
+          transition = "Incorrect → Correct";
+        } else if (initial.correct && !record.correct) {
+          transition = "Correct → Incorrect";
+        }
+      } else {
+        transition = "No comparison";
+      }
+
+      return [
+        record.target || record.wordId,
+        record.taskType,
+        before,
+        guided
+          ? String(guided.attemptCount ?? "—")
+          : "Not practiced",
+        guided
+          ? "H" + (guided.highestHintUsed ?? 0)
+          : "—",
+        after,
+        transition
+      ];
+    });
+
+    const questions = section(
+      "📝 Spelling Question-Level Evidence"
+    );
+
+    makeTable(
+      questions,
+      [
+        "Target",
+        "Task Type",
+        "Diagnostic",
+        "Practice Attempts",
+        "Highest Hint",
+        "Reassessment",
+        "Change"
+      ],
+      questionRows
+    );
+
+    const interpretation = section(
+      "📚 Research Interpretation & Limitations"
+    );
+
+    paragraph(
+      interpretation,
+      "This report describes linked within-learner " +
+      "performance across diagnostic, guided practice " +
+      "and independent reassessment."
+    );
+
+    [
+      "Diagnostic and reassessment comparisons use matching target items where available.",
+      "Practice focuses on recorded learning difficulties.",
+      "There is no control group.",
+      "There is no delayed retention test.",
+      "There is no transfer assessment.",
+      "No causal conclusion can be drawn.",
+      "Provisional mastery is not durable mastery."
+    ].forEach(text => {
+      paragraph(interpretation, "• " + text, "muted");
+    });
+
+    const evidence = section(
+      "🔗 Spelling Linked Session Evidence"
+    );
+
+    makeTable(
+      evidence,
+      ["Stage", "Session ID"],
+      [
+        [
+          "Diagnostic",
+          decision.sessions.diagnosticSessionId
+        ],
+        [
+          "Adaptive Practice",
+          decision.sessions.practiceSessionId
+        ],
+        [
+          "Independent Reassessment",
+          decision.sessions.reassessmentSessionId
+        ]
+      ]
+    );
+  }
+
+  /* ========================================
+     TEACHING RECOMMENDATIONS
+  ======================================== */
+
+  function recommendationPart(parent, title, content) {
+    const part = el("div", "", "recommendation-part");
+    part.appendChild(el("h4", title));
+
+    if (Array.isArray(content)) {
+      const list = el("ul");
+
+      content.forEach(item => {
+        list.appendChild(el("li", item));
+      });
+
+      part.appendChild(list);
+    } else {
+      paragraph(part, content || "No Evidence");
+    }
+
+    parent.appendChild(part);
+  }
+
+  function renderTeachingRecommendations(learnerId) {
+    const panel = section(
+      "🎓 Adaptive Teaching Recommendations"
+    );
+
+    paragraph(
+      panel,
+      "Evidence → Interpretation → Scaffolding → " +
+      "Independent Practice → Evaluation"
+    );
+
+    paragraph(
+      panel,
+      "以下建议由预设规则生成，供教师参考，" +
+      "不代表已验证的教学效果。",
+      "notice"
+    );
+
+    if (
+      !recommendations ||
+      typeof recommendations.evaluate !== "function"
+    ) {
+      paragraph(
+        panel,
+        "Teacher Recommendations Engine is unavailable.",
+        "warning"
+      );
+      return;
+    }
+
+    let result;
+
+    try {
+      result = recommendations.evaluate(learnerId);
+    } catch (error) {
+      paragraph(
+        panel,
+        "Recommendation evaluation failed: " + error.message,
+        "warning"
+      );
+      return;
+    }
+
+    if (
+      !result ||
+      !result.ok ||
+      !Array.isArray(result.recommendations)
+    ) {
+      paragraph(
+        panel,
+        "Unable to generate recommendations: " +
+        (result && result.error ? result.error : "Unknown error"),
+        "warning"
+      );
+      return;
+    }
+
+    paragraph(
+      panel,
+      "Decision Method: " + result.method +
+      " | Engine Version: " + result.version,
+      "muted"
+    );
+
+    result.recommendations.forEach(item => {
+      const card = el("article", "", "recommendation");
+
+      card.appendChild(
+        el("h3", item.moduleId + " — " + item.moduleName)
+      );
+
+      const available = item.status === "AVAILABLE";
+
+      card.appendChild(
+        el(
+          "span",
+          available ? "Evidence Available" : "Insufficient Evidence",
+          available ? "tag" : "tag missing"
+        )
+      );
+
+      recommendationPart(
+        card,
+        "1. Learning Evidence / 学习证据",
+        item.evidence || []
+      );
+
+      recommendationPart(
+        card,
+        "2. Difficulty Interpretation / 困难分析",
+        item.interpretation
+      );
+
+      recommendationPart(
+        card,
+        "3. Adaptive Scaffolding / 分层教学支持",
+        item.scaffolding
+      );
+
+      recommendationPart(
+        card,
+        "4. Independent Practice / 独立练习",
+        item.independentPractice
+      );
+
+      recommendationPart(
+        card,
+        "5. Follow-up Evaluation / 后续评估",
+        item.followUpEvaluation
+      );
+
+      recommendationPart(
+        card,
+        "Research Note / 研究说明",
+        item.researchNote
+      );
+
+      if (item.sessionId) {
+        paragraph(
+          card,
+          "Evidence Session ID: " + item.sessionId,
+          "muted"
+        );
+      }
+
+      panel.appendChild(card);
+    });
+
+    const limitations = el("div", "", "recommendation-part");
+
+    limitations.appendChild(
+      el("h4", "Research Limitations / 研究局限")
+    );
+
+    const list = el("ul");
+
+    (result.limitations || []).forEach(value => {
+      list.appendChild(el("li", value));
+    });
+
+    limitations.appendChild(list);
+    panel.appendChild(limitations);
+
+    paragraph(
+      panel,
+      "这些建议不会自动修改学生学习路径、" +
+      "掌握状态或历史记录。",
+      "muted"
+    );
+  }
+
+  /* ========================================
+     QUESTION-LEVEL EVIDENCE TRACE
+  ======================================== */
+
+  function renderQuestionTrace(parent, question) {
+    const details = el("details", "", "trace-question");
+
+    details.appendChild(
+      el(
+        "summary",
+        question.questionId + " — " +
+        (question.firstAttemptCorrect === true
+          ? "First Attempt Correct"
+          : question.firstAttemptCorrect === false
+            ? "First Attempt Incorrect"
+            : "First Attempt Unknown")
+      )
+    );
+
+    const body = el("div", "", "trace-body");
+    const chips = el("div", "", "trace-meta");
+
+    [
+      "Attempts: " + question.attemptCount,
+      "Highest Hint: " +
+        (question.highestHintUsed === null
+          ? "Not recorded"
+          : "H" + question.highestHintUsed),
+      "Completed Correctly: " +
+        displayValue(question.completedCorrectly)
+    ].forEach(value => {
+      chips.appendChild(el("span", value, "trace-chip"));
+    });
+
+    body.appendChild(chips);
+
+    makeTable(
+      body,
+      ["Question Evidence", "Recorded Value"],
+      [
+        ["Question ID", question.questionId],
+        ["Stage", STAGE_LABELS[question.stage] || question.stage],
+        ["Knowledge Point", question.knowledgePoint],
+        ["First Attempt Correct", question.firstAttemptCorrect],
+        ["Completed Correctly", question.completedCorrectly],
+        ["Recorded Attempts", question.attemptCount],
+        [
+          "Highest Hint Used",
+          question.highestHintUsed === null
+            ? "Not recorded"
+            : "H" + question.highestHintUsed
+        ],
+        ["Started At", question.startedAt || "Not recorded"],
+        ["Completed At", question.completedAt || "Not recorded"]
+      ]
+    );
+
+    body.appendChild(
+      el("h4", "Attempt History / 作答过程")
+    );
+
+    if (!question.attempts.length) {
+      paragraph(
+        body,
+        "No attempt-level records available.",
+        "muted"
+      );
+    } else {
+      makeTable(
+        body,
+        [
+          "Attempt",
+          "Selected Answer",
+          "Correct",
+          "Hint at Attempt",
+          "Timestamp"
+        ],
+        question.attempts.map(attempt => [
+          attempt.attemptNumber,
+          attempt.selectedAnswer,
+          attempt.correct,
+          attempt.hintLevelAtAttempt === null
+            ? "Not recorded"
+            : "H" + attempt.hintLevelAtAttempt,
+          attempt.timestamp || "Not recorded"
+        ])
+      );
+    }
+
+    body.appendChild(
+      el("h4", "Error Evidence / 错误记录")
+    );
+
+    if (!question.errors.length) {
+      paragraph(
+        body,
+        "No classified errors recorded for this question.",
+        "muted"
+      );
+    } else {
+      makeTable(
+        body,
+        [
+          "Code",
+          "Label",
+          "Selected",
+          "Expected",
+          "Rule",
+          "Structure"
+        ],
+        question.errors.map(error => [
+          error.code,
+          error.label,
+          error.selected,
+          error.expected,
+          error.rule,
+          error.structure
+        ])
+      );
+    }
+
+    paragraph(
+      body,
+      "Research note: Error codes describe recorded " +
+      "responses, not confirmed cognitive causes. " +
+      "Hint use alone does not establish dependency.",
+      "notice small"
+    );
+
+    details.appendChild(body);
+    parent.appendChild(details);
+  }
+
+  function renderTraceStage(parent, stageName, stageData) {
+    const container = el("div", "", "trace-stage");
+
+    container.appendChild(
+      el("h4", STAGE_LABELS[stageName] || stageName)
+    );
+
+    const summary = stageData.summary;
+    const stats = el("div", "", "grid");
+
+    stat(
+      stats,
+      "Recorded Questions",
+      summary.questionCount
+    );
+
+    stat(
+      stats,
+      "First-Attempt Accuracy",
+      summary.firstAttemptAccuracy === null
+        ? "No Evidence"
+        : summary.firstAttemptAccuracy + "%"
+    );
+
+    stat(
+      stats,
+      "Total Recorded Attempts",
+      summary.totalRecordedAttempts
+    );
+
+    stat(
+      stats,
+      "Highest Recorded Hint",
+      summary.highestHintUsed === null
+        ? "No Evidence"
+        : "H" + summary.highestHintUsed
+    );
+
+    container.appendChild(stats);
+
+    paragraph(
+      container,
+      "First-attempt correct: " +
+      summary.firstAttemptCorrect +
+      "/" + summary.firstAttemptObserved
+    );
+
+    if (summary.questionsUsingHints !== null) {
+      paragraph(
+        container,
+        "Questions using hints: " +
+        summary.questionsUsingHints +
+        "/" + summary.questionCount
+      );
+    }
+
+    container.appendChild(
+      el("h4", "Recorded Error Code Summary")
+    );
+
+    if (!summary.errorSummary.length) {
+      paragraph(
+        container,
+        "No classified errors recorded.",
+        "muted"
+      );
+    } else {
+      makeTable(
+        container,
+        ["Error Code", "Recorded Occurrences"],
+        summary.errorSummary.map(item => [
+          item.code,
+          item.count
+        ])
+      );
+    }
+
+    container.appendChild(
+      el("h4", "Question Records / 题目记录")
+    );
+
+    if (!stageData.questions.length) {
+      paragraph(container, "No Evidence", "muted");
+    } else {
+      stageData.questions.forEach(question => {
+        renderQuestionTrace(container, question);
+      });
+    }
+
+    parent.appendChild(container);
+  }
+
+  function renderTraceSession(
+    container,
+    learnerId,
+    moduleId,
+    sessionId
+  ) {
+    container.replaceChildren();
+
+    const result = evidenceTrace.getSession(
+      learnerId,
+      moduleId,
+      sessionId
+    );
+
+    if (!result.ok || !result.trace) {
+      paragraph(
+        container,
+        "Session trace unavailable: " +
+        (result.error || "Unknown error"),
+        "warning"
+      );
+      return;
+    }
+
+    const trace = result.trace;
+
+    paragraph(
+      container,
+      "Session ID: " + (trace.sessionId || "Unavailable"),
+      "muted"
+    );
+
+    paragraph(
+      container,
+      "Completed At: " +
+      (trace.completedAt || "Not recorded") +
+      " | Session Status: " +
+      (trace.complete ? "Complete" : "Incomplete"),
+      "muted"
+    );
+
+    const decision = trace.existingDecision || {};
+
+    paragraph(
+      container,
+      "Existing Mastery Decision: " +
+      (decision.masteryState || "Not recorded")
+    );
+
+    paragraph(
+      container,
+      "Existing Recommended Path: " +
+      (decision.recommendedPath || "Not recorded")
+    );
+
+    ["diagnostic", "practice", "reassessment"].forEach(stage => {
+      if (trace.stages && trace.stages[stage]) {
+        renderTraceStage(
+          container,
+          stage,
+          trace.stages[stage]
+        );
+      }
+    });
+
+    const limits = el("div", "", "notice");
+
+    limits.appendChild(
+      el("strong", "Research Interpretation Limits")
+    );
+
+    const list = el("ul");
+
+    (trace.researchLimitations || []).forEach(value => {
+      list.appendChild(el("li", value));
+    });
+
+    limits.appendChild(list);
+    container.appendChild(limits);
+  }
+
+  function renderTraceModule(parent, learnerId, moduleId) {
+    const moduleBox = el("div", "", "trace-module");
+
+    moduleBox.appendChild(
+      el("h3", moduleId + " — Question-Level Evidence")
+    );
+
+    const result = evidenceTrace.listSessions(
+      learnerId,
+      moduleId
+    );
+
+    if (!result.ok) {
+      paragraph(
+        moduleBox,
+        "Unable to read sessions: " +
+        (result.error || "Unknown error"),
+        "warning"
+      );
+      parent.appendChild(moduleBox);
+      return;
+    }
+
+    const sessions = result.sessions.filter(
+      item => item.sessionId
+    );
+
+    paragraph(
+      moduleBox,
+      "Recorded Sessions: " + result.sessions.length,
+      "muted"
+    );
+
+    if (!sessions.length) {
+      paragraph(
+        moduleBox,
+        "No Evidence — 当前学生没有可追溯的会话。",
+        "notice"
+      );
+      parent.appendChild(moduleBox);
+      return;
+    }
+
+    const selectorRow = el("div", "", "trace-selector");
+
+    selectorRow.appendChild(
+      el("label", "Select Session / 选择历史学习会话")
+    );
+
+    const sessionSelect = el("select");
+
+    sessions.forEach((session, index) => {
+      const option = el(
+        "option",
+        "Session " + (index + 1) +
+        " | " +
+        (session.completedAt || session.startedAt || "Date unknown") +
+        " | " +
+        (session.complete ? "Complete" : "Incomplete")
+      );
+
+      option.value = session.sessionId;
+      sessionSelect.appendChild(option);
+    });
+
+    selectorRow.appendChild(sessionSelect);
+    moduleBox.appendChild(selectorRow);
+
+    const sessionContainer = el("div");
+    moduleBox.appendChild(sessionContainer);
+
+    sessionSelect.addEventListener("change", function () {
+      renderTraceSession(
+        sessionContainer,
+        learnerId,
+        moduleId,
+        sessionSelect.value
+      );
+    });
+
+    renderTraceSession(
+      sessionContainer,
+      learnerId,
+      moduleId,
+      sessionSelect.value
+    );
+
+    parent.appendChild(moduleBox);
+  }
+
+  function renderQuestionLevelTrace(learnerId) {
+    const panel = section(
+      "🔎 Question-Level Evidence Traceability"
+    );
+
+    paragraph(
+      panel,
+      "Diagnostic → Adaptive Practice → " +
+      "Independent Reassessment"
+    );
+
+    paragraph(
+      panel,
+      "展开题目可查看作答过程、提示等级和错误代码。" +
+      "切换历史 Session 不会修改学习数据。",
+      "notice"
+    );
+
+    if (
+      !evidenceTrace ||
+      typeof evidenceTrace.evaluateAll !== "function" ||
+      typeof evidenceTrace.listSessions !== "function" ||
+      typeof evidenceTrace.getSession !== "function"
+    ) {
+      paragraph(
+        panel,
+        "Evidence Trace Engine is unavailable.",
+        "warning"
+      );
+      return;
+    }
+
+    let result;
+
+    try {
+      result = evidenceTrace.evaluateAll(learnerId);
+    } catch (error) {
+      paragraph(
+        panel,
+        "Evidence trace evaluation failed: " +
+        error.message,
+        "warning"
+      );
+      return;
+    }
+
+    if (!result.ok) {
+      paragraph(
+        panel,
+        "Unable to evaluate trace: " +
+        (result.error || "Unknown error"),
+        "warning"
+      );
+      return;
+    }
+
+    paragraph(
+      panel,
+      "Trace Engine: " + result.version +
+      " | Method: " + result.method +
+      " | Read-only: " + result.readOnly,
+      "muted"
+    );
+
+    ["G1", "G2", "G3"].forEach(moduleId => {
+      try {
+        renderTraceModule(panel, learnerId, moduleId);
+      } catch (error) {
+        paragraph(
+          panel,
+          moduleId + " trace error: " + error.message,
+          "warning"
+        );
+      }
+    });
+  }
+
+  /* ========================================
+     EVIDENCE-TO-RECOMMENDATION MAPPING
+     STAGE 25.3.5.3.2
+  ======================================== */
+
+  function mappingStep(parent, title, content) {
+    const step = el("div", "", "mapping-step");
+
+    step.appendChild(el("h4", title));
+
+    if (Array.isArray(content)) {
+      if (!content.length) {
+        paragraph(step, "No classified evidence recorded.");
+      } else {
+        const list = el("ul");
+
+        content.forEach(value => {
+          list.appendChild(el("li", value));
+        });
+
+        step.appendChild(list);
+      }
+    } else {
+      paragraph(step, content || "No Evidence");
+    }
+
+    parent.appendChild(step);
+  }
+
+  function renderMappingCard(parent, mapping) {
+    const details = el("details", "", "mapping-card");
+
+    const priority = mapping.priority || "UNDETERMINED";
+
+    const summary = el(
+      "summary",
+      mapping.questionId +
+      " | " +
+      (STAGE_LABELS[mapping.stage] || mapping.stage) +
+      " | Priority: " + priority
+    );
+
+    details.appendChild(summary);
+
+    const body = el("div", "", "mapping-body");
+
+    const evidence = mapping.observedEvidence || {};
+    const observations = evidence.observations || [];
+    const errors = evidence.errors || [];
+
+    const evidenceLines = [
+      "First Attempt Correct: " +
+      displayValue(evidence.firstAttemptCorrect),
+
+      "Completed Correctly: " +
+      displayValue(evidence.completedCorrectly),
+
+      "Recorded Attempts: " +
+      displayValue(evidence.attemptCount),
+
+      "Highest Hint Used: " +
+      (evidence.highestHintUsed === null ||
+       evidence.highestHintUsed === undefined
+        ? "Not recorded"
+        : "H" + evidence.highestHintUsed)
+    ];
+
+    observations.forEach(item => {
+      evidenceLines.push(
+        "Observation: " + item.label
+      );
+    });
+
+    errors.forEach(error => {
+      let description = "Error Code: " + error.code;
+
+      if (error.rule) {
+        description += " | Rule: " + error.rule;
+      }
+
+      if (error.structure) {
+        description += " | Structure: " + error.structure;
+      }
+
+      if (error.selected) {
+        description += " | Selected: " + error.selected;
+      }
+
+      if (error.expected) {
+        description += " | Expected: " + error.expected;
+      }
+
+      evidenceLines.push(description);
+    });
+
+    mappingStep(
+      body,
+      "1. Observed Evidence / 实际学习证据",
+      evidenceLines
+    );
+
+    body.appendChild(
+      el("div", "↓", "mapping-arrow")
+    );
+
+    mappingStep(
+      body,
+      "2. Rule-Based Interpretation / 规则型解释",
+      mapping.interpretation
+    );
+
+    body.appendChild(
+      el("div", "↓", "mapping-arrow")
+    );
+
+    mappingStep(
+      body,
+      "3. Teaching Support / 教学支持建议",
+      mapping.teachingSupport
+    );
+
+    body.appendChild(
+      el("div", "↓", "mapping-arrow")
+    );
+
+    mappingStep(
+      body,
+      "4. Independent Validation / 独立验证",
+      mapping.independentValidation
+    );
+
+    const reference = mapping.evidenceReference || {};
+
+    mappingStep(
+      body,
+      "Evidence Reference / 证据来源",
+      [
+        "Module: " + displayValue(reference.moduleId),
+        "Session ID: " + displayValue(reference.sessionId),
+        "Question ID: " + displayValue(reference.questionId),
+        "Stage: " + displayValue(reference.stage)
+      ]
+    );
+
+    paragraph(
+      body,
+      mapping.researchNote ||
+      "This mapping is descriptive and rule-based.",
+      "notice small"
+    );
+
+    details.appendChild(body);
+    parent.appendChild(details);
+  }
+
+  function renderMappingSession(
+    container,
+    learnerId,
+    moduleId,
+    sessionId
+  ) {
+    container.replaceChildren();
+
+    let result;
+
+    try {
+      result = evidenceMapping.getSessionMapping(
+        learnerId,
+        moduleId,
+        sessionId
+      );
+    } catch (error) {
+      paragraph(
+        container,
+        "Mapping evaluation failed: " + error.message,
+        "warning"
+      );
+      return;
+    }
+
+    if (!result || !result.ok) {
+      paragraph(
+        container,
+        "Unable to map session: " +
+        (result && result.error
+          ? result.error
+          : "Unknown error"),
+        "warning"
+      );
+      return;
+    }
+
+    paragraph(
+      container,
+      "Session ID: " + displayValue(result.sessionId) +
+      " | Mapped Questions: " + result.mappingCount +
+      " | Status: " +
+      (result.complete ? "Complete" : "Incomplete"),
+      "muted"
+    );
+
+    if (!result.mappings.length) {
+      paragraph(
+        container,
+        "No Evidence — 当前 Session 没有可映射的题目。",
+        "notice"
+      );
+      return;
+    }
+
+    ["diagnostic", "practice", "reassessment"].forEach(stage => {
+      const items = result.mappings.filter(
+        item => item.stage === stage
+      );
+
+      const stageBox = el("div", "", "trace-stage");
+
+      stageBox.appendChild(
+        el(
+          "h4",
+          (STAGE_LABELS[stage] || stage) +
+          " — " + items.length + " mappings"
+        )
+      );
+
+      if (!items.length) {
+        paragraph(
+          stageBox,
+          "No Evidence for this stage.",
+          "muted"
+        );
+      } else {
+        items.forEach(item => {
+          renderMappingCard(stageBox, item);
+        });
+      }
+
+      container.appendChild(stageBox);
+    });
+  }
+
+  function renderMappingModule(parent, learnerId, moduleId) {
+    const moduleBox = el("div", "", "mapping-module");
+
+    moduleBox.appendChild(
+      el(
+        "h3",
+        moduleId + " — Evidence-to-Recommendation Mapping"
+      )
+    );
+
+    const result = evidenceTrace.listSessions(
+      learnerId,
+      moduleId
+    );
+
+    if (!result.ok) {
+      paragraph(
+        moduleBox,
+        "Unable to load session list: " +
+        (result.error || "Unknown error"),
+        "warning"
+      );
+
+      parent.appendChild(moduleBox);
+      return;
+    }
+
+    const sessions = result.sessions.filter(
+      item => item.sessionId
+    );
+
+    paragraph(
+      moduleBox,
+      "Stored Sessions: " + result.sessions.length,
+      "muted"
+    );
+
+    if (!sessions.length) {
+      paragraph(
+        moduleBox,
+        "Insufficient Evidence — 当前学生没有可映射的会话。",
+        "notice"
+      );
+
+      parent.appendChild(moduleBox);
+      return;
+    }
+
+    const selectorRow = el("div", "", "trace-selector");
+
+    selectorRow.appendChild(
+      el("label", "Select Evidence Session / 选择证据会话")
+    );
+
+    const sessionSelect = el("select");
+
+    sessions.forEach((session, index) => {
+      const option = el(
+        "option",
+        "Session " + (index + 1) +
+        " | " +
+        (session.completedAt || session.startedAt || "Date unknown") +
+        " | " +
+        (session.complete ? "Complete" : "Incomplete")
+      );
+
+      option.value = session.sessionId;
+      sessionSelect.appendChild(option);
+    });
+
+    selectorRow.appendChild(sessionSelect);
+    moduleBox.appendChild(selectorRow);
+
+    const mappingContainer = el("div");
+
+    moduleBox.appendChild(mappingContainer);
+
+    sessionSelect.addEventListener("change", function () {
+      renderMappingSession(
+        mappingContainer,
+        learnerId,
+        moduleId,
+        sessionSelect.value
+      );
+    });
+
+    renderMappingSession(
+      mappingContainer,
+      learnerId,
+      moduleId,
+      sessionSelect.value
+    );
+
+    parent.appendChild(moduleBox);
+  }
+
+  function renderEvidenceMapping(learnerId) {
+    const panel = section(
+      "🔗 Evidence-to-Recommendation Mapping"
+    );
+
+    paragraph(
+      panel,
+      "学习证据 → 规则型解释 → 教学支持 → 独立验证"
+    );
+
+    paragraph(
+      panel,
+      "本区域展示具体题目与教学建议之间的可追溯关系。" +
+      "映射由预设规则生成，不是自动诊断，" +
+      "也不会改变原有 Mastery Decision。",
+      "notice"
+    );
+
+    if (
+      !evidenceMapping ||
+      typeof evidenceMapping.evaluateAll !== "function" ||
+      typeof evidenceMapping.getSessionMapping !== "function"
+    ) {
+      paragraph(
+        panel,
+        "Evidence Mapping Engine is unavailable. " +
+        "Check js/teacher-evidence-mapping.js.",
+        "warning"
+      );
+      return;
+    }
+
+    if (
+      !evidenceTrace ||
+      typeof evidenceTrace.listSessions !== "function"
+    ) {
+      paragraph(
+        panel,
+        "Evidence Trace Engine is unavailable.",
+        "warning"
+      );
+      return;
+    }
+
+    let result;
+
+    try {
+      result = evidenceMapping.evaluateAll(learnerId);
+    } catch (error) {
+      paragraph(
+        panel,
+        "Mapping engine error: " + error.message,
+        "warning"
+      );
+      return;
+    }
+
+    if (!result || !result.ok) {
+      paragraph(
+        panel,
+        "Unable to evaluate evidence mapping.",
+        "warning"
+      );
+      return;
+    }
+
+    paragraph(
+      panel,
+      "Engine Version: " + result.version +
+      " | Method: " + result.method +
+      " | Read-only: " + result.readOnly,
+      "muted"
+    );
+
+    ["G1", "G2", "G3"].forEach(moduleId => {
+      try {
+        renderMappingModule(
+          panel,
+          learnerId,
+          moduleId
+        );
+      } catch (error) {
+        paragraph(
+          panel,
+          moduleId + " mapping error: " + error.message,
+          "warning"
+        );
+      }
+    });
+
+    const limitations = el("div", "", "notice");
+
+    limitations.appendChild(
+      el("strong", "Research Limitations")
+    );
+
+    const list = el("ul");
+
+    (result.limitations || []).forEach(item => {
+      list.appendChild(el("li", item));
+    });
+
+    limitations.appendChild(list);
+    panel.appendChild(limitations);
+
+    paragraph(
+      panel,
+      "Important: The mapping's priority level is a " +
+      "rule-based review priority, not a diagnosis " +
+      "or a validated measure of learning difficulty.",
+      "muted"
+    );
+  }
+
+  /* ========================================
+     RESEARCH EVIDENCE INTEGRITY VALIDATION
+     STAGE 25.3.5.4.2
+
+     Read-only report integration.
+     Does not modify learner identity,
+     learning sessions, or localStorage.
+  ======================================== */
+
+  function validationStatusLabel(status) {
+    if (status === "PASS") {
+      return "PASS / 检查通过";
+    }
+
+    if (status === "WARNING") {
+      return "WARNING / 需要检查";
+    }
+
+    if (status === "INSUFFICIENT_EVIDENCE") {
+      return "INSUFFICIENT EVIDENCE / 证据不足";
+    }
+
+    return "UNAVAILABLE / 无法验证";
+  }
+
+  function validationStatusClass(status) {
+    if (status === "PASS") {
+      return "tag";
+    }
+
+    return "tag missing";
+  }
+
+  function renderValidationChecks(parent, checks) {
+    parent.appendChild(
+      el("h4", "Integrity Check Details / 完整性检查详情")
+    );
+
+    if (!Array.isArray(checks) || !checks.length) {
+      paragraph(
+        parent,
+        "No individual integrity checks were returned.",
+        "muted"
+      );
+      return;
+    }
+
+    const rows = checks.map(check => [
+      check.id || "Unnamed check",
+      check.status || "UNKNOWN",
+      check.message || "No explanation recorded",
+      check.details === undefined ||
+      check.details === null
+        ? "—"
+        : displayValue(check.details)
+    ]);
+
+    makeTable(
+      parent,
+      [
+        "Check ID",
+        "Status",
+        "Explanation / 检查说明",
+        "Details / 详细信息"
+      ],
+      rows
+    );
+  }
+
+  function renderValidationSession(
+    container,
+    learnerId,
+    moduleId,
+    sessionId
+  ) {
+    container.replaceChildren();
+
+    if (
+      !evidenceValidator ||
+      typeof evidenceValidator.validateSession !== "function"
+    ) {
+      paragraph(
+        container,
+        "Research Evidence Validator is unavailable. " +
+        "Please check js/teacher-evidence-validator.js.",
+        "warning"
+      );
+      return;
+    }
+
+    let result;
+
+    try {
+      result = evidenceValidator.validateSession(
+        learnerId,
+        moduleId,
+        sessionId
+      );
+    } catch (error) {
+      paragraph(
+        container,
+        "Session validation failed: " + error.message,
+        "warning"
+      );
+      return;
+    }
+
+    if (!result || !result.ok) {
+      paragraph(
+        container,
+        "Unable to validate this session: " +
+        (result && result.error
+          ? result.error
+          : result && result.status
+            ? result.status
+            : "Unknown error"),
+        "warning"
+      );
+      return;
+    }
+
+    paragraph(
+      container,
+      "Learner ID: " + displayValue(result.learnerId) +
+      " | Module: " + displayValue(result.moduleId),
+      "muted"
+    );
+
+    paragraph(
+      container,
+      "Session ID: " + displayValue(result.sessionId),
+      "muted"
+    );
+
+    const summary = result.summary || {};
+
+    const status = summary.status || "WARNING";
+
+    const statusRow = el("div", "", "trace-meta");
+
+    statusRow.appendChild(
+      el(
+        "span",
+        validationStatusLabel(status),
+        validationStatusClass(status)
+      )
+    );
+
+    container.appendChild(statusRow);
+
+    const stats = el("div", "", "grid");
+
+    stat(
+      stats,
+      "Total Integrity Checks",
+      summary.total ?? "Not recorded"
+    );
+
+    stat(
+      stats,
+      "Passed Checks",
+      summary.pass ?? "Not recorded"
+    );
+
+    stat(
+      stats,
+      "Warnings",
+      summary.warning ?? "Not recorded"
+    );
+
+    stat(
+      stats,
+      "Integrity Status",
+      status
+    );
+
+    container.appendChild(stats);
+
+    paragraph(
+      container,
+      "Validation Method: " +
+      displayValue(result.method) +
+      " | Validator Version: " +
+      displayValue(result.version) +
+      " | Read-only: " +
+      displayValue(result.readOnly),
+      "muted"
+    );
+
+    if (status === "PASS") {
+      paragraph(
+        container,
+        "当前 Session 通过了本验证器执行的预设数据一致性检查。" +
+        "这不代表学习记录已被外部独立审计，" +
+        "也不代表教学效果或长期掌握程度得到验证。",
+        "notice"
+      );
+    } else if (status === "WARNING") {
+      paragraph(
+        container,
+        "检测到需要进一步检查的记录。" +
+        "请查看下方 Check ID、Explanation 和 Details。" +
+        "WARNING 可能来自缺失字段、记录不一致或旧版本数据，" +
+        "不能直接解释为学生学习失败。",
+        "warning"
+      );
+    } else {
+      paragraph(
+        container,
+        "当前证据不足，无法完成预设完整性检查。" +
+        "请核对对应的历史 Session 和题目记录。",
+        "warning"
+      );
+    }
+
+    renderValidationChecks(
+      container,
+      result.checks || []
+    );
+
+    const limitations = el("div", "", "notice");
+
+    limitations.appendChild(
+      el(
+        "strong",
+        "Validation Limitations / 验证范围与局限"
+      )
+    );
+
+    const list = el("ul");
+
+    const limitationItems = Array.isArray(result.limitations)
+      ? result.limitations
+      : [];
+
+    if (!limitationItems.length) {
+      list.appendChild(
+        el(
+          "li",
+          "Validation checks internal evidence consistency only."
+        )
+      );
+    } else {
+      limitationItems.forEach(item => {
+        list.appendChild(el("li", item));
+      });
+    }
+
+    limitations.appendChild(list);
+    container.appendChild(limitations);
+
+    paragraph(
+      container,
+      "Evidence reference: " +
+      moduleId + " / " + sessionId +
+      ". Use the matching session in Question-Level Evidence " +
+      "Traceability and Evidence-to-Recommendation Mapping " +
+      "to inspect the underlying records.",
+      "muted small"
+    );
+  }
+
+  function renderValidationModule(
+    parent,
+    learnerId,
+    moduleId
+  ) {
+    const moduleBox = el("div", "", "trace-module");
+
+    moduleBox.appendChild(
+      el(
+        "h3",
+        moduleId + " — Research Evidence Integrity"
+      )
+    );
+
+    if (
+      !evidenceValidator ||
+      typeof evidenceValidator.validateModule !== "function"
+    ) {
+      paragraph(
+        moduleBox,
+        "Validator module evaluation is unavailable.",
+        "warning"
+      );
+
+      parent.appendChild(moduleBox);
+      return;
+    }
+
+    let moduleResult;
+
+    try {
+      moduleResult = evidenceValidator.validateModule(
+        learnerId,
+        moduleId
+      );
+    } catch (error) {
+      paragraph(
+        moduleBox,
+        "Module validation failed: " + error.message,
+        "warning"
+      );
+
+      parent.appendChild(moduleBox);
+      return;
+    }
+
+    if (!moduleResult || !moduleResult.ok) {
+      paragraph(
+        moduleBox,
+        "Unable to validate module: " +
+        (moduleResult && moduleResult.error
+          ? moduleResult.error
+          : "Unknown error"),
+        "warning"
+      );
+
+      parent.appendChild(moduleBox);
+      return;
+    }
+
+    const moduleStatus =
+      moduleResult.status || "INSUFFICIENT_EVIDENCE";
+
+    const summaryRow = el("div", "", "trace-meta");
+
+    summaryRow.appendChild(
+      el(
+        "span",
+        validationStatusLabel(moduleStatus),
+        validationStatusClass(moduleStatus)
+      )
+    );
+
+    moduleBox.appendChild(summaryRow);
+
+    paragraph(
+      moduleBox,
+      "Stored Sessions: " +
+      displayValue(moduleResult.sessionCount),
+      "muted"
+    );
+
+    if (
+      !evidenceTrace ||
+      typeof evidenceTrace.listSessions !== "function"
+    ) {
+      paragraph(
+        moduleBox,
+        "Evidence Trace session listing is unavailable.",
+        "warning"
+      );
+
+      parent.appendChild(moduleBox);
+      return;
+    }
+
+    let sessionResult;
+
+    try {
+      sessionResult = evidenceTrace.listSessions(
+        learnerId,
+        moduleId
+      );
+    } catch (error) {
+      paragraph(
+        moduleBox,
+        "Session listing failed: " + error.message,
+        "warning"
+      );
+
+      parent.appendChild(moduleBox);
+      return;
+    }
+
+    if (
+      !sessionResult ||
+      !sessionResult.ok ||
+      !Array.isArray(sessionResult.sessions)
+    ) {
+      paragraph(
+        moduleBox,
+        "Unable to retrieve historical sessions.",
+        "warning"
+      );
+
+      parent.appendChild(moduleBox);
+      return;
+    }
+
+    const sessions = sessionResult.sessions.filter(
+      item => item && item.sessionId
+    );
+
+    if (!sessions.length) {
+      paragraph(
+        moduleBox,
+        "INSUFFICIENT EVIDENCE — 当前学生没有" +
+        "可进行 Session-level Integrity Validation " +
+        "的历史学习会话。",
+        "notice"
+      );
+
+      parent.appendChild(moduleBox);
+      return;
+    }
+
+    const selectorRow = el("div", "", "trace-selector");
+
+    const selectorLabel = el(
+      "label",
+      "Select Session / 选择要验证的历史会话"
+    );
+
+    const sessionSelect = el("select");
+
+    sessions.forEach((session, index) => {
+      const option = el(
+        "option",
+        "Session " + (index + 1) +
+        " | " +
+        (
+          session.completedAt ||
+          session.startedAt ||
+          "Date unknown"
+        ) +
+        " | " +
+        (
+          session.complete
+            ? "Complete"
+            : "Incomplete"
+        )
+      );
+
+      option.value = session.sessionId;
+      sessionSelect.appendChild(option);
+    });
+
+    selectorLabel.htmlFor =
+      "validation-session-" + moduleId;
+
+    sessionSelect.id =
+      "validation-session-" + moduleId;
+
+    selectorRow.appendChild(selectorLabel);
+    selectorRow.appendChild(sessionSelect);
+
+    moduleBox.appendChild(selectorRow);
+
+    const validationContainer = el("div");
+
+    moduleBox.appendChild(validationContainer);
+
+    sessionSelect.addEventListener(
+      "change",
+      function () {
+        renderValidationSession(
+          validationContainer,
+          learnerId,
+          moduleId,
+          sessionSelect.value
+        );
+      }
+    );
+
+    renderValidationSession(
+      validationContainer,
+      learnerId,
+      moduleId,
+      sessionSelect.value
+    );
+
+    parent.appendChild(moduleBox);
+  }
+
+  function renderEvidenceIntegrityValidation(learnerId) {
+    const panel = section(
+      "🛡️ Research Evidence Integrity Validation"
+    );
+
+    paragraph(
+      panel,
+      "研究证据完整性检查 / " +
+      "Research Evidence Integrity Validator"
+    );
+
+    paragraph(
+      panel,
+      "本区域对 G1/G2/G3 已保存的学习证据执行" +
+      "预设规则检查，包括学生身份、Session、" +
+      "题目记录、作答过程和证据映射的一致性。" +
+      "所有检查均为只读操作。",
+      "notice"
+    );
+
+    if (
+      !evidenceValidator ||
+      typeof evidenceValidator.validateAll !== "function" ||
+      typeof evidenceValidator.validateModule !== "function" ||
+      typeof evidenceValidator.validateSession !== "function"
+    ) {
+      paragraph(
+        panel,
+        "Research Evidence Integrity Validator " +
+        "is unavailable. Check whether " +
+        "js/teacher-evidence-validator.js " +
+        "is loaded correctly.",
+        "warning"
+      );
+      return;
+    }
+
+    let result;
+
+    try {
+      result = evidenceValidator.validateAll(learnerId);
+    } catch (error) {
+      paragraph(
+        panel,
+        "Research evidence validation failed: " +
+        error.message,
+        "warning"
+      );
+      return;
+    }
+
+    if (!result || !result.ok) {
+      paragraph(
+        panel,
+        "Unable to evaluate research evidence integrity: " +
+        (result && result.error
+          ? result.error
+          : "Unknown error"),
+        "warning"
+      );
+      return;
+    }
+
+    paragraph(
+      panel,
+      "Validator Version: " +
+      displayValue(result.version) +
+      " | Method: " +
+      displayValue(result.method) +
+      " | Read-only: " +
+      displayValue(result.readOnly),
+      "muted"
+    );
+
+    ["G1", "G2", "G3"].forEach(moduleId => {
+      try {
+        renderValidationModule(
+          panel,
+          learnerId,
+          moduleId
+        );
+      } catch (error) {
+        paragraph(
+          panel,
+          moduleId +
+          " integrity validation error: " +
+          error.message,
+          "warning"
+        );
+      }
+    });
+
+    if (result.researchNote) {
+      paragraph(
+        panel,
+        result.researchNote,
+        "notice"
+      );
+    }
+
+    paragraph(
+      panel,
+      "Research limitation: Passing these checks " +
+      "indicates only that the available records satisfy " +
+      "the validator's implemented consistency rules. " +
+      "It does not establish data authenticity, " +
+      "causal learning effects, independent mastery, " +
+      "or long-term retention.",
+      "muted small"
+    );
+  }
+
+  /* ========================================
+     INTEGRATED REPORT RENDERING
+     STAGE 25.3.5.4.2
+  ======================================== */
+
+  function render() {
+    report.replaceChildren();
+
+    if (!identity) {
+      identityStatus.textContent =
+        "Learner Identity Service unavailable.";
+
+      paragraph(
+        section("Module Error"),
+        "Learner Identity Service is unavailable.",
+        "warning"
+      );
+      return;
+    }
+
+    const learnerId = select.value;
+    const learner = identity.findLearner(learnerId);
+
+    if (!learner) {
+      identityStatus.textContent =
+        "No valid learner selected.";
+
+      paragraph(
+        section("No Learner"),
+        "请选择有效学生。",
+        "notice"
+      );
+      return;
+    }
+
+    const activeId = identity.getActiveLearnerId();
+
+    identityStatus.textContent =
+      "Teacher viewing: " + displayName(learner) +
+      " | Student Portal active learner ID: " +
+      (activeId || "None") +
+      " | Read-only teacher selection";
+
+    const overview = section(
+      "👤 " + displayName(learner) +
+      " — Integrated Learning Overview"
+    );
+
+    paragraph(
+      overview,
+      "Learner ID: " + learner.id,
+      "muted"
+    );
+
+    paragraph(
+      overview,
+      "This report reads existing learner-bound records. " +
+      "It does not create, edit or delete sessions.",
+      "notice"
+    );
+
+    const overviewGrid = el("div", "", "grid");
+
+    GRAMMAR_MODULES.forEach(module => {
+      const loaded = learnerRecords(
+        module.key,
+        learnerId
+      );
+
+      stat(
+        overviewGrid,
+        module.id + " Stored Sessions",
+        loaded.ok
+          ? loaded.records.length
+          : "Read Error"
+      );
+    });
+
+    const spellingDiagnostic = learnerRecords(
+      SPELLING_KEYS.diagnostic,
+      learnerId
+    );
+
+    stat(
+      overviewGrid,
+      "Spelling Diagnostic Records",
+      spellingDiagnostic.ok
+        ? spellingDiagnostic.records.length
+        : "Read Error"
+    );
+
+    overview.appendChild(overviewGrid);
+
+    /* ========================================
+       GRAMMAR LEARNING EVIDENCE
+    ======================================== */
+
+    const grammarIntro = section(
+      "📖 Grammar Learning Evidence"
+    );
+
+    paragraph(
+      grammarIntro,
+      "G1, G2 and G3 are evaluated independently. " +
+      "Missing evidence in one module does not hide another."
+    );
+
+    GRAMMAR_MODULES.forEach(module => {
+      try {
+        renderGrammarModule(
+          module,
+          learnerId
+        );
+      } catch (error) {
+        paragraph(
+          section(module.id + " Report Error"),
+          error.message,
+          "warning"
+        );
+      }
+    });
+
+    /* ========================================
+       SPELLING LEARNING EVIDENCE
+    ======================================== */
+
+    const spellingIntro = section(
+      "🔤 Spelling Learning Evidence"
+    );
+
+    paragraph(
+      spellingIntro,
+      "Spelling mastery, scaffolding, error analysis " +
+      "and question-level evidence remain separate " +
+      "from Grammar."
+    );
+
+    try {
+      renderSpelling(learnerId);
+    } catch (error) {
+      paragraph(
+        section("Spelling Report Error"),
+        error.message,
+        "warning"
+      );
+    }
+
+    /* ========================================
+       ADAPTIVE TEACHING RECOMMENDATIONS
+    ======================================== */
+
+    try {
+      renderTeachingRecommendations(learnerId);
+    } catch (error) {
+      paragraph(
+        section("Teaching Recommendations Error"),
+        error.message,
+        "warning"
+      );
+    }
+
+    /* ========================================
+       QUESTION-LEVEL EVIDENCE TRACE
+    ======================================== */
+
+    try {
+      renderQuestionLevelTrace(learnerId);
+    } catch (error) {
+      paragraph(
+        section("Question-Level Trace Error"),
+        error.message,
+        "warning"
+      );
+    }
+
+    /* ========================================
+       EVIDENCE-TO-RECOMMENDATION MAPPING
+    ======================================== */
+
+    try {
+      renderEvidenceMapping(learnerId);
+    } catch (error) {
+      paragraph(
+        section("Evidence Mapping Error"),
+        error.message,
+        "warning"
+      );
+    }
+
+    /* ========================================
+       RESEARCH EVIDENCE INTEGRITY VALIDATION
+       NEW — STAGE 25.3.5.4.2
+    ======================================== */
+
+    try {
+      renderEvidenceIntegrityValidation(learnerId);
+    } catch (error) {
+      paragraph(
+        section("Evidence Integrity Validation Error"),
+        error.message,
+        "warning"
+      );
+    }
+
+    /* ========================================
+       INTEGRATED RESEARCH INTERPRETATION
+    ======================================== */
+
+    const research = section(
+      "📚 Integrated Research Interpretation"
+    );
+
+    paragraph(
+      research,
+      "Grammar and Spelling evidence describe observed " +
+      "learning performance for the selected learner."
+    );
+
+    paragraph(
+      research,
+      "Question-level traces show recorded attempts, " +
+      "errors and scaffolding. Evidence mappings " +
+      "connect these observations to predefined " +
+      "teaching recommendations."
+    );
+
+    paragraph(
+      research,
+      "Research Evidence Integrity Validation checks " +
+      "whether the available learner-bound records, " +
+      "question-level traces and evidence mappings " +
+      "satisfy predefined consistency rules."
+    );
+
+    paragraph(
+      research,
+      "An observed error does not establish its " +
+      "cognitive cause. A recommended teaching " +
+      "strategy is not proof of effectiveness."
+    );
+
+    paragraph(
+      research,
+      "Immediate diagnostic-to-reassessment differences " +
+      "do not establish causal improvement, long-term " +
+      "retention or transfer to new tasks.",
+      "notice"
+    );
+
+    paragraph(
+      research,
+      "A PASS result in the Integrity Validator means " +
+      "only that the implemented checks passed. " +
+      "It does not establish data authenticity, " +
+      "scientific validity or durable mastery.",
+      "muted"
+    );
+  }
+
+  /* ========================================
+     LEARNER SELECTION — READ ONLY
+
+     Teacher selection must not modify
+     the Student Portal active learner.
+  ======================================== */
+
+  function loadLearners() {
+    select.replaceChildren();
+
+    if (
+      !identity ||
+      typeof identity.getProfiles !== "function"
+    ) {
+      render();
+      return;
+    }
+
+    let profiles;
+
+    try {
+      profiles = identity.getProfiles();
+    } catch (error) {
+      identityStatus.textContent =
+        "Unable to load learner profiles: " +
+        error.message;
+      return;
+    }
+
+    if (!Array.isArray(profiles) || !profiles.length) {
+      render();
+      return;
+    }
+
+    const requestedId =
+      new URLSearchParams(window.location.search)
+        .get("learnerId");
+
+    const preferred =
+      profiles.find(profile =>
+        String(profile.id) === String(requestedId)
+      ) ||
+      profiles.find(profile =>
+        String(profile.id) ===
+        String(identity.getActiveLearnerId())
+      ) ||
+      profiles[0];
+
+    profiles.forEach(profile => {
+      const option = document.createElement("option");
+
+      option.value = profile.id;
+      option.textContent = displayName(profile);
+
+      select.appendChild(option);
+    });
+
+    select.value = preferred.id;
+
+    render();
+  }
+
+  /* ========================================
+     REFRESH REPORT
+  ======================================== */
+
+  document.getElementById("refresh")
+    .addEventListener("click", function () {
+      if (!auth.isLoggedIn()) {
+        window.location.replace(
+          "teacher-login.html"
+        );
+        return;
+      }
+
+      render();
+    });
+
+  /* ========================================
+     TEACHER LEARNER SELECTION
+     READ ONLY
+  ======================================== */
+
+  select.addEventListener(
+    "change",
+    function () {
+      if (!auth.isLoggedIn()) {
+        window.location.replace(
+          "teacher-login.html"
+        );
+        return;
+      }
+
+      render();
+    }
+  );
+
+  /* ========================================
+     TEACHER LOGOUT
+  ======================================== */
+
+  document.getElementById("logout")
+    .addEventListener("click", function () {
+      auth.logout();
+
+      window.location.replace(
+        "teacher-login.html"
+      );
+    });
+
+  /* ========================================
+     SESSION VISIBILITY CHECK
+  ======================================== */
+
+  document.addEventListener(
+    "visibilitychange",
+    function () {
+      if (document.hidden) {
+        return;
+      }
+
+      if (!auth.isLoggedIn()) {
+        window.location.replace(
+          "teacher-login.html"
+        );
+      } else {
+        render();
+      }
+    }
+  );
+
+  /* ========================================
+     INITIALIZE REPORT
+  ======================================== */
+
+  loadLearners();
+
+  console.info(
+    "[AURA EDU] Stage 25.3.5.4.2 " +
+    "Research Evidence Integrity Validator " +
+    "Integration ready."
+  );
+
+})();
+</script>
+
+</body>
+</html>

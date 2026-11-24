@@ -1,0 +1,432 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AURA EDU | Choose Your Partner</title>
+
+<style>
+:root {
+  --ink: #30264c;
+  --purple: #7658d8;
+  --soft: #f3efff;
+  --line: #e4dcf7;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Arial, sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 12% 12%, #e2d8ff, transparent 35%),
+    radial-gradient(circle at 90% 75%, #d6f4ff, transparent 35%),
+    #faf8ff;
+}
+
+button, a { font: inherit; }
+
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 14px;
+  padding: 12px 18px;
+  font-weight: 750;
+}
+
+button:focus-visible, a:focus-visible {
+  outline: 3px solid #e8a83e;
+  outline-offset: 3px;
+}
+
+button:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+header {
+  background: #ffffffdd;
+  border-bottom: 1px solid var(--line);
+  padding: 17px 6%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.brand {
+  color: var(--purple);
+  font-weight: 900;
+  font-size: 22px;
+}
+
+header a {
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 650;
+}
+
+main {
+  max-width: 1150px;
+  margin: 0 auto;
+  padding: 35px 20px 65px;
+}
+
+.hero {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.eyebrow {
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: var(--purple);
+  font-weight: 900;
+}
+
+h1 {
+  font-size: clamp(29px, 5vw, 46px);
+  margin: 12px 0;
+}
+
+.hero p {
+  color: #716984;
+  line-height: 1.7;
+}
+
+.learner {
+  display: inline-block;
+  padding: 10px 16px;
+  border-radius: 30px;
+  background: white;
+  border: 1px solid var(--line);
+  font-size: 13px;
+}
+
+.characters {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.character-card {
+  border: 3px solid transparent;
+  border-radius: 25px;
+  background: white;
+  padding: 10px;
+  box-shadow: 0 15px 35px #65518c12;
+  transition: transform .2s, box-shadow .2s;
+}
+
+.character-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 22px 40px #65518c24;
+}
+
+.character-card.selected {
+  border-color: var(--purple);
+  box-shadow: 0 15px 40px #7658d833;
+}
+
+.portrait {
+  height: 240px;
+  border-radius: 20px;
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.portrait::before {
+  content: "";
+  position: absolute;
+  width: 190px;
+  height: 190px;
+  border-radius: 50%;
+  background: #ffffff75;
+  z-index: -1;
+}
+
+.portrait::after {
+  content: "";
+  position: absolute;
+  bottom: 16px;
+  width: 125px;
+  height: 18px;
+  background: #473a6725;
+  border-radius: 50%;
+  filter: blur(5px);
+  z-index: -1;
+}
+
+.mia { background: linear-gradient(145deg,#eadfff,#b7a5f2); }
+.leo { background: linear-gradient(145deg,#d7f1ff,#91d4f6); }
+.luna { background: linear-gradient(145deg,#d9f9e9,#9edcc4); }
+.finn { background: linear-gradient(145deg,#ffefd4,#ffc48f); }
+
+.avatar {
+  font-size: 105px;
+  filter: drop-shadow(0 12px 8px #41335c35);
+  animation: hover 3.2s ease-in-out infinite;
+  user-select: none;
+}
+
+@keyframes hover {
+  0%,100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-9px) rotate(2deg); }
+}
+
+.character-info {
+  padding: 15px 8px 8px;
+  text-align: center;
+}
+
+.character-info h2 {
+  font-size: 22px;
+  margin: 0 0 7px;
+}
+
+.character-info p {
+  font-size: 13px;
+  color: #766d86;
+  min-height: 54px;
+  line-height: 1.6;
+}
+
+.choose {
+  background: var(--soft);
+  color: #6145bb;
+  width: 100%;
+}
+
+.character-card.selected .choose {
+  background: var(--purple);
+  color: white;
+}
+
+.preview {
+  margin-top: 30px;
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 25px;
+  padding: 25px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+  align-items: center;
+}
+
+.preview h2 { margin-top: 0; }
+
+.preview p {
+  color: #716984;
+  line-height: 1.7;
+}
+
+.equipment {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+.equipment span {
+  background: #f4f0ff;
+  border-radius: 12px;
+  padding: 10px;
+  font-size: 13px;
+}
+
+.stage {
+  min-height: 220px;
+  border-radius: 22px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(145deg,#f4eeff,#e4f8ff);
+}
+
+.stage-avatar {
+  font-size: 120px;
+  filter: drop-shadow(0 15px 12px #45326b30);
+  animation: hover 3.2s infinite;
+}
+
+.primary {
+  background: var(--purple);
+  color: white;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.secondary {
+  background: var(--soft);
+  color: #6048aa;
+}
+
+.status {
+  margin-top: 15px;
+  min-height: 28px;
+  color: #32785c;
+  font-size: 14px;
+}
+
+.note {
+  margin-top: 22px;
+  font-size: 12px;
+  color: #81788f;
+  line-height: 1.7;
+}
+
+@media(max-width: 900px) {
+  .characters { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media(max-width: 600px) {
+  .characters { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .portrait { height: 170px; }
+  .avatar { font-size: 75px; }
+  .character-info h2 { font-size: 18px; }
+  .preview { grid-template-columns: 1fr; }
+  .stage { min-height: 160px; }
+  .character-info p { min-height: 75px; }
+}
+
+@media(prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="brand">✦ AURA EDU</div>
+  <a href="index.html">← Back to Home</a>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="eyebrow">ADVENTURE WORLD · STAGE 23.2</div>
+    <h1>Choose Your Adventure Partner!</h1>
+    <p>
+      选择你的冒险伙伴，一起探索英语学习世界。<br>
+      Your partner will join you on your learning journey!
+    </p>
+    <div class="learner" id="learner-label">
+      Checking learner identity...
+    </div>
+  </section>
+
+  <section class="characters" aria-label="Adventure partners">
+
+    <article class="character-card" data-partner="mia">
+      <div class="portrait mia">
+        <span class="avatar" aria-hidden="true">👧🏻</span>
+      </div>
+      <div class="character-info">
+        <h2>Mia</h2>
+        <p>Friendly and cheerful.<br>活泼友好的校园伙伴</p>
+        <button class="choose" data-select="mia">
+          Choose Mia
+        </button>
+      </div>
+    </article>
+
+    <article class="character-card" data-partner="leo">
+      <div class="portrait leo">
+        <span class="avatar" aria-hidden="true">👦🏻</span>
+      </div>
+      <div class="character-info">
+        <h2>Leo</h2>
+        <p>Curious and adventurous.<br>喜欢探索的冒险伙伴</p>
+        <button class="choose" data-select="leo">
+          Choose Leo
+        </button>
+      </div>
+    </article>
+
+    <article class="character-card" data-partner="luna">
+      <div class="portrait luna">
+        <span class="avatar" aria-hidden="true">👩🏻</span>
+      </div>
+      <div class="character-info">
+        <h2>Luna</h2>
+        <p>Kind and thoughtful.<br>温柔耐心的学习伙伴</p>
+        <button class="choose" data-select="luna">
+          Choose Luna
+        </button>
+      </div>
+    </article>
+
+    <article class="character-card" data-partner="finn">
+      <div class="portrait finn">
+        <span class="avatar" aria-hidden="true">🦊</span>
+      </div>
+      <div class="character-info">
+        <h2>Finn</h2>
+        <p>Playful and energetic.<br>可爱有趣的小狐狸</p>
+        <button class="choose" data-select="finn">
+          Choose Finn
+        </button>
+      </div>
+    </article>
+
+  </section>
+
+  <section class="preview">
+    <div>
+      <div class="eyebrow">YOUR ADVENTURE PARTNER</div>
+      <h2 id="preview-name">Select a partner</h2>
+      <p id="preview-description">
+        Choose a character above to see your partner.
+      </p>
+
+      <h3>🎒 Equipment Preview / 装备预览</h3>
+      <div class="equipment">
+        <span>🎒 Backpack · Coming Soon</span>
+        <span>🎩 Hat · Coming Soon</span>
+        <span>🏅 Badge · Coming Soon</span>
+      </div>
+
+      <div class="actions">
+        <button id="save-partner" class="primary" disabled>
+          Save My Partner
+        </button>
+        <button id="reset-preview" class="secondary">
+          Change Selection
+        </button>
+      </div>
+
+      <div class="status" id="status" role="status"></div>
+    </div>
+
+    <div class="stage">
+      <div class="stage-avatar" id="preview-avatar"
+           aria-label="Selected partner preview">
+        ✨
+      </div>
+    </div>
+  </section>
+
+  <div class="note">
+    Prototype note: Character portraits are temporary animated
+    placeholders, not final 3D assets. This page does not award
+    stars, unlock Speaking, or modify Grammar records.
+  </div>
+</main>
+
+<script src="js/partner-selection.js"></script>
+</body>
+</html>

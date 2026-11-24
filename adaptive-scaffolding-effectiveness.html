@@ -1,0 +1,1172 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AURA EDU | Scaffolding Evidence Validation</title>
+<style>
+:root{
+  --navy:#17365d;
+  --teal:#218b83;
+  --bg:#f7fafc;
+  --text:#26354a;
+  --muted:#63748a;
+  --line:#e2e8f0;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Arial,sans-serif;
+  line-height:1.65;
+}
+.container{max-width:1160px;margin:auto;padding:0 22px}
+header{background:white;border-bottom:1px solid var(--line)}
+nav{
+  display:flex;
+  flex-wrap:wrap;
+  gap:17px;
+  padding:22px 0;
+  align-items:center;
+}
+nav a{color:var(--navy);text-decoration:none;font-size:14px}
+nav a:hover{color:var(--teal)}
+.logo{font-size:22px;font-weight:bold;margin-right:auto}
+.hero{
+  padding:65px 0;
+  background:linear-gradient(135deg,#17365d,#245e78);
+}
+.hero h1{
+  color:white;
+  font-size:clamp(32px,5vw,46px);
+  line-height:1.2;
+}
+.hero p{color:#e0eaf3;max-width:850px}
+.eyebrow{
+  color:var(--teal);
+  font-size:12px;
+  letter-spacing:2px;
+  font-weight:bold;
+}
+.hero .eyebrow{color:#8de0d3}
+section{padding:45px 0}
+h2,h3{color:var(--navy)}
+p{color:var(--muted)}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:18px;
+}
+.metrics{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:14px;
+  margin:22px 0;
+}
+.card,.metric{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:23px;
+}
+.metric strong{
+  display:block;
+  font-size:27px;
+  color:var(--navy);
+  overflow-wrap:anywhere;
+}
+.metric span{font-size:13px;color:var(--muted)}
+.featured{border-top:5px solid var(--teal)}
+.soft{background:#edf4f7}
+button,select{
+  padding:12px 16px;
+  font:inherit;
+  border-radius:9px;
+}
+button{
+  background:var(--navy);
+  border:1px solid var(--navy);
+  color:white;
+  cursor:pointer;
+}
+button:hover{opacity:.9}
+button:focus-visible,
+select:focus-visible,
+a:focus-visible{
+  outline:3px solid #78b7eb;
+  outline-offset:3px;
+}
+select{
+  width:100%;
+  background:white;
+  border:1px solid var(--line);
+  color:var(--text);
+}
+label{
+  display:block;
+  color:var(--navy);
+  font-weight:bold;
+  margin-bottom:10px;
+}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:20px}
+.status{
+  display:inline-block;
+  padding:5px 11px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:bold;
+  background:#e7f5f0;
+  color:#17645e;
+}
+.status.review{background:#fff3dc;color:#946100}
+.notice{
+  padding:17px;
+  background:#fff8e8;
+  border-left:4px solid #d4a345;
+  border-radius:9px;
+  margin-top:20px;
+}
+.notice p{color:#775b25;margin:0}
+.row{
+  padding:13px 0;
+  border-bottom:1px solid var(--line);
+}
+.row:last-child{border-bottom:0}
+.row strong{display:block;color:var(--navy)}
+.row span{
+  color:var(--muted);
+  font-size:14px;
+  overflow-wrap:anywhere;
+}
+.table-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:780px}
+th,td{
+  padding:13px;
+  border-bottom:1px solid var(--line);
+  text-align:left;
+  vertical-align:top;
+  font-size:13px;
+}
+th{background:#edf4f7;color:var(--navy)}
+pre{
+  background:#10243b;
+  color:#e9f2f9;
+  border-radius:12px;
+  padding:18px;
+  max-height:420px;
+  overflow:auto;
+  font-size:12px;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+}
+.small{font-size:13px}
+footer{
+  background:var(--navy);
+  text-align:center;
+  padding:30px;
+}
+footer p{color:#e0eaf3}
+@media(max-width:800px){
+  .grid,.metrics{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header>
+<div class="container">
+<nav aria-label="Research navigation">
+  <a class="logo" href="research.html">AURA EDU</a>
+  <a href="research.html">Research Lab</a>
+  <a href="research-documentation-hub.html">Documentation Hub</a>
+  <a href="scaffolding-evidence-analysis.html">Scaffolding Evidence</a>
+  <a href="data-quality-dashboard.html">Data Quality</a>
+  <a href="index.html">AURA Learn</a>
+</nav>
+</div>
+</header>
+
+<main>
+
+<section class="hero">
+<div class="container">
+  <div class="eyebrow">STEP 20.10.2 / RESEARCH VALIDATION</div>
+  <h1>Adaptive Scaffolding Evidence Validation</h1>
+  <p>
+    Mapping actual G1 learning records to diagnostic
+    performance, question-level hint exposure,
+    practice attempts, independent reassessment
+    and explainable learning decisions.
+  </p>
+  <p>
+    G1 真实学习记录验证：识别诊断表现、教学提示、
+    答题尝试、即时独立复测及可解释学习决策。
+  </p>
+</div>
+</section>
+
+<section>
+<div class="container">
+  <div class="eyebrow">01 / DATA INVENTORY</div>
+  <h2>Historical Learning Record Preservation</h2>
+  <div class="metrics">
+    <div class="metric">
+      <strong id="g1-count">—</strong>
+      <span>G1 Records</span>
+    </div>
+    <div class="metric">
+      <strong id="g2-count">—</strong>
+      <span>G2 Records</span>
+    </div>
+    <div class="metric">
+      <strong id="g3-count">—</strong>
+      <span>G3 Records</span>
+    </div>
+    <div class="metric">
+      <strong id="total-count">—</strong>
+      <span>Total Records</span>
+    </div>
+  </div>
+  <p id="inventory-status" role="status"></p>
+  <div class="notice">
+    <p>
+      Original baseline: G1=4, G2=3, G3=6,
+      Total=13. Current counts may be higher
+      after development testing.
+      This page reads records without modifying them.
+    </p>
+  </div>
+</div>
+</section>
+
+<section class="soft">
+<div class="container">
+  <div class="eyebrow">02 / SESSION SELECTION</div>
+  <h2>Select a G1 Learning Session</h2>
+  <div class="card featured">
+    <label for="session-select">G1 Historical Sessions</label>
+    <select id="session-select">
+      <option value="">Loading...</option>
+    </select>
+    <div class="actions">
+      <button id="refresh-button" type="button">
+        Refresh Evidence
+      </button>
+    </div>
+    <p id="session-status" role="status"></p>
+  </div>
+
+  <div class="metrics">
+    <div class="metric">
+      <strong id="diagnostic-value">—</strong>
+      <span>Diagnostic</span>
+    </div>
+    <div class="metric">
+      <strong id="practice-value">—</strong>
+      <span>Adaptive Practice</span>
+    </div>
+    <div class="metric">
+      <strong id="retest-value">—</strong>
+      <span>Independent Reassessment</span>
+    </div>
+    <div class="metric">
+      <strong id="hint-value">—</strong>
+      <span>Highest Hint Exposure</span>
+    </div>
+  </div>
+</div>
+</section>
+
+<section>
+<div class="container">
+  <div class="eyebrow">03 / FIELD MAPPING</div>
+  <h2>Verified Field Mapping</h2>
+  <p>
+    Values are taken from recognised G1 record fields.
+    The mapping source is displayed for inspection.
+  </p>
+
+  <div class="card">
+    <div class="row">
+      <strong>Record Schema</strong>
+      <span id="schema-value">Not available</span>
+    </div>
+    <div class="row">
+      <strong>Diagnostic Source</strong>
+      <span id="diagnostic-source">Not available</span>
+    </div>
+    <div class="row">
+      <strong>Practice Source</strong>
+      <span id="practice-source">Not available</span>
+    </div>
+    <div class="row">
+      <strong>Independent Reassessment Source</strong>
+      <span id="retest-source">Not available</span>
+    </div>
+    <div class="row">
+      <strong>Highest Hint Source</strong>
+      <span id="hint-source">Not available</span>
+    </div>
+    <div class="row">
+      <strong>Explainable Decision</strong>
+      <span id="decision-value">Not available</span>
+    </div>
+  </div>
+</div>
+</section>
+
+<section class="soft">
+<div class="container">
+  <div class="eyebrow">04 / QUESTION-LEVEL EVIDENCE</div>
+  <h2>Adaptive Practice Evidence</h2>
+  <p>
+    The table shows recorded practice questions,
+    attempts, first-attempt correctness,
+    highest hint exposure and error evidence.
+  </p>
+
+  <div class="card">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Question</th>
+            <th>Attempts</th>
+            <th>First Attempt</th>
+            <th>Highest Hint</th>
+            <th>Completed</th>
+            <th>Error Codes</th>
+          </tr>
+        </thead>
+        <tbody id="question-table">
+          <tr><td colspan="6">Select a session.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="small" id="question-status"></p>
+  </div>
+</div>
+</section>
+
+<section>
+<div class="container">
+  <div class="eyebrow">05 / EVIDENCE INTERPRETATION</div>
+  <h2>Instructional Support and Independent Performance</h2>
+
+  <div class="grid">
+    <div class="card">
+      <h3>Hint Exposure</h3>
+      <p id="hint-interpretation">Not available</p>
+    </div>
+    <div class="card">
+      <h3>Independent Reassessment</h3>
+      <p id="retest-interpretation">Not available</p>
+    </div>
+    <div class="card featured">
+      <h3>Joint Evidence Interpretation</h3>
+      <p id="joint-interpretation">Not available</p>
+      <span class="status review" id="joint-status">
+        Awaiting Evidence
+      </span>
+    </div>
+    <div class="card">
+      <h3>Evidence Limitations</h3>
+      <p id="limitations">
+        No session selected.
+      </p>
+    </div>
+  </div>
+</div>
+</section>
+
+<section class="soft">
+<div class="container">
+  <div class="eyebrow">06 / RECORD TRANSPARENCY</div>
+  <h2>Original Record Inspection</h2>
+  <div class="card">
+    <p>
+      The original stored record is displayed
+      for field-level inspection.
+    </p>
+    <pre id="record-preview">No session selected.</pre>
+    <div class="actions">
+      <button id="copy-button" type="button">
+        Copy Selected Record JSON
+      </button>
+    </div>
+    <p id="copy-status" role="status"></p>
+  </div>
+</div>
+</section>
+
+<section>
+<div class="container">
+  <div class="eyebrow">07 / RESEARCH INTEGRITY</div>
+  <h2>What Can We Conclude?</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>Descriptive Evidence</h3>
+      <p>
+        We can describe recorded hint exposure,
+        question-level attempts, observed errors,
+        and immediate independent performance,
+        when the corresponding fields exist.
+      </p>
+    </div>
+    <div class="card">
+      <h3>Unverified Claims</h3>
+      <p>
+        Hint dependency, causal learning effects,
+        long-term retention and educational
+        effectiveness cannot be established
+        from these records alone.
+      </p>
+    </div>
+  </div>
+</div>
+</section>
+
+</main>
+
+<footer>
+  <p>AURA EDU Research Prototype · Step 20.10.2</p>
+</footer>
+
+<script>
+(function(){
+"use strict";
+
+/*
+  STEP 20.10.2
+  READ-ONLY G1 FIELD VALIDATION
+
+  Supported:
+  - Direct G1 session records
+  - Explicitly recognised identity wrappers
+  - Session result.diagnostic/practice/reassessment
+  - Session result.highestHintLevel
+  - Session records[] practice attempts
+
+  No localStorage writes.
+  No identity reassignment.
+  No inferred causal claims.
+*/
+
+const KEYS={
+  G1:"aura_g1_learning_records_v1",
+  G2:"aura_g2_learning_records_v1",
+  G3:"aura_g3_learning_records_v1"
+};
+
+const $=id=>document.getElementById(id);
+
+let g1Records=[];
+let selectedOriginal=null;
+
+function isObject(value){
+  return value!==null &&
+    typeof value==="object" &&
+    !Array.isArray(value);
+}
+
+function getPath(obj,path){
+  let current=obj;
+  for(const part of path.split(".")){
+    if(!isObject(current) ||
+       !Object.prototype.hasOwnProperty.call(current,part)){
+      return undefined;
+    }
+    current=current[part];
+  }
+  return current;
+}
+
+function findField(obj,paths){
+  for(const path of paths){
+    const value=getPath(obj,path);
+    if(value!==undefined && value!==null && value!==""){
+      return {value,path};
+    }
+  }
+  return null;
+}
+
+function readStore(key){
+  try{
+    const raw=localStorage.getItem(key);
+    if(raw===null){
+      return {valid:true,missing:true,records:[]};
+    }
+    const parsed=JSON.parse(raw);
+    if(!Array.isArray(parsed)){
+      return {valid:false,missing:false,records:[]};
+    }
+    return {valid:true,missing:false,records:parsed};
+  }catch(error){
+    console.error("[AURA] Storage read error:",error);
+    return {valid:false,missing:false,records:[]};
+  }
+}
+
+function renderInventory(){
+  let total=0;
+  let valid=true;
+  const missing=[];
+
+  for(const id of ["G1","G2","G3"]){
+    const store=readStore(KEYS[id]);
+
+    if(!store.valid){
+      valid=false;
+      $(id.toLowerCase()+"-count").textContent="ERROR";
+    }else{
+      const count=store.records.length;
+      $(id.toLowerCase()+"-count").textContent=String(count);
+      total+=count;
+    }
+
+    if(store.missing) missing.push(id);
+  }
+
+  $("total-count").textContent=valid?String(total):"—";
+
+  if(!valid){
+    $("inventory-status").textContent=
+      "ERROR: One or more record stores cannot be read.";
+  }else if(missing.length){
+    $("inventory-status").textContent=
+      "REVIEW: Missing stores: "+missing.join(", ")+
+      ". Counts are not a complete inventory.";
+  }else{
+    $("inventory-status").textContent=
+      "Current record count: "+total+
+      ". Original historical baseline: 13.";
+  }
+}
+
+/*
+  Known Identity Service wrappers.
+  A wrapper is accepted only when it contains
+  an actual G1-shaped session object.
+
+  We do not search arbitrary nested properties.
+*/
+
+function looksLikeG1Session(obj){
+  if(!isObject(obj)) return false;
+
+  const result=isObject(obj.result)?obj.result:null;
+
+  const hasStageResult=!!(
+    result &&
+    (
+      isObject(result.diagnostic) ||
+      isObject(result.practice) ||
+      isObject(result.reassessment)
+    )
+  );
+
+  const hasQuestionRecords=
+    Array.isArray(obj.records) &&
+    obj.records.some(item=>
+      isObject(item) &&
+      (
+        item.stage==="diagnostic" ||
+        item.stage==="practice" ||
+        item.stage==="reassessment"
+      )
+    );
+
+  return hasStageResult || hasQuestionRecords;
+}
+
+function resolveSession(original){
+  const candidates=[
+    {value:original,path:"root"},
+    {value:getPath(original,"session"),path:"session"},
+    {value:getPath(original,"data"),path:"data"},
+    {value:getPath(original,"learningSession"),path:"learningSession"},
+    {value:getPath(original,"sessionData"),path:"sessionData"},
+    {value:getPath(original,"payload"),path:"payload"},
+    {value:getPath(original,"data.session"),path:"data.session"},
+    {value:getPath(original,"payload.session"),path:"payload.session"}
+  ];
+
+  for(const candidate of candidates){
+    if(looksLikeG1Session(candidate.value)){
+      return candidate;
+    }
+  }
+
+  return null;
+}
+
+function percentage(value){
+  if(typeof value==="number"){
+    if(Number.isFinite(value) && value>=0 && value<=100){
+      return value;
+    }
+    return null;
+  }
+
+  if(typeof value==="string"){
+    const clean=value.trim().replace(/%$/,"");
+    if(!/^\d+(?:\.\d+)?$/.test(clean)) return null;
+    const number=Number(clean);
+    if(Number.isFinite(number) && number>=0 && number<=100){
+      return number;
+    }
+  }
+  return null;
+}
+
+function stagePercent(stage){
+  if(!isObject(stage)) return null;
+
+  const explicit=findField(stage,[
+    "percent","percentage"
+  ]);
+
+  if(explicit){
+    return percentage(explicit.value);
+  }
+
+  /*
+    Do not silently calculate from arbitrary
+    score fields: they may represent different
+    assessment units or conventions.
+  */
+  return null;
+}
+
+function hintNumber(value){
+  if(Number.isInteger(value) && value>=0 && value<=3){
+    return value;
+  }
+
+  if(typeof value==="string"){
+    const clean=value.trim().toUpperCase();
+
+    if(["NONE","NO HINT","NO HINTS","H0","0"]
+      .includes(clean)) return 0;
+
+    if(/^[123]$/.test(clean)) return Number(clean);
+
+    if(/^H[123]$/.test(clean)){
+      return Number(clean.slice(1));
+    }
+  }
+
+  return null;
+}
+
+function hintLabel(value){
+  return value===null
+    ? "N/A"
+    : value===0
+      ? "None"
+      : "H"+value;
+}
+
+function formatPercent(value){
+  return value===null?"N/A":value+"%";
+}
+
+function setText(id,value){
+  $(id).textContent=value;
+}
+
+function reset(){
+  [
+    "diagnostic-value",
+    "practice-value",
+    "retest-value",
+    "hint-value"
+  ].forEach(id=>setText(id,"N/A"));
+
+  [
+    "schema-value",
+    "diagnostic-source",
+    "practice-source",
+    "retest-source",
+    "hint-source",
+    "decision-value"
+  ].forEach(id=>setText(id,"Not available"));
+
+  setText("hint-interpretation","Not available");
+  setText("retest-interpretation","Not available");
+  setText("joint-interpretation","Not available");
+  setText("limitations","Not available");
+  setText("question-status","No practice evidence.");
+  setText("record-preview","No session selected.");
+
+  $("joint-status").textContent="Awaiting Evidence";
+  $("joint-status").className="status review";
+
+  const tbody=$("question-table");
+  tbody.replaceChildren();
+  const row=tbody.insertRow();
+  const cell=row.insertCell();
+  cell.colSpan=6;
+  cell.textContent="No practice records available.";
+}
+
+function textCell(row,value){
+  const cell=row.insertCell();
+  cell.textContent=String(value);
+  return cell;
+}
+
+function renderQuestions(session){
+  const tbody=$("question-table");
+  tbody.replaceChildren();
+
+  const all=Array.isArray(session.records)
+    ? session.records
+    : [];
+
+  const questions=all.filter(item=>
+    isObject(item) && item.stage==="practice"
+  );
+
+  if(!questions.length){
+    const row=tbody.insertRow();
+    const cell=row.insertCell();
+    cell.colSpan=6;
+    cell.textContent=
+      "No recognised practice question records.";
+    setText("question-status",
+      "Practice question evidence unavailable.");
+    return;
+  }
+
+  let incomplete=0;
+
+  questions.forEach((question,index)=>{
+    const row=tbody.insertRow();
+
+    textCell(row,
+      question.questionId!==undefined
+        ? question.questionId
+        : "Practice "+(index+1)
+    );
+
+    const attempts=Array.isArray(question.attempts)
+      ? question.attempts
+      : null;
+
+    textCell(row,
+      attempts?attempts.length:"N/A"
+    );
+
+    let first="N/A";
+
+    if(typeof question.firstAttemptCorrect==="boolean"){
+      first=question.firstAttemptCorrect
+        ? "Correct"
+        : "Incorrect";
+    }
+
+    textCell(row,first);
+
+    const level=hintNumber(question.highestHintUsed);
+    textCell(row,hintLabel(level));
+
+    const completed=
+      typeof question.completedCorrectly==="boolean"
+        ? question.completedCorrectly
+          ? "Yes"
+          : "No"
+        : "N/A";
+
+    textCell(row,completed);
+
+    const codes=Array.isArray(question.errorCodes)
+      ? question.errorCodes
+      : null;
+
+    const codeText=codes
+      ? codes.length
+        ? codes.map(item=>{
+            if(typeof item==="string") return item;
+            if(isObject(item) && typeof item.code==="string"){
+              return item.code;
+            }
+            return "Unrecognised";
+          }).join(", ")
+        : "None recorded"
+      : "N/A";
+
+    textCell(row,codeText);
+
+    if(!attempts || level===null || first==="N/A"){
+      incomplete++;
+    }
+  });
+
+  setText("question-status",
+    questions.length+
+    " practice question record(s) recognised. "+
+    incomplete+
+    " record(s) have missing or unrecognised "+
+    "attempt, hint or first-attempt fields."
+  );
+}
+
+function renderSession(){
+  reset();
+
+  const value=$("session-select").value;
+  if(value===""){
+    selectedOriginal=null;
+    setText("session-status","No session selected.");
+    return;
+  }
+
+  const index=Number(value);
+
+  if(!Number.isInteger(index) ||
+     index<0 ||
+     index>=g1Records.length){
+    selectedOriginal=null;
+    setText("session-status","Invalid session.");
+    return;
+  }
+
+  selectedOriginal=g1Records[index];
+
+  setText("record-preview",
+    JSON.stringify(selectedOriginal,null,2)
+  );
+
+  const resolved=resolveSession(selectedOriginal);
+
+  if(!resolved){
+    setText("schema-value","Unrecognised G1 schema");
+    setText("session-status",
+      "Record readable; schema mapping required.");
+    setText("limitations",
+      "The original record is preserved, but "+
+      "its session structure has not been recognised.");
+    return;
+  }
+
+  const session=resolved.value;
+  const prefix=resolved.path==="root"
+    ? ""
+    : resolved.path+".";
+
+  setText("schema-value",
+    "Recognised G1 session at "+resolved.path
+  );
+
+  const diagnosticField=findField(session,[
+    "result.diagnostic.percent",
+    "result.diagnostic.percentage",
+    "diagnostic.percent",
+    "diagnostic.percentage",
+    "diagnosticPercent",
+    "diagnosticPercentage"
+  ]);
+
+  const practiceField=findField(session,[
+    "result.practice.percent",
+    "result.practice.percentage",
+    "practice.percent",
+    "practice.percentage",
+    "practicePercent",
+    "practicePercentage"
+  ]);
+
+  const retestField=findField(session,[
+    "result.reassessment.percent",
+    "result.reassessment.percentage",
+    "reassessment.percent",
+    "reassessment.percentage",
+    "reassessmentPercent",
+    "reassessmentPercentage"
+  ]);
+
+  const hintField=findField(session,[
+    "result.highestHintLevel",
+    "result.highestHintUsed",
+    "highestHintLevel",
+    "highestHintUsed"
+  ]);
+
+  const diagnostic=diagnosticField
+    ? percentage(diagnosticField.value)
+    : null;
+
+  const practice=practiceField
+    ? percentage(practiceField.value)
+    : null;
+
+  const retest=retestField
+    ? percentage(retestField.value)
+    : null;
+
+  const hint=hintField
+    ? hintNumber(hintField.value)
+    : null;
+
+  setText("diagnostic-value",formatPercent(diagnostic));
+  setText("practice-value",formatPercent(practice));
+  setText("retest-value",formatPercent(retest));
+  setText("hint-value",hintLabel(hint));
+
+  function source(field,valid){
+    if(!field) return "Field not found.";
+    return prefix+field.path+
+      (valid ? " — recognised" : " — invalid value");
+  }
+
+  setText("diagnostic-source",
+    source(diagnosticField,diagnostic!==null));
+  setText("practice-source",
+    source(practiceField,practice!==null));
+  setText("retest-source",
+    source(retestField,retest!==null));
+  setText("hint-source",
+    source(hintField,hint!==null));
+
+  const decision=findField(session,[
+    "result.masteryState",
+    "masteryState"
+  ]);
+
+  const path=findField(session,[
+    "result.recommendedPath",
+    "recommendedPath"
+  ]);
+
+  const rule=findField(session,[
+    "result.decisionExplanation.ruleVersion"
+  ]);
+
+  const decisionParts=[];
+
+  if(decision) decisionParts.push(
+    "Mastery: "+String(decision.value)
+  );
+
+  if(path) decisionParts.push(
+    "Path: "+String(path.value)
+  );
+
+  if(rule) decisionParts.push(
+    "Rule: "+String(rule.value)
+  );
+
+  setText("decision-value",
+    decisionParts.length
+      ? decisionParts.join(" | ")
+      : "Not available"
+  );
+
+  renderQuestions(session);
+
+  if(hint===null){
+    setText("hint-interpretation",
+      "No recognised session-level hint value.");
+  }else{
+    setText("hint-interpretation",
+      "Recorded highest hint exposure: "+
+      hintLabel(hint)+
+      ". Hint exposure does not establish "+
+      "actual learning dependence.");
+  }
+
+  if(retest===null){
+    setText("retest-interpretation",
+      "No recognised immediate independent "+
+      "reassessment percentage.");
+  }else{
+    setText("retest-interpretation",
+      "Recorded immediate independent "+
+      "reassessment: "+retest+
+      "%. This is not evidence of durable mastery.");
+  }
+
+  if(hint!==null && retest!==null){
+    const highHint=hint>=2;
+    const strongRetest=retest>=75;
+
+    let interpretation=
+      "Recorded hint exposure: "+hintLabel(hint)+
+      "; immediate independent performance: "+
+      retest+"%. ";
+
+    if(highHint && strongRetest){
+      interpretation+=
+        "High Hint Exposure + Strong Immediate "+
+        "Independent Performance. ";
+    }else if(highHint){
+      interpretation+=
+        "High Hint Exposure was recorded. ";
+    }else if(strongRetest){
+      interpretation+=
+        "Strong Immediate Independent "+
+        "Performance was recorded. ";
+    }
+
+    interpretation+=
+      "These are descriptive observations. "+
+      "No causal effect or genuine hint "+
+      "dependency is established.";
+
+    setText("joint-interpretation",interpretation);
+    $("joint-status").textContent=
+      "Descriptive Evidence Available";
+    $("joint-status").className="status";
+  }else{
+    setText("joint-interpretation",
+      "Insufficient recognised fields for "+
+      "joint interpretation.");
+    $("joint-status").textContent=
+      "Evidence Mapping Required";
+    $("joint-status").className="status review";
+  }
+
+  const limitations=[
+    "Hint exposure is not proof of dependency.",
+    "Immediate reassessment is not delayed retention.",
+    "Attempt-level chronology does not by itself "+
+      "establish when a hint was actually viewed.",
+    "This prototype does not establish causal effectiveness."
+  ];
+
+  const delayed=findField(session,[
+    "result.delayedReassessment",
+    "delayedReassessment"
+  ]);
+
+  if(delayed){
+    limitations.push(
+      "Delayed reassessment field exists, "+
+      "but its completion and timing are not "+
+      "verified by this analysis."
+    );
+  }else{
+    limitations.push(
+      "No recognised delayed reassessment field."
+    );
+  }
+
+  setText("limitations",limitations.join(" "));
+
+  setText("session-status",
+    "G1 record "+(index+1)+
+    " of "+g1Records.length+
+    " inspected. Source: "+resolved.path+
+    ". Read-only analysis."
+  );
+}
+
+function populate(){
+  const store=readStore(KEYS.G1);
+  const select=$("session-select");
+
+  select.replaceChildren();
+  const placeholder=document.createElement("option");
+  placeholder.value="";
+  placeholder.textContent="Select G1 session";
+  select.appendChild(placeholder);
+
+  if(!store.valid){
+    g1Records=[];
+    selectedOriginal=null;
+    reset();
+    setText("session-status","G1 storage read error.");
+    return;
+  }
+
+  g1Records=store.records;
+
+  g1Records.forEach((record,index)=>{
+    const option=document.createElement("option");
+    option.value=String(index);
+    option.textContent="G1 Session "+(index+1);
+    select.appendChild(option);
+  });
+
+  if(g1Records.length){
+    select.value=String(g1Records.length-1);
+  }
+
+  renderSession();
+}
+
+async function copyJSON(){
+  if(selectedOriginal===null){
+    setText("copy-status","No record selected.");
+    return;
+  }
+
+  const json=JSON.stringify(selectedOriginal,null,2);
+
+  try{
+    if(!navigator.clipboard || !window.isSecureContext){
+      throw new Error("Clipboard API unavailable");
+    }
+
+    await navigator.clipboard.writeText(json);
+    setText("copy-status","JSON copied successfully.");
+  }catch(error){
+    const area=document.createElement("textarea");
+    area.value=json;
+    area.style.position="fixed";
+    area.style.left="-9999px";
+    document.body.appendChild(area);
+    area.select();
+
+    let copied=false;
+    try{
+      copied=document.execCommand("copy");
+    }catch(e){
+      copied=false;
+    }
+
+    area.remove();
+
+    setText("copy-status",
+      copied
+        ? "JSON copied successfully."
+        : "Copy unavailable. Select the JSON above."
+    );
+  }
+}
+
+function refresh(){
+  renderInventory();
+  populate();
+}
+
+function init(){
+  $("session-select").addEventListener(
+    "change",renderSession
+  );
+
+  $("refresh-button").addEventListener(
+    "click",refresh
+  );
+
+  $("copy-button").addEventListener(
+    "click",copyJSON
+  );
+
+  refresh();
+}
+
+if(document.readyState==="loading"){
+  document.addEventListener("DOMContentLoaded",init);
+}else{
+  init();
+}
+
+})();
+</script>
+</body>
+</html>

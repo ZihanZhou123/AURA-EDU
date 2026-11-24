@@ -1,0 +1,253 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AURA EDU | Spelling Mastery</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#eef7f2;color:#29455a;font-family:Arial,"PingFang SC","Microsoft YaHei",sans-serif}
+header{background:white;border-bottom:1px solid #dbe7df;padding:17px 5%;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{font-size:21px;font-weight:900;color:#7659d5}
+a{color:#267468;text-decoration:none}
+main{max-width:900px;margin:28px auto;padding:0 16px 50px}
+.panel{background:white;border:1px solid #d9e7df;border-radius:19px;padding:23px;margin:18px 0}
+h1{margin-bottom:8px}
+.subtitle,.small{color:#657d70;line-height:1.7}
+.small{font-size:13px}
+.identity{background:#e6f3ff;padding:13px;border-radius:12px;font-weight:bold}
+.status{background:#f1f6f4;padding:15px;border-radius:12px;line-height:1.8}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.metric{background:#f2f7f4;padding:16px;border-radius:13px}
+.metric strong{font-size:25px;display:block;margin-top:7px}
+button{border:0;border-radius:11px;padding:12px 18px;background:#7659d5;color:white;font-weight:bold;cursor:pointer}
+button.secondary{background:#e4f2eb;color:#266c51}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+pre{background:#f3f7f5;padding:15px;border-radius:12px;white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px}
+.message{color:#a04a37;margin-top:12px;line-height:1.6}
+@media(max-width:600px){.grid{grid-template-columns:1fr}.panel{padding:17px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">✦ AURA EDU</div>
+  <a href="adventure-mastery-map.html">← Adventure Map</a>
+</header>
+
+<main>
+  <h1>🧠 Spelling Mastery Decision</h1>
+  <p class="subtitle">
+    拼写掌握度决策模型 · Explainable Learning Analytics
+  </p>
+
+  <div class="identity" id="learner-display">
+    正在读取学生身份...
+  </div>
+
+  <section class="panel">
+    <h2>Learning Decision / 学习决策</h2>
+    <div class="status" id="decision-display"></div>
+    <p id="explanation"></p>
+    <div class="actions">
+      <button id="refresh-btn">Refresh Evidence</button>
+      <button class="secondary" id="copy-btn">Copy JSON</button>
+    </div>
+    <p class="message" id="message" role="status"></p>
+  </section>
+
+  <section class="panel">
+    <h2>Learning Evidence / 学习证据</h2>
+    <div class="grid" id="score-grid"></div>
+  </section>
+
+  <section class="panel">
+    <h2>Adaptive Practice Evidence</h2>
+    <div id="practice-display"></div>
+  </section>
+
+  <section class="panel">
+    <h2>Research Interpretation</h2>
+    <p class="small">
+      本页面根据预先设定的规则，综合诊断、
+      自适应练习和无提示独立复测数据。
+      暂定掌握仅适用于当前题目集，
+      不代表长期保持、跨情境迁移或因果效果。
+    </p>
+    <h3>Decision Evidence (JSON)</h3>
+    <pre id="json-preview"></pre>
+  </section>
+</main>
+
+<script src="js/spelling-mastery.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  const $ = id => document.getElementById(id);
+  let currentReport = null;
+
+  function addMetric(parent, label, value) {
+    const card = document.createElement("div");
+    card.className = "metric";
+
+    const title = document.createElement("div");
+    title.textContent = label;
+
+    const number = document.createElement("strong");
+    number.textContent = String(value);
+
+    card.appendChild(title);
+    card.appendChild(number);
+    parent.appendChild(card);
+  }
+
+  function refresh() {
+    const engine = window.AuraSpellingMastery;
+
+    if (!engine) {
+      $("message").textContent =
+        "Mastery Decision Model 未加载。";
+      return;
+    }
+
+    const report = engine.evaluate();
+    currentReport = report;
+
+    $("learner-display").textContent =
+      report.learnerId
+        ? "👤 Current learner selected"
+        : "👤 请先选择学生";
+
+    const labels = {
+      PROVISIONAL_MASTERY:
+        "Provisional Mastery / 暂定掌握",
+      DEVELOPING:
+        "Developing / 发展中",
+      NEEDS_SUPPORT:
+        "Needs Support / 需要支持",
+      INSUFFICIENT_EVIDENCE:
+        "Insufficient Evidence / 证据不足"
+    };
+
+    $("decision-display").textContent =
+      labels[report.decision] ||
+      report.decision;
+
+    $("explanation").textContent =
+      report.explanation;
+
+    $("score-grid").replaceChildren();
+    $("practice-display").replaceChildren();
+
+    if (report.ok) {
+      addMetric(
+        $("score-grid"),
+        "Diagnostic",
+        report.scores.diagnostic.percent + "%"
+      );
+
+      addMetric(
+        $("score-grid"),
+        "Independent Reassessment",
+        report.scores.reassessment.percent + "%"
+      );
+
+      addMetric(
+        $("score-grid"),
+        "Word Spelling",
+        report.scores.wordSpelling.percent + "%"
+      );
+
+      addMetric(
+        $("score-grid"),
+        "Sentence Application",
+        report.scores.sentenceApplication.percent + "%"
+      );
+
+      const practice = report.practice;
+
+      const info = document.createElement("p");
+      info.style.whiteSpace = "pre-line";
+
+      info.textContent =
+        "Questions: " + practice.total +
+        "\nFirst Attempt Correct: " +
+        practice.firstAttemptCorrect +
+        "\nEventually Correct: " +
+        practice.eventuallyCorrect +
+        "\nTotal Attempts: " +
+        practice.totalAttempts +
+        "\nQuestions Using Hints: " +
+        practice.questionsUsingHints +
+        "\nHighest Hint Level: " +
+        practice.highestHintLevel;
+
+      $("practice-display").appendChild(info);
+    } else {
+      $("practice-display").textContent =
+        "请完成当前学生的完整学习流程。";
+    }
+
+    $("json-preview").textContent =
+      JSON.stringify(report, null, 2);
+
+    $("message").textContent = "";
+  }
+
+  async function copyJSON() {
+    if (!currentReport) return;
+
+    const text =
+      JSON.stringify(currentReport, null, 2);
+
+    try {
+      await navigator.clipboard.writeText(text);
+      $("message").textContent =
+        "✓ JSON 已复制。";
+    } catch (error) {
+      let area = document.getElementById(
+        "json-copy-fallback"
+      );
+
+      if (!area) {
+        area = document.createElement("textarea");
+        area.id = "json-copy-fallback";
+        area.style.width = "100%";
+        area.style.height = "160px";
+        $("json-preview").after(area);
+      }
+
+      area.value = text;
+      area.focus();
+      area.select();
+
+      $("message").textContent =
+        "自动复制失败，请手动复制下方文本。";
+    }
+  }
+
+  $("refresh-btn").addEventListener(
+    "click",
+    refresh
+  );
+
+  $("copy-btn").addEventListener(
+    "click",
+    copyJSON
+  );
+
+  window.addEventListener("focus", refresh);
+
+  document.addEventListener(
+    "visibilitychange",
+    function () {
+      if (!document.hidden) refresh();
+    }
+  );
+
+  refresh();
+})();
+</script>
+</body>
+</html>
